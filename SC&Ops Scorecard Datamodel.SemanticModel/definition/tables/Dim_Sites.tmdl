@@ -1,0 +1,43 @@
+table Dim_Sites
+	lineageTag: d338fd23-5449-4ab8-8475-3ba5c6b4c4ac
+
+	column 'Site UUID'
+		dataType: string
+		lineageTag: 02087c59-f311-4377-b694-83f4289a06fa
+		summarizeBy: none
+		sourceColumn: Site UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Name'
+		dataType: string
+		lineageTag: 8d6a6b02-fd8b-4014-b190-e1522ad50082
+		summarizeBy: none
+		sourceColumn: Site Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 51a14bd3-dde3-4a98-ab6d-dd13fe8c0a26
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Sites = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"f4665093-da49-4ee7-81e6-a4c4d63c0af5" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="f4665093-da49-4ee7-81e6-a4c4d63c0af5"]}[Data],
+				    #"Dim Sites_" = #"f4665093-da49-4ee7-81e6-a4c4d63c0af5"{[entity="Dim Sites",version=""]}[Data]
+				in
+				    #"Dim Sites_"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

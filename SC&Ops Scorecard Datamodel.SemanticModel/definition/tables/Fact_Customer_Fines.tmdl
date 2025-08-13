@@ -1,0 +1,94 @@
+table Fact_Customer_Fines
+	lineageTag: 51a1bd27-2826-45e9-ac65-f852cfd497ce
+
+	column 'Document Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ef662c41-5cbc-447c-97eb-b38b0bd97ae1
+		summarizeBy: none
+		sourceColumn: Document Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Report Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6d21ed26-3bb5-45a9-b3ac-8e9164c3d0e8
+		summarizeBy: none
+		sourceColumn: Report Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Perrigo Material #'
+		dataType: string
+		lineageTag: d7a060e8-d36e-4100-bbaa-3183e630da31
+		summarizeBy: none
+		sourceColumn: Perrigo Material #
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: d5a40549-494b-47cb-9f42-3c2c7f0c355a
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Charge Type'
+		dataType: string
+		lineageTag: f13ec451-1dbd-4d9a-a0e4-a171e53b766c
+		summarizeBy: none
+		sourceColumn: Charge Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Split Amount'
+		dataType: double
+		lineageTag: b86bee76-1177-4696-ad49-c787ac96d084
+		summarizeBy: sum
+		sourceColumn: Split Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Global Product Number' = LOOKUPVALUE(D_PRODUCT_TEXT_CV[Global Product Number],D_PRODUCT_TEXT_CV[Material Number Adj(PMI)],Fact_Customer_Fines[Perrigo Material #])
+		lineageTag: 69432ec8-2cc2-4c96-9be3-17ee5ce0a9de
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center' = LOOKUPVALUE(Dim_Material_Plant[Global Profit Center],Dim_Material_Plant[Material Number(PMI)],Fact_Customer_Fines[Perrigo Material #])
+		lineageTag: 69810bb6-1371-4000-8a67-25c33304402e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column ComplianceName
+		dataType: string
+		lineageTag: 11914df7-d8a8-479a-a16d-fb759c1255e4
+		summarizeBy: none
+		sourceColumn: ComplianceName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Customer_Fines = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_Customer_Fines = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Analytics%20Team%20Sandbox", "Compliance Fine Management new split", [Query="/* START QUERY BUILDER */#(lf)#(lf)DEFINE#(lf)#(lf)MEASURE 'Split Total Compliance'[Total SplitAmount] = SUM('Split Total Compliance'[SplitAmount])#(lf)#(lf)#(lf)EVALUATE#(lf)#(lf)SUMMARIZECOLUMNS(#(lf)#(lf)    'Split Total Compliance'[DocumentDate],#(lf)#(lf)    'Split Total Compliance'[ReportDate],#(lf)#(lf)    'Split Total Compliance'[Perrigo Material #],#(lf)#(lf)    'Split Total Compliance'[Business Unit],#(lf)#(lf)    'Split Total Compliance'[ComplianceName],#(lf)#(lf)    'Split Total Compliance'[ChargeType],#(lf)#(lf)    ""SplitAmount"", [Total SplitAmount]#(lf)#(lf))#(lf)#(lf)ORDER BY #(lf)#(lf)    'Split Total Compliance'[DocumentDate] ASC,#(lf)#(lf)    'Split Total Compliance'[ReportDate] ASC,#(lf)#(lf)    'Split Total Compliance'[Perrigo Material #] ASC,#(lf)#(lf)    'Split Total Compliance'[Business Unit] ASC,#(lf)#(lf)    'Split Total Compliance'[ComplianceName] ASC,#(lf)#(lf)    'Split Total Compliance'[ChargeType] ASC#(lf)#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Customer_Fines,{{"Split Total Compliance[DocumentDate]", "Document Date"}, {"Split Total Compliance[ReportDate]", "Report Date"}, {"Split Total Compliance[Perrigo Material #]", "Perrigo Material #"}, {"Split Total Compliance[Business Unit]", "Business Unit"}, {"Split Total Compliance[ChargeType]", "Charge Type"}, {"[SplitAmount]", "Split Amount"}, {"Split Total Compliance[ComplianceName]", "ComplianceName"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Document Date", type date}, {"Report Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

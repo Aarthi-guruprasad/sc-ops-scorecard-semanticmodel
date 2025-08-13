@@ -1,0 +1,86 @@
+table Sales_Parameter_CSCI
+	lineageTag: 1d5a0b3c-760f-46cc-98be-b172f35a6010
+
+	measure 'Switch Sales_Parameter_CSCI' = ```
+			SWITCH(
+			    SELECTEDVALUE( Sales_Parameter_CSCI[Parameter Name] ),
+			    
+			    
+			    "FA% Lag 1", [FA% L1],
+			    "FA% Lag 4",[FA% L4],
+			    "Bias% Lag 1",[Bias L1 CSCI],
+			    "Bias% Lag 4", [Bias L4 CSCI],
+			    "Service Level%",[Service Level %]
+			)
+			```
+		lineageTag: 68538ff8-7bf6-4e5b-98bf-cb808550a1c3
+
+	measure 'Switch Sales_Parameter MoM_CSCI' = ```
+			SWITCH(
+			    SELECTEDVALUE( Sales_Parameter_CSCI[Parameter Name] ),
+			    
+			    
+			    "FA% Lag 1", [FA% MoM L1 raw CSCI],
+			    "FA% Lag 4",[FA% MoM L4 raw CSCI],
+			    "Bias% Lag 1",[Bias MoM%_raw L1 CSCI],
+			    "Bias% Lag 4", [Bias MoM%_raw L4 CSCI],
+			    "Service Level%",[Service Level MoM]
+			)
+			```
+		lineageTag: e0f9a080-1b91-483f-82f4-ceda13830006
+
+	column Sales_Parameter_CSCI
+		lineageTag: c2e00691-b368-4766-bd2f-f394b77e5177
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Sales_Parameter_CSCI Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Sales_Parameter_CSCI Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales_Parameter_CSCI Fields'
+		isHidden
+		lineageTag: 28f7ee00-21af-44d3-ae07-d325b0b2fdb5
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Sales_Parameter_CSCI Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales_Parameter_CSCI Order'
+		isHidden
+		formatString: 0
+		lineageTag: fc8bf805-3f3f-46b3-b717-b54fec9c51fa
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: cc5f7a6f-29fe-4e02-810c-3f16bb28e97d
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales_Parameter_CSCI = calculated
+		mode: import
+		source =
+				{
+				    ("FA% Lag 1", NAMEOF('CSCI Measures'[FA% L1]), 0,"FA% Lag 1" ),
+				    ("FA% Lag 4", NAMEOF('CSCI Measures'[FA% L4]), 1, "FA% Lag 4"),
+				    ("Bias% Lag 1", NAMEOF('CSCI Measures'[Bias L1 CSCI]), 2, "Bias% Lag 1"),
+				    ("Bias% Lag 4", NAMEOF('CSCI Measures'[Bias L4 CSCI]), 3, "Bias% Lag 4"),
+				    ("Service Level%", NAMEOF('CSCI Measures'[Service Level %]), 4, "Service Level%")
+				}
+
+	annotation PBI_Id = e622275d108444d4ab8eb9f776980ef7
+

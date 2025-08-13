@@ -1,0 +1,107 @@
+table Fact_IBP_CSCI_Temp_Fix
+	lineageTag: ab0847f9-494e-4a17-a8aa-1ab53736725c
+
+	column 'Location ID'
+		dataType: string
+		lineageTag: e2f5e5a7-5423-4938-941e-aa24f7c9cf1e
+		summarizeBy: none
+		sourceColumn: Location ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: 1969767f-5a7d-4a25-b410-20c9caeaf6e9
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FP: End Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8e4e9c94-665b-4b40-a422-82238bc45173
+		summarizeBy: none
+		sourceColumn: FP: End Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Enriched_Qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 77b93ee5-1b63-4eef-84a5-ba6ad683c4a0
+		summarizeBy: sum
+		sourceColumn: Enriched_Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Constrained_Qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 4dce2f83-06fc-45bb-9e55-81175059b845
+		summarizeBy: sum
+		sourceColumn: Constrained_Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Lag
+		dataType: int64
+		formatString: 0
+		lineageTag: 073d862b-8e62-4817-9d77-ef6bc0618f4d
+		summarizeBy: sum
+		sourceColumn: Lag
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodOffset
+		dataType: int64
+		formatString: 0
+		lineageTag: 9950de2e-66d5-4e7c-9543-9842116bd4ee
+		summarizeBy: sum
+		sourceColumn: PeriodOffset
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 81028454-b30b-4bf1-a9f5-ba43347392c1
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant Global Material key'
+		dataType: string
+		lineageTag: 61bfd9ae-d5c0-448a-bbdc-aacbae88d8cc
+		summarizeBy: none
+		sourceColumn: Plant Global Material key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Base Scenario'
+		dataType: string
+		lineageTag: 7b838363-1a8e-444b-bfb5-20afb2567c4d
+		summarizeBy: none
+		sourceColumn: Base Scenario
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_IBP_CSCI_Temp_Fix = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"2c7c65ff-5820-4cdd-9db5-b62abd570abb" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="2c7c65ff-5820-4cdd-9db5-b62abd570abb"]}[Data],
+				    #"Q1 FA L4_" = #"2c7c65ff-5820-4cdd-9db5-b62abd570abb"{[entity="Q1 FA L4",version=""]}[Data]
+				in
+				    #"Q1 FA L4_"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

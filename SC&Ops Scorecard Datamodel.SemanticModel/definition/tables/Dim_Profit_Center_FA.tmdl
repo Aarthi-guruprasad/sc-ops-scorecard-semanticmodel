@@ -1,0 +1,97 @@
+table Dim_Profit_Center_FA
+	lineageTag: af13caf5-c2fc-4778-931d-49de2366950e
+
+	column 'Profit Center Text'
+		dataType: string
+		lineageTag: 4ba93d7a-3868-4c87-a7ed-cae9cc6fd523
+		summarizeBy: none
+		sourceColumn: Profit Center Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Business
+		dataType: string
+		lineageTag: 0cc034d3-b35c-45e1-9536-c03839902a84
+		summarizeBy: none
+		sourceColumn: Business
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: ff3398df-0a7f-480b-a6fc-072c1214ca60
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: af4e3ef6-afa9-4fe9-8fdb-c1d21c1feb5b
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Division'
+		dataType: string
+		lineageTag: c9f76a1e-7754-45c6-9a6c-fa390480643d
+		summarizeBy: none
+		sourceColumn: Business Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center Key'
+		dataType: string
+		lineageTag: f124d5ed-cd8c-4e54-84e1-4f34b8f94611
+		summarizeBy: none
+		sourceColumn: Profit Center Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center Key/Text'
+		dataType: string
+		lineageTag: 8e71bf20-7e54-4458-b400-11ad28e799ae
+		summarizeBy: none
+		sourceColumn: Profit Center Key/Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Short Text'
+		dataType: string
+		lineageTag: 0e359f84-2e32-4f9e-9157-c5fd0775c16f
+		summarizeBy: none
+		sourceColumn: Business Unit Short Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: string
+		lineageTag: a82a3151-5016-4ebb-9eac-b7f4cdb38c97
+		summarizeBy: none
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Profit_Center_FA = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"6a770a37-4162-475d-9a46-a2317c8085c4" = Workspaces{[workspaceId="6a770a37-4162-475d-9a46-a2317c8085c4"]}[Data],
+				    #"e28401ab-1ad4-4500-8e40-2d67eca3590f" = #"6a770a37-4162-475d-9a46-a2317c8085c4"{[dataflowId="e28401ab-1ad4-4500-8e40-2d67eca3590f"]}[Data],
+				    #"Dim Profit Center_" = #"e28401ab-1ad4-4500-8e40-2d67eca3590f"{[entity="Dim Profit Center",version=""]}[Data],
+				    #"Added Custom" = Table.AddColumn(#"Dim Profit Center_", "Index", each if [Business Unit] = "Over-The-Counter" then 1
+				    else if [Business Unit] = "Nutritionals" then 2
+				    else if [Business Unit] = "Oral Care Americas" then 3
+				    else if [Business Unit] = "BCS Other" then 4
+				    else if [Business Unit] = "Padagis Pharma" then 5
+				    else 6)
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

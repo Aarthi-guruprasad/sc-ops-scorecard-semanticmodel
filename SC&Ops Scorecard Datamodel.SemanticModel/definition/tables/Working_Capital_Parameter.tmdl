@@ -1,0 +1,106 @@
+table Working_Capital_Parameter
+	lineageTag: 26704d04-67b8-4913-b928-816e621922f8
+
+	measure 'Switch Working Capital' = ```
+			SWITCH(SELECTEDVALUE(Working_Capital_Parameter[Parameter Name]),
+			    
+			    "Gross Inventory",[Gross Inventory],
+			    "Net Inventory",[Net Inventory],
+			    "Inflated Inventory",[Inflated Inventory],
+			    "Expired Inventory", [Expired Inventory],
+			    "DSO", [DSO],
+			    "DPO", [DPO],
+			    "DIO", [DIO]
+			)
+			```
+		lineageTag: 50ac4fbb-5a38-4b02-b020-717f8830e131
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Switch Working Capital MoM' = ```
+			SWITCH(SELECTEDVALUE(Working_Capital_Parameter[Parameter Name]),
+			    
+			    "Gross Inventory",[Gross Inventory MoM],
+			    "Net Inventory",[Net Inventory MoM],
+			    "Inflated Inventory",[Inflated Inventory MoM],
+			    "Expired Inventory", [Expired Inventory MoM],
+			    "DSO", [DSO MoM],
+			    "DPO", [DPO MoM],
+			    "DIO", [DIO MoM]
+			)
+			```
+		lineageTag: 1b65f20a-6809-4282-9878-80be821042b0
+
+	measure 'Switch Working Capital PY' = ```
+			SWITCH(SELECTEDVALUE(Working_Capital_Parameter[Parameter Name]),
+			    
+			    "Gross Inventory",[Gross Inventory PY],
+			    "Net Inventory",[Net Inventory PY],
+			    "Inflated Inventory",[Inflated Inventory PY],
+			    "Expired Inventory", [Expired Inventory PY],
+			    "DSO", [DSO PY],
+			    "DPO", [DPO PY],
+			    "DIO", [DIO PY]
+			)
+			```
+		lineageTag: f8d29d06-6357-4b60-ad0e-3ae8a85575eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Working_Capital_Parameter
+		lineageTag: 8f08060c-81e4-4543-a6ee-9a84c808870d
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Working_Capital_Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Working_Capital_Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Working_Capital_Parameter Fields'
+		isHidden
+		lineageTag: 6c4737cc-920d-4d78-a0f8-f28acb68ed3e
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Working_Capital_Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Working_Capital_Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 13f4fe12-e705-41e0-ab60-ff286c4f61d8
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: 7a1128da-d315-4c78-9014-53b09b8a32e1
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Working_Capital_Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("Gross Inventory", NAMEOF('Measure'[Gross Inventory]), 0, "Gross Inventory"),
+				    ("Net Inventory", NAMEOF('Measure'[Net Inventory]), 1, "Net Inventory"),
+				    ("Inflated Inventory", NAMEOF('Measure'[Inflated Inventory]), 2, "Inflated Inventory"),
+				    ("Expired Inventory", NAMEOF('Measure'[Expired Inventory]), 3, "Expired Inventory"),
+				    ("DSO", NAMEOF('CSCI Measures'[DSO]), 4, "DSO"),
+				    ("DPO", NAMEOF('CSCI Measures'[DPO]), 5, "DPO"),
+				    ("DIO", NAMEOF('Measure'[DIO]), 6, "DIO")
+				}
+
+	annotation PBI_Id = 42e77483ca604a99b87ffb45380d7574
+

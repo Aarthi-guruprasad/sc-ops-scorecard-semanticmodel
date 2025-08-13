@@ -1,0 +1,111 @@
+table Fact_Schedule
+	lineageTag: cae2f181-1dba-4689-a779-d99b440aa416
+
+	column Weekdate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2d154e2d-a571-4ea0-adc6-523c9244bb48
+		summarizeBy: none
+		sourceColumn: Weekdate
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mat Plant'
+		dataType: string
+		lineageTag: 0a243284-04b4-4f99-ba17-b8cdb3ac7264
+		summarizeBy: none
+		sourceColumn: Mat Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column Material
+		dataType: string
+		lineageTag: 57ceaa0c-67d4-4398-bf70-e34631c56d1d
+		summarizeBy: none
+		sourceColumn: Material
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plant
+		dataType: string
+		lineageTag: 748ed01e-b8b2-44ec-8f20-7769776b3244
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column '+/- 10% Adh no penatly early'
+		dataType: int64
+		formatString: 0
+		lineageTag: b8ec1afa-72bd-4b64-a676-1b70e16daa52
+		summarizeBy: sum
+		sourceColumn: +/- 10% Adh no penatly early
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Number'
+		dataType: string
+		lineageTag: f9325980-ea6b-448b-b0ac-3d92baf67c33
+		summarizeBy: none
+		sourceColumn: Order Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Count
+		dataType: int64
+		formatString: 0
+		lineageTag: c75dbd3f-f170-459d-bdfb-48a555d75fad
+		summarizeBy: sum
+		sourceColumn: Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'BU WorkCenter'
+		dataType: string
+		lineageTag: fa9bbae4-588e-4712-bb9e-d6323c74db0b
+		summarizeBy: none
+		sourceColumn: BU WorkCenter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Workcenter
+		dataType: string
+		lineageTag: c6181ae0-c344-4c96-885b-41e4562b16f7
+		summarizeBy: none
+		sourceColumn: Workcenter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plant/Material = Fact_Schedule[Plant]&"/"&Fact_Schedule[Material]
+		lineageTag: 41af253d-0e4f-4a12-bf59-049fde694c3a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number' = LOOKUPVALUE(Dim_Material_Plant[Global Product Number],Dim_Material_Plant[Plant_Material Key],Fact_Schedule[Plant/Material])
+		lineageTag: beeaee2d-a963-4c5f-b893-9d3bad4c3723
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center' = LOOKUPVALUE(Dim_Material_Plant[Global Profit Center],Dim_Material_Plant[Plant_Material Key],Fact_Schedule[Plant/Material])
+		lineageTag: ed22f541-3124-4430-94e7-80f39203dd01
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Schedule = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_SA = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Project%20OZ%20Development", "New Schedule Attainment", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    HANA[Weekdate],#(lf)    HANA[Mat Plant],#(lf)    HANA[Material],#(lf)    HANA[Plant],#(lf)    HANA[BU WorkCenter],#(lf)    HANA[Workcenter],#(lf)    HANA[Count],#(lf)    HANA[+/- 10% Adh no penatly early],#(lf)    HANA[Order Number]#(lf))#(lf)ORDER BY #(lf)    HANA[Weekdate] ASC,#(lf)    HANA[Mat Plant] ASC,#(lf)    HANA[Material] ASC,#(lf)    HANA[Plant] ASC,#(lf)    HANA[BU WorkCenter] ASC,#(lf)    HANA[Workcenter] ASC,#(lf)    HANA[Count] ASC,#(lf)    HANA[+/- 10% Adh no penatly early] ASC,#(lf)    HANA[Order Number] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_SA,{{"HANA[Weekdate]", "Weekdate"}, {"HANA[Mat Plant]", "Mat Plant"}, {"HANA[Material]", "Material"}, {"HANA[Plant]", "Plant"}, {"HANA[+/- 10% Adh no penatly early]", "+/- 10% Adh no penatly early"}, {"HANA[Order Number]", "Order Number"}, {"HANA[Count]", "Count"}, {"HANA[BU WorkCenter]", "BU WorkCenter"}, {"HANA[Workcenter]", "Workcenter"}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Renamed Columns", each ([Material] <> ""))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

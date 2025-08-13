@@ -1,0 +1,80 @@
+table Fact_Group_Reporting
+	lineageTag: 3e02bc9b-5e97-4d02-ab33-007baf258540
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 6803744e-1dc0-449b-b4db-84a7483aed58
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Number'
+		dataType: string
+		lineageTag: 8078ddb1-6f3e-476d-84d2-86eefaee5ba5
+		summarizeBy: none
+		sourceColumn: Account Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 986c2f13-422d-443c-b0f9-c42a91771b44
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total COGS GR'
+		dataType: double
+		lineageTag: e1f91c6a-35c0-4a0e-b664-703e18b729ee
+		summarizeBy: sum
+		sourceColumn: Total COGS GR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3cad6da2-0050-4789-a33f-5dc10a7e4057
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total COGS GR_APN'
+		dataType: double
+		lineageTag: edfc9a16-623b-4ec7-b34a-f5b231bdf1d2
+		summarizeBy: sum
+		sourceColumn: Total COGS GR_APN
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total COGS GR_F66'
+		dataType: double
+		lineageTag: 9f25c997-3a58-402e-a64a-f9f3ae21eb93
+		summarizeBy: sum
+		sourceColumn: Total COGS GR_F66
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_Group_Reporting = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_Group_Reporting = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "BW - Inventory - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_GroupReporting[Total COGS GR] = #(lf)CALCULATE(#(lf)    [Sum_Report_Currency_GR],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""ACT01"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_APN] = #(lf)CALCULATE(#(lf)    [Sum_Report_Currency_GR],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""APN"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_F66] = #(lf)CALCULATE(#(lf)    [Sum_Report_Currency_GR],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""F66"")#(lf))#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[Date],#(lf)    Fact_GroupReporting[Profit Center],#(lf)    Fact_GroupReporting[Account Number],#(lf)    Fact_GroupReporting[Category],#(lf)    ""Total COGS GR"", [Total COGS GR],#(lf)    ""Total COGS GR_APN"", [Total COGS GR_APN],#(lf)    ""Total COGS GR_F66"", [Total COGS GR_F66]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[Date] ASC,#(lf)    Fact_GroupReporting[Profit Center] ASC,#(lf)    Fact_GroupReporting[Account Number] ASC,#(lf)    Fact_GroupReporting[Category] ASC#(lf)/* END QUERY BUILDER */#(lf)", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Group_Reporting,{{"Dim_Date[Date]", "Date"}, {"Fact_GroupReporting[Profit Center]", "Profit Center"}, {"Fact_GroupReporting[Account Number]", "Account Number"}, {"Fact_GroupReporting[Category]", "Category"}, {"[Total COGS GR]", "Total COGS GR"}, {"[Total COGS GR_APN]", "Total COGS GR_APN"}, {"[Total COGS GR_F66]", "Total COGS GR_F66"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

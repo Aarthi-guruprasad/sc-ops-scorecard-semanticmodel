@@ -1,0 +1,106 @@
+table Fact_SSSO
+	lineageTag: 7dec464f-1a3f-4c50-96f3-400db3ee58ad
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: e7cf8c87-6856-4e1b-8e93-054e68bbd41d
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Number'
+		dataType: string
+		lineageTag: f6cdba5c-2a8c-4525-b650-8ade7d88c78f
+		summarizeBy: none
+		sourceColumn: Account Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Functional Area'
+		dataType: string
+		lineageTag: 2ec107b3-e46f-43bd-ba60-d3239b2702f1
+		summarizeBy: none
+		sourceColumn: Functional Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 0d8c1df1-5d51-45b4-ab29-b60346bde1e5
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column SSSO
+		dataType: double
+		lineageTag: aa022e90-1c14-4d96-a249-d4e6c49971c2
+		summarizeBy: sum
+		sourceColumn: SSSO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6bbd6871-317a-414d-9bf0-60c63d88c5b4
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number'
+		dataType: string
+		lineageTag: cb3c3b74-ccdf-4ab0-9490-86b96b5886b5
+		summarizeBy: none
+		sourceColumn: Material Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column SSSO_APN
+		dataType: double
+		lineageTag: e1522d5c-3f58-4f9f-bd8f-70fec07cd845
+		summarizeBy: sum
+		sourceColumn: SSSO_APN
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SSSO_AFX
+		dataType: double
+		lineageTag: 7bcab657-8282-4de7-a920-3f551b6933fa
+		summarizeBy: sum
+		sourceColumn: SSSO_AFX
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SSSO_F66
+		dataType: double
+		lineageTag: 71b00580-59d1-4f7e-b58c-68ab194e070d
+		summarizeBy: sum
+		sourceColumn: SSSO_F66
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_SSSO = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_SSSO = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "BW - Inventory - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_COPA[SSSO] = #(lf)    CALCULATE(#(lf)        [Sum_Report_Currency_COPA],#(lf)        KEEPFILTERS(Dim_FA[Level 9] = ""SSSO""),#(lf)        KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)        KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""ACT01"")#(lf)    )#(lf)#(lf)MEASURE Fact_COPA[SSSO_APN] = #(lf)    CALCULATE(#(lf)        [Sum_Report_Currency_COPA],#(lf)        KEEPFILTERS(Dim_FA[Level 9] = ""SSSO""),#(lf)        KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)        KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""APN"")#(lf)    )#(lf)#(lf)MEASURE Fact_COPA[SSSO_AFX] = #(lf)    CALCULATE(#(lf)        [Sum_Report_Currency_COPA],#(lf)        KEEPFILTERS(Dim_FA[Level 9] = ""SSSO""),#(lf)        KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)        KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""AFX"")#(lf)    )#(lf)#(lf)MEASURE Fact_COPA[SSSO_F66] = #(lf)    CALCULATE(#(lf)        [Sum_Report_Currency_COPA],#(lf)        KEEPFILTERS(Dim_FA[Level 9] = ""SSSO""),#(lf)        KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)        KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""F66"")#(lf)    )#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[Date],#(lf)    Fact_COPA[Profit Center],#(lf)    Fact_COPA[Account Number],#(lf)    Fact_COPA[Functional Area],#(lf)    Fact_COPA[Category],#(lf)    Fact_COPA[Material Number],#(lf)    ""SSSO"", [SSSO],#(lf)    ""SSSO_APN"", [SSSO_APN],#(lf)    ""SSSO_AFX"", [SSSO_AFX],#(lf)    ""SSSO_F66"", [SSSO_F66]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[Date],#(lf)    Fact_COPA[Profit Center],#(lf)    Fact_COPA[Account Number],#(lf)    Fact_COPA[Functional Area],#(lf)    Fact_COPA[Category],#(lf)    Fact_COPA[Material Number]#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_SSSO,{{"Dim_Date[Date]", "Date"}, {"Fact_COPA[Profit Center]", "Profit Center"}, {"Fact_COPA[Account Number]", "Account Number"}, {"Fact_COPA[Functional Area]", "Functional Area"}, {"Fact_COPA[Category]", "Category"}, {"[SSSO]", "SSSO"}, {"Fact_COPA[Material Number]", "Material Number"}, {"[SSSO_APN]", "SSSO_APN"}, {"[SSSO_AFX]", "SSSO_AFX"}, {"[SSSO_F66]", "SSSO_F66"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

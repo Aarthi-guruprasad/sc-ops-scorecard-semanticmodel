@@ -1,0 +1,259 @@
+table Fact_Quality
+	lineageTag: 7b6fe834-fc1e-4ec9-b390-3e39131abfa0
+
+	column Year
+		dataType: string
+		lineageTag: 2e1333cf-445f-4f1d-8181-a0a93d08e6d2
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Site
+		dataType: string
+		lineageTag: 14e9e990-854b-42e0-bdd8-a4c8015bd804
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter YYQ'
+		dataType: string
+		lineageTag: a3fd0248-2b66-4a24-9d69-f57c02c0ad67
+		summarizeBy: none
+		sourceColumn: Quarter YYQ
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period FY'
+		dataType: string
+		lineageTag: b71c061f-0d9f-4a5d-a144-afc8b1a1ecdc
+		summarizeBy: none
+		sourceColumn: Period FY
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period
+		dataType: string
+		lineageTag: fcb8b495-73ca-4d1b-a74a-f317c2e379fc
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CAPA Completion Rate %'
+		dataType: double
+		lineageTag: c92bc076-3518-43cb-84fe-5b8a1a25f253
+		summarizeBy: sum
+		sourceColumn: CAPA Completion Rate %
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'CAPA: Total Closed In Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c9c33a6-0c17-4700-a72f-24f984c13924
+		summarizeBy: sum
+		sourceColumn: CAPA: Total Closed In Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CAPA: Total Closed on Time in Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: 72fc19ee-b518-478b-82e0-ca927e7398e6
+		summarizeBy: sum
+		sourceColumn: CAPA: Total Closed on Time in Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CAPA Corporate Target'
+		dataType: string
+		lineageTag: 26986564-f644-4f1b-a01b-57b652caac0a
+		summarizeBy: none
+		sourceColumn: CAPA Corporate Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deviation Corporate Target'
+		dataType: string
+		lineageTag: 3f0bb618-6cd4-44fa-b2ba-1f99288e8c5f
+		summarizeBy: none
+		sourceColumn: Deviation Corporate Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deviation On Time Closure %'
+		dataType: double
+		lineageTag: e007af2d-83a5-466a-a2e0-d231e608d1bd
+		summarizeBy: sum
+		sourceColumn: Deviation On Time Closure %
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Deviation: Total Closed in Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: c19ae0c3-47de-4a0c-b991-05041013f51d
+		summarizeBy: sum
+		sourceColumn: Deviation: Total Closed in Period
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deviation: Total Closed on Time in Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: 16a7788f-c712-4ebb-811b-8d1287b56365
+		summarizeBy: sum
+		sourceColumn: Deviation: Total Closed on Time in Period
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'External Audits: Critical Findings'
+		dataType: int64
+		formatString: 0
+		lineageTag: a7b6c814-823a-4563-b8da-54f63067c3f0
+		summarizeBy: sum
+		sourceColumn: External Audits: Critical Findings
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'External Audits: Major Findings'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7434ad85-e2b7-4076-97e6-a47012b048b1
+		summarizeBy: sum
+		sourceColumn: External Audits: Major Findings
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RFT %'
+		dataType: double
+		lineageTag: 68ae8407-375a-46e8-a9ee-2605ccc6afe5
+		summarizeBy: sum
+		sourceColumn: RFT %
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'RFT Corporate Target'
+		dataType: string
+		lineageTag: db851169-a3bf-4516-ab00-e55b4690e2ec
+		summarizeBy: none
+		sourceColumn: RFT Corporate Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RFT: Total # of Batches with Deviations'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5ee7421d-46d5-4d68-9ad9-a270dd822945
+		summarizeBy: sum
+		sourceColumn: RFT: Total # of Batches with Deviations
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RFT: Total # of Finished Goods Batches'
+		dataType: int64
+		formatString: 0
+		lineageTag: f6fce107-5334-4ad3-9ab4-206efc8f4bc4
+		summarizeBy: sum
+		sourceColumn: RFT: Total # of Finished Goods Batches
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period_Num = RIGHT(Fact_Quality[Period],2)
+		lineageTag: 2ee49c69-9e92-4515-8dbb-7b13f09296c4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearPeriod = Fact_Quality[Year]&Fact_Quality[Period_Num]
+		lineageTag: 9755a839-bb3c-4cf0-8074-ca6b65bf390a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Closing Date' = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Quality[YearPeriod])
+		formatString: General Date
+		lineageTag: de9c59aa-a998-4e71-ba49-55e22dacf009
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Deviations Target' =
+			
+			Var kpi_ = VALUE(
+			    SUBSTITUTE(
+			        SUBSTITUTE([Deviation Corporate Target], ">=", ""),
+			        "%", ""
+			    )
+			)
+			Return DIVIDE(kpi_,100)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 03bec63e-c62c-4a51-af27-e4011a901bdc
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CAPA Target' =
+			
+			Var kpi_ = VALUE(
+			    SUBSTITUTE(
+			        SUBSTITUTE([CAPA Corporate Target], ">=", ""),
+			        "%", ""
+			    )
+			)
+			Return DIVIDE(kpi_,100)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: cbbe5cf9-f4f6-436d-ba00-a9b09f7fb903
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RFT Target' =
+			
+			Var kpi_ = VALUE(
+			    SUBSTITUTE(
+			        SUBSTITUTE([RFT Corporate Target], ">=", ""),
+			        "%", ""
+			    )
+			)
+			Return DIVIDE(kpi_,100)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 7f46bd38-bc9f-4a19-8943-021630279ef5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Quality = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_Quality = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Quality%20Metrics%20and%20Dashboards", "Supply Chain Table", [Implementation="2.0", Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Supply Chain Table'[Year],#(lf)    'Supply Chain Table'[Site],#(lf)    'Supply Chain Table'[Quarter YYQ],#(lf)    'Supply Chain Table'[Period FY],#(lf)    'Supply Chain Table'[Period],#(lf)    'Supply Chain Table'[CAPA Completion Rate %],#(lf)    'Supply Chain Table'[CAPA: Total Closed In Period],#(lf)    'Supply Chain Table'[CAPA: Total Closed on Time in Period],#(lf)    'Supply Chain Table'[CAPA Corporate Target],#(lf)    'Supply Chain Table'[Deviation Corporate Target],#(lf)    'Supply Chain Table'[Deviation On Time Closure %],#(lf)    'Supply Chain Table'[Deviation: Total Closed in Period],#(lf)    'Supply Chain Table'[Deviation: Total Closed on Time in Period],#(lf)    'Supply Chain Table'[External Audits: Critical Findings],#(lf)    'Supply Chain Table'[External Audits: Major Findings],#(lf)    'Supply Chain Table'[RFT %],#(lf)    'Supply Chain Table'[RFT Corporate Target],#(lf)    'Supply Chain Table'[RFT: Total # of Batches with Deviations],#(lf)    'Supply Chain Table'[RFT: Total # of Finished Goods Batches]#(lf))#(lf)ORDER BY #(lf)    'Supply Chain Table'[Year] ASC,#(lf)    'Supply Chain Table'[Site] ASC,#(lf)    'Supply Chain Table'[Quarter YYQ] ASC,#(lf)    'Supply Chain Table'[Period FY] ASC,#(lf)    'Supply Chain Table'[Period] ASC,#(lf)    'Supply Chain Table'[CAPA Completion Rate %] ASC,#(lf)    'Supply Chain Table'[CAPA: Total Closed In Period] ASC,#(lf)    'Supply Chain Table'[CAPA: Total Closed on Time in Period] ASC,#(lf)    'Supply Chain Table'[CAPA Corporate Target] ASC,#(lf)    'Supply Chain Table'[Deviation Corporate Target] ASC,#(lf)    'Supply Chain Table'[Deviation On Time Closure %] ASC,#(lf)    'Supply Chain Table'[Deviation: Total Closed in Period] ASC,#(lf)    'Supply Chain Table'[Deviation: Total Closed on Time in Period] ASC,#(lf)    'Supply Chain Table'[External Audits: Critical Findings] ASC,#(lf)    'Supply Chain Table'[External Audits: Major Findings] ASC,#(lf)    'Supply Chain Table'[RFT %] ASC,#(lf)    'Supply Chain Table'[RFT Corporate Target] ASC,#(lf)    'Supply Chain Table'[RFT: Total # of Batches with Deviations] ASC,#(lf)    'Supply Chain Table'[RFT: Total # of Finished Goods Batches] ASC#(lf)/* END QUERY BUILDER */"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Quality,{{"Supply Chain Table[Year]", "Year"}, {"Supply Chain Table[Site]", "Site"}, {"Supply Chain Table[Quarter YYQ]", "Quarter YYQ"}, {"Supply Chain Table[Period FY]", "Period FY"}, {"Supply Chain Table[Period]", "Period"}, {"Supply Chain Table[CAPA Completion Rate %]", "CAPA Completion Rate %"}, {"Supply Chain Table[CAPA: Total Closed In Period]", "CAPA: Total Closed In Period"}, {"Supply Chain Table[CAPA: Total Closed on Time in Period]", "CAPA: Total Closed on Time in Period"}, {"Supply Chain Table[CAPA Corporate Target]", "CAPA Corporate Target"}, {"Supply Chain Table[Deviation Corporate Target]", "Deviation Corporate Target"}, {"Supply Chain Table[Deviation On Time Closure %]", "Deviation On Time Closure %"}, {"Supply Chain Table[Deviation: Total Closed in Period]", "Deviation: Total Closed in Period"}, {"Supply Chain Table[Deviation: Total Closed on Time in Period]", "Deviation: Total Closed on Time in Period"}, {"Supply Chain Table[External Audits: Critical Findings]", "External Audits: Critical Findings"}, {"Supply Chain Table[External Audits: Major Findings]", "External Audits: Major Findings"}, {"Supply Chain Table[RFT %]", "RFT %"}, {"Supply Chain Table[RFT Corporate Target]", "RFT Corporate Target"}, {"Supply Chain Table[RFT: Total # of Batches with Deviations]", "RFT: Total # of Batches with Deviations"}, {"Supply Chain Table[RFT: Total # of Finished Goods Batches]", "RFT: Total # of Finished Goods Batches"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

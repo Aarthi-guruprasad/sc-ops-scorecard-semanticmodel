@@ -1,0 +1,59 @@
+table Fact_OEE_Baseline
+	lineageTag: 1432526c-5efa-4289-af1e-a33e06ebc7c6
+
+	column 'Site Name'
+		dataType: string
+		lineageTag: 0e7a5991-8d67-4e6f-83e9-7d8cf23948bc
+		summarizeBy: none
+		sourceColumn: Site Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Location Name'
+		dataType: string
+		lineageTag: a5589766-c61e-4e1e-9c2f-5abcd01dd4ae
+		summarizeBy: none
+		sourceColumn: Location Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Focus Lines'
+		dataType: string
+		lineageTag: 16ff566b-2cc2-414b-85aa-4077d956c478
+		summarizeBy: none
+		sourceColumn: Focus Lines
+
+		annotation SummarizationSetBy = Automatic
+
+	column '_OEE Baseline'
+		dataType: double
+		lineageTag: 35721eba-0e82-4e22-b92b-e178c41d0669
+		summarizeBy: sum
+		sourceColumn: _OEE Baseline
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Location UUID'
+		dataType: string
+		lineageTag: 4282e968-165e-4959-a357-1d2b14397562
+		summarizeBy: none
+		sourceColumn: Location UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_OEE_Baseline = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_OEE = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Redzone", "Redzone Engineering Dataset", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Fact Baselines'[Site Name],#(lf)    'Fact Baselines'[Location Name],#(lf)    'Fact Baselines'[Location UUID],#(lf)    'Fact Baselines'[Focus Lines],#(lf)    'Fact Baselines'[_OEE Baseline]#(lf))#(lf)ORDER BY #(lf)    'Fact Baselines'[Site Name] ASC,#(lf)    'Fact Baselines'[Location Name] ASC,#(lf)    'Fact Baselines'[Location UUID] ASC,#(lf)    'Fact Baselines'[Focus Lines] ASC,#(lf)    'Fact Baselines'[_OEE Baseline] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns1" = Table.RenameColumns(Fact_OEE,{{"Fact Baselines[Site Name]", "Site Name"}, {"Fact Baselines[Location Name]", "Location Name"}, {"Fact Baselines[Focus Lines]", "Focus Lines"}, {"Fact Baselines[_OEE Baseline]", "_OEE Baseline"}, {"Fact Baselines[Location UUID]", "Location UUID"}})
+				in
+				    #"Renamed Columns1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

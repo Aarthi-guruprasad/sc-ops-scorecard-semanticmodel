@@ -1,0 +1,61 @@
+table D_PMI_PRODUCT_CV
+	lineageTag: eefe8799-eadd-4b0b-94c2-b2e7b89d7cca
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: fdce2698-ce63-4360-ad6a-78d82f2d15c6
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream Text'
+		dataType: string
+		lineageTag: 34c8cb86-50af-44e2-b26e-146c3e0552ac
+		summarizeBy: none
+		sourceColumn: Value Stream Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream_Jamie' = COALESCE(LOOKUPVALUE('Value Stream Mapping'[Jamie Recommended Name],'Value Stream Mapping'[Value Stream],D_PMI_PRODUCT_CV[Value Stream Text]),D_PMI_PRODUCT_CV[Value Stream Text])
+		lineageTag: 7d56ec72-c7be-4ad8-a4f2-27bb6fba0270
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number'
+		dataType: string
+		lineageTag: 01f7e8a3-2a53-483d-b26d-2f4cdf3b55b5
+		summarizeBy: none
+		sourceColumn: Global Product Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Description'
+		dataType: string
+		lineageTag: 251ab49a-f384-4699-8873-19b81525a180
+		summarizeBy: none
+		sourceColumn: Global Product Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_PMI_PRODUCT_CV = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"d7d0b53b-e57b-4b17-8774-98af6cfbc263" = Workspaces{[workspaceId="d7d0b53b-e57b-4b17-8774-98af6cfbc263"]}[Data],
+				    #"92ed598a-f36c-4a06-bb15-80c85606c7a9" = #"d7d0b53b-e57b-4b17-8774-98af6cfbc263"{[dataflowId="92ed598a-f36c-4a06-bb15-80c85606c7a9"]}[Data],
+				    D_PMI_PRODUCT_CV_ = #"92ed598a-f36c-4a06-bb15-80c85606c7a9"{[entity="D_PMI_PRODUCT_CV",version=""]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(D_PMI_PRODUCT_CV_,{"ANDA Item", "Authorization Group", "Base Unit of Measure", "Batch management requirement indicator", "Brand", "Business Group PMI", "CAD Indicator", "Care Codes (such as Washing Code, Ironing Code, etc.)", "Catalog Profile", "Category of International Article Number (EAN)", "Category Planner", "Characteristic Value for Colors of Variants", "Characteristic Value for Evaluation Purposes", "Characteristic Value for Main Sizes of Variants", "Characteristic Value for Second Size for Variants", "Client", "Competitor", "Configurable Material", "Container requirements", "Content unit", "Created On", "Creation Status - Seasonal Procurement", "Cross-distribution-chain material status", "Cross-Plant Configurable Material", "Cross-Plant Material Status", "Customer Material Info Number", "CUSTOMER PART DESCRIPTION", "CUSTOMER PART NUMBER", "Date from which the cross-plant material status is valid", "Date from which the X-distr.-chain material status is valid", "Date of Last Change", "Deactivated", "Deletion date", "Division", "Document change number (without document management system)", "Document number (without document management system)", "Document type (without Document Management system)", "Document version (without Document Management system)", "Empties Bill of Material", "European Article Number (EAN) - obsolete!!!!!", "External Material Group", "Fashion Grade", "FFF class", "Fiber Code for Textiles (Component 1)", "Fiber Code for Textiles (Component 2)", "Fiber Code for Textiles (Component 3)", "Fiber Code for Textiles (Component 4)", "Fiber Code for Textiles (Component 5)", "Flag Material for Deletion at Client Level", "Formula PMI", "Hazardous material number", "Indicator: Material can be co-product", "Indicator: The material has a follow-up material", "Industry sector", "Internal Char. Number for Characteristics for Main Sizes", "Internal Char. Number for Characteristics for Second Sizes", "Internal Charactieristic Number for Color Characteristics", "International Article Number (EAN/UPC)", "IS-R Labeling: material grouping (deactivated in 4.0)", "Label form", "Label type", "Laboratory/design office", "Low-Level Code", "Maintenance status", "Maintenance status of complete material", "Material Category", "Material description in upper case for matchcodes", "Material Group: Packaging Materials", "Material Number of the Generic Material in Prepack Materials", "Name of Person Who Changed Object", "Name of Person who Created the Object", "NDC Code", "NBE Code", "Not shelf Life Relevant Checkbox", "Number of sheets (without Document Management system)", "Override Part Number", "Packaging Certificaiton Number", "Packaging Code", "Packaging Material Type", "Page format of document (without Document Management system)", "Page number of document (without Document Management system)", "PDT Group PMI", "Percentage Share of Fiber (Component 1)", "Percentage Share of Fiber (Component 2)", "Percentage Share of Fiber (Component 3)", "Percentage Share of Fiber (Component 4)", "Percentage Share of Fiber (Component 5)", "PMI_MAJOR_OLD", "PMI_MATNR_ADJ", "PMI_MINOR_OLD", "PMI_PRDHA_L2", "PMI_PRDHA_L3", "Price Band Category", "Pricing Reference Material", "Procurement rule", "Product EDSC", "Product hierarchy", "Purchase Order Unit of Measure", "Purchasing Value Key", "QM in Procurement is Active", "Revision Level Has Been Assigned to the Material", "Sales BOM Indicator", "Sales Summary ID", "Season Category", "Season Year", "Source of Supply", "Stock Transfer Net Change Costing", "Storage conditions", "Supersession chain number", "Tax classification of the material", "Temperature conditions indicator", "Transportation Group", "Unit of Dimension for Length/Width/Height", "Unit of weight (allowed packaging weight)", "Valid-From Date", "Variable Purchase Order Unit Active", "Volume Multiplier", "Volume unit", "Volume unit (allowed packaging volume)", "Weight Type", "Weight Unit", "Allowed packaging volume", "Allowed packaging weight", "Comparison price unit", "Excess Volume Tolerance of the Handling Unit", "Excess Weight Tolerance for Handling unit", "Gross Weight", "Height", "Length", "Maximum level (by volume)", "Maximum Packing Length of Packaging Material", "Maximum Packing Width of Packaging Material", "Minimum Remaining Shelf Life", "Net contents", "Net Weight", "Quantity: Number of GR/GI slips to be printed", "Stacking factor", "Storage percentage", "Total shelf life", "Volume", "Width", "Global Product Hierarchy (GlPrdHier)", "GlPrdHier L1 - Global Category", "MINOR_SUB_4Digit_Key", "Minor_Sub_Description", "IBP Formula", "IBP Formula Description", "IBP 5 Digit", "Minor_Description", "MINOR_2Digit_Key", "Product Category", "Customer Label Code Value Text", "Customer Label Code Value", "Sales Unit", "Size Code", "Packaging Formula Description", "Packaging Formula ID", "GlPrdHier L6 - PDT Group Description", "GlPrdHier L6 - PDT Group - Short", "GlPrdHier L5 - Sub Segment Description", "GlPrdHier L5 - Sub Segment - Short", "GlPrdHier L5 - Sub Segment - Long", "GlPrdHier L4 - Segment Description", "GlPrdHier L4 - Segment - Short", "GlPrdHier L4 - Segment - Long", "GlPrdHier L3 - Brand Description", "GlPrdHier L3 - Brand - Short", "GlPrdHier L3 - Brand - Long", "GlPrdHier L2 - Local Category Description", "GlPrdHier L2 - Local Category - Short", "GlPrdHier L2 - Local Category - Long", "GlPrdHier L1 - Global Category Description", "Super Value Stream", "Old material number", "Material Number", "Material Description (Short Text)", "Material Group", "Material Type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Columns"),
+				    #"Removed Duplicates1" = Table.Distinct(#"Removed Duplicates", {"Global Product Number"}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Removed Duplicates1", {"Global Product Number"})
+				in
+				    #"Removed Errors"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

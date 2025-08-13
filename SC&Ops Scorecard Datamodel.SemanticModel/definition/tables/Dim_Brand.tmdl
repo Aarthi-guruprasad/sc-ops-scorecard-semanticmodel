@@ -1,0 +1,97 @@
+table Dim_Brand
+	lineageTag: 938fadbd-9a2b-4aaa-97e3-aadfa8670188
+
+	column 'Brand ID'
+		dataType: string
+		lineageTag: 328fc1db-3671-4835-82b2-3f7de12268ec
+		summarizeBy: none
+		sourceColumn: Brand ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Descr'
+		dataType: string
+		lineageTag: 320a1370-c362-4d6c-a7b6-5ca758034d82
+		summarizeBy: none
+		sourceColumn: Brand Descr
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand ID // Descr'
+		dataType: string
+		lineageTag: 65a8f924-c094-460a-809f-45b351cb22bb
+		summarizeBy: none
+		sourceColumn: Brand ID // Descr
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Group Text'
+		dataType: string
+		lineageTag: 25e68d31-28a9-487c-812e-dd1a96a4db3a
+		summarizeBy: none
+		sourceColumn: Brand Group Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Local Category Text'
+		dataType: string
+		lineageTag: 8ca1cd42-8139-4605-80dc-5643dfb2449f
+		summarizeBy: none
+		sourceColumn: Local Category Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Category Text'
+		dataType: string
+		lineageTag: f1904409-7ad8-40c0-aa5f-30d3ccab515e
+		summarizeBy: none
+		sourceColumn: Global Category Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'HRA /Perrigo'
+		dataType: string
+		lineageTag: 90cc172f-dab6-4a97-820e-1ca9c9273df1
+		summarizeBy: none
+		sourceColumn: HRA /Perrigo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tier
+		dataType: string
+		lineageTag: 56b9df7c-29de-435c-92f0-aad7e56d21e8
+		summarizeBy: none
+		sourceColumn: Tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Type'
+		dataType: string
+		lineageTag: 4f04cf84-9fff-4d0c-969f-c7f7e8f8225a
+		summarizeBy: none
+		sourceColumn: Brand Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: 42b0ebf5-b8c6-4a01-b0d4-79b3159ba99c
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Brand = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"c5da013e-9820-4ab4-8ee2-106ba3a7da75" = Workspaces{[workspaceId="c5da013e-9820-4ab4-8ee2-106ba3a7da75"]}[Data],
+				    #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e" = #"c5da013e-9820-4ab4-8ee2-106ba3a7da75"{[dataflowId="4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"]}[Data],
+				    Dim_Brand_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_Brand",version=""]}[Data]
+				in
+				    Dim_Brand_
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,216 @@
+table Dim_Date
+	lineageTag: 65a1632f-33aa-4443-9884-310ff6ee41d6
+
+	column Date
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 4c85adfd-c4b2-4318-8f27-8cc54f592f58
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column P_YearQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 52c0a7e1-529b-41ae-9618-e0a1bafe1b58
+		summarizeBy: sum
+		sourceColumn: P_YearQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 08566db0-b6ab-462d-8721-64d789cd2e54
+		summarizeBy: sum
+		sourceColumn: P_YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_Year
+		dataType: int64
+		formatString: 0
+		lineageTag: bcd7b381-bd6c-4c66-a091-18cc33fae21a
+		summarizeBy: sum
+		sourceColumn: P_Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_Quarter
+		dataType: string
+		lineageTag: 028dc184-bc16-4cb7-971e-5c634608f038
+		summarizeBy: none
+		sourceColumn: P_Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_Closing Period Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 49bfd80d-afd6-49c5-900c-9669789eaba8
+		summarizeBy: none
+		sourceColumn: P_Closing Period Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column P_YearPeriod_Slicer
+		dataType: string
+		lineageTag: 828d47e1-0d73-414f-8609-cce1c90118d5
+		summarizeBy: none
+		sourceColumn: P_YearPeriod_Slicer
+		sortByColumn: P_YearMonth
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period = TRIM(LEFT(Dim_Date[P_YearPeriod],3))
+		dataType: string
+		lineageTag: cf9ff67e-1c8e-4eff-96aa-d07b7f2beb9f
+		summarizeBy: none
+
+		changedProperty = SortByColumn
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearPeriodSeq = RANKX(Dim_Date,Dim_Date[P_YearMonth],,ASC,Dense)
+		formatString: 0
+		lineageTag: a77ebcdf-5da0-4804-868a-02fd104fba3d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_MonthFull
+		dataType: int64
+		formatString: 0
+		lineageTag: 59dda4e7-6377-4a8a-97e6-f2f86d9c4531
+		summarizeBy: sum
+		sourceColumn: P_MonthFull
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_YearMonth Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 85b6e923-d2c6-4991-9863-bb9e884d52ab
+		summarizeBy: sum
+		sourceColumn: P_YearMonth Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearPeriod
+		dataType: string
+		lineageTag: 99393a40-53d3-40f8-8f77-9cdaf696defb
+		summarizeBy: none
+		sourceColumn: P_YearPeriod
+		sortByColumn: 'P_YearMonth Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_QuarterNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c8b13d0-88b3-424c-90fa-88a53dca6d72
+		summarizeBy: sum
+		sourceColumn: P_QuarterNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_QuarterYear
+		dataType: string
+		lineageTag: af299134-b894-4519-8c30-c1b2e69f9dc7
+		summarizeBy: none
+		sourceColumn: P_QuarterYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_MonthShortName
+		dataType: string
+		lineageTag: f8ba5290-9277-4684-9671-4c0d67ad914b
+		summarizeBy: none
+		sourceColumn: P_MonthShortName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Closed'
+		dataType: string
+		lineageTag: 1223a781-8f36-4d1c-962b-087b56575ec4
+		summarizeBy: none
+		sourceColumn: Is Closed
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsL13M
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ab08919a-1471-4776-8e8c-8a8a3f0f6f20
+		summarizeBy: none
+		sourceColumn: IsL13M
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsL12M
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 68882cd8-cdb9-46fd-87c4-aa3711b2cda2
+		summarizeBy: none
+		sourceColumn: IsL12M
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_YearPeriod Seq'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a45dd34-9557-4bc0-a366-124440fcbd58
+		summarizeBy: sum
+		sourceColumn: P_YearPeriod Seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_DateKey_Monthly
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f611fd6b-8294-4f8e-a210-47c0a7c3148d
+		summarizeBy: none
+		sourceColumn: P_DateKey_Monthly
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+				    Source = DF_MasterData_Global,
+				    Dim_Date_ = Source{[entity="Dim_Date",version=""]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(Dim_Date_,{"Date", "P_Closing Period Date", "P_MonthFull", "P_Year", "P_YearMonth", "P_YearMonth Number", "P_YearPeriod", "P_QuarterNumber", "P_Quarter", "P_YearQuarter", "P_QuarterYear", "P_MonthShortName"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [P_YearMonth] <= CurrentFiscalPeriod and [P_YearMonth] >= FirstFiscalPeriod),
+				    #"Added YearPeriod Slicer value" = Table.AddColumn(#"Filtered Rows", "P_YearPeriod_Slicer", each if [P_YearMonth] <> CurrentFiscalPeriod then [P_YearPeriod] else "Current Period", type text),
+				    #"Added Is Closed indicator" = Table.AddColumn(#"Added YearPeriod Slicer value", "Is Closed", each [P_YearMonth] <= Parameter_LastClosedMonth, type logical),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Is Closed indicator",{{"P_MonthFull", Int64.Type}}),
+				    #"Added IsL13M indicator" = Table.AddColumn(#"Changed Type", "IsL13M", each [P_YearMonth Number] >= CurrentFiscalPeriod_Num-12 and [P_YearMonth Number] <= CurrentFiscalPeriod_Num, type logical),
+				    #"Added IsL11M Indicator" = Table.AddColumn(#"Added IsL13M indicator", "IsL12M", each [P_YearMonth Number] >= CurrentFiscalPeriod_Num-11 and [P_YearMonth Number] <= CurrentFiscalPeriod_Num, type logical),
+				    #"Merged Queries" = Table.NestedJoin(#"Added IsL11M Indicator", {"P_YearPeriod"}, Dim_Date_Sequence_P_YearPeriod, {"P_YearPeriod"}, "Dim_Date_Sequence_P_YearPeriod", JoinKind.LeftOuter),
+				    #"Expanded Dim_Date_Sequence_P_YearPeriod" = Table.ExpandTableColumn(#"Merged Queries", "Dim_Date_Sequence_P_YearPeriod", {"P_YearPeriod Seq"}, {"Dim_Date_Sequence_P_YearPeriod.P_YearPeriod Seq"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Dim_Date_Sequence_P_YearPeriod",{{"Dim_Date_Sequence_P_YearPeriod.P_YearPeriod Seq", "P_YearPeriod Seq"}}),
+				    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "P_DateKey_Monthly", each #date([P_Year],[P_MonthFull],1)),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Is Closed", type text}, {"P_DateKey_Monthly", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

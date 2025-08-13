@@ -1,0 +1,25 @@
+table Site_Quality
+	lineageTag: 838dbf64-a5c6-4ab5-8b38-2cd4805dd58e
+
+	column Site
+		dataType: string
+		lineageTag: 474994c4-99c8-4e87-b071-2d120bdfc495
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Site_Quality = m
+		mode: import
+		source =
+				let
+				    Fact_Quality = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Quality%20Metrics%20and%20Dashboards", "Supply Chain Table", [Implementation="2.0", Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Supply Chain Table'[Year],#(lf)    'Supply Chain Table'[Site],#(lf)    'Supply Chain Table'[Quarter YYQ],#(lf)    'Supply Chain Table'[Period FY],#(lf)    'Supply Chain Table'[Period],#(lf)    'Supply Chain Table'[CAPA Completion Rate %],#(lf)    'Supply Chain Table'[CAPA: Total Closed In Period],#(lf)    'Supply Chain Table'[CAPA: Total Closed on Time in Period],#(lf)    'Supply Chain Table'[CAPA Corporate Target],#(lf)    'Supply Chain Table'[Deviation Corporate Target],#(lf)    'Supply Chain Table'[Deviation On Time Closure %],#(lf)    'Supply Chain Table'[Deviation: Total Closed in Period],#(lf)    'Supply Chain Table'[Deviation: Total Closed on Time in Period],#(lf)    'Supply Chain Table'[External Audits: Critical Findings],#(lf)    'Supply Chain Table'[External Audits: Major Findings],#(lf)    'Supply Chain Table'[RFT %],#(lf)    'Supply Chain Table'[RFT Corporate Target],#(lf)    'Supply Chain Table'[RFT: Total # of Batches with Deviations],#(lf)    'Supply Chain Table'[RFT: Total # of Finished Goods Batches]#(lf))#(lf)ORDER BY #(lf)    'Supply Chain Table'[Year] ASC,#(lf)    'Supply Chain Table'[Site] ASC,#(lf)    'Supply Chain Table'[Quarter YYQ] ASC,#(lf)    'Supply Chain Table'[Period FY] ASC,#(lf)    'Supply Chain Table'[Period] ASC,#(lf)    'Supply Chain Table'[CAPA Completion Rate %] ASC,#(lf)    'Supply Chain Table'[CAPA: Total Closed In Period] ASC,#(lf)    'Supply Chain Table'[CAPA: Total Closed on Time in Period] ASC,#(lf)    'Supply Chain Table'[CAPA Corporate Target] ASC,#(lf)    'Supply Chain Table'[Deviation Corporate Target] ASC,#(lf)    'Supply Chain Table'[Deviation On Time Closure %] ASC,#(lf)    'Supply Chain Table'[Deviation: Total Closed in Period] ASC,#(lf)    'Supply Chain Table'[Deviation: Total Closed on Time in Period] ASC,#(lf)    'Supply Chain Table'[External Audits: Critical Findings] ASC,#(lf)    'Supply Chain Table'[External Audits: Major Findings] ASC,#(lf)    'Supply Chain Table'[RFT %] ASC,#(lf)    'Supply Chain Table'[RFT Corporate Target] ASC,#(lf)    'Supply Chain Table'[RFT: Total # of Batches with Deviations] ASC,#(lf)    'Supply Chain Table'[RFT: Total # of Finished Goods Batches] ASC#(lf)/* END QUERY BUILDER */"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Quality,{{"Supply Chain Table[Year]", "Year"}, {"Supply Chain Table[Site]", "Site"}, {"Supply Chain Table[Quarter YYQ]", "Quarter YYQ"}, {"Supply Chain Table[Period FY]", "Period FY"}, {"Supply Chain Table[Period]", "Period"}, {"Supply Chain Table[CAPA Completion Rate %]", "CAPA Completion Rate %"}, {"Supply Chain Table[CAPA: Total Closed In Period]", "CAPA: Total Closed In Period"}, {"Supply Chain Table[CAPA: Total Closed on Time in Period]", "CAPA: Total Closed on Time in Period"}, {"Supply Chain Table[CAPA Corporate Target]", "CAPA Corporate Target"}, {"Supply Chain Table[Deviation Corporate Target]", "Deviation Corporate Target"}, {"Supply Chain Table[Deviation On Time Closure %]", "Deviation On Time Closure %"}, {"Supply Chain Table[Deviation: Total Closed in Period]", "Deviation: Total Closed in Period"}, {"Supply Chain Table[Deviation: Total Closed on Time in Period]", "Deviation: Total Closed on Time in Period"}, {"Supply Chain Table[External Audits: Critical Findings]", "External Audits: Critical Findings"}, {"Supply Chain Table[External Audits: Major Findings]", "External Audits: Major Findings"}, {"Supply Chain Table[RFT %]", "RFT %"}, {"Supply Chain Table[RFT Corporate Target]", "RFT Corporate Target"}, {"Supply Chain Table[RFT: Total # of Batches with Deviations]", "RFT: Total # of Batches with Deviations"}, {"Supply Chain Table[RFT: Total # of Finished Goods Batches]", "RFT: Total # of Finished Goods Batches"}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"Site"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
