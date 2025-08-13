@@ -1,0 +1,126 @@
+table Dim_Value_Stream
+	lineageTag: 69c4faf7-e2a0-43dd-9cec-fa61550b5ab6
+
+	column 'Global Product Description'
+		dataType: string
+		lineageTag: 47e79430-4c0a-4614-91cb-ffca350e0aa6
+		summarizeBy: none
+		sourceColumn: Global Product Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number'
+		dataType: string
+		lineageTag: 3b974518-7d1f-490e-ad60-c8f59fe89b3a
+		summarizeBy: none
+		sourceColumn: Global Product Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type'
+		dataType: string
+		lineageTag: ddeeebfa-45d4-476c-b5a0-97449a2d799e
+		summarizeBy: none
+		sourceColumn: Material Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type Description'
+		dataType: string
+		lineageTag: 3ba723b9-e64d-44a9-8c3a-b5acc5f2874e
+		summarizeBy: none
+		sourceColumn: Material Type Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: ac7beb27-d706-4cb1-9a93-ee1f8e259394
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream Description'
+		dataType: string
+		lineageTag: 7333fbf7-4003-48cb-b875-2704ea02d29b
+		summarizeBy: none
+		sourceColumn: Value Stream Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Super Value Stream'
+		dataType: string
+		lineageTag: 1c89f055-b493-4180-aa89-058a8bddb4b9
+		summarizeBy: none
+		sourceColumn: Super Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream_Jamie' = COALESCE(LOOKUPVALUE('Value Stream Mapping'[Jamie Recommended Name],'Value Stream Mapping'[Value Stream],Dim_Value_Stream[Value Stream Description]),Dim_Value_Stream[Value Stream Description])
+		lineageTag: 61b2141c-22d0-40c1-9e85-36ebd31db070
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Stream_Final = COALESCE(LOOKUPVALUE('Value Stream Mapping'[Value Stream Group],'Value Stream Mapping'[Value Stream],Dim_Value_Stream[Value Stream Description]),Dim_Value_Stream[Value Stream Description])
+		lineageTag: 2f74166c-5a4a-4be5-8a6c-60c2d260ed50
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number(PMI)'
+		dataType: string
+		lineageTag: a5f4ff26-dfee-436d-93ab-9fd2be9bdb79
+		summarizeBy: none
+		sourceColumn: Material Number(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number Adj(PMI)'
+		dataType: string
+		lineageTag: a15b8a07-4d84-4e02-b72a-dc9ec255c961
+		summarizeBy: none
+		sourceColumn: Material Number Adj(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsExternal = ```
+			
+			VAR Category = Dim_Value_Stream[Value Stream_Jamie]
+			RETURN
+			    IF(
+			        ISBLANK(Category),
+			        "NA",
+			        IF(
+			            CONTAINSSTRING(Category, "External") 
+			            || CONTAINSSTRING(Category, "MISC"),
+			            "Yes",
+			            "No"
+			        )
+			    )
+			```
+		lineageTag: 2dd06eae-946c-43e4-a2f1-aa637f1b9661
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Value_Stream = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"d7d0b53b-e57b-4b17-8774-98af6cfbc263" = Workspaces{[workspaceId="d7d0b53b-e57b-4b17-8774-98af6cfbc263"]}[Data],
+				    #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e" = #"d7d0b53b-e57b-4b17-8774-98af6cfbc263"{[dataflowId="1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"]}[Data],
+				    D_PRODUCT_TEXT_CV_ = #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"{[entity="D_PRODUCT_TEXT_CV",version=""]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(D_PRODUCT_TEXT_CV_,{"Brand/Cost Center", "Customer Label", "Customer Label Description", "Sales Summary ID - GROES", "CNK Number", "Graphic License", "Label Code", "Label Code 1", "Product Hierarchy(BCS)", "Product Hierarchy(PMI)", "Shared Capacity Description", "Shared Capacity Value", "Base Unit of Measure", "Case UPC Number", "Client", "Customer Material Info Number", "Customer Part Description", "Customer Part Number", "Delivering Plant", "GlPrdHier L1 - Global Category Description", "GlPrdHier L2 - Local Category Description", "GlPrdHier L3 - Brand Description", "GlPrdHier L4 - Segment Description", "GlPrdHier L5 - Sub Segment Description", "Distribution-Chain-Specific Material Status", "Each UPC Number", "FDA Code", "Marketing Authorization Number(MAN)", "Material Pricing Group", "Minor", "Minor Description", "Minor Sub", "Minor Sub Description", "NBE Code", "NDC Code", "Pallet Pattern", "Global Product Hierarchy (GlPrdHier)", "GlPrdHier L1 - Global Category", "GlPrdHier L2 - Local Category - Long", "GlPrdHier L3 - Brand - Long", "GlPrdHier L4 - Segment - Long", "GlPrdHier L5 - Sub Segment - Long", "Sales Summary ID - ZPCATNO", "Size Code", "Volume Unit", "Volume", "X - Plant Material status", "Packaging Option", "Packaging Option Text", "Product ID", "Product Category Value", "Product Category Value Text", "Category Planner", "DESC", "Sales BoM Indicator", "Volume Multiplier", "GlPrdHier L6 - PDT Group Description", "GlPrdHier L6 - PDT Group - Short", "Sales Unit", "GlPrdHier L2 - Local Category - Short", "GlPrdHier L3 - Brand - Short", "GlPrdHier L4 - Segment - Short", "GlPrdHier L5 - Sub Segment - Short", "5 Digit", "Formula", "Formula Description", "EAN/UPC", "Material Description (Short Text)", "Material Determination EDI Number", "Material Group", "Material Number Adj(BCS)", "Material Number Adj(Other)", "Material Number(BCS)", "Material Number(Other)", "PMI Old Material Number", "Old Material Number 1", "Old Material Number", "Old Material Type"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Columns", each true),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

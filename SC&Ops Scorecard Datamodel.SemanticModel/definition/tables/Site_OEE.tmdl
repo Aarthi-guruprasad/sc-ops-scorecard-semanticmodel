@@ -1,0 +1,29 @@
+table Site_OEE
+	lineageTag: 6f435b49-21bc-41fd-aab4-7e1dff8d223f
+
+	column Site
+		dataType: string
+		lineageTag: 20d7772d-7686-4218-b5ac-5ccac0cdff02
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Site_OEE = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"f4665093-da49-4ee7-81e6-a4c4d63c0af5" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="f4665093-da49-4ee7-81e6-a4c4d63c0af5"]}[Data],
+				    #"Dim Sites_" = #"f4665093-da49-4ee7-81e6-a4c4d63c0af5"{[entity="Dim Sites",version=""]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Dim Sites_",{"Site UUID", "Region"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Site Name", "Site"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

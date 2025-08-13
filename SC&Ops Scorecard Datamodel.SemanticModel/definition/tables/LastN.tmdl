@@ -1,0 +1,44 @@
+table LastN
+	lineageTag: a8707003-8dd5-44d5-9acb-33d7ae07b405
+
+	measure 'LastN Value' = SELECTEDVALUE('LastN'[LastN], 6)
+		formatString: 0
+		lineageTag: 419e273a-e00f-4562-991d-07348e2b5cc1
+
+	measure LastN_Periods = ```
+			
+			VAR CurrentSeq = CALCULATE(MAX(Dim_Date[YearPeriodSeq])-1, ALL(Dim_Date))
+			VAR SelectedN = COALESCE(SELECTEDVALUE(LastN[LastN]), 6)
+			VAR MinSeq = CurrentSeq - SelectedN + 1
+			
+			RETURN
+			IF (
+			    MAX(Dim_Date[YearPeriodSeq]) >= MinSeq &&
+			    MAX(Dim_Date[YearPeriodSeq]) <= CurrentSeq,
+			    1,
+			    0
+			)
+			
+			```
+		formatString: 0
+		lineageTag: d0657b9f-ed97-46e6-a342-bc633bf9610f
+
+	column LastN
+		formatString: 0
+		lineageTag: 95fbbda6-b463-4b03-88b9-221e01a56781
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition LastN = calculated
+		mode: import
+		source = GENERATESERIES(1, 18, 1)
+
+	annotation PBI_Id = a2a5046853b8467bb4ad7cad432b63e3
+

@@ -1,0 +1,887 @@
+table 'Table Waterfall'
+	lineageTag: 03749629-e418-40f4-acd7-96e1c53443df
+
+	measure Waterfall = ```
+			SWITCH(SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+			    
+			    "SSSO: Salvage & Obs", [Waterfall SSSO: Salvage & Obsolescence],
+			    "SSSO: Obs linked to Conv", [Waterfall SSSO: Obs linked to Conv],
+			    "SSSO: Shrinkage", [Waterfall SSSO: Shrinkage],
+			    "SSSO: Scrap-Off", [Waterfall SSSO: Scrap-Off],
+			    "Net Sales", [Waterfall Net Sales],
+			    "COGS", [Waterfall COGS],
+			    "% Logistics vs Net Sales", [Waterfall Logistics],
+			    "Distribution to COGS", [Waterfall Distribution],
+			    "Operating Income", [Waterfall Operating Income],
+			    "Gross PPV", [Waterfall Gross PPV],
+			    "Customer Fines", [Waterfall Customer Fines],
+			    "Net POV",[Waterfall Net POV],
+			    "ABP Variance",[Waterfall ABP Variance]
+			    
+			)
+			```
+		lineageTag: 8a0f3e0c-74e8-44bb-9abe-0669c316af5b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall COGS' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [COGS Actual]
+			VAR NetSalesLY = [COGS Actual PY]
+			VAR NetSalesPlan = [COGS_APN_Base]
+			VAR Difference_LY = [COGS Actual]-[COGS Actual PY]
+			VAR Difference_Plan = [COGS Actual]- [COGS_APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: a6b64f1e-4353-4bd7-8187-2378f33cf394
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Gross Inventory' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Gross Inventory], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Gross Inventory]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Gross Inventory MoM]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: 2019f546-92ea-4959-b446-d80e195e9641
+
+	measure 'Gross Inventory MoM' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Gross Inventory],filter_)
+			VAR Result = [Gross Inventory] - Net_PM
+			RETURN
+			Result
+		lineageTag: 0c1aebcc-68e9-49bc-a3d4-80f9bf238743
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Net Inventory' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Net Inventory], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Net Inventory]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Net Inventory MoM]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: 75662311-8816-4395-8767-f9ec17766f1a
+
+	measure 'Waterfall Net Sales' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Net Sales Actual]
+			VAR NetSalesLY = [Net Sales Actual PY]
+			VAR NetSalesPlan = [Net Sales Plan]
+			VAR Difference_LY = [Net Sales Actual]-[Net Sales Actual PY]
+			VAR Difference_Plan = [Net Sales Actual]- [Net Sales Plan]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 2ad8c5dc-d45c-4006-ae4f-e01d2ece850d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Working Capital' = ```
+			SWITCH(SELECTEDVALUE(Working_Capital_Parameter[Parameter Name]),
+			    
+			    "Gross Inventory",[Waterfall Gross Inventory],
+			    "Net Inventory",[Waterfall Net Inventory],
+			    "Inflated Inventory",[Waterfall Inflated Inventory],
+			    "Expired Inventory", [Waterfall Expired Inventory],
+			    "DSO", [Waterfall DSO],
+			    "DPO", [Waterfall DPO],
+			    "DIO", [Waterfall DIO]
+			)
+			```
+		lineageTag: 60ae7e5d-6542-4e2c-b6df-4fab0360ae6e
+
+	measure 'Net Inventory MoM' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Net Inventory],filter_)
+			VAR Result = [Net Inventory] - Net_PM
+			RETURN
+			Result
+		lineageTag: 236c31d0-9e97-4e8e-a229-04b1d9f8d502
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall DIO' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( 'Other_Last Closed Month'[Date]  ))
+			VAR CurrentYear = YEAR( MAX( 'Other_Last Closed Month'[Date]))
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			var compare_date =  selectedvalue('Table Waterfall'[SortOrder])
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [DIO],filter(all(Dim_Date), Dim_Date[P_DateKey_Monthly] = startdate ) )
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [DIO]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , 
+			    compare_date> startdate && compare_date <= enddate,
+			    CALCULATE( [DIO MoM]
+			                            , FILTER(
+			    ALL(Dim_Date),
+			    Dim_Date[P_DateKey_Monthly] > startdate && 
+			    Dim_Date[P_DateKey_Monthly] <= enddate && Dim_Date[Is Closed] = "TRUE"
+			)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			RETURN
+			Result
+			```
+		lineageTag: 74fffe4a-5460-4891-8c6b-a5eff712228c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall DPO' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( 'Other_Last Closed Month'[Date]  ))
+			VAR CurrentYear = YEAR( MAX( 'Other_Last Closed Month'[Date]))
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			var compare_date =  selectedvalue('Table Waterfall'[SortOrder])
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [DPO],filter(all(Dim_Date), Dim_Date[P_DateKey_Monthly] = startdate ) )
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [DPO]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			    , 
+			    compare_date> startdate && compare_date <= enddate,
+			    CALCULATE( [DPO MoM]
+			                            , FILTER(
+			    ALL(Dim_Date),
+			    Dim_Date[P_DateKey_Monthly] > startdate && 
+			    Dim_Date[P_DateKey_Monthly] <= enddate && Dim_Date[Is Closed] = "TRUE"
+			)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			RETURN
+			Result
+			```
+		lineageTag: b89935cd-cca6-40c0-8e0a-10e163ae952a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall DSO' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( 'Other_Last Closed Month'[Date]  ))
+			VAR CurrentYear = YEAR( MAX( 'Other_Last Closed Month'[Date]))
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			var compare_date =  selectedvalue('Table Waterfall'[SortOrder])
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [DSO],filter(all(Dim_Date), Dim_Date[P_DateKey_Monthly] = startdate ) )
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [DSO]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , 
+			    compare_date> startdate && compare_date <= enddate,
+			    CALCULATE( [DSO MoM]
+			                            , FILTER(
+			    ALL(Dim_Date),
+			    Dim_Date[P_DateKey_Monthly] > startdate && 
+			    Dim_Date[P_DateKey_Monthly] <= enddate && Dim_Date[Is Closed] = "TRUE"
+			)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			RETURN
+			Result
+			```
+		lineageTag: 746b6db9-64f6-4cd4-bbd6-d2bf0ecc81ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Expired Inventory' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Expired Inventory], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Expired Inventory]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Expired Inventory MoM]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: b5262f86-628c-4092-9083-eb3c77a1a060
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Inflated Inventory' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [inflated inventory], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [inflated inventory]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [inflated inventory MoM]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: 327ed775-d4c5-4ee5-8f62-1fb15e3505bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall FA' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [FA%], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [FA%]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [FA% MoM%]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: ec17c740-0812-4156-ae21-567de9cb3c15
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Sales Parameter' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Switch Sales_Parameter], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Switch Sales_Parameter]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Switch Sales_Parameter MoM]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		formatString: " #,##0.00 %"
+		lineageTag: 3e923688-c688-4806-975f-f0237643077a
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure 'Waterfall OEE' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Switch Operations_Parameter], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Switch Operations_Parameter]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Switch Operations_Parameter MoM%]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: 4541d672-b42f-45da-b460-021905710ee1
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operations_Parameter[Parameter Name]),
+				    "CAPA Completion Rate%", "0.0%",
+				    "On Time Closure of Deviations%", "0.0%",
+				    "RFT%", "0.0%",
+				    "Critical or Major Observations", "#,0",
+				    "OEE%", "0.0%",
+				    "Schedule Attainment", "0.0%",
+				    "General"  --fallback
+				)
+
+	measure 'Waterfall Sales Parameter_CSCI' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Switch Sales_Parameter_CSCI], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Switch Sales_Parameter_CSCI]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE( [Switch Sales_Parameter MoM_CSCI]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 155fb600-516a-458c-aad0-67ebf1acf9ca
+
+	measure 'Waterfall % Logistics to NS' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Total Logistics on Net Sales Actual]
+			VAR NetSalesLY = [Total Logistics on Net Sales Actual PY]
+			VAR NetSalesPlan = [Total Logistics on Net Sales_APN_Base]
+			VAR Difference_LY = [Total Logistics on Net Sales Actual]-[Total Logistics on Net Sales Actual PY]
+			VAR Difference_Plan = [Total Logistics on Net Sales Actual]- [Total Logistics on Net Sales_APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 089223db-3fba-4142-add3-2ad5c1a72961
+
+	measure 'Waterfall Logistics' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Total Logistics Actual]
+			VAR NetSalesLY = [Total Logistics Actual PY]
+			VAR NetSalesPlan = [Total Logistics Plan]
+			VAR Difference_LY = [Total Logistics Actual]-[Total Logistics Actual PY]
+			VAR Difference_Plan = [Total Logistics Actual]- [Total Logistics Plan]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 8e2cfbad-c624-471d-b6ac-fac2a60a9d51
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall SSSO: Salvage & Obsolescence' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR SSSO = [SSSO: Salvage & Obsolescence]
+			VAR SSSOLY = [SSSO: Salvage & Obs PY]
+			VAR SSSOPlan =  [SSSO: Salvage & Obs_APN_Base]
+			VAR Difference_LY = [SSSO: Salvage & Obsolescence] - [SSSO: Salvage & Obs PY]
+			VAR Difference_Plan = [SSSO: Salvage & Obsolescence]- [SSSO: Salvage & Obs_APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", SSSO, if(compare="Plan", SSSOPlan, SSSOLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: ad579456-974c-401c-b543-aa6a260567d1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall SSSO: Obs linked to Conv' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR SSSO = [SSSO: Obsolescenes linked to Conversions]
+			VAR SSSOLY = [SSSO: Obs linked to Conv PY]
+			VAR SSSOPlan =  [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] + [SSSO Salvage_APN]
+			VAR Difference_LY = [SSSO: Obsolescenes linked to Conversions] - [SSSO: Obs linked to Conv PY]
+			VAR Difference_Plan = [SSSO: Obsolescenes linked to Conversions]- ([SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] + [SSSO Salvage_APN])
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", SSSO, if(compare="Plan", SSSOPlan, SSSOLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 818d22ab-c69e-44ee-82ab-0dde4dc470d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall SSSO: Scrap-Off' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR SSSO = [SSSO: Scrap-Off]
+			VAR SSSOLY = [SSSO: Scrap-Off PY]
+			VAR SSSOPlan =  [SSSO: Scrap-off APN_Base]
+			VAR Difference_LY = [SSSO: Scrap-Off]-[SSSO: Scrap-Off PY]
+			VAR Difference_Plan = [SSSO: Scrap-Off]- [SSSO: Scrap-off APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", SSSO, if(compare="Plan", SSSOPlan, SSSOLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 4a311e02-eaf9-4cbf-9c29-c8fc6f3a62c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall SSSO: Shrinkage' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR SSSO = [SSSO Shrinkage]
+			VAR SSSOLY = [SSSO: Shrinkage PY]
+			VAR SSSOPlan =   [SSSO: Shrinkage APN_Base]
+			VAR Difference_LY = [SSSO Shrinkage]-[SSSO: Shrinkage PY]
+			VAR Difference_Plan = [SSSO Shrinkage]-  [SSSO: Shrinkage APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", SSSO, if(compare="Plan", SSSOPlan, SSSOLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 98078e24-c139-4286-9d8f-0859a7b92c1a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Customer Fines' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Customer Fines]
+			VAR NetSalesLY = [Cust fine PY]
+			VAR NetSalesPlan = [Customer Fines Target]
+			VAR Difference_LY = [Customer Fines]-[Cust fine PY]
+			VAR Difference_Plan = [Customer Fines]- [Customer Fines Target]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Fact_Customer_Fines[ComplianceName] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 85bcc6a9-9acd-4254-8d2d-e03ef794a0bb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Operating Income' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Operating Income Actual]
+			VAR NetSalesLY = [Operating Income Actual PY]
+			VAR NetSalesPlan = [Operating Income APN_Base]
+			VAR Difference_LY = [Operating Income Actual]-[Operating Income Actual PY]
+			VAR Difference_Plan = [Operating Income Actual]- [Operating Income APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 9c2dec72-cb82-4b86-9a16-cda703ea529a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Gross PPV' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Gross PPV Actual]
+			VAR NetSalesLY = [Gross PPV Actual PY]
+			VAR NetSalesPlan = [Gross PPV APN_Base]
+			VAR Difference_LY = [Gross PPV Actual]-[Gross PPV Actual PY]
+			VAR Difference_Plan = [Gross PPV Actual]- [Gross PPV APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 37babe35-b317-4266-9e14-51938aa34353
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Net POV' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Net POV Actual]
+			VAR NetSalesLY = [Net POV Actual PY]
+			VAR NetSalesPlan = [Net POV APN_Base]
+			VAR Difference_LY = [Net POV Actual]-[Net POV Actual PY]
+			VAR Difference_Plan = [Net POV Actual]- [Net POV APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: 7a98ac91-dc93-4b30-8e41-c7144a6a67b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall ABP Variance' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [ABP Variance]
+			VAR NetSalesLY = [ABP Variance PY]
+			VAR NetSalesPlan = [ABP Variance_APN_Base]
+			VAR Difference_LY = [ABP Variance]-[ABP Variance PY]
+			VAR Difference_Plan = [ABP Variance]-[ABP Variance_APN_Base]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: abe4c571-3aad-487b-bdf7-fa8bb85ef611
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Distribution' = ```
+			VAR compare = SELECTEDVALUE(Par_Compare[Dim_Compare])
+			VAR NetSales = [Distribution Actual]
+			VAR NetSalesLY = [Distribution Actual PY]
+			VAR NetSalesPlan = [Distribution Plan]
+			VAR Difference_LY = [Distribution Actual]-[Distribution Actual PY]
+			VAR Difference_Plan = [Distribution Actual]- [Distribution Plan]
+			RETURN
+			    
+			 IF(
+			     NOT ( ISINSCOPE( Dim_Profit_Center[FP&A Cluster] )),
+			     
+			     IF( compare = "Actual", NetSales, if(compare="Plan", NetSalesPlan, NetSalesLY)),
+			   
+			     IF(compare="Plan", -Difference_Plan, 
+			          IF(compare="Last Year", -Difference_LY, BLANK()))
+			    
+			 )
+			```
+		lineageTag: ca152829-1a3f-46d0-a8e3-72920e51dc10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waterfall Sales Par_dynamic' = CALCULATE([Waterfall Sales Parameter])
+		lineageTag: 5f03fbe6-5072-4020-8c63-29b69c7b6588
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11", "#,0",
+				    "General"  -- fallback/default
+				)
+
+	measure 'Waterfall Service Top 11' = ```
+			
+			VAR CurrentMonth = MONTH( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR CurrentYear = YEAR( MAX( Dim_DateSlicer[P_DateKey_Monthly] ) )
+			VAR Compare = SELECTEDVALUE( 'Table Waterfall'[P_DateKey_Monthly] )
+			VAR startdate = DATE(CurrentYear -1,CurrentMonth, 1 )
+			VAR enddate= DATE(CurrentYear,CurrentMonth, 1 )
+			VAR Result = 
+			  Switch(true(),
+			   Compare = "Last Year",
+			  
+			                   CALCULATE( [Service Top 11], Dim_Date[P_DateKey_Monthly] = startdate ) 
+			        ,
+			    Compare = "Actual",
+			            CALCULATE( [Service Top 11]
+			                        , Dim_Date[P_DateKey_Monthly] = enddate )
+			                        
+			                        
+			    , CALCULATE(  [Service Top 11] - [Service Top 11 PP]
+			                            , KEEPFILTERS( Dim_Date[P_DateKey_Monthly] > startdate && Dim_Date[P_DateKey_Monthly] <= enddate)
+			                            , TREATAS(values('Table Waterfall'[SortOrder]),Dim_Date[P_DateKey_Monthly])
+			            ))
+			  
+			        
+			    
+			
+			RETURN
+			Result
+			```
+		lineageTag: c060323a-b4a8-4f46-b8d3-b91af407ab96
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column P_DateKey_Monthly
+		lineageTag: 860d702c-d9d1-44cd-9b3f-bc85cd82d2ba
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [P_DateKey_Monthly]
+		sortByColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearPeriod
+		lineageTag: 83547888-9e03-4c87-8f1f-c9e683e26df7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [P_YearPeriod]
+		sortByColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5add22a9-0e75-442e-a46f-20883df5e97d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [SortOrder]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column YearPeriod = 'Table Waterfall'[P_YearPeriod]
+		lineageTag: ffec6b8e-402f-4a2c-a131-6fb23c658245
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Table Waterfall' = calculated
+		mode: import
+		source = ```
+				
+				VAR Table_ =
+				SELECTCOLUMNS(
+				 SUMMARIZE(Par_Compare,Par_Compare[Dim_Compare]),"P_DateKey_Monthly",Par_Compare[Dim_Compare],"P_YearPeriod",Par_Compare[Dim_Compare])
+				
+				 VAR Table2_ = Summarize(Dim_Date,Dim_Date[P_DateKey_Monthly],Dim_Date[P_YearPeriod])
+				
+				VAR Union_ = UNION(table_,Table2_)
+				
+				VAR WithSortColumn =
+				    ADDCOLUMNS(
+				        Union_,
+				        "SortOrder",
+				        SWITCH(
+				            TRUE(),
+				            [P_DateKey_Monthly] = "Last Year", 0,
+				            [P_DateKey_Monthly] = "Plan", 1,
+				            [P_DateKey_Monthly] = "Flex 6+6", 2,
+				            [P_DateKey_Monthly] = "Actual", 9999999,
+				            Value([P_DateKey_Monthly]
+				            
+				                )
+				            
+				        )
+				    )
+				
+				RETURN
+				    WithSortColumn
+				```
+
+	annotation PBI_Id = fb3e34eaeb654861b354e5c7b315736b
+

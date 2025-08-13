@@ -1,0 +1,33 @@
+table Dim_Area
+	lineageTag: 3fc6932a-eeae-49f1-a74f-4b2f66094d62
+
+	column 'Area UUID'
+		dataType: string
+		lineageTag: 6c29ffe4-2846-48ae-b5b9-742e098a2135
+		summarizeBy: none
+		sourceColumn: Area UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Area Name'
+		dataType: string
+		lineageTag: 01d93d89-186e-4eda-b2bc-eb48696597ec
+		summarizeBy: none
+		sourceColumn: Area Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Area = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"f4665093-da49-4ee7-81e6-a4c4d63c0af5" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="f4665093-da49-4ee7-81e6-a4c4d63c0af5"]}[Data],
+				    #"Dim Area_" = #"f4665093-da49-4ee7-81e6-a4c4d63c0af5"{[entity="Dim Area",version=""]}[Data]
+				in
+				    #"Dim Area_"
+
+	annotation PBI_ResultType = Table
+

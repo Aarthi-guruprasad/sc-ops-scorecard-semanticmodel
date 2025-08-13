@@ -1,0 +1,71 @@
+table Validation_Parameter
+	lineageTag: 61ca6c90-4ab6-4954-bbb9-458085d313d9
+
+	column Parameter
+		lineageTag: 3a3e8647-0f77-4407-b673-b064c7f5e5be
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 5b7b22d6-fefc-4933-9eae-a07090d5435f
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: cc11430e-f282-4990-b2ca-23e8688b64da
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Validation_Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("Net Inventory", NAMEOF('Measure'[Net Inventory]), 0),
+				    ("Gross Inventory", NAMEOF('Measure'[Gross Inventory]), 1),
+				    ("Inflated Inventory", NAMEOF('Measure'[Inflated Inventory]), 2),
+				    ("Expired Inventory", NAMEOF('Measure'[Expired Inventory]), 3),
+				    ("DIO", NAMEOF('Measure'[DIO]), 4),
+				    ("DSO",NAMEOF('CSCI Measures'[DSO]), 5),
+				    ("DPO",NAMEOF('CSCI Measures'[DPO]), 6),
+				    ("OEE", NAMEOF('Measure'[OEE%]), 7),
+				    ("FA% Lag2", NAMEOF('Measure'[FA% Lag2]), 8),
+				    ("FA% Lag4", NAMEOF('Measure'[FA% Lag4]), 9),
+				    ("Bias% Lag2", NAMEOF('Measure'[Bias% Lag 2]), 10),
+				    ("Bias% Lag4", NAMEOF('Measure'[Bias% Lag 4]), 11),
+				    ("SSSO: Obsolescenes linked to Conversions", NAMEOF('Measure'[SSSO: Obsolescenes linked to Conversions]), 12),
+				    ("SSSO: Salvage & Obsolescence", NAMEOF('Measure'[SSSO: Salvage & Obsolescence]), 13),
+				    ("SSSO: Scrap-Off", NAMEOF('Measure'[SSSO: Scrap-Off]), 14),
+				    ("SSSO: Shrinkage", NAMEOF('CSCI Measures'[SSSO Shrinkage]), 15),
+				    ("Service Rate%", NAMEOF('Measure'[Service Rate%]), 16),
+				    ("Service Level%", NAMEOF('CSCI Measures'[Service Level %]), 17),
+				    ("Schedule Attainment", NAMEOF('Measure'[Schedule Attn]), 18),
+				    ("Net Sales", NAMEOF('Measure'[Net Sales Actual]), 19),
+				    ("COGS", NAMEOF('Measure'[COGS Actual]), 20),
+				    ("% Logistics Cost vs Net Sales", NAMEOF('Measure'[Total Logistics on Net Sales Actual]), 21),
+				    ("% Distribution to COGS", NAMEOF('Measure'[Total Distribution on COGS Actual]), 22),
+				    ("Net PPV", NAMEOF('Measure'[Gross PPV Actual]), 23),
+				    ("Net POV", NAMEOF('Measure'[Net POV Actual]), 24)
+				}
+
+	annotation PBI_Id = 87586e503e3041258d31dd93b3917887
+

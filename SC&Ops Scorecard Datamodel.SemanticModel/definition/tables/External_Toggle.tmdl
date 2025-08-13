@@ -1,0 +1,24 @@
+table External_Toggle
+	lineageTag: b3366895-4390-42d9-a7ba-148963cefa51
+
+	column 'Show External'
+		dataType: string
+		lineageTag: 7c9ea05c-42ed-4ff5-af5e-5c1b4f793e2e
+		summarizeBy: none
+		sourceColumn: Show External
+
+		annotation SummarizationSetBy = Automatic
+
+	partition External_Toggle = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WikwtVorViVbyy1eKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Show External" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Show External", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

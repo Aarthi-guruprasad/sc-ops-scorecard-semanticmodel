@@ -1,0 +1,36 @@
+table Dim_Expiration_Buckets
+	lineageTag: 83000e9d-7887-418a-870d-024d18994a65
+
+	column 'Expiration Bucket'
+		dataType: string
+		lineageTag: dff90f13-b006-49a6-b71d-9d5fe422ee19
+		summarizeBy: none
+		sourceColumn: Expiration Bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 987721da-6211-497c-93cb-38cdc986c479
+		summarizeBy: none
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Expiration_Buckets = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"af1e1d19-76c8-4ac9-9ce4-c2e3030f6349" = Workspaces{[workspaceId="af1e1d19-76c8-4ac9-9ce4-c2e3030f6349"]}[Data],
+				    #"b0ec22df-8dab-4ed5-afd7-713d32f51876" = #"af1e1d19-76c8-4ac9-9ce4-c2e3030f6349"{[dataflowId="b0ec22df-8dab-4ed5-afd7-713d32f51876"]}[Data],
+				    Dim_Expiration_Buckets_ = #"b0ec22df-8dab-4ed5-afd7-713d32f51876"{[entity="Dim_Expiration_Buckets",version=""]}[Data]
+				in
+				    Dim_Expiration_Buckets_
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

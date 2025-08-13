@@ -1,0 +1,69 @@
+table 'Other_Last Closed Month'
+	lineageTag: e4d0db44-263c-4e81-90ea-c8d2852dfc62
+
+	column 'Latest Validated Closing Period'
+		dataType: int64
+		formatString: 0
+		lineageTag: cbc2285a-066f-4e0c-b54f-af0cc8841c30
+		summarizeBy: sum
+		sourceColumn: Latest Validated Closing Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period = "P"&RIGHT('Other_Last Closed Month'[Latest Validated Closing Period],2) & " " &LEFT('Other_Last Closed Month'[Latest Validated Closing Period],4)
+		lineageTag: 57fd3792-57ad-4c7a-a203-d2189395ec1b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: e7fb8348-580b-42c3-8bff-967cae7665c2
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: 1275aa70-16eb-4abe-86ee-16774661ebe2
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 253f7b80-1c85-4942-8fe9-4552566dc0a0
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'Other_Last Closed Month' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e3bd99ae-3166-4b6b-a043-3c98df3efbd7" = Workspaces{[workspaceId="e3bd99ae-3166-4b6b-a043-3c98df3efbd7"]}[Data],
+				    #"81297381-aefd-4bd3-a63f-0efa1e9400bd" = #"e3bd99ae-3166-4b6b-a043-3c98df3efbd7"{[dataflowId="81297381-aefd-4bd3-a63f-0efa1e9400bd"]}[Data],
+				    #"Other_Last Closed Month_" = #"81297381-aefd-4bd3-a63f-0efa1e9400bd"{[entity="Other_Last Closed Month",version=""]}[Data],
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Other_Last Closed Month_", "Latest Validated Closing Period", "Latest Validated Closing Period - Copy"),
+				    #"Split Column by Position" = Table.SplitColumn(Table.TransformColumnTypes(#"Duplicated Column", {{"Latest Validated Closing Period - Copy", type text}}, "en-BE"), "Latest Validated Closing Period - Copy", Splitter.SplitTextByPositions({0, 4}, false), {"Latest Validated Closing Period - Copy.1", "Latest Validated Closing Period - Copy.2"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Position",{{"Latest Validated Closing Period - Copy.1", Int64.Type}, {"Latest Validated Closing Period - Copy.2", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Latest Validated Closing Period - Copy.1", "Year"}, {"Latest Validated Closing Period - Copy.2", "month"}}),
+				    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Date", each #date([Year],[month],1)),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

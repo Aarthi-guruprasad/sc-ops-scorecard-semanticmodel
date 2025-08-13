@@ -1,0 +1,71 @@
+table z_Glossary
+	excludeFromModelRefresh
+	lineageTag: 5a4fa7c0-ddb6-4525-909f-86e3ae5d938b
+
+	column 'KPI Category'
+		dataType: string
+		lineageTag: 544b3204-a560-46ec-90b2-f0c4ae8bcba4
+		summarizeBy: none
+		sourceColumn: KPI Category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit / Format'
+		dataType: string
+		lineageTag: a75462ae-0c86-4b3a-978a-428f6ac5130c
+		summarizeBy: none
+		sourceColumn: Unit / Format
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI Name'
+		dataType: string
+		lineageTag: ef7d9140-78c6-4590-85b8-83edf7323817
+		summarizeBy: none
+		sourceColumn: KPI Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: dbc7b294-71e8-42fe-9789-d906225fa9b4
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Remarks
+		dataType: string
+		lineageTag: b36648f0-7edd-43b2-89ed-6821652a0f7e
+		summarizeBy: none
+		sourceColumn: Remarks
+
+		annotation SummarizationSetBy = Automatic
+
+	partition z_Glossary = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Help&Information%20Document%20V1.0.xlsx"), null, true),
+				    z_Glossary_Sheet = Source{[Item="z_Glossary",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(z_Glossary_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"KPI Category", type text}, {"KPI Name", type text}, {"Description", type text}, {"Unit / Format", type text}, {"Remarks", type text}}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Changed Type1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

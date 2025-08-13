@@ -1,0 +1,42 @@
+table z_Abbrevations
+	excludeFromModelRefresh
+	lineageTag: 816b8e65-deb9-4c7d-bad3-3f68b468442e
+
+	column Abbreviation
+		dataType: string
+		lineageTag: e1f1b2c4-21fc-445e-971c-410c659bb55c
+		summarizeBy: none
+		sourceColumn: Abbreviation
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Term'
+		dataType: string
+		lineageTag: 2ec6b72b-2421-42e3-9598-d18b92329f67
+		summarizeBy: none
+		sourceColumn: Full Term
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition z_Abbrevations = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Help&Information%20Document%20V1.0.xlsx"), null, true),
+				    z_Abbrevations_Sheet = Source{[Item="z_Abbrevations",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(z_Abbrevations_Sheet,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Abbreviation", type text}, {"Full Term", type text}})
+				in
+				    #"Changed Type1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

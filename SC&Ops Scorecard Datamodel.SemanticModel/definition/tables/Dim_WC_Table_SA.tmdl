@@ -1,0 +1,49 @@
+table Dim_WC_Table_SA
+	lineageTag: 29d3be35-0f02-491b-941f-01fbfd9939ce
+
+	column Workcenter
+		dataType: string
+		lineageTag: d7e2793d-63e6-41cd-9574-152457432e15
+		summarizeBy: none
+		sourceColumn: Workcenter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Facility
+		dataType: string
+		lineageTag: 81e6502d-5a92-441e-8d9e-acd57adfc4b3
+		summarizeBy: none
+		sourceColumn: Facility
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Gen Area'
+		dataType: string
+		lineageTag: db09e5e6-be8c-4f01-bfb6-01fa646aa221
+		summarizeBy: none
+		sourceColumn: Gen Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant - Area'
+		dataType: string
+		lineageTag: 371e8a50-baa5-438d-8bbe-a4a1acaa13e5
+		summarizeBy: none
+		sourceColumn: Plant - Area
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_WC_Table_SA = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("jZlNTxsxEIb/SpReQfLM2FnvMWxaUjXASuEjFeLcQ7mV/6/a67AQlJl3Lk6W95E9Xx47y/Pzcr0baHlRP+aRgoTF5WL3uF++XEwEQ0IgESGRILGCRAeJDIneJkKOMZQ/j7uujYur139vH9z9J46cHDs5cXLRySUnt/Jx4dSP/XCe+uLF2+t5LPqw5MNWLoyyb7beN1vwxIPINxn7MJ9p7FuUXRllX0bZl1HufFjvMU3ERfmWFE91JAot7Wkx/v1z8u1rJyko+VHxo9GPJj+68qPZj/ZulJyzbrtjj7nZziMRV6Q+vCMRIwkjHUYyRFqjsBHCCGMEx6XvbWQILXK3v+eRKE1EeWgEYSJDokdE62E6cR0CIHah5c8kgKWFAJbuQsuvTtxCSwvBNrGHc+xh5h7gKg8jWuVpAw0Zf10vdpcT9Hg/j1S2QYXKwwfEHkg8UPRACUM348+9TX2rwt12Him2DXTXNtDTcIzy3TCP1IWGDDMiGFkhhDxIh5EMkVbhNkII4QBnYRwXblVuIgQTwOSYBYaOBXskOC6Czc14low9yrBeOMNi4NxDpMdp7KG5gotBcDFIO+ZtBDotuLwFl5QQtCVSzdHhcDgZ37Ve1zgYGhuaGFo0tGRohg/T/V/TsqEZvovh+7T/NM3wXQzfxfBdDN/F8F0M38XwPRq+R8P3aNRENOISjbhE3b+Et2HCZ1XCB1HCOzXhbZhw808E+2BibC5jcxmeD4lhq0yMnWZ4PiSGrTIxiMtmZNKKtmpa0RZNbVZV0zZl1bRNWTWtaKumbbyiqY2laoadavOommGn2jzGsd2sNE1br2hq46ya1iDq25k6Z/1dXnOsv3iZ+sEn7PyrxenGvD7WiV5X5c7sgq480OCBNh7ouwf64YBW2Ltya3VBOAStQm2mHNVrpQTqmWSdH8b5GPXzMU2FYhlV/59RRe0F/st/", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Workcenter = _t, Facility = _t, #"Gen Area" = _t, #"Plant - Area" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Workcenter", type text}, {"Facility", type text}}),
+				    #"Sorted Rows" = Table.Sort(#"Changed Type",{{"Workcenter", Order.Ascending}})
+				in
+				    #"Sorted Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

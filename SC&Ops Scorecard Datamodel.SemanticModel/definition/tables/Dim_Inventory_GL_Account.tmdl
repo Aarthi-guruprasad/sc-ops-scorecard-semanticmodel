@@ -1,0 +1,115 @@
+table Dim_Inventory_GL_Account
+	lineageTag: 88a896c7-9217-4583-826a-35244548d3d9
+
+	column 'G/L Account Number'
+		dataType: string
+		lineageTag: 15d983f2-6346-4988-b6c5-4a49fdee5eea
+		summarizeBy: none
+		sourceColumn: G/L Account Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'G/L Account Long Text'
+		dataType: string
+		lineageTag: a768ad26-7fa7-48ea-b38f-552648e6f4f7
+		summarizeBy: none
+		sourceColumn: G/L Account Long Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'G/L Account Number - Long Text'
+		dataType: string
+		lineageTag: c699c960-a142-442a-8ded-8280b6e4a51b
+		summarizeBy: none
+		sourceColumn: G/L Account Number - Long Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 7'
+		dataType: string
+		lineageTag: 28a61a2b-7840-40eb-a2a8-8db3054f62a5
+		summarizeBy: none
+		sourceColumn: Level 7
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Account Group'
+		dataType: string
+		lineageTag: d84ceb87-999c-4c35-91ba-9b7acf3399f6
+		summarizeBy: none
+		sourceColumn: Account Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GL Sort Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66f8b9a5-d5d4-41d1-98fc-c66f9a58df3e
+		summarizeBy: sum
+		sourceColumn: GL Sort Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory Breakdown Category'
+		dataType: string
+		lineageTag: f7a65b7d-663a-4438-833c-476dd22f48b0
+		summarizeBy: none
+		sourceColumn: Inventory Breakdown Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory Adjustment Type'
+		dataType: string
+		lineageTag: 7dc7b21f-acd0-4914-bc64-5ca906a51402
+		summarizeBy: none
+		sourceColumn: Inventory Adjustment Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Adjustment Account'
+		dataType: string
+		lineageTag: 7455672a-f030-4523-b36f-3d71c192d4b5
+		summarizeBy: none
+		sourceColumn: Adjustment Account
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory Type'
+		dataType: string
+		lineageTag: 5927908f-6f0c-4372-bdad-520a14e4d6f3
+		summarizeBy: none
+		sourceColumn: Inventory Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type'
+		dataType: string
+		lineageTag: 367fc877-c99c-4f0c-83e0-379f3d32b1b5
+		summarizeBy: none
+		sourceColumn: Material Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory Type Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: bbe284c5-e8d5-45ff-a058-723534422d2a
+		summarizeBy: sum
+		sourceColumn: Inventory Type Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Inventory_GL_Account = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"f979af8a-bc04-4c97-bea4-2ad4262a4731" = Workspaces{[workspaceId="f979af8a-bc04-4c97-bea4-2ad4262a4731"]}[Data],
+				    #"c5e2d1e8-debe-4470-9c99-38e8397a1d42" = #"f979af8a-bc04-4c97-bea4-2ad4262a4731"{[dataflowId="c5e2d1e8-debe-4470-9c99-38e8397a1d42"]}[Data],
+				    Dim_Inventory_GL_Account_ = #"c5e2d1e8-debe-4470-9c99-38e8397a1d42"{[entity="Dim_Inventory_GL_Account",version=""]}[Data]
+				in
+				    Dim_Inventory_GL_Account_
+
+	annotation PBI_ResultType = Table
+

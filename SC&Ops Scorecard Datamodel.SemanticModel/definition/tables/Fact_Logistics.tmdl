@@ -1,0 +1,137 @@
+table Fact_Logistics
+	lineageTag: be672d11-320e-4f25-8d67-d7bbb29a2ca6
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 8196fa59-4d8e-4dd1-985b-5dc530c64fd1
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4873c767-3c60-412f-a5d1-36862963d832
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Amount Total Logistics Act'
+		dataType: double
+		lineageTag: 8a10a2ca-b443-40f1-9ae2-05b424b59107
+		summarizeBy: sum
+		sourceColumn: Amount Total Logistics Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net Sales Act'
+		dataType: double
+		lineageTag: 192c4b6c-dfc5-43c6-8511-0097e78d0cd5
+		summarizeBy: sum
+		sourceColumn: Net Sales Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Amount Total Logistics Plan'
+		dataType: double
+		lineageTag: ac899952-eff6-46b3-b083-4ebaa3cd57c3
+		summarizeBy: sum
+		sourceColumn: Amount Total Logistics Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net Sales Plan'
+		dataType: double
+		lineageTag: 5ce8d356-cab7-40b1-a315-e8da95c878c8
+		summarizeBy: sum
+		sourceColumn: Net Sales Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Distribution Act'
+		dataType: double
+		lineageTag: 506c8687-550a-4e17-ac9f-ae83ef4b3d27
+		summarizeBy: sum
+		sourceColumn: Distribution Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'COGS Act'
+		dataType: double
+		lineageTag: 34a13bf0-fd2d-4b2e-8a20-1cb84d0dc9ce
+		summarizeBy: sum
+		sourceColumn: COGS Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Distribution Plan'
+		dataType: double
+		lineageTag: 66887fde-6fc0-4c92-af9c-08a1d895ab57
+		summarizeBy: sum
+		sourceColumn: Distribution Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'COGS Plan'
+		dataType: double
+		lineageTag: 6ff46077-72a6-48ea-8d9d-56e73b14e53f
+		summarizeBy: sum
+		sourceColumn: COGS Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'A&P Act'
+		dataType: double
+		lineageTag: deebdd9e-4bde-41bb-84d2-b02f4234fca6
+		summarizeBy: sum
+		sourceColumn: A&P Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Variances Act'
+		dataType: double
+		lineageTag: d9766bc5-9620-47d3-890a-95805ce30f45
+		summarizeBy: sum
+		sourceColumn: Variances Act
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_Logistics = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_Logistics = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "Cost to serve Model Global", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_COPA_Global[Amount Total Logistics Act] = var segment = selectedvalue(Dim_PC_Global[Area])#(lf)return#(lf)#(lf)if(segment = ""CSCI"", #(lf)#(lf)CALCULATE([Sum Amount Total Logistics], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""),#(lf)Keepfilters(dim_Fa[FunctionalArea KEY] <> ""15""))#(lf)#(lf), #(lf)#(lf)CALCULATE([Outbound Freight CSCA], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf))#(lf)#(lf)#(lf)MEASURE Fact_COPA[Distribution Act] = CALCULATE([Sum Amount Distribution], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf)#(lf)MEASURE Fact_COPA[Net Sales Act] = CALCULATE([Sum Amount Net Sales], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf)#(lf)MEASURE Fact_COPA[COGS Act] = CALCULATE([Sum Amount COGS], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf)#(lf)MEASURE Fact_COPA[A&P Act] = CALCULATE([Sum Amount A&P], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf)#(lf)MEASURE Fact_COPA[Variances Act] = CALCULATE([Sum Amount Variances], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""ACTUAL""))#(lf)#(lf)MEASURE Fact_COPA[Amount Total Logistics Plan] = var segment = selectedvalue(Dim_PC_Global[Area])#(lf)return#(lf)#(lf)if(segment = ""CSCI"", #(lf)#(lf)CALCULATE([Sum Amount Total Logistics], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""PLAN""),#(lf)Keepfilters(dim_Fa[FunctionalArea KEY] <> ""15""))#(lf)#(lf), #(lf)#(lf)CALCULATE([Outbound Freight CSCA], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""PLAN""))#(lf))#(lf)#(lf)MEASURE Fact_COPA[Distribution Plan] = CALCULATE([Sum Amount Distribution], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""PLAN""))#(lf)#(lf)MEASURE Fact_COPA_Global[Net Sales Plan] = CALCULATE([Sum Amount Net Sales], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""PLAN""))#(lf)#(lf)MEASURE Fact_COPA_Global[COGS Plan] = CALCULATE([Sum Amount COGS], keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Version[Abbreviation] = ""GC""),#(lf)keepfilters(Dim_Scenario[Version] = ""PLAN""))#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_PC_Global[Profit Center],#(lf)    Fact_COPA_Global[Fiscal Period End Date(Adj)],#(lf)    KEEPFILTERS( FILTER( ALL( Dim_FA[Filter] ), NOT( SEARCH( ""15"", Dim_FA[Filter], 1, 0 ) >= 1 ))),#(lf)    ""Amount Total Logistics Act"", [Amount Total Logistics Act],#(lf)    ""Distribution Act"", [Distribution Act],#(lf)    ""Net Sales Act"", [Net Sales Act],#(lf)    ""COGS Act"", [COGS Act],#(lf)    ""A&P Act"", [A&P Act],#(lf)    ""Variances Act"", [Variances Act],#(lf)    ""Amount Total Logistics Plan"", [Amount Total Logistics Plan],#(lf)    ""Distribution Plan"", [Distribution Plan],#(lf)    ""Net Sales Plan"", [Net Sales Plan],#(lf)    ""COGS Plan"", [COGS Plan]#(lf)    #(lf))#(lf)ORDER BY #(lf)    Dim_PC_Global[Profit Center] ASC,#(lf)    Fact_COPA_Global[Fiscal Period End Date(Adj)] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Logistics,{{"Dim_PC_Global[Profit Center]", "Profit Center"}, {"Fact_COPA_Global[Fiscal Period End Date(Adj)]", "Date"}, {"[Amount Total Logistics Act]", "Amount Total Logistics Act"}, {"[Net Sales Act]", "Net Sales Act"}, {"[Amount Total Logistics Plan]", "Amount Total Logistics Plan"}, {"[Net Sales Plan]", "Net Sales Plan"}, {"[Distribution Act]", "Distribution Act"}, {"[COGS Act]", "COGS Act"}, {"[Distribution Plan]", "Distribution Plan"}, {"[COGS Plan]", "COGS Plan"}, {"[A&P Act]", "A&P Act"}, {"[Variances Act]", "Variances Act"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

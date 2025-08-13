@@ -1,0 +1,51 @@
+table 'Value Stream Mapping'
+	lineageTag: 16cceb81-a0cd-4d25-b516-9ce8831e6dd2
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: af35d1fb-2575-46c2-b79b-9e49d730eb0c
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site (Anthony''s Tabs)'
+		dataType: string
+		lineageTag: 2a4e5a7e-b056-4982-a7ce-b690efb1db8e
+		summarizeBy: none
+		sourceColumn: Site (Anthony's Tabs)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Jamie Recommended Name'
+		dataType: string
+		lineageTag: e7e2f408-2a42-4c5b-90e7-68030be81951
+		summarizeBy: none
+		sourceColumn: Jamie Recommended Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream Group'
+		dataType: string
+		lineageTag: 2433e37e-324d-4343-8e59-3b8902927fa5
+		summarizeBy: none
+		sourceColumn: Value Stream Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Value Stream Mapping' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Value%20Stream%20Mapping.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Sheet1_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Value Stream", type text}, {"Site (Anthony's Tabs)", type text}, {"Jamie Recommended Name", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

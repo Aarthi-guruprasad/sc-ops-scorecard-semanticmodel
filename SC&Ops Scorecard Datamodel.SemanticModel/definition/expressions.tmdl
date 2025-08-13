@@ -1,0 +1,113 @@
+expression CurrentFiscalPeriod =
+		let
+		  Source = PowerPlatform.Dataflows(null),
+		  Workspaces = Source{[Id = "Workspaces"]}[Data],
+		  #"279e79a9-675f-49bf-b6dc-185466a41ccb" = Workspaces{[workspaceId = "279e79a9-675f-49bf-b6dc-185466a41ccb"]}[Data],
+		  #"b20bfcb6-dce5-4402-b64a-6b2b47a5bd4f" = #"279e79a9-675f-49bf-b6dc-185466a41ccb"{[dataflowId = "b20bfcb6-dce5-4402-b64a-6b2b47a5bd4f"]}[Data],
+		  Navigation = #"b20bfcb6-dce5-4402-b64a-6b2b47a5bd4f"{[entity = "SAP Periods New", version = ""]}[Data],
+		    #"Changed Type" = Table.TransformColumnTypes(Navigation,{{"Date", type date}}),
+		    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Date] = Date.From(DateTime.LocalNow()))),
+		    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "Period", each Text.Start([#"Year-Period"], 4) & Text.End([#"Year-Period"], 2)),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Period", Int64.Type}}),
+		    #"Calculated Maximum" = List.Max(#"Changed Type1"[Period])
+		in
+		    #"Calculated Maximum"
+	lineageTag: 1677018c-cbff-43ad-b6d1-98e450ccef5c
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression FirstFiscalPeriod =
+		let
+		    Year = Number.From(Text.Start(Text.From(CurrentFiscalPeriod), 4)),
+		    #"Calculated FirstFiscalPeriod" = Number.From(Text.From(Year-3) & "01")
+		in
+		    #"Calculated FirstFiscalPeriod"
+	lineageTag: 246bf2eb-226c-4e24-9d82-cf3717e425ef
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression CurrentFiscalPeriod_Num =
+		let
+		    Source = DF_MasterData_Global,
+		    Dim_Date_ = Source{[entity="Dim_Date",version=""]}[Data],
+		    #"Filtered Rows" = Table.SelectRows(Dim_Date_, each [P_YearMonth] = CurrentFiscalPeriod),
+		    #"Calculated Maximum" = List.Max(#"Filtered Rows"[P_YearMonth Number])
+		in
+		    #"Calculated Maximum"
+	lineageTag: 435a3265-ca3c-4236-b9f6-5625ddad16b2
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression Parameter_LastClosedMonth =
+		let
+		    Source = DF_MasterData_Global,
+		    #"Other_Last Closed Month_" = Source{[entity="Other_Last Closed Month",version=""]}[Data],
+		    #"Latest Validated Closing Period" = #"Other_Last Closed Month_"{0}[Latest Validated Closing Period]
+		in
+		    #"Latest Validated Closing Period"
+	lineageTag: 455da94d-be85-45a7-8cc1-9d98007f056f
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Number
+
+expression DF_MasterData_Global =
+		let
+		    Source = PowerPlatform.Dataflows(null),
+		    Workspaces = Source{[Id="Workspaces"]}[Data],
+		    #"e3bd99ae-3166-4b6b-a043-3c98df3efbd7" = Workspaces{[workspaceId="e3bd99ae-3166-4b6b-a043-3c98df3efbd7"]}[Data],
+		    #"81297381-aefd-4bd3-a63f-0efa1e9400bd" = #"e3bd99ae-3166-4b6b-a043-3c98df3efbd7"{[dataflowId="81297381-aefd-4bd3-a63f-0efa1e9400bd"]}[Data]
+		in
+		    #"81297381-aefd-4bd3-a63f-0efa1e9400bd"
+	lineageTag: a8a9ba37-8609-45e7-bf65-a535f06d1a1d
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Other_Date_ModelRefreshed =
+		let
+		    Source = DateTimeZone.UtcNow(),
+		    #"Converted to Table" = #table(1, {{Source}}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Converted to Table",{{"Column1", type date}}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "Date"}})
+		in
+		    #"Renamed Columns"
+	lineageTag: cae3cb06-aa9a-436d-b036-5cee741558f3
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Dim_Date_Sequence_P_YearPeriod = ```
+		let
+		  
+		    Source = #"DF_MasterData_Global",
+		    Dim_Date_ = Source{[entity="Dim_Date",version=""]}[Data],
+		    #"Removed Other Columns" = Table.SelectColumns(Dim_Date_,{"Date", "P_Closing Period Date", "P_MonthFull", "P_Year", "P_YearMonth", "P_YearMonth Number", "P_YearPeriod", "P_QuarterNumber", "P_Quarter", "P_YearQuarter", "P_QuarterYear", "P_MonthShortName"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [P_YearMonth] <= #"CurrentFiscalPeriod" and [P_YearMonth] >= #"FirstFiscalPeriod"),
+		    #"Added Is Closed indicator" = Table.AddColumn(#"Filtered Rows", "Is Closed", each [P_YearMonth] <= #"Parameter_LastClosedMonth", type logical),
+		    #"Added YearPeriod Slicer value" = Table.AddColumn(#"Added Is Closed indicator", "P_YearPeriod_Slicer", each if [P_YearMonth] <> #"CurrentFiscalPeriod" then [P_YearPeriod] else "Current Period", type text),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Added YearPeriod Slicer value",{{"P_MonthFull", Int64.Type}}),
+		    #"Added IsL13M indicator" = Table.AddColumn(#"Changed Type", "IsL13M", each [P_YearMonth Number] >= #"CurrentFiscalPeriod_Num"-12 and [P_YearMonth Number] <= #"CurrentFiscalPeriod_Num", type logical),
+		
+		    #"Removed Other Columns2" = Table.SelectColumns(#"Added IsL13M indicator",{"P_YearPeriod", "P_Closing Period Date"}),
+		    #"Sorted Rows" = Table.Sort(#"Removed Other Columns2",{{"P_Closing Period Date", Order.Ascending}}),
+		    #"Removed Duplicates" = Table.Distinct(#"Sorted Rows", {"P_YearPeriod"}),
+		    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 0, 1, Int64.Type),
+		    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "P_YearPeriod Seq"}})
+		in
+		    #"Renamed Columns"
+		```
+	lineageTag: 17016562-e1e2-44c1-aeb8-f8fbd54e17d6
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,51 @@
+table Bridge_Site_Area
+	lineageTag: 615edd19-fcd9-4df5-8ea2-d23578a8438c
+
+	column 'Site Hierarchy'
+		dataType: string
+		lineageTag: 104572d7-bafb-4798-bbae-e63933dbaecc
+		summarizeBy: none
+		sourceColumn: Site Hierarchy
+
+		annotation SummarizationSetBy = Automatic
+
+	column Site
+		dataType: string
+		lineageTag: e95e5b30-decd-42b4-8ecb-67542e770aa5
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Group'
+		dataType: string
+		lineageTag: 2603bd33-61dd-4d12-aa9a-dc94ae39cc1a
+		summarizeBy: none
+		sourceColumn: Site Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Area
+		dataType: string
+		lineageTag: 47dbdc6f-9c17-47d6-b90f-0651a278be9c
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_Site_Area = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Site_Area_Mapping.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Sheet1_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Site Hierarchy", type text}, {"Site", type text}, {"Site Group", type text}, {"Area", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

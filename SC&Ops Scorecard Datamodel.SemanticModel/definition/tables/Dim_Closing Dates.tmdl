@@ -1,0 +1,40 @@
+table 'Dim_Closing Dates'
+	lineageTag: c4ca571d-c6c3-43ed-a982-ab18ce194121
+
+	column 'P_Closing Period Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c4e00771-42a4-4f20-a0b6-cc703cbdbae8
+		summarizeBy: none
+		sourceColumn: P_Closing Period Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column P_YearMonth
+		dataType: string
+		lineageTag: a1a9dc12-5a91-4218-8fa3-8453e581845c
+		summarizeBy: none
+		sourceColumn: P_YearMonth
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim_Closing Dates' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"f979af8a-bc04-4c97-bea4-2ad4262a4731" = Workspaces{[workspaceId="f979af8a-bc04-4c97-bea4-2ad4262a4731"]}[Data],
+				    #"00ed8a49-c0ef-4eb9-ac47-58b11c030af2" = #"f979af8a-bc04-4c97-bea4-2ad4262a4731"{[dataflowId="00ed8a49-c0ef-4eb9-ac47-58b11c030af2"]}[Data],
+				    #"Dim_Closing Dates_" = #"00ed8a49-c0ef-4eb9-ac47-58b11c030af2"{[entity="Dim_Closing Dates",version=""]}[Data]
+				in
+				    #"Dim_Closing Dates_"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

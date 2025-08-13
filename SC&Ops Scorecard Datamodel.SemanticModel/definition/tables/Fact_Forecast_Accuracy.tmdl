@@ -1,0 +1,134 @@
+table Fact_Forecast_Accuracy
+	lineageTag: 1b0fa285-2e7d-472d-9436-77ff185b185a
+
+	column 'Fiscal Year/Period'
+		dataType: string
+		lineageTag: c1c21ddc-68fc-474b-901a-f0220601d367
+		summarizeBy: none
+		sourceColumn: Fiscal Year/Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center Key'
+		dataType: string
+		lineageTag: f4b0aea6-071a-4b03-b91a-dc5e50ad8c95
+		summarizeBy: none
+		sourceColumn: Profit Center Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column LAGs
+		dataType: string
+		lineageTag: 182c6e24-3f3c-4b6a-8b6a-3cecb21cf035
+		summarizeBy: none
+		sourceColumn: LAGs
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Material Key'
+		dataType: string
+		lineageTag: ac97fb1c-0585-47ba-a5ab-e368f2300567
+		summarizeBy: none
+		sourceColumn: Global Material Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source Material Key'
+		dataType: string
+		lineageTag: ec49c15e-50ad-4ac3-ba5d-0fc4bbe5fdc5
+		summarizeBy: none
+		sourceColumn: Source Material Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Shipments'
+		dataType: double
+		lineageTag: f0a843e2-9d43-488e-a5ab-763665887155
+		summarizeBy: sum
+		sourceColumn: Total Shipments
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Demand Draft'
+		dataType: double
+		lineageTag: 2bacb064-6868-43be-aa2d-4680fb8f4fae
+		summarizeBy: sum
+		sourceColumn: Demand Draft
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Abs Demand Draft Var SSID'
+		dataType: double
+		lineageTag: 6fc7b871-0874-463f-9d26-ade6bd89c7dc
+		summarizeBy: count
+		sourceColumn: Abs Demand Draft Var SSID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YearMonth = CONCATENATE(LEFT(Fact_Forecast_Accuracy[Fiscal Year/Period],4),RIGHT(Fact_Forecast_Accuracy[Fiscal Year/Period],2))
+		lineageTag: 8b4d4e44-02db-462d-9e98-1ec896233fb1
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_EndDate = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Forecast_Accuracy[YearMonth])
+		formatString: General Date
+		lineageTag: 3527080b-24db-42bb-84a4-274717d64981
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column SSID
+		dataType: string
+		lineageTag: d06450e9-1d0b-49e5-9ed6-f17c7fefa4d4
+		summarizeBy: none
+		sourceColumn: SSID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant_Material Key'
+		dataType: string
+		lineageTag: 67d0a2e1-685c-4adb-a1cd-92b13a6189a7
+		summarizeBy: none
+		sourceColumn: Plant_Material Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Abs Demand Draft Var 5 Digit'
+		dataType: double
+		lineageTag: 0a58155a-466e-4658-8c2c-d441fb6f00f5
+		summarizeBy: sum
+		sourceColumn: Abs Demand Draft Var 5 Digit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column '5 Digit Key'
+		dataType: string
+		lineageTag: abb75e4b-878e-43dd-8c92-8663c927af0d
+		summarizeBy: none
+		sourceColumn: 5 Digit Key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Forecast_Accuracy = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_FA = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/IBP%20Reporting", "Forecast Accuracy", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE 'Measure Table'[Abs Demand Draft Var SSID] = CALCULATE(#(lf)    SUMX(#(lf)        ADDCOLUMNS(#(lf)            SUMMARIZE(#(lf)                '_IBP Build',#(lf)                '_IBP Build'[SSID],#(lf)                '_IBP Build'[Fiscal Year/Period]#(lf)            ),#(lf)            ""Variance"", ABS([Demand Draft] - [Total Shipments])#(lf)        ),#(lf)        [Variance]#(lf)    ),#(lf)    REMOVEFILTERS('_IBP Build'[Source Material Key])#(lf))#(lf)#(lf)MEASURE 'Measure Table'[Abs Demand Draft Var 5 Digit] = CALCULATE(#(lf)    SUMX(#(lf)        ADDCOLUMNS(#(lf)            SUMMARIZE(#(lf)                '_IBP Build',#(lf)                '_IBP Build'[5 Digit Key],#(lf)                '_IBP Build'[Fiscal Year/Period]#(lf)            ),#(lf)            ""Variance"", ABS([Demand Draft] - [Total Shipments])#(lf)        ),#(lf)        [Variance]#(lf)    ),#(lf)    REMOVEFILTERS('_IBP Build'[Source Material Key])#(lf))#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    '_IBP Build'[Fiscal Year/Period],#(lf)    '_IBP Build'[Profit Center Key],#(lf)    '_IBP Build'[LAGs],#(lf)    '_IBP Build'[Global Material Key],#(lf)    '_IBP Build'[Source Material Key],#(lf)    '_IBP Build'[SSID],#(lf)    '_IBP Build'[5 Digit Key],#(lf)    '_IBP Build'[Plant_Material Key],#(lf)    ""Total Shipments"", [Total Shipments],#(lf)    ""Demand Draft"", [Demand Draft],#(lf)    ""Abs Demand Draft Var SSID"", [Abs Demand Draft Var SSID],#(lf)    ""Abs Demand Draft Var 5 Digit"",[Abs Demand Draft Var 5 Digit]#(lf))#(lf)ORDER BY #(lf)    '_IBP Build'[Fiscal Year/Period] ASC,#(lf)    '_IBP Build'[Profit Center Key] ASC,#(lf)    '_IBP Build'[LAGs] ASC,#(lf)    '_IBP Build'[Global Material Key] ASC,#(lf)    '_IBP Build'[Source Material Key] ASC,#(lf)    '_IBP Build'[SSID] ASC,#(lf)    '_IBP Build'[5 Digit Key] ASC,#(lf)    '_IBP Build'[Plant_Material Key] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_FA,{{"_IBP Build[Fiscal Year/Period]", "Fiscal Year/Period"}, {"_IBP Build[Profit Center Key]", "Profit Center Key"}, {"_IBP Build[LAGs]", "LAGs"}, {"_IBP Build[Global Material Key]", "Global Material Key"}, {"_IBP Build[Source Material Key]", "Source Material Key"}, {"[Total Shipments]", "Total Shipments"}, {"[Demand Draft]", "Demand Draft"}, {"[Abs Demand Draft Var SSID]", "Abs Demand Draft Var SSID"}, {"_IBP Build[SSID]", "SSID"}, {"_IBP Build[Plant_Material Key]", "Plant_Material Key"}, {"[Abs Demand Draft Var 5 Digit]", "Abs Demand Draft Var 5 Digit"}, {"_IBP Build[5 Digit Key]", "5 Digit Key"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,348 @@
+table Dim_Material_Plant
+	lineageTag: 8cf0e9a4-939f-400c-b743-7edf3148c9f7
+
+	column 'Alternative BOM'
+		dataType: string
+		lineageTag: ebff0ccd-47ab-47bd-96a9-a27334b094df
+		summarizeBy: none
+		sourceColumn: Alternative BOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'BOM Usage'
+		dataType: string
+		lineageTag: d7c15a72-8403-4ea0-ae52-c2b260616363
+		summarizeBy: none
+		sourceColumn: BOM Usage
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Flag Material for Deletion at Plant Level'
+		dataType: string
+		lineageTag: 3435c774-5106-4ed7-bf4c-0fd5a6f4edd8
+		summarizeBy: none
+		sourceColumn: Flag Material for Deletion at Plant Level
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Make/Buy Indicator of SKU'
+		dataType: string
+		lineageTag: 18fbb0e3-0a39-4423-8ccd-bcd2d2b02da3
+		summarizeBy: none
+		sourceColumn: Make/Buy Indicator of SKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number(PMI)'
+		dataType: string
+		lineageTag: 36bceadb-dcfe-4047-a3b9-58b44277853a
+		summarizeBy: none
+		sourceColumn: Material Number(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Maximum Lot Size'
+		dataType: double
+		lineageTag: 5e86eb54-dd0d-4d1a-aa4e-0d99ce4d4099
+		summarizeBy: sum
+		sourceColumn: Maximum Lot Size
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Minimum Lot Size'
+		dataType: double
+		lineageTag: 0e65c5d9-f12f-44f9-b365-89b5cf4d8c41
+		summarizeBy: sum
+		sourceColumn: Minimum Lot Size
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'MRP Controller (Materials Planner)'
+		dataType: string
+		lineageTag: 6a8223e0-2878-44e6-b887-d2da5501ed5f
+		summarizeBy: none
+		sourceColumn: MRP Controller (Materials Planner)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'MRP Type'
+		dataType: string
+		lineageTag: 4e1f4800-a800-49f7-b298-76763742c6ec
+		summarizeBy: none
+		sourceColumn: MRP Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plant
+		dataType: string
+		lineageTag: 9a7f25b6-86ea-402b-a637-a82a2ae344c3
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant-Specific Material Status'
+		dataType: string
+		lineageTag: 41c4dcc2-e8c7-44d6-bfe3-5409bd0b0090
+		summarizeBy: none
+		sourceColumn: Plant-Specific Material Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Procurement Type'
+		dataType: string
+		lineageTag: f0936565-68cf-40ff-bce0-68aea6169f08
+		summarizeBy: none
+		sourceColumn: Procurement Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Special Procurement Type'
+		dataType: string
+		lineageTag: 0a6df812-2a9d-4484-9bf9-297127f98a92
+		summarizeBy: none
+		sourceColumn: Special Procurement Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Special Procurement Type for Costing'
+		dataType: string
+		lineageTag: c725d0cc-f37d-488e-b5b5-f1335926090d
+		summarizeBy: none
+		sourceColumn: Special Procurement Type for Costing
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Minimum Safety Stock'
+		dataType: double
+		lineageTag: db990e6f-c676-4e4b-bad2-5ccb6fb868f6
+		summarizeBy: sum
+		sourceColumn: Minimum Safety Stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 3220a5c8-ee71-4dfd-b63c-e9576fa7f8d2
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number'
+		dataType: string
+		lineageTag: 4409c943-8325-47eb-9c96-2ea1296007b6
+		summarizeBy: none
+		sourceColumn: Global Product Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Profit Center'
+		dataType: string
+		lineageTag: b4274e7d-6448-4512-90ca-bafe640e4ea1
+		summarizeBy: none
+		sourceColumn: Global Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ABC Indicator'
+		dataType: string
+		lineageTag: 9aab3d3b-d758-4663-b163-2874face96a3
+		summarizeBy: none
+		sourceColumn: ABC Indicator
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ABC ID (IBP CSCI)'
+		dataType: string
+		lineageTag: 8100deb9-20be-4df7-9353-7845419002f5
+		summarizeBy: none
+		sourceColumn: ABC ID (IBP CSCI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'XYZ ID (IBP CSCI)'
+		dataType: string
+		lineageTag: 23551f3f-19ba-4fbc-a1f3-c862484fadd1
+		summarizeBy: none
+		sourceColumn: XYZ ID (IBP CSCI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant_Material Key'
+		dataType: string
+		lineageTag: 6def9c14-137a-44ae-ab5b-3862cd3693f7
+		summarizeBy: none
+		sourceColumn: Plant_Material Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Key (Adj)'
+		dataType: string
+		lineageTag: 76550740-1304-4075-93de-05dce0354527
+		summarizeBy: none
+		sourceColumn: Global Product Key (Adj)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant_Global Material'
+		dataType: string
+		lineageTag: 2fa116fa-29c9-4324-97e3-73daa35bf3a5
+		summarizeBy: none
+		sourceColumn: Plant_Global Material
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center Text'
+		dataType: string
+		lineageTag: d51a5851-2b64-449e-a33e-b5e68dfbfca3
+		summarizeBy: none
+		sourceColumn: Profit Center Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column CSCA/CSCI
+		dataType: string
+		lineageTag: 3cfd2a4b-5572-4cea-89c6-57680bc82acf
+		summarizeBy: none
+		sourceColumn: CSCA/CSCI
+
+		annotation SummarizationSetBy = Automatic
+
+	column Business
+		dataType: string
+		lineageTag: d81234bf-a78e-4b5b-830f-454dcc41d8cd
+		summarizeBy: none
+		sourceColumn: Business
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: 65da1dd1-6737-4342-bfc2-6e4b871d4b73
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit'
+		dataType: string
+		lineageTag: f76a27c9-d141-4edf-93d6-a8102957f1f6
+		summarizeBy: none
+		sourceColumn: Business Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Division'
+		dataType: string
+		lineageTag: 5b267fac-2acf-42ac-8239-552b0183a87f
+		summarizeBy: none
+		sourceColumn: Business Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center Key/Text'
+		dataType: string
+		lineageTag: 21f7e4f2-3718-47fb-8c75-eeaec8486f35
+		summarizeBy: none
+		sourceColumn: Profit Center Key/Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contracts
+		dataType: string
+		lineageTag: 81a0afea-8d9e-429d-b020-6dc6c46d32eb
+		summarizeBy: none
+		sourceColumn: Contracts
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit Short Text'
+		dataType: string
+		lineageTag: 725e0d60-4bfc-42c7-a34a-31c486b87ef6
+		summarizeBy: none
+		sourceColumn: Business Unit Short Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cleaned_Material_Number =
+			
+			VAR CleanText = TRIM(Dim_Material_Plant[Material Number(PMI)])
+			VAR Chars =
+			    ADDCOLUMNS(
+			        GENERATESERIES(1, LEN(CleanText)),
+			        "ThisChar", MID(CleanText, [Value], 1)
+			    )
+			VAR OnlyDigits =
+			    SUMX(
+			        Chars,
+			        IF([ThisChar] >= "0" && [ThisChar] <= "9", 0, 1)
+			    ) = 0
+			VAR FirstNonZeroPos =
+			    MINX(
+			        FILTER(Chars, [ThisChar] <> "0"),
+			        [Value]
+			    )
+			RETURN
+			IF(
+			    OnlyDigits,
+			    MID(CleanText, FirstNonZeroPos, LEN(CleanText)),
+			    CleanText
+			)
+		lineageTag: 44c0aa6d-8ff0-4268-9b69-4bee86c97188
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column New_Plant_Material = CONCATENATE(Dim_Material_Plant[Plant],CONCATENATE("/",Dim_Material_Plant[Cleaned_Material_Number]))
+		lineageTag: 54cf8011-41e5-4f3d-a2a2-abc50eede025
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Stream_Grant = LOOKUPVALUE(Dim_Value_Stream_Grant[Value Stream_clean],Dim_Value_Stream_Grant[Mat/Plant],Dim_Material_Plant[New_Plant_Material])
+		lineageTag: 5a7ff17e-0d0d-44ec-94d9-f9b6578b74c4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Stream_Jamie = LOOKUPVALUE(Dim_Value_Stream[Value Stream_Jamie],Dim_Value_Stream[Global Product Number],Dim_Material_Plant[Global Product Number])
+		lineageTag: 00062757-d05d-440e-9dfd-fc581d20a78a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Stream = COALESCE(Dim_Material_Plant[Value_Stream_Jamie],Dim_Material_Plant[Value_Stream_Grant])
+		lineageTag: 3d26fea6-bc1f-4cfa-927d-9a97a34782c7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Material_Plant = m
+		mode: import
+		source = ```
+				let 
+				
+				    Source = PowerBI.Dataflows(null), 
+				
+				    #"6a770a37-4162-475d-9a46-a2317c8085c4" = Source{[workspaceId="6a770a37-4162-475d-9a46-a2317c8085c4"]}[Data], 
+				
+				    #"6be69aed-34b8-48ca-b19a-fa25bf7b6393" = #"6a770a37-4162-475d-9a46-a2317c8085c4"{[dataflowId="6be69aed-34b8-48ca-b19a-fa25bf7b6393"]}[Data], 
+				
+				    #"Dim Material Plant1" = #"6be69aed-34b8-48ca-b19a-fa25bf7b6393"{[entity="Dim Material Plant"]}[Data] 
+				
+				in 
+				
+				    #"Dim Material Plant1"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
