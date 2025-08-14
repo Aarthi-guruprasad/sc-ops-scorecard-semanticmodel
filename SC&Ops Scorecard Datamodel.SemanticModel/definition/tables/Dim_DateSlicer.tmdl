@@ -1,0 +1,180 @@
+table Dim_DateSlicer
+	lineageTag: 4df433c3-f380-42ce-b505-fec8d9083a0a
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 004a6b52-d0c6-4fe0-a0d7-80d7a4cec537
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'P_Closing Period Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7f523568-0589-4022-97f0-8561320db71f
+		summarizeBy: none
+		sourceColumn: P_Closing Period Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column P_MonthFull
+		dataType: int64
+		formatString: 0
+		lineageTag: 4097eba0-0007-4efb-95d8-3319f4c07a80
+		summarizeBy: sum
+		sourceColumn: P_MonthFull
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 68fd770e-934b-43c3-9b59-ce960ce57f7f
+		summarizeBy: sum
+		sourceColumn: P_Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e9c7654-1977-4223-a6f0-cc7559e4378d
+		summarizeBy: sum
+		sourceColumn: P_YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_YearMonth Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5343b51a-bce2-49b3-a8f8-40bfee0d8ef4
+		summarizeBy: sum
+		sourceColumn: P_YearMonth Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearPeriod
+		dataType: string
+		lineageTag: bb71f90b-1a87-4ada-91d7-7713f5568389
+		summarizeBy: none
+		sourceColumn: P_YearPeriod
+		sortByColumn: 'P_YearMonth Number'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_QuarterNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 51d18e6b-509f-417d-af54-c4aca4de1527
+		summarizeBy: sum
+		sourceColumn: P_QuarterNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_Quarter
+		dataType: string
+		lineageTag: 5f628cf1-f0f3-4d54-9cb4-ab7e2fd0e826
+		summarizeBy: none
+		sourceColumn: P_Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: c47c8641-425a-409a-9790-9f880da3806c
+		summarizeBy: sum
+		sourceColumn: P_YearQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_QuarterYear
+		dataType: string
+		lineageTag: 62b146c7-67bf-4a6e-918d-0a5aa7b38f0a
+		summarizeBy: none
+		sourceColumn: P_QuarterYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_MonthShortName
+		dataType: string
+		lineageTag: c58c8b8f-4155-45e6-8778-6e97d7fd8571
+		summarizeBy: none
+		sourceColumn: P_MonthShortName
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_YearPeriod_Slicer
+		dataType: string
+		lineageTag: 537a62f5-4323-436a-a728-8963bd688252
+		summarizeBy: none
+		sourceColumn: P_YearPeriod_Slicer
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Closed'
+		dataType: string
+		lineageTag: c69e5498-59ed-4950-864d-460ef4336144
+		summarizeBy: none
+		sourceColumn: Is Closed
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsL13M
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 56048f9c-2377-486a-adce-a5c02d7535da
+		summarizeBy: none
+		sourceColumn: IsL13M
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsL12M
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b5d0de47-48d0-472b-894c-65b2021e8ab5
+		summarizeBy: none
+		sourceColumn: IsL12M
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_YearPeriod Seq'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5688c64c-4125-4d7e-a91a-7b9efb78c7fd
+		summarizeBy: sum
+		sourceColumn: P_YearPeriod Seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column P_DateKey_Monthly
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b76d2927-c17d-4e17-8bad-0b214ead2f17
+		summarizeBy: none
+		sourceColumn: P_DateKey_Monthly
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Dim_DateSlicer = m
+		mode: import
+		source =
+				let
+				    Source = Dim_Date
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

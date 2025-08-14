@@ -1,0 +1,114 @@
+table Fact_COPA_Global
+	lineageTag: e063b670-46c3-4969-9bec-c9524ed44306
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 2aabc6c2-6e15-4c1c-b7c5-d165ac19677a
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d6707367-7f1e-4865-b517-14f10c61447f
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Operating Income Actual'
+		dataType: double
+		formatString: 0.00
+		lineageTag: 85f82781-ad0c-4df5-aea6-002438c49573
+		summarizeBy: sum
+		sourceColumn: Operating Income Actual
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Operating Income Plan'
+		dataType: double
+		lineageTag: df7792db-ce2e-4f1b-b044-f05e516696d4
+		summarizeBy: sum
+		sourceColumn: Operating Income Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net PPV Actual'
+		dataType: double
+		lineageTag: 6a219970-ee1a-4f37-b608-800c1ecfeff4
+		summarizeBy: sum
+		sourceColumn: Net PPV Actual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net PPV Plan'
+		dataType: double
+		lineageTag: 31001314-10aa-48a4-aba1-cc4888fbfb4b
+		summarizeBy: sum
+		sourceColumn: Net PPV Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net POV Actual'
+		dataType: double
+		lineageTag: d2cd29f4-04cd-4055-bf7f-e4e3be1eb0d0
+		summarizeBy: sum
+		sourceColumn: Net POV Actual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Net POV Plan'
+		dataType: double
+		lineageTag: b5cc29c2-2a68-4516-8e04-159136dfac2e
+		summarizeBy: sum
+		sourceColumn: Net POV Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Gross PPV Actual'
+		dataType: double
+		lineageTag: 5617a037-d5f2-4672-bb8f-52810b122bd2
+		summarizeBy: sum
+		sourceColumn: Gross PPV Actual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Gross PPV Plan'
+		dataType: double
+		lineageTag: 6ca16941-4d3b-430b-8206-ba986190a0f0
+		summarizeBy: sum
+		sourceColumn: Gross PPV Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_COPA_Global = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_COPA_Global = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CFin%20Global%20PROD%20Reporting", "Global - Finance", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_COPA_Global[Operating Income Actual] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""))#(lf)MEASURE Fact_COPA_Global[Operating Income Plan] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""PLAN""))#(lf)MEASURE Fact_COPA_Global[Net PPV Actual] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net PPV Plan] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net POV Actual] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net POV Plan] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Gross PPV Actual] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Gross PPV Plan] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_PC[Profit Center],#(lf)    Dim_Date[Date],#(lf)    ""Operating Income Actual"", [Operating Income Actual],#(lf)    ""Operating Income Plan"", [Operating Income Plan],#(lf)    ""Net PPV Actual"", [Net PPV Actual],#(lf)    ""Net PPV Plan"", [Net PPV Plan],#(lf)    ""Net POV Actual"", [Net POV Actual],#(lf)    ""Net POV Plan"", [Net POV Plan],#(lf)    ""Gross PPV Actual"", [Gross PPV Actual],#(lf)    ""Gross PPV Plan"", [Gross PPV Plan]#(lf))#(lf)ORDER BY #(lf)    Dim_PC[Profit Center] ASC,#(lf)    Dim_Date[Date] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_COPA_Global,{{"Dim_PC[Profit Center]", "Profit Center"}, {"Dim_Date[Date]", "Date"}, {"[Operating Income Actual]", "Operating Income Actual"}, {"[Operating Income Plan]", "Operating Income Plan"}, {"[Net PPV Actual]", "Net PPV Actual"}, {"[Net PPV Plan]", "Net PPV Plan"}, {"[Net POV Actual]", "Net POV Actual"}, {"[Net POV Plan]", "Net POV Plan"}, {"[Gross PPV Actual]", "Gross PPV Actual"}, {"[Gross PPV Plan]", "Gross PPV Plan"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Operating Income Actual", type number}, {"Operating Income Plan", type number}, {"Net PPV Actual", type number}, {"Net PPV Plan", type number}, {"Net POV Actual", type number}, {"Net POV Plan", type number}, {"Gross PPV Actual", type number}, {"Gross PPV Plan", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

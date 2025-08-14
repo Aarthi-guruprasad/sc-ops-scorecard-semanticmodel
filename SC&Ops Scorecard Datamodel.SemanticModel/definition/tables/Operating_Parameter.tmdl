@@ -1,0 +1,149 @@
+table Operating_Parameter
+	lineageTag: f402955b-715e-41d9-923f-d5af147c952b
+
+	measure 'Switch Operating_Parameter' = ```
+			SWITCH(SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+			    
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obsolescence],
+			    "SSSO: Obs linked to Conv", [SSSO: Obsolescenes linked to Conversions] ,
+			    "SSSO: Shrinkage", [SSSO Shrinkage],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-Off],
+			    "Net Sales", [Net Sales Actual],
+			    "COGS", [COGS Actual],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales Actual],
+			    "Distribution to COGS", [Total Distribution on COGS Actual],
+			    "Operating Income", [Operating Income Actual],
+			    "Gross PPV", [Gross PPV Actual],
+			    "Customer Fines", [Customer Fines],
+			    "Net POV", [Net POV Actual],
+			    "ABP Variance",[ABP Variance]
+			    
+			)
+			```
+		lineageTag: 58d5b460-c36e-4ce9-84f0-f8ed057a9f47
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
+	measure 'Switch Operating_Parameter LYTD' = ```
+			SWITCH(SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+			    
+			    "SSSO: Salvage & Obs", BLANK(),
+			    "SSSO: Obs linked to Conv", BLANK(),
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off LYTD],
+			    "SSSO: Shrinkage", [SSSO: Shrinkage LYTD],
+			    "Net Sales", [Net Sales LYTD],
+			    "COGS", [COGS Actual LYTD],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales LYTD],
+			    "Distribution to COGS", [Total Distribution on COGS LYTD],
+			    "Operating Income", [Operating Income Actual LYTD],
+			    "Gross PPV", [Gross PPV Actual LYTD],
+			    "Customer Fines", [Cust Fine LYTD],
+			    "Net POV", [Net POV Actual LYTD],
+			    "ABP Variance", [ABP Variance LYTD]
+			    
+			)
+			```
+		lineageTag: 4730243e-b8ef-41ac-8622-48d9aa02a08d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Switch Operating_Parameter Plan' = ```
+			SWITCH(SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+			    
+			    "SSSO: Salvage & Obs",  [SSSO Obs_APN] - ABS([SSSO Salvage_APN]),
+			    "SSSO: Obs linked to Conv", [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] - ABS([SSSO Salvage_APN]),
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off APN_Base],
+			    "SSSO: Shrinkage", [SSSO: Shrinkage APN_Base],
+			    "Net Sales", [Net Sales_APN_Base],
+			    "COGS", [COGS_APN_Base],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_APN_Base],
+			    "Distribution to COGS", [Total Distribution on COGS_APN_Base],
+			    "Operating Income", [Operating Income APN_Base],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Customer Fines", [Customer Fines Target],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			```
+		lineageTag: 0f95efc8-f2e5-4133-8263-b14939831ff7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Operating_Parameter
+		lineageTag: 3f14d7e1-681e-49cd-b1b0-0186253de6df
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Inventory_Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Inventory_Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory_Parameter Fields'
+		isHidden
+		lineageTag: 60dd306c-8af4-4a70-ada6-5e1a697f429b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Inventory_Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Inventory_Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: a9f55bbe-a88a-4012-8884-93da78e34235
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: 7b522d1a-991a-4b33-b4ea-9856b7fffeb6
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Operating_Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("SSSO: Salvage & Obs", NAMEOF('Measure'[SSSO: Salvage & Obsolescence]), 0, "SSSO: Salvage & Obs"),
+				    ("SSSO: Obs linked to Conv", NAMEOF('Measure'[SSSO: Obsolescenes linked to Conversions]), 1, "SSSO: Obs linked to Conv"),
+				    ("SSSO: Shrinkage", NAMEOF('CSCI Measures'[SSSO Shrinkage]), 2, "SSSO: Shrinkage"),
+				    ("SSSO: Scrap-Off", NAMEOF('Measure'[SSSO: Scrap-Off]), 3, "SSSO: Scrap-Off"),
+				    ("Net Sales", NAMEOF('Measure'[Net Sales Actual]), 4, "Net Sales"),
+				    ("COGS", NAMEOF('Measure'[COGS Actual]), 5, "COGS") ,
+				    ("% Logistics vs Net Sales", NAMEOF( [Total Logistics on Net Sales Actual] ), 6, "% Logistics vs Net Sales"),
+				    ("Distribution to COGS", NAMEOF( [Total Distribution on COGS Actual] ), 7, "Distribution to COGS") ,
+				    ("Customer Fines", NAMEOF([Customer Fines]), 8, "Customer Fines"),
+				    ("Operating Income",NAMEOF( [Operating Income Actual] ), 9, "Operating Income"),
+				    ("Gross PPV", NAMEOF( [Gross PPV Actual] ), 10, "Gross PPV"),
+				    ("Net POV", NAMEOF( [Net POV Actual] ), 11, "Net POV"),
+				    ("ABP Variance", NAMEOF( [ABP Variance] ), 12, "ABP Variance")
+				    }
+
+	annotation PBI_Id = 1f391abc16e3495ba168e0ca1424add5
+

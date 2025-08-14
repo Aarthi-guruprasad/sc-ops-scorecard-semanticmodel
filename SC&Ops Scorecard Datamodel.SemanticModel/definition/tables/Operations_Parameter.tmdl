@@ -1,0 +1,98 @@
+table Operations_Parameter
+	lineageTag: ab3b018c-f7cf-4f5d-a3ab-e0b07346424b
+
+	measure 'Switch Operations_Parameter' =
+			SWITCH(
+			    SELECTEDVALUE( Operations_Parameter[Parameter Name] ),
+			     "OEE%", [OEE%],
+			    "Schedule Attainment%", [Schedule Attn],
+			    "On Time Closure of Deviations%", [On Time Closure of Deviations%],
+			    "CAPA Completion Rate%", [CAPA Completion Rate],
+			    "RFT%", [RFT%],
+			    "Critical or Major Observations", [Critical or Major Observations]
+			
+			)
+		lineageTag: 7c088386-c8e5-4af3-a3bc-641661e9489e
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operations_Parameter[Parameter Name]),
+				    "CAPA Completion Rate%", "0.0%",
+				    "On Time Closure of Deviations%", "0.0%",
+				    "RFT%", "0.0%",
+				    "Critical or Major Observations", "#,0",
+				    "OEE%", "0.0%",
+				    "Schedule Attainment", "0.0%",
+				    "General"  --fallback
+				)
+
+	measure 'Switch Operations_Parameter MoM%' =
+			SWITCH(
+			    SELECTEDVALUE( Operations_Parameter[Parameter Name] ),
+			     "OEE%", [OEE% MoM%],
+			    "Schedule Attainment%", [SA MoM%],
+			    "On Time Closure of Deviations%", [On Time Closure of Deviations MoM%],
+			    "CAPA Completion Rate%", [CAPA Completion Rate MoM%],
+			    "RFT%", [RFT MoM%],
+			    "Critical or Major Observations", [Critical or Major Observations] - [Critical or Major Observations PP]
+			)
+		lineageTag: 8263421b-d318-4cc2-a712-92a5629c31e4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Operations_Parameter
+		lineageTag: 3c972323-424a-44b6-9614-8be0836968d5
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 27e6169b-6086-4747-8a56-a8592b4192ef
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 929655b8-efe0-4209-bd8b-508abaf7de22
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: de7648f1-6fdc-442f-8e7d-dc2e881b5ba3
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Operations_Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("OEE%", NAMEOF('Measure'[OEE%]), 0, "OEE%"),
+				    ("Schedule Attainment%", NAMEOF('Measure'[Schedule Attn]), 1, "Schedule Attainment%"),
+				    ("On Time Closure of Deviations%", NAMEOF('Measure'[On Time Closure of Deviations%]), 2, "On Time Closure of Deviations%"),
+				    ("CAPA Completion Rate%",NAMEOF('Measure'[CAPA Completion Rate]),3,"CAPA Completion Rate%"),
+				    ("RFT%",NAMEOF('Measure'[RFT%]),3,"RFT%"),
+				    ("Critical or Major Observations",NAMEOF('Measure'[Critical or Major Observations]),3,"Critical or Major Observations")
+				}
+
+	annotation PBI_Id = e897d2c4f7854dd39ebbae24c1684a56
+

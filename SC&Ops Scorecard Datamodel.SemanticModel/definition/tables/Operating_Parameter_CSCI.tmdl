@@ -1,0 +1,93 @@
+table Operating_Parameter_CSCI
+	lineageTag: 8826d30f-b88d-4a33-bdd4-8982aabc64d3
+
+	measure 'Switch Operating_Parameter_CSCI' = ```
+			SWITCH(SELECTEDVALUE(Operating_Parameter_CSCI[Parameter Name]),
+			    
+			    "SSSO Obsolete Inv.",[SSSO: Salvage & Obsolescence],
+			    "SSSO Shrinkage", [SSSO Shrinkage],
+			    "SSSO Scrap-Off", [SSSO: Scrap-Off],
+			    "DIO", [DIO],
+			    "Net Inventory",[Net Inventory],
+			    "Gross Inventory", [Gross Inventory],
+			    "Expired Inventory",[Expired Inventory],
+			    "Inflated Inventory", [Inflated Inventory],
+			    "Net Sales",[Net Sales Actual],
+			    "COGS", [COGS Actual] ,
+			    "% Logistics vs Net Sales",  [Total Logistics on Net Sales Actual] ,
+			    "Distribution to COGS",[Total Distribution on COGS Actual]  ,
+			    "DSO", [DSO] ,
+			    "DPO", [DPO] 
+			)
+			```
+		lineageTag: ef4fd3eb-2c4b-43f8-8c84-f35cecd542ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Operating_Parameter_CSCI
+		lineageTag: 13640e83-de1d-4d9b-a777-850b10bdab31
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Operating_Parameter_CSCI Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Operating_Parameter_CSCI Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Operating_Parameter_CSCI Fields'
+		isHidden
+		lineageTag: e8d48c90-f8d9-4e23-ade1-97a0ca849266
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Operating_Parameter_CSCI Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Operating_Parameter_CSCI Order'
+		isHidden
+		formatString: 0
+		lineageTag: b70808f6-94e6-40cc-8586-1febb70182f1
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: 6f032157-cc14-4d39-9942-538131b1af7f
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Operating_Parameter_CSCI = calculated
+		mode: import
+		source =
+				{
+				    ("SSSO Obsolete Inv.", NAMEOF('Measure'[SSSO: Salvage & Obsolescence]), 0,"SSSO Obsolete Inv."),
+				    ("SSSO Shrinkage", NAMEOF('CSCI Measures'[SSSO Shrinkage]), 1, "SSSO Shrinkage"),
+				    ("SSSO Scrap-Off", NAMEOF('Measure'[SSSO: Scrap-Off]), 2, "SSSO Scrap-Off"),
+				    ("DIO", NAMEOF('Measure'[DIO]), 3, "DIO"),
+				    ("Net Inventory", NAMEOF('Measure'[Net Inventory]), 4, "Net Inventory"),
+				    ("Gross Inventory", NAMEOF('Measure'[Gross Inventory]), 5, "Gross Inventory"),
+				    ("Expired Inventory", NAMEOF('Measure'[Expired Inventory]), 6, "Expired Inventory"),
+				    ("Inflated Inventory", NAMEOF('Measure'[Inflated Inventory]), 7, "Inflated Inventory"),
+				    ("Net Sales", NAMEOF('Measure'[Net Sales Actual]), 8, "Net Sales"),
+				    ("COGS", NAMEOF('Measure'[COGS Actual]), 9, "COGS") ,
+				    ("% Logistics vs Net Sales", NAMEOF( 'Measure'[Total Logistics on Net Sales Actual] ), 10, "% Logistics vs Net Sales"),
+				    ("Distribution to COGS", NAMEOF( 'Measure'[Total Distribution on COGS Actual] ), 11, "Distribution to COGS") ,
+				    ("DSO", NAMEOF( [DSO] ), 12, "DSO"),
+				    ("DPO", NAMEOF( [DPO] ), 13, "DPO"),
+				    ("Operating Income",NAMEOF( 'Measure'[Operating Income Actual] ), 14, "Operating Income"),
+				    ("Gross PPV", NAMEOF( 'Measure'[Gross PPV Actual] ), 15, "Gross PPV"),
+				    ("Net POV", NAMEOF( 'Measure'[Net POV Actual] ), 16, "Net POV")
+				}
+
+	annotation PBI_Id = 250de672637f4bc5b02da29d0d6ef8c3
+

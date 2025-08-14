@@ -1,0 +1,74 @@
+table 'z_Version History'
+	excludeFromModelRefresh
+	lineageTag: abc3e594-cc30-456d-a119-b13a314eb2f7
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 109662a9-ddea-48b2-8d74-20ad2b68394b
+		summarizeBy: none
+		sourceColumn: Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Version
+		dataType: string
+		lineageTag: 39246198-7e56-4afb-803a-f4297590ef5b
+		summarizeBy: none
+		sourceColumn: Version
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Title
+		dataType: string
+		lineageTag: d4489949-678e-4c8f-bd90-71d7aae55dbb
+		summarizeBy: none
+		sourceColumn: Title
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: a968c423-ac95-4648-a02b-eeb640e4ab85
+		summarizeBy: none
+		sourceColumn: Description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: ef808260-9c27-4c48-988c-1989c26c6add
+		summarizeBy: none
+		sourceColumn: Type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'z_Version History' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Help&Information%20Document%20V1.0.xlsx"), null, true),
+				    #"z_Version History_Sheet" = Source{[Item="z_Version History",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"z_Version History_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Version", type text}, {"Title", type text}, {"Description", type text}, {"Type", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

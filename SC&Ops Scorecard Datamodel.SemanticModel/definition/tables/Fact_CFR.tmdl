@@ -1,0 +1,97 @@
+table Fact_CFR
+	lineageTag: c5fed271-631d-498b-9236-a23b9f7edccf
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8165cba7-f08b-46a1-9364-cfff2b5b82a5
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'WE Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: af09608e-94b1-4690-b9e4-a5fd3a9d0f95
+		summarizeBy: none
+		sourceColumn: WE Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Key'
+		dataType: string
+		lineageTag: 885e5863-cf79-4659-9de9-145f05854746
+		summarizeBy: none
+		sourceColumn: Material Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant Key'
+		dataType: string
+		lineageTag: faecdc42-48ee-406c-9606-8f8c04ab001a
+		summarizeBy: none
+		sourceColumn: Plant Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Delivery Qty'
+		dataType: double
+		lineageTag: b6468f4b-92b7-4c47-8721-9cdcfa6d9cac
+		summarizeBy: sum
+		sourceColumn: Total Delivery Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Order Qty'
+		dataType: double
+		lineageTag: 368c6e98-a438-453e-b7c1-061e6c1a6e9c
+		summarizeBy: sum
+		sourceColumn: Total Order Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Plant/Material = Fact_CFR[Plant Key]&"/"&Fact_CFR[Material Key]
+		lineageTag: 171618b6-f309-4c46-9811-e9043897212a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center' = LOOKUPVALUE(Dim_Material_Plant[Global Profit Center],Dim_Material_Plant[Plant_Material Key],Fact_CFR[Plant/Material])
+		lineageTag: 43af2212-c883-4ab0-bc04-43665bfd89ec
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number' = LOOKUPVALUE(Dim_Material_Plant[Global Product Number],Dim_Material_Plant[Plant_Material Key],Fact_CFR[Plant/Material])
+		lineageTag: d8392861-9255-479b-81e8-b85074363d09
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Hierarchy'
+		dataType: string
+		lineageTag: c1e1c700-bf31-4a4a-b750-2f6927c79404
+		summarizeBy: none
+		sourceColumn: Customer Hierarchy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_CFR = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_CFR = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Case Fill Rate", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)    MEASURE 'Service Case Fill Rate'[Total Delivery Qty] = #(lf)        SUM('Service Case Fill Rate'[Delivery Qty])#(lf) #(lf)    MEASURE 'Service Case Fill Rate'[Total Order Qty] = #(lf)        SUM('Service Case Fill Rate'[Order Qty])#(lf) #(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Service Case Fill Rate'[Date],#(lf)    'Service Case Fill Rate'[WE Date],#(lf)    'Service Case Fill Rate'[Material Key],#(lf)    'Service Case Fill Rate'[Plant Key],#(lf)    'Service Case Fill Rate'[Customer Hierarchy],#(lf)    ""Total Delivery Qty"", [Total Delivery Qty],#(lf)    ""Total Order Qty"", [Total Order Qty]#(lf))#(lf)ORDER BY #(lf)    'Service Case Fill Rate'[Date] ASC,#(lf)    'Service Case Fill Rate'[WE Date] ASC,#(lf)    'Service Case Fill Rate'[Material Key] ASC,#(lf)    'Service Case Fill Rate'[Plant Key] ASC,#(lf)    'Service Case Fill Rate'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_CFR,{{"Service Case Fill Rate[Date]", "Date"}, {"Service Case Fill Rate[WE Date]", "WE Date"}, {"Service Case Fill Rate[Material Key]", "Material Key"}, {"Service Case Fill Rate[Plant Key]", "Plant Key"}, {"[Total Delivery Qty]", "Total Delivery Qty"}, {"[Total Order Qty]", "Total Order Qty"}, {"Service Case Fill Rate[Customer Hierarchy]", "Customer Hierarchy"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

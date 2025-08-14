@@ -1,0 +1,121 @@
+table Dim_Profit_Center
+	lineageTag: db8257d0-43ac-4c75-81f3-d64af52ed630
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: d97a8e65-16ae-49e3-8b6f-e9b97b66711c
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 3'
+		dataType: string
+		lineageTag: 06081e8a-2cf2-4d00-8340-4634d322fb67
+		summarizeBy: none
+		sourceColumn: Level 3
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 6'
+		dataType: string
+		lineageTag: 380100b0-67f8-4b97-8363-b0b520335753
+		summarizeBy: none
+		sourceColumn: Level 6
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 7'
+		dataType: string
+		lineageTag: 825db8d8-e06d-43e5-b433-716589be67f9
+		summarizeBy: none
+		sourceColumn: Level 7
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 8'
+		dataType: string
+		lineageTag: 7b02659b-9960-451b-b71a-46f1837bde23
+		summarizeBy: none
+		sourceColumn: Level 8
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 9'
+		dataType: string
+		lineageTag: 9fd61589-b4c5-433e-8648-d7335018c91c
+		summarizeBy: none
+		sourceColumn: Level 9
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 10'
+		dataType: string
+		lineageTag: 7477c748-6389-49b5-b50a-20712444c82c
+		summarizeBy: none
+		sourceColumn: Level 10
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FP&A Segment'
+		dataType: string
+		lineageTag: 40abac7e-272d-45ff-9c8e-0972e4b665a6
+		summarizeBy: none
+		sourceColumn: FP&A Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 5 (Custom new)'
+		dataType: string
+		lineageTag: 662d08b1-c258-4461-b032-f5f08c2c7432
+		summarizeBy: none
+		sourceColumn: Level 5 (Custom new)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Area
+		dataType: string
+		lineageTag: 8e98fa21-b37c-4d46-8596-0a03ecec088a
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ProfitCenter Level ID // Descr'
+		dataType: string
+		lineageTag: c8316d6e-f787-4723-8e82-6f41e2a880a8
+		summarizeBy: none
+		sourceColumn: ProfitCenter Level ID // Descr
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FP&A Cluster'
+		dataType: string
+		lineageTag: 38a6f45d-bcc7-424d-9ccb-6a4729f5f819
+		summarizeBy: none
+		sourceColumn: FP&A Cluster
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FP&A Country'
+		dataType: string
+		lineageTag: 509b4c00-0304-461e-b7c8-cbc2e8970c37
+		summarizeBy: none
+		sourceColumn: FP&A Country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Profit_Center = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"c5da013e-9820-4ab4-8ee2-106ba3a7da75" = Workspaces{[workspaceId="c5da013e-9820-4ab4-8ee2-106ba3a7da75"]}[Data],
+				    #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e" = #"c5da013e-9820-4ab4-8ee2-106ba3a7da75"{[dataflowId="4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"]}[Data],
+				    Dim_Profit_Center_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_Profit_Center",version=""]}[Data]
+				in
+				    Dim_Profit_Center_
+
+	annotation PBI_ResultType = Table
+

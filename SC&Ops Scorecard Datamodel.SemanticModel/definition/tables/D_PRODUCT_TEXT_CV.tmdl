@@ -1,0 +1,527 @@
+table D_PRODUCT_TEXT_CV
+	lineageTag: a5084cba-e7a9-407a-92c0-09f5b902fcdb
+
+	column Formula
+		dataType: string
+		lineageTag: 2824c092-d2f4-4402-b8ec-ec0fc9da02e0
+		summarizeBy: none
+		sourceColumn: Formula
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Formula Description'
+		dataType: string
+		lineageTag: 1e1ad67c-8404-441e-9fb4-14a5e2db2835
+		summarizeBy: none
+		sourceColumn: Formula Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number Adj(BCS)'
+		dataType: string
+		lineageTag: 9b8d9ef6-4e42-4da0-b636-a15e78ca18f1
+		summarizeBy: none
+		sourceColumn: Material Number Adj(BCS)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number Adj(Other)'
+		dataType: string
+		lineageTag: 2c59c89a-eb07-42e1-939e-618441552abf
+		summarizeBy: none
+		sourceColumn: Material Number Adj(Other)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number Adj(PMI)'
+		dataType: string
+		lineageTag: 284d5e94-07dc-4ee2-a20c-cb576a431103
+		summarizeBy: none
+		sourceColumn: Material Number Adj(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number(BCS)'
+		dataType: string
+		lineageTag: eb0c15c0-6eb6-4851-8c8e-14afba09710a
+		summarizeBy: none
+		sourceColumn: Material Number(BCS)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number(Other)'
+		dataType: string
+		lineageTag: daf3e7a9-cd5d-4cfc-883b-12caf74853f3
+		summarizeBy: none
+		sourceColumn: Material Number(Other)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number(PMI)'
+		dataType: string
+		lineageTag: 2ce0e026-7db7-4424-93c0-ed6ead4dd22a
+		summarizeBy: none
+		sourceColumn: Material Number(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PMI Old Material Number'
+		dataType: string
+		lineageTag: 62accd91-72f6-41f7-80a9-a2f0632fb85d
+		summarizeBy: none
+		sourceColumn: PMI Old Material Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Hierarchy(BCS)'
+		dataType: string
+		lineageTag: f82a3192-8589-4018-b31f-f83337d5266e
+		summarizeBy: none
+		sourceColumn: Product Hierarchy(BCS)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Hierarchy(PMI)'
+		dataType: string
+		lineageTag: 3b17e80d-51c5-4670-80fb-eb67493c71df
+		summarizeBy: none
+		sourceColumn: Product Hierarchy(PMI)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shared Capacity Description'
+		dataType: string
+		lineageTag: aab5a509-a198-4852-8da1-9f0fb49bb067
+		summarizeBy: none
+		sourceColumn: Shared Capacity Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shared Capacity Value'
+		dataType: string
+		lineageTag: 8aa6cd73-f4be-4e8a-826e-f3071cfb0ce1
+		summarizeBy: none
+		sourceColumn: Shared Capacity Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Base Unit of Measure'
+		dataType: string
+		lineageTag: 7a0099ed-b6da-4e34-af97-756642a1a7fa
+		summarizeBy: none
+		sourceColumn: Base Unit of Measure
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Material Info Number'
+		dataType: string
+		lineageTag: 883d22a6-bf60-4709-8bc3-a1b2f8bf55ec
+		summarizeBy: none
+		sourceColumn: Customer Material Info Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Part Description'
+		dataType: string
+		lineageTag: 0da979d6-1f93-4dcc-9067-8b5b5e95a2a4
+		summarizeBy: none
+		sourceColumn: Customer Part Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Part Number'
+		dataType: string
+		lineageTag: 62c62830-4046-4e18-b132-9e7bd63e7122
+		summarizeBy: none
+		sourceColumn: Customer Part Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivering Plant'
+		dataType: string
+		lineageTag: 4e27d19a-cb99-4f59-a263-30829d1c1c1f
+		summarizeBy: none
+		sourceColumn: Delivering Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L1 - Global Category Description'
+		dataType: string
+		lineageTag: 853d6b48-714e-4b2b-a482-a4c7ef32f066
+		summarizeBy: none
+		sourceColumn: GlPrdHier L1 - Global Category Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L2 - Local Category Description'
+		dataType: string
+		lineageTag: 5dd5c25b-3ac0-442f-be99-77518a38f100
+		summarizeBy: none
+		sourceColumn: GlPrdHier L2 - Local Category Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L3 - Brand Description'
+		dataType: string
+		lineageTag: abb01447-4253-4a3d-82d2-0d59ea42b38a
+		summarizeBy: none
+		sourceColumn: GlPrdHier L3 - Brand Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L4 - Segment Description'
+		dataType: string
+		lineageTag: fa6863a5-adb1-4802-9989-26c06f8c6a74
+		summarizeBy: none
+		sourceColumn: GlPrdHier L4 - Segment Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L5 - Sub Segment Description'
+		dataType: string
+		lineageTag: 2cf9bc6f-dd66-4b13-93fb-f861b7a3f350
+		summarizeBy: none
+		sourceColumn: GlPrdHier L5 - Sub Segment Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Distribution-Chain-Specific Material Status'
+		dataType: string
+		lineageTag: 7a890059-2a2b-43e4-8908-d93d5a4be50b
+		summarizeBy: none
+		sourceColumn: Distribution-Chain-Specific Material Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Each UPC Number'
+		dataType: string
+		lineageTag: 1d4acd04-085e-4d82-87e7-a130fb6722d3
+		summarizeBy: none
+		sourceColumn: Each UPC Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column EAN/UPC
+		dataType: string
+		lineageTag: cbd898d1-6ae3-4dc2-b705-143be4b8a1c9
+		summarizeBy: none
+		sourceColumn: EAN/UPC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Description'
+		dataType: string
+		lineageTag: 649774ad-16c6-4897-b7a0-4315ac06a1e2
+		summarizeBy: none
+		sourceColumn: Global Product Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Description (Short Text)'
+		dataType: string
+		lineageTag: 42d909e2-d421-4dff-8588-b81edd2f48a4
+		summarizeBy: none
+		sourceColumn: Material Description (Short Text)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Determination EDI Number'
+		dataType: string
+		lineageTag: e5db0bf5-c124-40a8-bc89-3af8aa56e25e
+		summarizeBy: none
+		sourceColumn: Material Determination EDI Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Group'
+		dataType: string
+		lineageTag: 7109341b-3c9a-4f42-a46c-6e9ff3ade0d2
+		summarizeBy: none
+		sourceColumn: Material Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number'
+		dataType: string
+		lineageTag: 9726281e-8255-42d1-bfeb-9f1da8575edb
+		summarizeBy: none
+		sourceColumn: Global Product Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Pricing Group'
+		dataType: string
+		lineageTag: 91fe13bc-beeb-47b3-a2c7-f3c08bd25760
+		summarizeBy: none
+		sourceColumn: Material Pricing Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type'
+		dataType: string
+		lineageTag: ebf7f031-c11e-4b54-b62e-5af894fc3061
+		summarizeBy: none
+		sourceColumn: Material Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type Description'
+		dataType: string
+		lineageTag: 095a63b0-8343-49e9-a6e0-72ec4e1725b9
+		summarizeBy: none
+		sourceColumn: Material Type Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Minor
+		dataType: string
+		lineageTag: c8909b99-594f-411a-92d9-8f7454e9d6da
+		summarizeBy: none
+		sourceColumn: Minor
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Minor Description'
+		dataType: string
+		lineageTag: c861f5f0-2ee3-403f-86d9-de81d987993a
+		summarizeBy: none
+		sourceColumn: Minor Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Minor Sub'
+		dataType: string
+		lineageTag: 999896a7-ec02-49e3-9972-4bf5a3cad3b0
+		summarizeBy: none
+		sourceColumn: Minor Sub
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Minor Sub Description'
+		dataType: string
+		lineageTag: 771d080f-33e8-4218-8c6c-e6d2842cb00b
+		summarizeBy: none
+		sourceColumn: Minor Sub Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Old Material Type'
+		dataType: string
+		lineageTag: cc8e402c-e078-4374-94ea-b34ef2ab2f35
+		summarizeBy: none
+		sourceColumn: Old Material Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Pallet Pattern'
+		dataType: string
+		lineageTag: 2755d71f-ce1f-4b1d-baa3-c471d5c03508
+		summarizeBy: none
+		sourceColumn: Pallet Pattern
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Hierarchy (GlPrdHier)'
+		dataType: string
+		lineageTag: c46f0f06-b687-4434-8540-aa6a2c203d4a
+		summarizeBy: none
+		sourceColumn: Global Product Hierarchy (GlPrdHier)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L3 - Brand - Long'
+		dataType: string
+		lineageTag: 0fb70b92-633f-490e-a4d2-f740700e250b
+		summarizeBy: none
+		sourceColumn: GlPrdHier L3 - Brand - Long
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Volume Unit'
+		dataType: string
+		lineageTag: 02ce3c12-ba19-4b90-b659-ca09bd805c5d
+		summarizeBy: none
+		sourceColumn: Volume Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Volume
+		dataType: double
+		lineageTag: c5d008bb-a97e-40c1-be75-95029957198c
+		summarizeBy: sum
+		sourceColumn: Volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'X - Plant Material status'
+		dataType: string
+		lineageTag: 6371d1cd-96b8-427c-b8ac-a737ebbe5893
+		summarizeBy: none
+		sourceColumn: X - Plant Material status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Packaging Option'
+		dataType: string
+		lineageTag: 6f6a856a-e6e2-4d5a-91aa-c4efbcf9b7e8
+		summarizeBy: none
+		sourceColumn: Packaging Option
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Packaging Option Text'
+		dataType: string
+		lineageTag: 32a2d437-8c43-4f86-bc88-7958efc09ff2
+		summarizeBy: none
+		sourceColumn: Packaging Option Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: dce1f470-eb50-4c14-9526-d4a51e632b9d
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category Value'
+		dataType: string
+		lineageTag: 79f4d4dd-7890-4931-b84b-577c7ecc366b
+		summarizeBy: none
+		sourceColumn: Product Category Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Category Value Text'
+		dataType: string
+		lineageTag: 4bdbddbd-872c-4ec5-b79d-53c0fdd55dc8
+		summarizeBy: none
+		sourceColumn: Product Category Value Text
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: 3711cdd9-00db-4d89-8a92-7761b5a33848
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream Description'
+		dataType: string
+		lineageTag: a24f2674-0beb-4797-ae6e-5241fce63f72
+		summarizeBy: none
+		sourceColumn: Value Stream Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Super Value Stream'
+		dataType: string
+		lineageTag: 98cc97f2-2992-45ea-bb26-1a039aa7ce85
+		summarizeBy: none
+		sourceColumn: Super Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Volume Multiplier'
+		dataType: string
+		lineageTag: 10201a93-689b-4ed8-bd81-f64a6f5c90b5
+		summarizeBy: none
+		sourceColumn: Volume Multiplier
+
+		annotation SummarizationSetBy = Automatic
+
+	column '5 Digit'
+		dataType: string
+		lineageTag: e6d32258-093c-4dd4-ab32-34ec5a73b6c8
+		summarizeBy: none
+		sourceColumn: 5 Digit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Unit'
+		dataType: string
+		lineageTag: 541cbdc6-7944-4e5f-a3b5-bdb0a1ffa39d
+		summarizeBy: none
+		sourceColumn: Sales Unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GlPrdHier L3 - Brand - Short'
+		dataType: string
+		lineageTag: 0a10043b-c1f2-4dc4-ace3-939c397dc638
+		summarizeBy: none
+		sourceColumn: GlPrdHier L3 - Brand - Short
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Code - Description'
+		dataType: string
+		lineageTag: 3e77a00f-ca99-4bdb-8af7-fcb1ba988b2d
+		summarizeBy: none
+		sourceColumn: Material Code - Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Type - Description'
+		dataType: string
+		lineageTag: 1698fc26-5e6b-45ee-8d57-8d702d3248ea
+		summarizeBy: none
+		sourceColumn: Material Type - Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number (short)'
+		dataType: string
+		lineageTag: 61ffb531-3821-40e1-8c34-c16698653168
+		summarizeBy: none
+		sourceColumn: Global Product Number (short)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'New MDG code'
+		dataType: string
+		lineageTag: 90552506-7aa7-4aa5-a588-c08c86b58717
+		summarizeBy: none
+		sourceColumn: New MDG code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Product Number (short)_new'
+		dataType: string
+		lineageTag: 57cea887-3060-4dba-9bef-eba461ebdb46
+		summarizeBy: none
+		sourceColumn: Global Product Number (short)_new
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_PRODUCT_TEXT_CV = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"d7d0b53b-e57b-4b17-8774-98af6cfbc263" = Workspaces{[workspaceId="d7d0b53b-e57b-4b17-8774-98af6cfbc263"]}[Data],
+				    #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e" = #"d7d0b53b-e57b-4b17-8774-98af6cfbc263"{[dataflowId="1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"]}[Data],
+				    D_PRODUCT_TEXT_CV_ = #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"{[entity="D_PRODUCT_TEXT_CV",version=""]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(D_PRODUCT_TEXT_CV_,{"Formula", "Formula Description", "Material Number Adj(BCS)", "Material Number Adj(Other)", "Material Number Adj(PMI)", "Material Number(BCS)", "Material Number(Other)", "Material Number(PMI)", "PMI Old Material Number", "Product Hierarchy(BCS)", "Product Hierarchy(PMI)", "Shared Capacity Description", "Shared Capacity Value", "Base Unit of Measure", "Customer Material Info Number", "Customer Part Description", "Customer Part Number", "Delivering Plant", "GlPrdHier L1 - Global Category Description", "GlPrdHier L2 - Local Category Description", "GlPrdHier L3 - Brand Description", "GlPrdHier L4 - Segment Description", "GlPrdHier L5 - Sub Segment Description", "Distribution-Chain-Specific Material Status", "Each UPC Number", "EAN/UPC", "Global Product Description", "Material Description (Short Text)", "Material Determination EDI Number", "Material Group", "Global Product Number", "Material Pricing Group", "Material Type", "Material Type Description", "Minor", "Minor Description", "Minor Sub", "Minor Sub Description", "Old Material Type", "Pallet Pattern", "Global Product Hierarchy (GlPrdHier)", "GlPrdHier L3 - Brand - Long", "Volume Unit", "Volume", "X - Plant Material status", "Packaging Option", "Packaging Option Text", "Product ID", "Product Category Value", "Product Category Value Text", "Value Stream", "Value Stream Description", "Super Value Stream", "Volume Multiplier", "5 Digit", "Sales Unit", "GlPrdHier L3 - Brand - Short"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Removed Other Columns","",null,Replacer.ReplaceValue,{"Material Number Adj(BCS)", "Material Number Adj(PMI)"}),
+				    #"Added Custom" = Table.AddColumn(#"Replaced Value", "Material Code - Description", each if [#"Material Number Adj(BCS)"] <> null then [#"Material Number Adj(BCS)"] &" - "&[Global Product Description] else [#"Material Number Adj(PMI)"] &" - "& [Global Product Description], type text),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Material Type - Description", each [Material Type] &" - "&[Material Type Description], type text),
+				    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "Global Product Number (short)", each Text.TrimStart([Global Product Number],"0")),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom2",{{"Global Product Number (short)", type text}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Global Product Number (short)"}, #"Old to New SKU", {"Old MDG code"}, "Old to New SKU", JoinKind.LeftOuter),
+				    #"Expanded Old to New SKU" = Table.ExpandTableColumn(#"Merged Queries", "Old to New SKU", {"New MDG code"}, {"New MDG code"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Expanded Old to New SKU", "Global Product No.(short)", each if [New MDG code] = null then [#"Global Product Number (short)"] else [New MDG code]),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column",{{"Global Product No.(short)", "Global Product Number (short)_new"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

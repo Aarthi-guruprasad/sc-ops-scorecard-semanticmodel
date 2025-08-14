@@ -1,0 +1,57 @@
+table Dim_Business_Area
+	lineageTag: 4c416ae7-42ba-40e6-91ab-da78941bf76a
+
+	column 'Business Area'
+		dataType: string
+		lineageTag: 4193ea30-1bd1-4c3e-b2f7-657f1b86b18e
+		summarizeBy: none
+		sourceColumn: Business Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business area description'
+		dataType: string
+		lineageTag: bcec28ca-ac00-4221-b7bc-74aa64b9b582
+		summarizeBy: none
+		sourceColumn: Business area description
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 726896a3-32d7-47c3-b6d8-99648346d631
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Area
+		dataType: string
+		lineageTag: bb744ab2-c4b0-4c44-93cd-ad9f9c378ed7
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Area - Description'
+		dataType: string
+		lineageTag: a85cf604-cd00-4eb9-be45-51e11aae23f9
+		summarizeBy: none
+		sourceColumn: Business Area - Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Business_Area = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"c5da013e-9820-4ab4-8ee2-106ba3a7da75" = Workspaces{[workspaceId="c5da013e-9820-4ab4-8ee2-106ba3a7da75"]}[Data],
+				    #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e" = #"c5da013e-9820-4ab4-8ee2-106ba3a7da75"{[dataflowId="4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"]}[Data],
+				    Dim_Business_Area_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_Business_Area",version=""]}[Data]
+				in
+				    Dim_Business_Area_
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,74 @@
+table Fact_Service
+	lineageTag: 69213933-a4dc-405f-bfa3-9327269b999d
+
+	column 'Fiscal WE Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 85df355c-e7e6-4efc-86e7-8afece46550a
+		summarizeBy: none
+		sourceColumn: Fiscal WE Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plant_Material
+		dataType: string
+		lineageTag: 908dcc26-a62d-4fd3-bbcd-a12debd70370
+		summarizeBy: none
+		sourceColumn: Plant_Material
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'On Delivery EA'
+		dataType: double
+		lineageTag: 1bad5813-998f-4387-951f-551e7ee61510
+		summarizeBy: sum
+		sourceColumn: On Delivery EA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Order EA'
+		dataType: double
+		lineageTag: 87b072e4-2ff4-4975-be48-28d80bbddca6
+		summarizeBy: sum
+		sourceColumn: Order EA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Profit Center' = LOOKUPVALUE(Dim_Material_Plant[Global Profit Center],Dim_Material_Plant[Plant_Material Key],Fact_Service[Plant_Material])
+		lineageTag: b648ff3d-6aa3-4907-94c7-86dd5e6eb36e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Material Number' = LOOKUPVALUE(Dim_Material_Plant[Global Product Number],Dim_Material_Plant[Plant_Material Key],Fact_Service[Plant_Material])
+		lineageTag: a1295538-90aa-4fe7-8a12-b2375e007b93
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Hierarchy'
+		dataType: string
+		lineageTag: bb1997e2-dfcb-4cf5-9843-1917eca8c8e1
+		summarizeBy: none
+		sourceColumn: Customer Hierarchy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Service = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_Service = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Service Fill Rate DC", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'All Weeks'[Fiscal WE Date],#(lf)    'All Weeks'[Plant_Material],#(lf)    'All Weeks'[Customer Hierarchy],#(lf)    ""On Delivery EA"", [On Delivery EA],#(lf)    ""Order EA"", [Order EA]#(lf))#(lf)ORDER BY #(lf)    'All Weeks'[Fiscal WE Date] ASC,#(lf)    'All Weeks'[Plant_Material] ASC,#(lf)    'All Weeks'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Service,{{"All Weeks[Fiscal WE Date]", "Fiscal WE Date"}, {"All Weeks[Plant_Material]", "Plant_Material"}, {"[On Delivery EA]", "On Delivery EA"}, {"[Order EA]", "Order EA"}, {"All Weeks[Customer Hierarchy]", "Customer Hierarchy"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,49 @@
+table Dim_Plant_Desc_SA
+	lineageTag: 066e813f-255e-4030-8d85-142bc3698a24
+
+	column Plant
+		dataType: string
+		lineageTag: 12f8bb7e-335b-4663-a017-7d76eddf6607
+		summarizeBy: none
+		sourceColumn: Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column Desc
+		dataType: string
+		lineageTag: d493f63e-5982-4463-821f-415a0b60fd1c
+		summarizeBy: none
+		sourceColumn: Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Plant Desc'
+		dataType: string
+		lineageTag: 4ff640ee-1568-44a1-9e2e-c40beefc85bd
+		summarizeBy: none
+		sourceColumn: Plant Desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Group'
+		dataType: string
+		lineageTag: 76df0c93-8e86-46f6-9b29-939783606a72
+		summarizeBy: none
+		sourceColumn: Site Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Plant_Desc_SA = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjQwNlDSUQrw9VSK1QFyDY0gXA8o1xTM9YuEcM0NwFx/ZwjXxBDMDQuBciF6/YF6YwE=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Plant = _t, Desc = _t]),
+				    #"Added Custom" = Table.AddColumn(Source, "Plant Desc", each [Plant] &" - "&[Desc]),
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Site Group", each if [Desc] = "PMI" then "MI OTC" else if [Desc] = "PMH" then "MI OTC" else if [Desc] = "PNY" then "NY OTC" else if [Desc] = "POC" then "Oral Care" else if [Desc] = "PVT" then "Nutrition Infant Formula" else if [Desc] = "POH" then "Nutrition Infant Formula" else null)
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

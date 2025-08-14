@@ -1,0 +1,129 @@
+table Dim_FA
+	lineageTag: 7bf2ac89-f080-4589-ac01-c125212171ce
+
+	column FirstName
+		dataType: string
+		lineageTag: 3c7a0c84-36ba-4d24-8e3b-1aedb508a056
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 3'
+		dataType: string
+		lineageTag: 486c9b71-7d22-4455-bee6-e747ffafe8be
+		summarizeBy: none
+		sourceColumn: Level 3
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 4'
+		dataType: string
+		lineageTag: 2a793831-5dcf-4843-a575-abb9e4384c41
+		summarizeBy: none
+		sourceColumn: Level 4
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 5'
+		dataType: string
+		lineageTag: eafb5842-15fa-4b50-9bfe-bb2486f1d257
+		summarizeBy: none
+		sourceColumn: Level 5
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 6'
+		dataType: string
+		lineageTag: cfb182e4-2bed-4dc5-ba5e-b26f07970ba7
+		summarizeBy: none
+		sourceColumn: Level 6
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 7'
+		dataType: string
+		lineageTag: e0b65d87-483d-4354-ab88-118e42c83571
+		summarizeBy: none
+		sourceColumn: Level 7
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 8'
+		dataType: string
+		lineageTag: cf7118ac-13e3-4c04-adc5-6effb585d50b
+		summarizeBy: none
+		sourceColumn: Level 8
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 9'
+		dataType: string
+		lineageTag: cc9d86db-364f-4e58-89a5-1bb310e4a03f
+		summarizeBy: none
+		sourceColumn: Level 9
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 10'
+		dataType: string
+		lineageTag: 39e0775e-f3f3-46ec-af05-153eab03afb9
+		summarizeBy: none
+		sourceColumn: Level 10
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 11'
+		dataType: string
+		lineageTag: 203d7fee-2984-40c9-a77a-bab494310a1c
+		summarizeBy: none
+		sourceColumn: Level 11
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 12'
+		dataType: string
+		lineageTag: ce95b895-0173-45b4-91bd-3b7ccc0c1be0
+		summarizeBy: none
+		sourceColumn: Level 12
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 13'
+		dataType: string
+		lineageTag: 68d82575-939c-4c20-a8d9-a23d256df8a0
+		summarizeBy: none
+		sourceColumn: Level 13
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 14'
+		dataType: string
+		lineageTag: 569acb4c-b9a1-4a79-8177-78d2a6b415fc
+		summarizeBy: none
+		sourceColumn: Level 14
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Functional Area'
+		dataType: string
+		lineageTag: 7c5409b6-cb2d-472e-b5a4-14a39b5a4971
+		summarizeBy: none
+		sourceColumn: Functional Area
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_FA = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"c5da013e-9820-4ab4-8ee2-106ba3a7da75" = Workspaces{[workspaceId="c5da013e-9820-4ab4-8ee2-106ba3a7da75"]}[Data],
+				    #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e" = #"c5da013e-9820-4ab4-8ee2-106ba3a7da75"{[dataflowId="4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"]}[Data],
+				    Dim_FA_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_FA",version=""]}[Data]
+				in
+				    Dim_FA_
+
+	annotation PBI_ResultType = Table
+

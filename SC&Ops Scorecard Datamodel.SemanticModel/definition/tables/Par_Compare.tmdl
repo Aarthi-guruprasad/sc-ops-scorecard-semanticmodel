@@ -1,0 +1,24 @@
+table Par_Compare
+	lineageTag: e1d6cd67-bc6c-468b-baad-ec203b7b2107
+
+	column Dim_Compare
+		dataType: string
+		lineageTag: 36ef8883-028b-41e8-b60f-aac981885129
+		summarizeBy: none
+		sourceColumn: Dim_Compare
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Par_Compare = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckwuKU3MUYrViVbySSwuUYhMTSwC8wJyEvPADLec1AoFM20zpdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Dim_Compare = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Dim_Compare", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

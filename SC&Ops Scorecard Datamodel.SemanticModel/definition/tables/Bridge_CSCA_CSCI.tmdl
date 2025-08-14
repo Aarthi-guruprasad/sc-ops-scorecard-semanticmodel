@@ -1,0 +1,38 @@
+table Bridge_CSCA_CSCI
+	lineageTag: bea2d168-2b0e-4846-8581-8c512fc77c71
+
+	measure LastSelectedYear_P = ```
+			Max(Dim_DateSlicer[P_Year]) 
+			```
+		formatString: 0
+		lineageTag: 3574abe3-324c-4670-b2d2-4fd29aa37d41
+
+	measure LastSelectedMonth_P = Max(Dim_DateSlicer[P_MonthFull])
+		formatString: 0
+		lineageTag: 3ce75a7b-0450-4274-aebb-a32d0f600e4c
+
+	measure LastSelectedDate = Max(Dim_DateSlicer[Date])
+		formatString: General Date
+		lineageTag: 4aef1e93-ceb4-42d8-a44a-2d6e35f49806
+
+	column Area
+		dataType: string
+		lineageTag: 56ac62e4-2c22-4a61-b305-de039e4538f3
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_CSCA_CSCI = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcg52dlSK1QEzPMGM0LzEnJz85MSS1BSl2FgA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Area = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Area", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

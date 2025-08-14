@@ -1,0 +1,54 @@
+table Dim_Rejection_Reason_Code
+	lineageTag: da5a9fb0-7806-40c6-b086-51fd92453233
+
+	column 'SAP Reason Code Number'
+		dataType: double
+		lineageTag: 62ade9ea-475d-4085-a2c9-0dd279b838b8
+		summarizeBy: none
+		sourceColumn: SAP Reason Code Number
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'SAP Reason Code Description'
+		dataType: string
+		lineageTag: e3e0a2bf-5a56-48bc-9307-316502f74215
+		summarizeBy: none
+		sourceColumn: SAP Reason Code Description
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'MA Reason Code'
+		dataType: string
+		lineageTag: 2101f483-b3ec-4dad-ab84-ab98478ee42d
+		summarizeBy: none
+		sourceColumn: MA Reason Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Service Level_Flag'
+		dataType: double
+		lineageTag: 6ab0238a-8dc5-41e0-87e6-dbe302e48241
+		summarizeBy: none
+		sourceColumn: Service Level_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Dim_Rejection_Reason_Code = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://perrigo.sharepoint.com/sites/O365GRP_SCOperationsPowerBIProject/", [ApiVersion = 15]),
+				    #"Rejection Reason Codes xlsx_https://perrigo sharepoint com/sites/O365GRP_SCOperationsPowerBIProject/Shared Documents/General/Power BI/Excel Tables/" = Source{[Name="Rejection Reason Codes.xlsx",#"Folder Path"="https://perrigo.sharepoint.com/sites/O365GRP_SCOperationsPowerBIProject/Shared Documents/General/Power BI/Excel Tables/"]}[Content],
+				    #"Imported Excel Workbook" = Excel.Workbook(#"Rejection Reason Codes xlsx_https://perrigo sharepoint com/sites/O365GRP_SCOperationsPowerBIProject/Shared Documents/General/Power BI/Excel Tables/"),
+				    Table1_Table = #"Imported Excel Workbook"{[Item="Table1",Kind="Table"]}[Data]
+				in
+				    Table1_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

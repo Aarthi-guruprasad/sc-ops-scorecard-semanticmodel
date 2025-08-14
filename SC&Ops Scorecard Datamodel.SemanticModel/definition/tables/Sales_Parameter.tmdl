@@ -1,0 +1,119 @@
+table Sales_Parameter
+	lineageTag: 73ec3b33-d5b1-4da2-8d32-d12bcfb8a2c6
+
+	measure 'Switch Sales_Parameter' = ```
+			SWITCH(
+			    SELECTEDVALUE( Sales_Parameter[Parameter Name] ),
+			    
+			    
+			    "FA% Lag 2", [FA% Lag2],
+			    "FA% Lag 4", [FA% Lag4],
+			    "Bias% Lag 2", [Bias% Lag 2],
+			    "Bias% Lag 4", [Bias% Lag 4],
+			    "Service%", [Service Rate%],
+			    "Schedule Attainment%", [Schedule Attn],
+			    "CFR%", [CFR],
+			    "Service Top 11", [Service Top 11]
+			)
+			```
+		lineageTag: cb8476cd-a0f6-4ca9-bb57-ff97d8d1397a
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11","#,0"
+				)
+
+	measure 'Switch Sales_Parameter MoM' = ```
+			SWITCH(
+			    SELECTEDVALUE( Sales_Parameter[Parameter Name] ),
+			    
+			    
+			    "FA% Lag 2", [FA% Lag2 MoM%],
+			    "FA% Lag 4", [FA% Lag4 MoM%],
+			    "Bias% Lag 2", [Bias Lag2 MoM%],
+			    "Bias% Lag 4", [Bias Lag4 MoM%],
+			    "Service%", [Service Rate% MoM%],
+			    "Schedule Attainment%", [SA MoM%],
+			    "CFR%", [CFR MoM%],
+			    "Service Top 11", [Service Top 11] - [Service Top 11 PP]
+			)
+			```
+		lineageTag: 090501f1-05c2-4cbf-8d45-4733ef03cc8c
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11","#,0"
+				)
+
+	column Sales_Parameter
+		lineageTag: 6e938ccf-9ecf-41c1-96f7-60170989dcf0
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: c90d7bf8-17f9-431d-ab9b-1c12825f90d5
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 473ca2fd-8a6b-4aa3-b9cb-c6230388a194
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Name'
+		lineageTag: 6940ac2c-a392-49a6-b2df-316de51d05eb
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sales_Parameter = calculated
+		mode: import
+		source =
+				{
+				    ("FA% Lag 2", NAMEOF('Measure'[FA% Lag2]), 0,"FA% Lag 2" ),
+				    ("FA% Lag 4", NAMEOF('Measure'[FA% Lag4]), 1, "FA% Lag 4"),
+				    ("Bias% Lag 2", NAMEOF('Measure'[Bias% Lag 2]), 2, "Bias% Lag 2"),
+				    ("Bias% Lag 4", NAMEOF('Measure'[Bias% Lag 4]), 3, "Bias% Lag 4"),
+				    ("Service%", NAMEOF('Measure'[Service Rate%]), 4, "Service%"),
+				    ("Schedule Attainment%", NAMEOF('Measure'[Schedule Attn]), 5, "Schedule Attainment%"),
+				    ("CFR%", NAMEOF('Measure'[CFR]), 6, "CFR%"),
+				    ("Service Top 11",NAMEOF('Measure'[Service Top 11]), 7, "Service Top 11")
+				}
+
+	annotation PBI_Id = d313b57909ce451c981bb7fda594ba9a
+

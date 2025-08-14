@@ -1,0 +1,28 @@
+table Dim_VS_Mat
+	lineageTag: 8257d253-31af-4b97-ab27-e12697703eeb
+
+	column 'Global Product Number'
+		lineageTag: 5632f269-b3b9-47a5-8590-c120a99d1de9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Dim_Material_Plant[Global Product Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value_Stream
+		lineageTag: ece5770e-2068-482b-9536-0c02447b1518
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Dim_Material_Plant[Value_Stream]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_VS_Mat = calculated
+		mode: import
+		source =
+				GROUPBY(FILTER(Dim_Material_Plant, AND(Dim_Material_Plant[Global Product Number] <> BLANK(),
+				                            Dim_Material_Plant[Value_Stream_Jamie] <> BLANK())),
+				                            Dim_Material_Plant[Global Product Number],Dim_Material_Plant[Value_Stream])
+
+	annotation PBI_Id = 23f0fc22b4fb47689af8c18471f80b71
+

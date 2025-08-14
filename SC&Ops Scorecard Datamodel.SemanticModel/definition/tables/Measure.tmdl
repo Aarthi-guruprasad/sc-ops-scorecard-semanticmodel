@@ -1,0 +1,6002 @@
+table Measure
+	lineageTag: 40405884-f649-4165-ab7d-331920f9f41c
+
+	defaultDetailRowsDefinition = ```
+			------------------------------
+			-- Measure: [COGS Actual LYTD]
+			------------------------------
+			MEASURE 'Measure'[COGS Actual LYTD] = 
+			    VAR LYTD = DIVIDE([Total Logistics LYTD], [Net Sales LYTD])
+			    Return
+			    [COGS Actual] - LYTD
+			    , FormatString = "0.00%;-0.00%;0.00%"
+			
+			------------------------------------
+			-- Measure: [COGS Actual LYTD_Final]
+			------------------------------------
+			MEASURE 'Measure'[COGS Actual LYTD_Final] = 
+			    VAR kpi_ =  [COGS Actual LYTD]
+			    VAR perc_ = abs(kpi_)
+			    VAR Format_ = Format( perc_,"0.0%")
+			    VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			    Return 
+			    Result_
+			
+			------------------------------
+			-- Measure: [COGS Actual MoM%]
+			------------------------------
+			MEASURE 'Measure'[COGS Actual MoM%] = 
+			    VAR alldate_ = all(Dim_Date)
+			    VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			    VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			    VAR Net_PM = Calculate([COGS Actual],filter_)
+			    VAR Result = DIVIDE(([COGS Actual] - Net_PM),Net_PM)
+			    RETURN
+			    Result
+			
+			-----------------------------------
+			-- Measure: [COGS Actual MoM_Final]
+			-----------------------------------
+			MEASURE 'Measure'[COGS Actual MoM_Final] = 
+			    VAR kpi_ =  [COGS Actual MoM%]
+			    VAR perc_ = abs(kpi_)
+			    VAR Format_ = Format( perc_,"0.0%")
+			    VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			    Return 
+			    Result_
+			
+			----------------------------
+			-- Measure: [COGS Actual PY]
+			----------------------------
+			MEASURE 'Measure'[COGS Actual PY] = 
+			    VAR alldate_ = all(Dim_Date)
+			    VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			    VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			    
+			    RETURN
+			    Calculate([COGS Actual],filter_)
+			    , FormatString = "0.0"
+			
+			------------------------------
+			-- Measure: [COGS Actual YoY%]
+			------------------------------
+			MEASURE 'Measure'[COGS Actual YoY%] = DIVIDE(([COGS Actual] - [COGS Actual PY]),[COGS Actual PY])
+			
+			-----------------------------------
+			-- Measure: [COGS Actual YoY_Final]
+			-----------------------------------
+			MEASURE 'Measure'[COGS Actual YoY_Final] = 
+			    VAR kpi_ =  [COGS Actual YoY%]
+			    VAR perc_ = abs(kpi_)
+			    VAR Format_ = Format( perc_,"0.0%")
+			    VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			    Return 
+			    Result_
+			
+			-----------------------------
+			-- Measure: [COGS Actual YTD]
+			-----------------------------
+			MEASURE 'Measure'[COGS Actual YTD] = 
+			    VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			    VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			    RETURN
+			        SUMX(
+			            FILTER(
+			                ALL(Dim_Date),
+			                Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			            ),
+			            [COGS Actual]
+			        )
+			    , FormatString = "0.0"
+			
+			-------------------------------
+			-- Measure: [COGS_Actual_Color]
+			-------------------------------
+			MEASURE MetricSelector[COGS_Actual_Color] = 
+			    VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			    
+			    VAR kpi_value =
+			        SWITCH(
+			            _sel,
+			            "vs PP", [COGS Actual MoM%],
+			            "LYTD", [COGS Actual LYTD],
+			            "vs YoY", [COGS Actual YoY%], 
+			            BLANK()
+			        )
+			    
+			    RETURN
+			            IF(
+			                kpi_value > 0,
+			                "#D7191C",  -- red for ▼ down
+			                "#1A9641"   -- green for ▲ up
+			            )
+			    , DisplayFolder = "Cond.format_measure"
+			
+			-------------------------
+			-- Measure: [COGS_Actual]
+			-------------------------
+			MEASURE MetricSelector[COGS_Actual] = 
+			    VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			      RETURN
+			        SWITCH(
+			          _sel,
+			          "vs PP", [COGS Actual MoM_Final],
+			          "LYTD",               [COGS Actual LYTD],
+			          "vs YoY",               [COGS Actual YoY_Final],
+			          BLANK()
+			        )
+			    , DisplayFolder = "Switch Measures"
+			```
+
+	measure 'Net Inventory' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base])
+		formatString: #,0.0
+		lineageTag: ab1cbb42-348c-421e-8f32-2cb1762129d4
+
+	measure 'Gross Inventory' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves])
+		formatString: #,0.0
+		lineageTag: 181f4461-1371-405d-9adf-08008747ebbd
+
+	measure 'Inventory Avg L4M' =
+			
+			VAR _LastMonth = MAX( Dim_Date[P_YearMonth Number] )
+			VAR _FirstMonth = _LastMonth - 3
+			RETURN
+			    AVERAGEX(
+			        FILTER(
+			                ALL(Dim_Date),
+			                Dim_Date[P_YearMonth Number] >= _FirstMonth && Dim_Date[P_YearMonth Number] <= _LastMonth
+			            ),
+			        [Net Inventory]
+			    )
+		formatString: #,0.0
+		lineageTag: 184b6241-3ed8-4bb5-a16e-5a7f4a0a28d9
+
+	measure 'Total COGS GR' = SUM(Fact_Group_Reporting[Total COGS GR])
+		lineageTag: 7c59e34e-3e2f-439b-9632-f9af99f809b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total COGS GR L3M' =
+			
+			VAR _Months = 3
+			VAR _LastMonth = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR _FirstMonth = _LastMonth - (_Months-1)
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= _FirstMonth && Dim_Date[YearPeriodSeq] <= _LastMonth
+			        ),
+			        [Total COGS GR]
+			    )
+		lineageTag: d9229ae6-16d7-4dfa-aef0-7eda0ffcd68a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure DIO =
+			
+			VAR _Months = 3
+			VAR _TotalCOGS = CALCULATE([Total COGS GR L3M],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR _AvgInventory = CALCULATE([Inventory Avg L4M],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			RETURN
+			    DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
+		formatString: 0
+		lineageTag: dd2f5f12-d99c-4f8e-a108-82e3e69dce9f
+
+	measure 'SSSO: Scrap-Off' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		formatString: 0.0
+		lineageTag: fb6011ed-9f0b-4a06-ba96-5ea00ae2ee25
+
+	measure 'SSSO Obsolescence' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
+		formatString: 0.0
+		lineageTag: d73fe601-a954-46b3-8399-fbf2703a2883
+
+	measure 'SSSO Salvage' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
+		formatString: 0.0
+		lineageTag: 5ac3a033-6d99-444c-8235-c4e0a72039b4
+
+	measure 'SSSO: Obsolescenes linked to Conversions' = [SSSO: Scrap-Off] + [SSSO Obsolescence] + [SSSO Salvage]
+		formatString: 0.0
+		lineageTag: 562692b2-b615-40c6-93ab-08c5d8dbe254
+
+	measure 'SSSO: Salvage & Obsolescence' = [SSSO Obsolescence] + ([SSSO Salvage])
+		formatString: 0.0
+		lineageTag: faf75843-20fd-4343-9166-4da7af7c42e3
+
+	measure 'Net Inventory YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Net Inventory]
+			    )
+		formatString: 0.0
+		lineageTag: 3bbe80c1-41ea-4f68-9e94-7100e4713ea6
+
+	measure 'Net Inventory YoY%' = DIVIDE(([Net Inventory] - [Net Inventory PY]),[Net Inventory PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 140ca208-2cd8-4228-a4c9-085509ba07f6
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "YearToDate"
+				}
+
+		changedProperty = FormatString
+
+	measure 'Net Inventory PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Net Inventory],filter_)
+		formatString: 0.0
+		lineageTag: a20b24c0-15be-4139-a0f3-3ecc069c940f
+
+	measure 'Net Inventory MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Net Inventory],filter_)
+			VAR Result = DIVIDE(([Net Inventory] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8a130a4b-2077-4fcb-bbb0-38a05cde013f
+
+	measure 'Gross Inventory YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Gross Inventory]
+			    )
+		formatString: 0.0
+		lineageTag: b5217a39-6c9e-4c8d-9ed8-67b26b2660b8
+
+	measure 'Gross Inventory PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Gross Inventory],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: ba349cc3-e124-441c-a43c-4b6bf0266c39
+
+	measure 'Gross Inventory YoY%' = DIVIDE(([Gross Inventory] - [Gross Inventory PY]),[Gross Inventory PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 27f29739-fc1d-4516-8aac-54cc8a65cfd0
+
+	measure 'Gross Inventory MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Gross Inventory],filter_)
+			VAR Result = DIVIDE(([Gross Inventory] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 9b84a80c-99a4-47c6-b0ef-e0da54183cd4
+
+	measure 'SSSO: Obs linked to Conv YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [SSSO: Obsolescenes linked to Conversions]
+			    )
+		formatString: 0.0
+		lineageTag: f00ab7e4-27e7-4d33-bd44-f9b6ee803aff
+
+	measure 'SSSO: Obs linked to Conv PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([SSSO: Obsolescenes linked to Conversions],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: e0d1f119-9211-4a62-b624-d37517b52167
+
+	measure 'SSSO: Obs linked to Conv YoY%' =
+			
+			DIVIDE(([SSSO: Obsolescenes linked to Conversions] - [SSSO: Obs linked to Conv PY]),[SSSO: Obs linked to Conv PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0fb58fe1-7d21-432a-b139-61251e7f072f
+
+	measure 'SSSO: Obs linked to Conv MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([SSSO: Obsolescenes linked to Conversions],filter_)
+			VAR Result = DIVIDE(([SSSO: Obsolescenes linked to Conversions] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 18431b9b-9f5b-4965-aa5d-024c7938ba37
+
+	measure 'SSSO: Salvage YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [SSSO: Salvage & Obsolescence]
+			    )
+		formatString: 0.0
+		lineageTag: cd143dcf-4712-41bf-9f5d-27d511637f4a
+
+	measure 'SSSO: Salvage & Obs PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([SSSO: Salvage & Obsolescence],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: f4fc588e-4a8d-4e39-9316-8c7c83bedc1a
+
+	measure 'SSSO: Salvage YoY%' = DIVIDE(([SSSO: Salvage & Obsolescence] - [SSSO: Salvage & Obs PY]),[SSSO: Salvage & Obs PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c01dc9d9-8d64-45f9-99cc-08498b55bd17
+
+	measure 'SSSO: Salvage & obs MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([SSSO: Salvage & Obsolescence],filter_)
+			VAR Result = DIVIDE(([SSSO: Salvage & Obsolescence] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c43bc164-f4dd-4721-977e-68f035b73e93
+
+	measure 'SSSO: Scrap-Off PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([SSSO: Scrap-Off],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: d28647b9-e899-4858-bd06-372993df56fe
+
+	measure 'SSSO: Scrap-Off YoY%' = DIVIDE(([SSSO: Scrap-Off] - [SSSO: Scrap-Off PY]),[SSSO: Scrap-Off PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 5b4ff4bc-f544-46b2-b2c1-679f770ad319
+
+	measure 'SSSO: Scrap-Off YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [SSSO: Scrap-Off]
+			    )
+		formatString: 0.0
+		lineageTag: 22f1a0aa-0bc5-4c48-965a-138c127afc49
+
+	measure 'SSSO: Scrap-Off MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([SSSO: Scrap-Off],filter_)
+			VAR Result = DIVIDE(([SSSO: Scrap-Off] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: abb1d546-65e8-4f73-a954-f27372de2284
+
+	measure 'DIO PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			VAR py = Calculate([DIO],filter_)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",py,BLANK())
+			
+			```
+		formatString: 0
+		lineageTag: e6ef20d4-80a4-4856-819f-9b826edeaf0b
+
+	measure 'DIO YoY%' = DIVIDE(([DIO] - [DIO PY]),[DIO PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: fb07b4ec-fee9-4c45-9960-d9087180153f
+
+	measure 'DIO YTD' = TOTALYTD([DIO],Dim_Date[Date])
+		lineageTag: f925f772-6f28-4397-9a88-da9958434049
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DIO MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DIO],filter_)
+			VAR Result = DIVIDE(([DIO] - Net_PM),Net_PM)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e8e2db32-9833-4e62-988d-967b66f08d3b
+
+	measure 'SSSO: Salvage YoY_Final' =
+			
+			VAR kpi_ = [SSSO: Salvage YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: a8ecb3fa-43e4-4575-bc04-7c4a7770bff1
+
+	measure 'SSSO: Obs linked to Conv YoY_Final' =
+			
+			VAR kpi_ = [SSSO: Obs linked to Conv YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c9cfc228-551e-4069-b2fe-15f87df615cb
+
+	measure 'SSSO: Scrap-Off YoY_Final' =
+			
+			VAR kpi_ = [SSSO: Scrap-Off YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: e18c5881-a10e-42a3-9b8f-98ea6e7ccd1b
+
+	measure 'DIO YoY_Final' =
+			
+			VAR kpi_ =  [DIO YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: a9b71bec-1ac2-4cc0-9e22-0e79134f0e95
+
+	measure 'Gross Inventory YoY_Final' =
+			
+			VAR kpi_ =  [Gross Inventory YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: a530ffa9-4e91-4476-8337-32b3143b172b
+
+	measure 'Net Inventory YoY_Final' =
+			
+			VAR kpi_ =  [Net Inventory YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 733a3aac-7ad4-4e0f-ac0a-590a7ce992c3
+
+	measure 'DIO MoM_Final' = ```
+			
+			VAR kpi_ =  [DIO MoM%]
+			Return 
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+			```
+		lineageTag: 5e5ea728-f04f-4252-8fda-2903aa2d4bd0
+
+	measure 'SSSO: Scrap-Off MoM_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Scrap-Off MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 491f2458-e1c0-44e9-abc7-1d20ac969db3
+
+	measure 'SSSO: Obs Linked to Conv MoM_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Obs linked to Conv MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 6a3eafbe-55cd-460f-8d3f-e6288ea5b0d2
+
+	measure 'Gross Inventory MoM_Final' = ```
+			
+			VAR kpi_ =  [Gross Inventory MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 3da32a40-2e9a-4d27-91c4-3dd6a2e5f13d
+
+	measure 'Net Inventory MoM_Final' = ```
+			
+			VAR kpi_ =  [Net Inventory MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 29421bfe-a592-48a7-ac59-e1d88215cb2c
+
+	measure 'SSSO: Salvage MoM_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Salvage & obs MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: daff27e1-fdd7-4d08-ad1d-fd703eb1a417
+
+	measure 'Total Shipments' = SUM(Fact_Forecast_Accuracy[Total Shipments])
+		lineageTag: a5e83a55-eccc-4e25-9c03-48daa0ee7ddc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Abs Demand Draft Var SSID' =
+			CALCULATE(
+			SUMX(
+			    SUMMARIZE(
+			        Fact_Forecast_Accuracy,Fact_Forecast_Accuracy[SSID],
+			        Fact_Forecast_Accuracy[Fiscal Year/Period],
+			        "Variance", ABS([Demand Draft] - [Total Shipments])),[Variance]),
+			REMOVEFILTERS(Fact_Forecast_Accuracy[Source Material Key])
+			)
+		lineageTag: 3f06f1dc-fc9f-402f-9aec-d566b7ccadcf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Demand Draft' = SUM(Fact_Forecast_Accuracy[Demand Draft])
+		lineageTag: fbf269cf-f42c-4a57-99cd-cad432808fd4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% SSID' = ```
+			
+			VAR TotalShipments = [Total Shipments]
+			VAR VarianceAgg = [Abs Demand Draft Var SSID]
+			
+			RETURN 
+			IF(
+			    ISBLANK(VarianceAgg),
+			    BLANK(),  // Return BLANK if VarianceAgg is blank or zero
+			    VAR Result = 1 - DIVIDE(VarianceAgg, TotalShipments, 1)
+			    RETURN IF(Result < 0, 0, Result)
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 2b2069c5-6535-47ad-95db-089e9020509b
+
+	measure 'FA% MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([FA% CSCA],filter_)
+			VAR Result = [FA% CSCA] - Net_PM
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 965af87e-1352-4d15-bcb8-a7e292cca73b
+
+	measure 'FA% MoM_Final' = ```
+			
+			VAR kpi_ =  [FA% MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		lineageTag: 7fb22ffa-3bff-460d-ba13-d79e9f87056e
+
+	measure 'FA% YTD' = TOTALYTD([FA% CSCA],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e8c2fa8a-2e8b-4033-ac41-0ecc5c1958bc
+
+	measure 'FA% PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([FA% CSCA],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 04f859d2-41cf-4a67-bf8a-140a2a4df5a5
+
+	measure 'FA% YoY%' = [FA% CSCA] - [FA% PY]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 5f0e0d26-8723-4f72-a8d1-6a360db69338
+
+	measure 'FA% YoY_Final' =
+			
+			VAR kpi_ =  [FA% YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 7567f433-6c42-4bfb-a180-9022e9551b0c
+
+	measure 'Service Rate%' =
+			CALCULATE(SUM(Fact_Service[On Delivery EA])/SUM(Fact_Service[Order EA]),
+			REMOVEFILTERS(Bridge_CSCA_CSCI[Area]),REMOVEFILTERS(Dim_Profit_Center[Level 3]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 887a4d69-b579-4175-9eeb-cc6ce1a42aee
+
+	measure 'Service Rate% YTD' = TOTALYTD([Service Rate%],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d6338872-6b28-45d3-a6ca-397cbd0fbf38
+
+	measure 'Service Rate% PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Service Rate%],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 4dbaec03-b970-4498-b934-43395f91ea19
+
+	measure 'Service Rate% YoY_Final' =
+			
+			VAR kpi_ =  [Service Rate YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 5fc56eed-e057-424c-838f-67ca0c4abedb
+
+	measure 'Service Rate% MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Service Rate%],filter_)
+			VAR Result = [Service Rate%] - Net_PM
+			RETURN
+			Result
+		lineageTag: 6fbbb692-2eb6-4b42-830e-c21f2e74f313
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Rate% MoM_Final' = ```
+			
+			VAR kpi_ =  [Service Rate% MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: bd8c3781-f72f-49a3-93ec-4ce6f131a505
+
+	measure Bias% =
+			
+			DIVIDE(
+			    ([Demand Draft] - [Total Shipments]),
+			    [Total Shipments],
+			    1)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1a3e1c22-6fd8-4fc2-a471-53b451acd73b
+
+	measure 'Bias MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Bias%],filter_)
+			VAR Result = [Bias%] - Net_PM
+			RETURN
+			Result
+		lineageTag: d24d2404-f4e5-4b5b-9e48-e147e65e8a78
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias MoM_Final' = ```
+			
+			VAR kpi_ =  [Bias MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: e89753d3-3443-4f04-b83f-2e5cb4d62971
+
+	measure 'Service Rate YoY%' = [Service Rate%] - [Service Rate% PY]
+		lineageTag: c12addd9-9c40-4d2a-9f05-e564487bb36e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Bias%],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c9c28b3c-5307-4293-bb8c-88c3bdb403e4
+
+	measure 'Bias YoY%' = [Bias%] - [Bias PY]
+		lineageTag: 8ddbe253-7b88-4b5d-b835-c3fcc8f1b445
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias YoY_Final' =
+			
+			VAR kpi_ =  [Bias YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 7eb80396-a437-4a33-b613-93039ab055e4
+
+	measure 'Bias YTD' = TOTALYTD([Bias%],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 089997b2-ab0e-4b53-8655-a7433ed3c519
+
+	measure 'Inflated Inventory' = SUM(Fact_BW_Inventory[Sum Amount Stock Value Inflated])
+		formatString: 0.0
+		lineageTag: 9b66eb0d-42fa-41a6-ab03-a48a8c3e7090
+
+	measure 'Inflated Inventory YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Inflated Inventory]
+			    )
+		formatString: 0.0
+		lineageTag: c5d963b6-b96a-41fe-83df-01df7fc52540
+
+	measure 'Inflated Inventory PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Inflated Inventory],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: eeb986c9-d6de-418c-88a9-e5adf21eeaa6
+
+	measure 'Inflated Inventory YoY%' = DIVIDE(([Inflated Inventory] - [Inflated Inventory PY]),[Inflated Inventory PY])
+		lineageTag: 96254605-fb4f-4bcb-8b96-6d89fd788895
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory YoY_Final' =
+			
+			VAR kpi_ =  [Inflated Inventory YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 73e68a48-2a0f-4b92-9f68-df0efcd24b03
+
+	measure 'Inflated Inventory MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Inflated Inventory],filter_)
+			VAR Result = DIVIDE(([Inflated Inventory] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 645aab62-e41b-4ee2-aa18-421af4d7e237
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory MoM_Final' = ```
+			
+			VAR kpi_ =  [Inflated Inventory MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 42fcadb3-a970-40f3-828d-beac3d8fc741
+
+	measure 'Expired Inventory' =
+			CALCULATE(SUM(Fact_BW_Inventory[Sum Amount Stock Value Inflated]),
+			                    KEEPFILTERS(Dim_Expiration_Buckets[Expiration Bucket] = "Expired")
+			    )
+		formatString: 0.0
+		lineageTag: d241f22f-6a8a-44de-87f0-46862925d847
+
+	measure 'Expired Inventory PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Expired Inventory],filter_)
+			
+			```
+		formatString: 0.0
+		lineageTag: dbe0627f-3d40-4d77-a3fc-a3a361ff5c53
+
+	measure 'Expired Inventory YoY%' = DIVIDE(([Expired Inventory] - [Expired Inventory PY]),[Expired Inventory PY])
+		lineageTag: d01f521c-3994-4e4a-a6fe-5255eac954e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory YoY_Final' =
+			
+			VAR kpi_ =  [Expired Inventory YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: d634fb5a-0dda-420c-8d91-d30d2d9d7d2a
+
+	measure 'Expired Inventory YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Expired Inventory]
+			    )
+		lineageTag: c537c5cf-c3ac-41a1-a6ac-30baa29c8735
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Expired Inventory],filter_)
+			VAR Result = DIVIDE(([Expired Inventory] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 86b8ba4d-f18a-4900-9715-bdcbbff19ef5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory MoM_Final' = ```
+			
+			VAR kpi_ =  [Expired Inventory MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 92aef5f6-0be1-4ec1-8a8f-c296775a9b49
+
+	measure 'Quality Loss' = [In Count] - [Out Count]
+		lineageTag: 698bfbc8-db07-4eea-b831-e4ce9438a928
+
+	measure 'Run Speed' = DIVIDE( [Run Theoretical Quantity], [Total Elapsed Time])
+		lineageTag: 8ecd97ba-b4d8-4ba0-a419-a566aad45f64
+
+	measure 'Run Theoretical Quantity' = SUM(Fact_OEE[Run Theoretical Quantity])
+		lineageTag: 242a1948-8c38-405e-bbd5-97a192ebd8ee
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Elapsed Time' = [Up Seconds] + [Down Seconds]
+		lineageTag: bbaf02c3-6cdf-4bd0-b89f-e837ed1e62e0
+
+	measure Availability = DIVIDE( [Up Seconds] , [Total Elapsed Time])
+		lineageTag: 25dc4fbe-6586-4d4b-8ad4-9fd740a3ae06
+
+	measure 'Down Seconds' = SUM(Fact_OEE[Down Seconds])
+		lineageTag: be4c4681-b923-487c-86fc-addfef5d759b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'In Count' = SUM(Fact_OEE[In Count])
+		lineageTag: 4140725a-1de7-46c9-a2a6-4014b9e0c5c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure OEE% = [Availability] * [Performance] * [Quality]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 59aacec0-203e-46dc-88c6-4157674831dc
+
+	measure 'Out Count' = SUM(Fact_OEE[Out Count])
+		lineageTag: 6f7edca5-9be9-44a3-a245-a50f9926ba95
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Performance = DIVIDE( ([Out Count] + [Quality Loss]) ,([Up Seconds] * [Run Speed]) )
+		lineageTag: d520f40a-3ce7-447b-836e-91d83015325c
+
+	measure Quality = DIVIDE( [Out Count] , ([Out Count] + [Quality Loss]))
+		lineageTag: ef6b2eed-0950-4663-838c-3e1aee1027cd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Up Seconds' = SUM(Fact_OEE[Up Seconds])
+		lineageTag: 8afdb4fd-e7c5-40ac-b903-e66b8b83dbc8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% YTD' = TOTALYTD([OEE%],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f014e406-db96-404d-8ecb-9285c2ed75be
+
+	measure 'OEE% PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([OEE%],filter_)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 98ce04d3-0309-4fb6-b1f4-33bfa1175fb9
+
+	measure 'OEE% YoY%' = [OEE%] - [OEE% PY]
+		lineageTag: 276cf5bd-1e9e-440a-ac33-4dca9a086f53
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% YoY_Final' =
+			
+			VAR kpi_ =  [OEE% YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 727b12a7-c5e4-446c-946b-d7c9d7dff91a
+
+	measure 'OEE% MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([OEE%],filter_)
+			VAR Result = [OEE%] - Net_PM
+			RETURN
+			Result
+		lineageTag: c7acba63-af25-424b-9e36-17186a3d5711
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% MoM_Final' = ```
+			
+			VAR kpi_ =  [OEE% MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 5a256b58-eeed-4adc-82e8-4bd97e383744
+
+	measure Switch_YoY_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs PY],
+			    "SSSO: Obs linked to Conv", [SSSO: Obs linked to Conv PY],
+			    "SSSO: Shrinkage",[SSSO: Shrinkage PY],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-Off PY],
+			    "Net Sales", [Net Sales Actual PY],
+			    "COGS", [COGS Actual PY],
+			    "Distribution to COGS", [Total Distribution on COGS Actual PY],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales Actual PY],
+			    "Customer Fines", [Cust fine PY],
+			    "Operating Income", [Operating Income Actual PY],
+			    "Gross PPV", [Gross PPV Actual PY],
+			    "Net POV", [Net POV Actual PY]
+			)
+			
+			```
+		lineageTag: 55e0225c-6990-43d7-8b96-6d1119ba881e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_YTD_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage YTD],
+			    "SSSO: Obs linked to Conv", [SSSO: Obs linked to Conv YTD],
+			    "SSSO: Shrinkage",[SSSO: Shrinkage YTD],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-Off YTD],
+			    "Net Sales", [Net Sales Actual YTD],
+			    "COGS", [COGS Actual YTD],
+			    "Distribution to COGS", [Total Distribution on COGS Actual YTD],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales Actual YTD],
+			    "Customer Fines", [Cust Fine YTD],
+			    "Operating Income", [Operating Income Actual YTD],
+			    "Gross PPV", [Gross PPV Actual YTD],
+			    "Net POV", [Net POV Actual YTD],
+			    "ABP Variance", [ABP Variance YTD]
+			)
+			
+			```
+		lineageTag: 5afa0918-1f82-41f7-92bb-228d94f303f3
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
+	measure Slicer_CrossFilter =
+			INT(NOT ISEMPTY(Fact_CFIN_Inventory) &&
+			                        NOT ISEMPTY(Fact_BW_Inventory))
+		formatString: 0
+		lineageTag: 24c1a302-5b6b-4e40-9e11-cafa44dc639a
+
+	measure 'FA% Lag2' = CALCULATE([FA% CSCA],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: b81950d5-8ab5-475b-93f0-357ef042c805
+
+	measure 'FA% Lag4' = CALCULATE([FA% CSCA],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c498bc62-c723-4016-a9bc-2baa41067d8e
+
+	measure Switch_YoY_Sales =
+			SWITCH(VALUES(Sales_Parameter[Sales_Parameter]),
+			            "FA% Lag 2", CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")),
+			            "FA% Lag 4", CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")),
+			            "Service%", [Service Rate% PY],
+			            "Bias% Lag 2", CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")),
+			            "Bias% Lag 4", CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")),
+			            "Schedule Attainment%", [SA PY],
+			            "CFR%", [CFR PY],
+			            "Service Top 11", [Service Top 11 PY],
+			            BLANK())
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 60a5ad7b-77d6-444b-aed0-b32a5c8cbf46
+
+	measure Switch_YTD_Sales = ```
+			SWITCH(VALUES(Sales_Parameter[Sales_Parameter]),
+			            "FA% Lag 2", CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")),
+			            "FA% Lag 4", CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")),
+			            "Service%", [Service Rate% YTD],
+			            "Bias% Lag 2", CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")),
+			            "Bias% Lag 4", CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")),
+			            "Schedule Attainment%", [SA YTD],
+			            "CFR%", [CFR YTD],
+			            "Service Top 11", [Service Top 11 YTD],
+			            BLANK())
+			
+			```
+		lineageTag: 454e0097-983e-40fc-823c-84896952712f
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11","#,0"
+				)
+
+	measure Dummy = "--"
+		lineageTag: 2049e684-7f2a-4464-9bf6-205c89f3c95a
+
+	measure 'OEE Target' = AVERAGE(Dim_Locations[_Target])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 15b8c1af-ca3d-43c0-af1d-87c2d1e94fd5
+
+	measure 'OEE Target_Final' = ```
+			
+			VAR kpi_ =  [OEE%] - [OEE Target]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_  & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: cdb3a6f6-5435-44b5-9bda-fa287167f4d8
+
+	measure 'OEE Target diff%' = [OEE%] - [OEE Target]
+		lineageTag: 3e0d8c08-e6cd-4306-8cdc-7c65eebd523a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_YoY_Operations = ```
+			SWITCH(VALUES(Operations_Parameter[Operations_Parameter]),
+			            "OEE%", [OEE% PY],
+			            "Schedule Attainment%", [SA PY],
+			            "On Time Closure of Deviations%",[On Time Closure of Deviations PY],
+			            "CAPA Completion Rate%",[CAPA Completion Rate PY],
+			            "RFT%", [RFT% PY],
+			            "Critical or Major Observations", [Critical or Major Observations PY]
+			            )
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 454fb01e-53cc-4c26-8800-a30c14f31b6f
+
+	measure Switch_YTD_Operations = ```
+			SWITCH(VALUES(Operations_Parameter[Operations_Parameter]),
+			            "OEE%", [OEE% YTD],
+			            "Schedule Attainment%", [SA YTD],
+			            "On Time Closure of Deviations%",[On Time Closure of Deviations YTD],
+			            "CAPA Completion Rate%",[CAPA Completion Rate YTD],
+			            "RFT%", [RFT YTD],
+			            "Critical or Major Observations", [Critical or Major Observations YTD]
+			            )
+			
+			```
+		lineageTag: 68fe463c-34f9-4f8c-8525-075917555f91
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operations_Parameter[Parameter Name]),
+				    "CAPA Completion Rate%", "0.0%",
+				    "On Time Closure of Deviations%", "0.0%",
+				    "RFT%", "0.0%",
+				    "Critical or Major Observations", "#,0",
+				    "OEE%", "0.0%",
+				    "Schedule Attainment%", "0.0%",
+				    "#,0"  --fallback
+				)
+
+	measure 'Closed Period' = MAX(Dim_Date[P_YearPeriod])
+		lineageTag: bc58d87a-a458-4fb9-995d-27630420ef13
+
+	measure 'Service Target Final' = ```
+			
+			VAR kpi_ =  [Service Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 8bb8bb93-720a-41b4-a0da-1def644a2b08
+
+	measure 'Service Target' = 0.9
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 627b20f4-253d-4e32-8a1d-173e007622d9
+
+	measure 'Service Target Diff%' = [Service Rate%] - 0.9
+		lineageTag: 6192f793-2d2b-4dc6-a7de-5f4792807a39
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Sales =
+			
+			SWITCH(VALUES(Sales_Parameter[Sales_Parameter]),
+			"Service%", 0.9,
+			"FA% Lag 2", .62,
+			"FA% Lag 4", .70,
+			"Bias% Lag 2",.03,
+			"Bias% Lag 4",.03,
+			"Schedule Attainment%", 0.92,
+			"CFR%", 0.94,
+			"Service Top 11", [Service Top 11 Target])
+		lineageTag: 6a4d05a3-5bba-40ce-9ccb-d44ad91b71a7
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11","#,0"
+				)
+
+	measure 'SSSO: Salvage LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Salvage & Obs PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([SSSO: Salvage & Obsolescence] - Result,Result)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 522319d5-cde0-4adf-8650-2227b5632c3b
+
+	measure Comparison_Filter =
+			
+			VAR SelectedPeriod = SELECTEDVALUE(CG_PeriodSelection[Period])
+			VAR SelectedComp = SELECTEDVALUE(MetricSelector[Metric])
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SelectedPeriod = "YTD" && SelectedComp IN { "LYTD", "vs Plan", "vs Flex"}, 1,
+			    SelectedPeriod = "PTD" && SelectedComp IN { "vs PP", "vs YoY", "vs Plan", "vs Flex"}, 1,
+			    0
+			)
+		formatString: 0
+		lineageTag: 297e1fbb-694b-49ef-b447-6dd7d32153db
+
+	measure 'SSSO: Salvage LYTD_Final' =
+			
+			VAR kpi_ =  [SSSO: Salvage LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c8e1d0d6-63cf-40e3-a913-51e4cd51baec
+
+	measure 'Total Logistics Actual' = sum(Fact_Logistics[Amount Total Logistics Act])
+		displayFolder: Logistic
+		lineageTag: c21210d0-c066-423f-9051-3740817ba3bb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales Actual' = DIVIDE([Total Logistics Actual], [Net Sales Actual])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: cbb9192f-b2cf-4c13-ac11-c00c4d9f2834
+
+	measure 'Total Logistics on Net Sales Actual MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Total Logistics on Net Sales Actual],filter_)
+			VAR Result = DIVIDE(([Total Logistics on Net Sales Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 5bcbf093-f7fa-4ac1-953d-020babee4228
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales Actual MoM_Final' = ```
+			VAR kpi_ =  [Total Logistics on Net Sales Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 7c1dd430-09a0-4bbc-8b0b-a18a7353f301
+
+	measure 'Total Logistics on Net Sales Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total Logistics on Net Sales Actual],filter_)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d5a31556-8130-42f6-ab18-5cec6c2b09d1
+
+	measure 'Total Logistics on Net Sales Actual YoY%' = DIVIDE(([Total Logistics on Net Sales Actual] - [Total Logistics on Net Sales Actual PY]),[Total Logistics on Net Sales Actual PY])
+		lineageTag: 0b1fbe3f-6411-4bee-b41c-2c42fb5ccaf1
+
+	measure 'Total Logistics on Net Sales Actual YoY_Final' =
+			VAR kpi_ =  [Total Logistics on Net Sales Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c1020b66-b8a1-4d2e-a5bf-6609fe16d33a
+
+	measure 'Total Logistics on Net Sales Actual YTD' = DIVIDE( [Total logistics actual YTD], [Net Sales Actual YTD] )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 876740fb-35e2-474c-a62b-bee8c5513fba
+
+	measure 'Total Logistics Plan' = sum(Fact_Logistics[Amount Total Logistics Plan])
+		displayFolder: Logistic
+		lineageTag: 47ed2198-6175-47b9-863e-8bd86e80098f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales Actual' = CALCULATE(sum(Fact_Logistics[Net Sales Act]) , KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		lineageTag: 9606c3f8-dbc0-4ce5-8d31-1571c7cd3841
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales Plan' = ```
+			sum(Fact_Logistics[Net Sales Plan]) 
+			```
+		lineageTag: a61ab426-9ab0-480a-a74f-c4c610e685df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Schedule Attn' = ```
+			
+			CALCULATE(divide(sum(Fact_Schedule[+/- 10% Adh no penatly early]),count(Fact_Schedule[Order Number])),REMOVEFILTERS(Bridge_CSCA_CSCI[Area]),REMOVEFILTERS(Dim_Profit_Center[Level 3]))
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0763e022-0de3-4c7a-957d-9b0d69758676
+
+	measure 'SA MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Schedule Attn],filter_)
+			VAR Result = [Schedule Attn] - Net_PM
+			RETURN
+			Result
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e3c05ffe-a15c-490c-ae09-25a135c59516
+
+	measure 'SA MoM_Final' = ```
+			
+			VAR kpi_ =  [SA MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 7770fdeb-5f90-48d0-aecb-ef32aa18cdd3
+
+	measure 'SA PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Schedule Attn],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 18064b59-a3ba-48f6-9948-db29c35e3494
+
+	measure 'SA YoY%' = [Schedule Attn] - [SA PY]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 552326dc-8d30-43bd-a68a-ec2e7771100f
+
+	measure 'SA YoY_Final' =
+			
+			VAR kpi_ =  [SA YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: f7997757-254f-4515-a060-48e832e0a28d
+
+	measure 'SA YTD' = TOTALYTD([Schedule Attn],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 262a6732-35de-437b-a6df-e652bd6d0b94
+
+	measure 'SSSO: Obs LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Obs linked to Conv PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Result,Result)
+			```
+		lineageTag: 91bbeda9-37ed-48bd-8d67-7d32fd48fd78
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obs LYTD_Final' =
+			
+			VAR kpi_ =  [SSSO: Obs LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 98ed311a-c660-46f1-b793-47fe4a9ef04b
+
+	measure 'SSSO: Scrap-off LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Scrap-Off PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([SSSO: Scrap-Off] - Result,Result)
+			```
+		lineageTag: e48d7b6f-8e08-452e-bb79-f3074cced861
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off LYTD_Final' =
+			
+			VAR kpi_ =  [SSSO: Scrap-off LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 316effff-f4a0-4f8c-a943-541a8d426b57
+
+	measure 'Expired Inventory LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Expired Inventory PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Expired Inventory] - Result,Result)
+			```
+		lineageTag: 0a4410a4-7467-48f9-a52b-33b847efd3eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inv LYTD_Final' =
+			
+			VAR kpi_ =  [Expired Inventory LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 9140535e-84cd-4c21-897e-094b1a7ce388
+
+	measure 'Net Inventory LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net Inventory PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Net Inventory] - Result,Result)
+			```
+		lineageTag: f14979e2-92d3-44d9-858c-08d95b5170c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inv LYTD_Final' =
+			
+			VAR kpi_ =  [Net Inventory LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: bfa70ddd-90ae-4179-b065-a7a0c943d852
+
+	measure 'Gross Inv LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Gross Inventory PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Gross Inventory] - Result,Result)
+			```
+		lineageTag: ee1252bd-3a1c-49fd-bac9-7efd395e1d68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inv LYTD_Final' =
+			
+			VAR kpi_ =  [Gross Inv LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: a20a292a-4b3e-4119-8be1-50293d815c7c
+
+	measure 'Inflated Inv LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Inflated Inventory PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Inflated Inventory] - Result,Result)
+			```
+		lineageTag: e99eb12f-5ad3-45ed-b43a-8f05fd69e574
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inv LYTD_Final' =
+			
+			VAR kpi_ =  [Inflated Inv LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 3123b53e-4ff5-45de-85dd-b56f93987c7f
+
+	measure 'Abs Demand Draft Var SSID LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Abs Demand Draft SSID_PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			
+			```
+		lineageTag: 21913c1a-f1aa-4646-a402-6a5245c4f03b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Shipments PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total Shipments],filter_)
+			
+			```
+		lineageTag: bf9c1f1f-48eb-42d9-824a-04bd2e1f01b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Demand Draft PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Demand Draft],filter_)
+			
+			```
+		lineageTag: ad09f2b5-753f-4f9c-bf79-cea517d8bf60
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Shipments LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Total Shipments PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: ac94a969-3364-47cd-966d-498cc0a2fc9e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Demand Draft LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Demand Draft PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: 2eeb01ec-e144-4bee-b427-36bebe36fb41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias% LYTD' =
+			
+			VAR LYTD = DIVIDE(
+			    [Demand Draft LYTD] - [Total Shipments LYTD],
+			    [Total Shipments LYTD],
+			    1
+			)
+			
+			RETURN
+			[Bias%] - LYTD
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: faa51ea4-40c2-4976-9f58-f6ff4f66f547
+
+	measure 'Bias% LYTD_Final' =
+			
+			VAR kpi_ =  [Bias% LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 25d92ae1-72a7-4baf-806c-7f9e37178e80
+
+	measure 'On Delivery PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(SUM(Fact_Service[On Delivery EA]),filter_)
+			
+			```
+		lineageTag: e35a7974-3b30-4d92-8d47-df731e16e29d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order EA PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(SUM(Fact_Service[Order EA]),filter_)
+			
+			```
+		lineageTag: 1a578270-15f3-4ed2-91fc-18155ff875c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On Delivery LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [On Delivery PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: 37f6a4fd-751f-44e4-9f3c-72922369532a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order EA LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Order EA PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: 2a331d7d-5548-4b77-b2f0-f91920297a23
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Rate LYTD' =
+			
+			VAR LYTD = DIVIDE([On Delivery LYTD],[Order EA LYTD])
+			
+			RETURN
+			[Service Rate%] - LYTD
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a261ab25-734f-45b1-9098-844703b727c0
+
+	measure 'Service LYTD_Final' =
+			
+			VAR kpi_ =  [Service Rate LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: e6e2ffa9-c3ba-4edc-92b0-39f5c2afbb31
+
+	measure '10% adh PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(SUM(Fact_Schedule[+/- 10% Adh no penatly early]),filter_)
+		formatString: 0
+		lineageTag: 55149e56-1446-4d1b-94be-3291f02686d2
+
+	measure 'SA Orders PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(COUNT(Fact_Schedule[Order Number]),filter_)
+		formatString: 0
+		lineageTag: fc495e93-4093-405e-adfd-52c6aeb7749a
+
+	measure 'SA Orders LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SA Orders PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 38988536-c9a8-48fb-9877-7cf70ce8577b
+
+	measure '10% adh LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [10% adh PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 9b2d34ba-c737-46cb-b62b-bcb0cefd7a43
+
+	measure 'Schedule Attn LYTD' =
+			
+			VAR LYTD = DIVIDE([10% adh LYTD],[SA Orders LYTD],0)
+			
+			RETURN
+			[Schedule Attn] - LYTD
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 037e0363-67c1-477c-9988-e49593b0542e
+
+	measure 'Schedule Attn LYTD_Final' =
+			
+			VAR kpi_ =  [Schedule Attn LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: eafdc8e4-5706-4e9c-8be5-2f6c33b1d917
+
+	measure 'Availability PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Availability],filter_)
+		lineageTag: b512ee63-1d69-4d0e-8bc1-1e8f618ae761
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Performance PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Performance],filter_)
+		lineageTag: da127939-584d-4900-a4ef-4f3b6b5a338d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Quality PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Quality],filter_)
+		lineageTag: 5ee6bf44-be1f-4988-a991-50da4c7a810b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Availability LYTD' =
+			
+			DIVIDE([UpSeconds LYTD], [TotalElapsed LYTD])
+		lineageTag: de3816b7-d1a5-46cb-b4bf-5da8e3aa74c7
+
+	measure 'Performance LYTD' =
+			
+			VAR Numerator = [OutCount LYTD] + [Qloss LYTD]
+			VAR Denominator = [UpSeconds LYTD] * [RunSpeed LYTD]
+			
+			RETURN
+			    DIVIDE(Numerator, Denominator)
+		lineageTag: 1ddb54d5-050e-43d1-8a12-2b57e145043d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Quality LYTD' =
+			
+			Var QLoss = [InCount LYTD] - [OutCount LYTD]
+			RETURN
+			DIVIDE( [OutCount LYTD] , ([OutCount LYTD] + QLoss))
+		lineageTag: 92b75578-8ec5-494c-a7ee-61a73956103a
+
+	measure 'OEE LYTD' =
+			
+			VAR LYTD = [Availability LYTD] * [Performance LYTD] * [Quality LYTD]
+			
+			RETURN
+			[OEE%] - LYTD
+		lineageTag: 90a8417d-c800-4c0b-8d3f-58caf8318edc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Net Sales Actual],filter_)
+		lineageTag: f0612baf-df21-450e-a16c-039e5d48c41d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total Logistics Actual],filter_)
+		displayFolder: Logistic
+		lineageTag: 90d3fc12-3203-4393-bead-d5e3f14affc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net Sales PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: fb8d8412-bf55-43bf-8414-1a1ab1e79c6a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Total Logistics PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		displayFolder: Logistic
+		lineageTag: 0dbf5aa3-a120-4158-aab4-af1aa482200f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales LYTD' =
+			
+			VAR LYTD = DIVIDE([Total Logistics LYTD], [Net Sales LYTD])
+			Return
+			[Total Logistics on Net Sales Actual] - LYTD
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 351fd67f-c2ac-43b4-8493-63a39ba5f98a
+
+	measure 'Total Logistics on Net Sales LYTD_Final' =
+			
+			VAR kpi_ =  [Total Logistics on Net Sales LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: ed46c9e3-b567-40c7-9237-807f4341333a
+
+	measure 'COGS Actual' = CALCULATE(SUM( Fact_Logistics[COGS Act] ),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		formatString: #,0.0
+		lineageTag: 7e900fc1-d7da-4408-9791-f6d9ca525dfb
+
+	measure 'Distribution Actual' = SUM( Fact_Logistics[Distribution Act] )
+		formatString: #,0.0
+		lineageTag: 40143676-6e68-474c-b987-12a57612168e
+
+	measure 'Total Distribution on COGS Actual' = DIVIDE([Distribution Actual], [COGS Actual])
+		formatString: #,##0.00 %
+		lineageTag: 246bab5b-5f23-426b-9849-450fdf0789a8
+
+	measure 'Total Distribution on COGS Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Total Distribution on COGS Actual],filter_)
+			VAR Result = DIVIDE(([Total Distribution on COGS Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: f6164a6e-06c1-4955-83d5-08abb011d1e6
+
+	measure 'Total Distribution on COGS Actual MoM_Final' = ```
+			VAR kpi_ =  [Total Distribution on COGS Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 0c7a413d-99e8-4b48-b21a-8d7fd310406f
+
+	measure 'Total Distribution on COGS Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total Distribution on COGS Actual],filter_)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: b3e849b6-697a-45f6-9fa0-3beb717c91d6
+
+	measure 'Total Distribution on COGS Actual YoY%' = DIVIDE(([Total Distribution on COGS Actual] - [Total Distribution on COGS Actual PY]),[Total Distribution on COGS Actual PY])
+		lineageTag: c09fcb89-9bdd-4a8b-b91f-2686a2899661
+
+	measure 'Total Distribution on COGS Actual YoY_Final' =
+			
+			VAR kpi_ =  [Total Distribution on COGS Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 9156dd9a-b554-4e7b-80d6-f589adb6b8c9
+
+	measure 'Total Distribution on COGS Actual YTD' = DIVIDE([Distribution Actual YTD], [COGS Actual YTD])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 335e9732-9e14-4c58-9e92-ede5ae25f272
+
+	measure 'Total Distribution on COGS LYTD' =
+			VAR LYTD = DIVIDE([Distribution Actual LYTD], [COGS Actual LYTD])
+			Return
+			[Total Distribution on COGS Actual] - LYTD
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ab07fa53-6a44-45df-a715-931823e5b402
+
+	measure 'Total Distribution on COGS LYTD_Final' =
+			VAR kpi_ =  [Total Distribution on COGS LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: b37b284b-95ec-42e5-9d2a-991a43506dc0
+
+	measure 'Net Sales Actual LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net Sales Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Net Sales Actual] - Result,Result)
+			```
+		lineageTag: f5bfd51e-577e-4068-b2e9-744e962a282b
+
+	measure 'Net Sales Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Net Sales Actual],filter_)
+			VAR Result = DIVIDE(([Net Sales Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 6402244c-beb6-4584-a832-01ff1ee84f22
+
+	measure 'Net Sales Actual MoM_Final' = ```
+			VAR kpi_ =  [Net Sales Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: e78dd823-bb95-4db5-a192-f06a3242bf6d
+
+	measure 'Net Sales Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Net Sales Actual],filter_)
+		formatString: 0.0
+		lineageTag: 7d117047-c6a0-448d-b58d-ba3bb75c27ee
+
+	measure 'Net Sales Actual YoY%' = DIVIDE(([Net Sales Actual] - [Net Sales Actual PY]),[Net Sales Actual PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 49a31613-3c41-4efb-8aa7-a9f551f83f1f
+
+	measure 'Net Sales Actual YoY_Final' =
+			VAR kpi_ =  [Net Sales Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c0a2ff2e-d5c9-4fbf-b171-b109474523f9
+
+	measure 'Net Sales Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Net Sales Actual]
+			    )
+		formatString: 0.0
+		lineageTag: b11edf8c-cefe-4cc3-9526-21036874bc4b
+
+	measure 'SSSO: Scrap-Off_APN' =
+			
+			VAR Plan = [SSSO: Scrap-off APN_Base]
+			RETURN
+			DIVIDE([SSSO: Scrap-Off] - Plan,Plan)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ac65b08e-974a-42b0-a164-9bdd48dcd45f
+
+	measure 'SSSO: Scrap-Off APN_Final' =
+			
+			VAR kpi_ = [SSSO: Scrap-Off_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 21844987-f1a1-4719-9392-b4ba21d78b12
+
+	measure 'SSSO Obs_APN' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
+		lineageTag: ef4d35ac-aa06-4f48-a4a4-4d9cda974439
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO Salvage_APN' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
+		lineageTag: 42afcbf4-21ef-466e-81e4-3fe05d52eec2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obsolescence_APN' =
+			
+			VAR Plan = [SSSO Obs_APN] - ABS([SSSO Salvage_APN])
+			
+			RETURN
+			DIVIDE([SSSO: Salvage & Obsolescence] - Plan,Plan)
+		lineageTag: 3750435d-8780-4de0-b54c-fd42db22cda1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obsolescenes linked to Conversions_APN' =
+			
+			VAR Plan = [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] +[SSSO Salvage_APN]
+			Return
+			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Plan,Plan)
+		lineageTag: f749e5b8-d710-409c-a57b-d0ce29623db1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obs linked to conv APN_Final' =
+			
+			VAR kpi_ = [SSSO: Obsolescenes linked to Conversions_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: f3640b8a-837f-4e21-a79b-b392ad024a5a
+
+	measure 'SSSO: Salvage & Obs APN_Final' =
+			
+			VAR kpi_ = [SSSO: Salvage & Obsolescence_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 13f4ceed-7b2c-4721-aaee-65f9cbfad71a
+
+	measure 'SSSO: Scrap-off APN_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		lineageTag: c6bc5888-52a9-46b0-aff9-98de4d5c2701
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO Obs_F66' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
+		lineageTag: 24f7c7c7-ab3c-4583-8e31-c89184dc2fc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO Salvage_F66' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
+		lineageTag: fdd0a9a8-340f-4261-a9e7-fc3a78a59f05
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off F66_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		lineageTag: 1d590305-543e-4d21-8faa-9582eeec4b33
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obsolescenes linked to Conversions_F66' =
+			
+			VAR Flex = [SSSO: Scrap-off F66_Base] + [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
+			Return
+			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Flex, Flex)
+		lineageTag: a06d55b6-f48d-470b-b41e-50dbc63128f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obsolescence_F66' =
+			
+			VAR Flex = [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
+			
+			RETURN
+			DIVIDE([SSSO: Salvage & Obsolescence] - Flex,Flex)
+		lineageTag: 1a881af0-4245-494d-8526-6454c17d25b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-Off_F66' =
+			
+			VAR Flex = [SSSO: Scrap-off F66_Base]
+			RETURN
+			DIVIDE([SSSO: Scrap-Off] - Flex,Flex)
+		lineageTag: ef5b0062-6b17-4490-b459-3e6908ed4afc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-Off F66_Final' =
+			
+			VAR kpi_ = [SSSO: Scrap-Off_F66]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--" & UNICHAR(160) & UNICHAR(160),
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 6107e8fa-1aff-4a71-84f7-5b5204a2d9ba
+
+	measure 'SSSO: Salvage & Obs F66_Final' =
+			
+			VAR kpi_ = [SSSO: Salvage & Obsolescence_F66]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--" & UNICHAR(160) & UNICHAR(160),
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 92da5366-dd8d-4034-9f95-08feb5414b03
+
+	measure 'SSSO: Obs linked to conv F66_Final' =
+			
+			VAR kpi_ = [SSSO: Obsolescenes linked to Conversions_F66]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--" & UNICHAR(160) & UNICHAR(160),
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 17d4210d-01ea-401a-bc1c-e4b9a420bf74
+
+	measure 'Net Inventory_APN' =
+			
+			VAR Plan = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_APN])
+			Return
+			DIVIDE([Net Inventory] - Plan,Plan)
+		formatString: 0.0
+		lineageTag: dea91ab1-376e-41a2-94b9-40567c1f94d3
+
+	measure 'Net Inventory_APN_Final' =
+			
+			VAR kpi_ = [Net Inventory_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 05f96b73-d8ea-435f-a993-a27a69a9d52c
+
+	measure 'Gross Inventory_APN' =
+			
+			VAR Plan = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_APN])
+			Return
+			DIVIDE([Gross Inventory] - Plan,Plan)
+		formatString: 0.0
+		lineageTag: cd27f9ca-ed25-446c-bf30-03a5aada6bf4
+
+	measure 'Gross Inventory_APN_Final' =
+			
+			VAR kpi_ = [Gross Inventory_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 35691105-4dc0-4a68-9821-d66b3535504f
+
+	measure 'Total COGS GR_APN' = SUM(Fact_Group_Reporting[Total COGS GR_APN])
+		lineageTag: 47f7134b-c8f8-42b3-b492-7f9692953709
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total COGS GR_F66' = SUM(Fact_Group_Reporting[Total COGS GR_F66])
+		lineageTag: 1b8dbd3a-8a79-424b-887b-b6a3e7c2ed20
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total COGS GR L3M_APN' =
+			
+			VAR _Months = 3
+			VAR _LastMonth = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR _FirstMonth = _LastMonth - (_Months-1)
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= _FirstMonth && Dim_Date[YearPeriodSeq] <= _LastMonth
+			        ),
+			        [Total COGS GR_APN]
+			    )
+		lineageTag: f71acd17-18a7-4150-a734-a979fafc2a2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total COGS GR L3M_F66' =
+			
+			VAR _Months = 3
+			VAR _LastMonth = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR _FirstMonth = _LastMonth - (_Months-1)
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= _FirstMonth && Dim_Date[YearPeriodSeq] <= _LastMonth
+			        ),
+			        [Total COGS GR_F66]
+			    )
+		lineageTag: 1b45230a-a501-4705-af53-d950841efdad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inventory Avg L4M_APN' =
+			
+			VAR _LastMonth = MAX( Dim_Date[P_YearMonth Number] )
+			VAR _FirstMonth = _LastMonth - 3
+			RETURN
+			    AVERAGEX(
+			        FILTER(
+			                ALL(Dim_Date),
+			                Dim_Date[P_YearMonth Number] >= _FirstMonth && Dim_Date[P_YearMonth Number] <= _LastMonth
+			            ),
+			        [Net Inventory_APN_Base]
+			    )
+		lineageTag: 50049c20-3838-40dc-8005-65e907a8c38f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inventory_AFX' =
+			
+			VAR Plan = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_AFX])
+			Return
+			DIVIDE([Net Inventory] - Plan,Plan)
+		lineageTag: 1a6d149f-7ab4-4821-84dc-b2135765c2fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inventory_AFX_Final' =
+			
+			VAR kpi_ = [Net Inventory_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 7765cc42-76e3-482e-accd-37b7dea30b8c
+
+	measure 'Gross Inventory_AFX' =
+			
+			VAR Plan = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
+			Return
+			DIVIDE([Gross Inventory] - Plan,Plan)
+		lineageTag: 3166704e-1944-4b2f-82b2-b8d899f5ea54
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory_AFX_Final' =
+			
+			VAR kpi_ = [Gross Inventory_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 34b31ed7-35e2-435c-9750-0a286d955337
+
+	measure 'Inventory Avg L4M_AFX' =
+			
+			VAR _LastMonth = MAX( Dim_Date[P_YearMonth Number] )
+			VAR _FirstMonth = _LastMonth - 3
+			RETURN
+			    AVERAGEX(
+			        FILTER(
+			                ALL(Dim_Date),
+			                Dim_Date[P_YearMonth Number] >= _FirstMonth && Dim_Date[P_YearMonth Number] <= _LastMonth
+			            ),
+			        [Net Inventory_AFX_Base]
+			    )
+		lineageTag: 1d836b86-74d9-4914-a758-13d1e8843eb0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure DIO_APN =
+			
+			VAR _Months = 3
+			VAR _TotalCOGS = [Total COGS GR L3M_APN]
+			VAR _AvgInventory = [Inventory Avg L4M_APN]
+			VAR DIO_APN = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
+			VAR result_ = DIVIDE([DIO] - DIO_APN,DIO_APN)
+			Return
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",result_,BLANK())
+		lineageTag: 3efae6b5-9132-4770-8bbc-31d9ccb31773
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_APN])
+		formatString: 0.0
+		lineageTag: 0d105d9e-a36a-4628-a7fb-8bddb0fa9c2c
+
+	measure 'Net Inventory_AFX_Base' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_AFX])
+		formatString: 0.0
+		lineageTag: 9807b10b-d809-47da-96bb-8dea45b15067
+
+	measure DIO_AFX =
+			
+			VAR _Months = 3
+			VAR _TotalCOGS = [Total COGS GR L3M_F66]
+			VAR _AvgInventory = [Inventory Avg L4M_AFX]
+			VAR DIO_AFX = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
+			RETURN
+			DIVIDE([DIO] - DIO_AFX,DIO_AFX)
+		formatString: 0
+		lineageTag: d193275c-5ee7-4be5-bc27-aa4de6535bfa
+
+	measure DIO_APN_Final =
+			
+			VAR kpi_ = [DIO_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: da4d3b8d-384c-414c-b722-42a516f9194b
+
+	measure DIO_AFX_Final =
+			
+			VAR kpi_ = [DIO_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--" & UNICHAR(160) & UNICHAR(160),
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 84156bc6-800c-4d2d-98eb-a622c97edbf3
+
+	measure 'Bias Target' = 0.03
+		formatString: 0%;-0%;0%
+		lineageTag: 9b70de51-c52b-40ec-b49f-fa4d3d19c7a5
+
+	measure 'Bias Target Diff%' = [Bias%] - 0.03
+		lineageTag: 31b95f59-f1f2-4e9e-8ad3-b700a5ec0a67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Target Final' = ```
+			
+			VAR kpi_ =  [Bias Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 6f405e16-c864-4672-abad-4618e66d8990
+
+	measure 'FA% Target Diff%' = [FA% CSCA] - 0.7
+		lineageTag: f8c238b7-9903-49f5-8b93-b1fee299a466
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% Target Final' = ```
+			
+			VAR kpi_ =  [FA% Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		lineageTag: a97a81a8-42c9-4673-8b3b-8e973fd3df0e
+
+	measure 'FA% Target' = 0.7
+		formatString: 0%;-0%;0%
+		lineageTag: f9f909fa-4805-4fff-9fa6-ae40907d873d
+
+	measure DIO_APN_Base =
+			
+			VAR _Months = 3
+			VAR _TotalCOGS = CALCULATE([Total COGS GR L3M_APN],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR _AvgInventory = CALCULATE([Inventory Avg L4M_APN],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR DIO_APN = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
+			Return DIO_APN
+		formatString: 0
+		lineageTag: 9725eeeb-adca-4efd-bbae-1628c705f73d
+
+	measure 'SSSO: Obso Conv_APN_Base' =
+			
+			VAR Plan = [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] + [SSSO Salvage_APN]
+			Return
+			Plan
+		lineageTag: 4a4d94d0-443e-4361-8ee4-263d08ffd0ff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs_APN_Base' =
+			
+			VAR Plan = [SSSO Obs_APN] - ABS([SSSO Salvage_APN])
+			
+			RETURN
+			Plan
+		lineageTag: 3123962c-f633-44ad-8d28-5c9edc3ed778
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_APN])
+		formatString: 0.0
+		lineageTag: 923789d1-04ab-4bf1-81cf-7a23a989ff04
+
+	measure 'DSO MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DSO],filter_)
+			VAR Result = DIVIDE(([DSO] - Net_PM),Net_PM)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f00c3261-e678-4bc3-a778-0e350c9d9463
+
+	measure 'DSO MoM_Final' = ```
+			VAR kpi_ =  [DSO MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: a4851f23-dcc5-4b93-8c61-36da0c83138e
+
+	measure 'DSO PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX( Dim_Date[P_YearPeriod Seq] ) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -12 )
+			VAR py = Calculate([DSO],filter_)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", py,BLANK())
+		formatString: 0
+		lineageTag: fe74a30a-f128-4741-b255-ca2807093aa5
+
+	measure 'DSO YoY%' =
+			
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",DIVIDE(([DSO] - [DSO PY]),[DSO PY]),BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3aa2fbeb-9adb-446e-8192-f6b3d54c7143
+
+	measure 'DSO YoY_Final' =
+			VAR kpi_ =  [DSO YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 81ef3bf6-840e-4121-ae52-954adcc5f548
+
+	measure 'DPO MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DPO],filter_)
+			VAR Result = DIVIDE(([DPO] - Net_PM),Net_PM)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 14d57b82-c1d1-40d7-aacc-2a071f0d1aa7
+
+	measure 'DPO PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -12 )
+			VAR py = Calculate([DPO],filter_)
+			RETURN
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", py,BLANK())
+		lineageTag: e71f96e7-d219-4803-aab8-122e31db49dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DPO MoM_Final' = ```
+			VAR kpi_ =  [DPO MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: 55aeb62b-3023-4793-ac4e-61ac62bcb03b
+
+	measure 'DPO YoY%' =
+			
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",DIVIDE(([DPO] - [DPO PY]),[DPO PY]),BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 46cee9b0-13c2-4a75-86e6-40e0bdfe09b6
+
+	measure 'DPO YoY_Final' =
+			VAR kpi_ =  [DPO YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 1e459b4e-d603-4789-bced-26ddb25e6c69
+
+	measure 'A&P Actual' = SUM( Fact_Logistics[A&P Act] )
+		formatString: #,0.0
+		lineageTag: b6cfb028-53cd-4da8-94e0-b182d12c82d1
+
+	measure 'COGS Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [COGS Actual]
+			    )
+		formatString: 0.0
+		lineageTag: 66521ec5-41cf-4b2f-b04e-9150d2a8ea42
+
+	measure 'COGS Actual YoY_Final' =
+			VAR kpi_ =  [COGS Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: c55cb5a3-2c97-4468-9b42-27bb2165fcd2
+
+	measure 'COGS Actual YoY%' = DIVIDE(([COGS Actual] - [COGS Actual PY]),[COGS Actual PY])
+		lineageTag: 8d5d26fc-0402-42c2-9751-1908eea9f002
+
+	measure 'COGS Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([COGS Actual],filter_)
+		formatString: 0.0
+		lineageTag: b8d4fa82-0c70-4cce-bdb4-deb8e98cda0b
+
+	measure 'COGS Actual MoM_Final' = ```
+			VAR kpi_ =  [COGS Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 3ce3d6f9-c8e2-490f-99dd-87e17815011c
+
+	measure 'COGS Actual MoM%' =
+			
+			VAR Result = DIVIDE(([COGS Actual] - [COGS Actual PP]), [COGS Actual PP])
+			RETURN
+			Result
+		lineageTag: bec1d2f8-05fd-45df-b5fb-9c2a5633ac42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'COGS Actual LYTD_Final' =
+			VAR kpi_ =  [COGS Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 31d4fe84-7b85-40da-921f-0e31ebca0212
+
+	measure 'COGS Actual LYTD' = ```
+			
+			/* 
+			VAR LYTD = DIVIDE([Total Logistics LYTD], [Net Sales LYTD])
+			Return
+			[COGS Actual] - LYTD
+			*/
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [COGS Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([COGS Actual] - Result,Result)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d8f994c5-a505-40f9-897d-e130bbe14d4c
+
+	measure 'Net Sales_APN' =
+			
+			VAR Plan = [Net Sales_APN_Base]
+			Return
+			DIVIDE([Net Sales Actual] - Plan,Plan)
+		formatString: 0.0
+		lineageTag: c8f6ad87-2541-4e46-9b36-3c1e8929f88e
+
+	measure 'Net Sales_APN_Base' = SUM(Fact_Logistics[Net Sales Plan])
+		formatString: 0.0
+		lineageTag: 9f154c40-d040-4652-ab9a-8c71ec47430a
+
+	measure 'Net Sales_APN_Final' =
+			
+			VAR kpi_ = [Net Sales_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 9ab22e72-1632-49da-b30e-478950c77f2c
+
+	measure COGS_APN_Base = SUM(Fact_Logistics[COGS Plan])
+		formatString: 0.0
+		lineageTag: cea78f18-8adc-4a21-a812-c9505f437c7b
+
+	measure COGS_APN_Final =
+			VAR kpi_ = [COGS_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: bfeb341f-a5df-4b86-99cf-b3497b92efdd
+
+	measure COGS_APN =
+			VAR Plan = [COGS_APN_Base]
+			Return
+			DIVIDE([COGS Actual] - Plan,Plan)
+		formatString: 0.0
+		lineageTag: 2070f4d1-eb29-4830-a546-f0a69c842f1b
+
+	measure 'Total Logistics on Net Sales_APN_Base' = DIVIDE([Total Logistics Plan], [Net Sales Plan])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: bc33c33c-ee18-4264-b324-a6653a2b62c1
+
+	measure 'Total Logistics on Net Sales_APN_Final' =
+			VAR kpi_ = [Total Logistics on Net Sales_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 5e0fc1d5-94c9-4209-8919-df2326df76c6
+
+	measure 'Total Logistics on Net Sales_APN' =
+			VAR Plan = [TOTAL LOGISTICS ON NET SALES_APN_Base]
+			Return
+			DIVIDE([TOTAL LOGISTICS ON NET SALES Actual] - Plan,Plan)
+		lineageTag: 6f110007-c1f5-4959-b021-e638515216df
+
+	measure 'Distribution Plan' = SUM( Fact_Logistics[Distribution Plan] )
+		formatString: #,0.0
+		lineageTag: 1cee0a10-6ba2-43b6-9537-cb1877f531b1
+
+	measure 'Total Distribution on COGS_APN_Base' = DIVIDE([Distribution Plan], [COGS_APN_Base])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 20d604fe-5412-4f66-9dc1-e4eeaeba852f
+
+	measure 'Total Distribution on COGS_APN_Final' =
+			
+			VAR kpi_ = [Total Distribution on COGS_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_  & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: aa5e4a3c-44cb-492d-97ba-1983faff1881
+
+	measure 'Total Distribution on COGS_APN' =
+			VAR Plan = [TOTAL DISTRIBUTION ON COGS_APN_Base]
+			Return
+			DIVIDE([TOTAL DISTRIBUTION ON COGS Actual] - Plan,Plan)
+		lineageTag: 17d4541b-ecef-4574-80e1-af6f34948ead
+
+	measure 'Variances Act' = SUM(Fact_Logistics[Variances Act])
+		lineageTag: 18b246d9-93e1-4418-b7b7-bd3a7b5fa1eb
+
+	measure 'Last Closed Period' = MAX('Other_Last Closed Month'[Period])
+		lineageTag: a456bda2-a8b3-4ca5-8f3e-396099d120bc
+
+	measure 'Customer Fines' = SUM(Fact_Customer_Fines[Split Amount])
+		lineageTag: cd5c859a-f58b-4c18-a251-dfac7c02e692
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Fines Target' =
+			
+			SWITCH(SELECTEDVALUE(CG_PeriodSelection[Period]), "PTD", 5000000/12, "YTD", 5000000,5000000/12)
+		formatString: 0.0
+		lineageTag: c3739011-c277-427f-8f38-9f257bc37879
+
+	measure 'Cust Fine Target Diff%' = ([Customer Fines] - [Customer Fines Target])/[Customer Fines Target]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: c3cf8efd-60bf-4447-b97e-83a79c27ccf5
+
+	measure 'Cust fine Target Final' = ```
+			
+			VAR kpi_ =  [Cust Fine Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 302e159f-02ca-4240-95cd-574c5822ae41
+
+	measure 'Cust fine PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Customer Fines],filter_)
+			
+			```
+		lineageTag: 9cbdfb3e-a977-4ed4-9153-1750b35e5d8a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cust Fine MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Customer Fines],filter_)
+			VAR Result = DIVIDE(([Customer Fines] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: fe18fc17-577b-41a9-aa1b-6d734ca202f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cust Fine MoM_Final' = ```
+			
+			VAR kpi_ =  [Cust Fine MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: ebbcda50-cd61-4217-8cbf-4062252d8abc
+
+	measure 'Cust fine YoY%' = DIVIDE(([Customer Fines] - [Cust fine PY]),[Cust fine PY])
+		lineageTag: d8fc74b6-ea15-419f-ab5b-93c07a181dbb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cust fine YoY_Final' =
+			VAR kpi_ =  [Cust fine YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 7f35a72a-ad49-4fc6-a1de-ab260d7e3659
+
+	measure 'Cust Fine LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Cust fine PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Customer Fines] - Result,Result)
+			```
+		lineageTag: f082c729-559a-4147-919a-3224a0289d29
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cust fine LYTD_Final' =
+			
+			VAR kpi_ =  [Cust Fine LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: e2b8381c-1566-419d-a46b-d188e7aee462
+
+	measure 'Cust Fine YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Customer Fines]
+			    )
+		lineageTag: 491729bf-985d-4a67-8c09-e5f7944fb6d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure CFR = DIVIDE(SUM(Fact_CFR[Total Delivery Qty]),SUM(Fact_CFR[Total Order Qty]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 83654486-06bd-4611-a666-f4c519e66c22
+
+	measure 'CFR MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([CFR],filter_)
+			VAR Result = [CFR] - Net_PM
+			RETURN
+			Result
+		lineageTag: a5228272-383a-403f-a1df-0c5eb0e4c58c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR MoM_Final' = ```
+			
+			VAR kpi_ =  [CFR MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: a3a2a02b-5174-4a2d-b8e5-ce9364027251
+
+	measure 'CFR PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([CFR],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f5cbfb6a-9765-40a7-bc2a-b009faf0d190
+
+	measure 'CFR YoY%' = [CFR] - [CFR PY]
+		lineageTag: ce2aa45d-dce4-46b8-818a-54b52a7a34a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR YoY_Final' =
+			
+			VAR kpi_ =  [CFR YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 02349e52-cc46-4d70-aae2-21cf5f0ee688
+
+	measure 'CFR YTD' = TOTALYTD([CFR],Dim_Date[Date])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 6cf517c7-1ebc-4631-84ed-dc9ad0bda325
+
+	measure 'CFR Target' = 0.94
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8bbb56f3-5ed0-49de-973d-a77b571c748e
+
+	measure 'CFR Target Diff%' = [CFR] - 0.94
+		lineageTag: ec953ac8-eea9-46b4-a964-7e1d07b91b8d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR Target Final' = ```
+			
+			VAR kpi_ =  [CFR Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 99e52b5f-6b97-486d-95ed-9af365e6dbc1
+
+	measure 'CFR Orders LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [CFR Orders PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 80f18d2e-06f0-45be-9cfa-e61b46184e05
+
+	measure 'CFR Orders PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(SUM(Fact_CFR[Total Order Qty]),filter_)
+		lineageTag: cd726723-73fe-48bf-b648-45c7a2297aeb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR Delivery PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate(SUM(Fact_CFR[Total Delivery Qty]),filter_)
+		lineageTag: f688c17e-624e-4e30-8f66-b3dda6d7e256
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR Delivery LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [CFR Delivery PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: bfa6947f-50c9-405e-84bf-7d0ac7d6a49a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR LYTD' =
+			
+			VAR LYTD = DIVIDE([CFR Delivery LYTD], [CFR Orders LYTD],0)
+			
+			RETURN
+			[CFR] - LYTD
+		lineageTag: aa344dab-9b4c-4adb-8287-425bd5799471
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR LYTD_Final' =
+			
+			VAR kpi_ =  [CFR LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 848a9169-1ce4-443f-9f9e-cb5a55d25b96
+
+	measure 'Schedule Attn Target' = ```
+			
+			
+			
+			VAR _siteGroup = SELECTEDVALUE('Bridge_Site'[Site Group])  
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _siteGroup IN { "MI OTC", "Oral Care" }, 0.92,
+			    _siteGroup IN { "NY OTC", "Nutrition" }, 0.90,
+			    0.92  -- default 
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e957bc12-a25a-4558-b37a-9fa5c668af90
+
+	measure 'Schedule Attn Target Diff%' = [Schedule Attn] - 0.92
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 368e7ee8-4894-41bd-bc41-9ca1726622c8
+
+	measure 'Schedule Attn Target Final' = ```
+			
+			VAR kpi_ =  [Schedule Attn Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: b73a7e1c-d281-40f3-a4b2-faa86574c30d
+
+	measure 'Bias% Lag 2' = CALCULATE([Bias%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 17de22a2-87ff-49bf-86bb-dc2d7c9d4548
+
+	measure 'Bias% Lag 4' = CALCULATE([Bias%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: ec6dde8d-416d-4a4d-8283-a3949d80e5ad
+
+	measure 'FA% Lag2 MoM_Final' = CALCULATE([FA% MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: f5b7a238-1542-43b3-83b9-234764c5b2b2
+
+	measure 'FA% Lag4 MoM_Final' = CALCULATE([FA% MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 10a7b0ab-74da-4eed-93ba-421bba673144
+
+	measure 'FA% Lag2 YTD' = CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d4f2b3eb-73a4-4081-b735-45fdd659570f
+
+	measure 'FA% Lag4 YTD' = CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f1a705da-865a-4c1e-92a9-946cae5afcfc
+
+	measure 'FA% Lag2 YoY_Final' = CALCULATE([FA% YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 0a4838cf-2a77-4adc-b8eb-b5c34e9f41b0
+
+	measure 'FA% Lag4 YoY_Final' = CALCULATE([FA% YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 48be6021-6ecb-4f61-8443-571475aba586
+
+	measure 'FA% Lag2 Target_Final' = ```
+			
+			VAR kpi_ =  [FA% Lag 2 Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 5724b98e-7ae9-4c7f-af35-c9e2c3ccd295
+
+	measure 'FA% Lag4 Target_Final' = ```
+			
+			VAR kpi_ =  [FA% Lag 4 Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: aace5e30-2c4b-446d-9be4-445043d6cceb
+
+	measure 'Bias% Lag2 YTD' = CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3717fe84-6e88-431a-a391-0b7c5a96ea1b
+
+	measure 'Bias% Lag4 YTD' = CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		lineageTag: f110cf14-10af-4d24-8acb-94386f93722b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias% Lag2 MoM_Final' = CALCULATE([Bias MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 5157d3ba-6d28-48f7-a042-1711b507c54d
+
+	measure 'Bias% Lag4 MoM_Final' = CALCULATE([Bias MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 4057c104-8b6d-4d85-a4c2-4e7e6c42e89c
+
+	measure 'Bias% Lag2 YoY_Final' = CALCULATE([Bias YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: ff13f938-aadc-4d15-8d88-959041903777
+
+	measure 'Bias% Lag4 YoY_Final' = CALCULATE([Bias YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 82910963-7603-445c-8ed0-8300cd828ec5
+
+	measure 'Bias% Lag2 Target_Final' = CALCULATE([Bias Target Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: f1d1f4a2-79d6-4535-8f06-b949d1ab8c03
+
+	measure 'Bias% Lag4 Target_Final' = CALCULATE([Bias Target Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		lineageTag: 6f47bf01-3bf2-4b63-9fb9-ed2d7b8c2784
+
+	measure Switch_YoY_WC = ```
+			SWITCH(
+			    VALUES( Working_Capital_Parameter[Working_Capital_Parameter] ),
+			    "Gross Inventory", [Gross Inventory PY],
+			    "Net Inventory", [Net Inventory PY],
+			    "Inflated Inventory", [Inflated Inventory PY],
+			    "Expired Inventory", [Expired Inventory PY],
+			    "DSO", [DSO PY],
+			    "DPO", [DPO PY],
+			    "DIO", [DIO PY]
+			)
+			
+			```
+		lineageTag: 4bb47335-25f8-49c4-8c4b-2fe57298f8d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_YTD_WC = ```
+			SWITCH(
+			    VALUES( Working_Capital_Parameter[Working_Capital_Parameter] ),
+			    "Gross Inventory", [Gross Inventory],
+			    "Net Inventory", [Net Inventory],
+			    "Inflated Inventory", [Inflated Inventory],
+			    "Expired Inventory", [Expired Inventory],
+			    "DSO", [DSO],
+			    "DPO", [DPO],
+			    "DIO", [DIO]
+			)
+			
+			```
+		lineageTag: 3dfab3aa-5487-40cc-b7f9-d097382a68cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Gross Inventory],filter_)
+			
+			RETURN Net_PM
+		formatString: 0.0
+		lineageTag: 4afd3352-435d-44d6-8cb0-ef4b0a996b95
+
+	measure 'Gross Inventory AFX_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
+		formatString: 0.0
+		lineageTag: ef997859-1e98-4aaa-987a-ffffbca1df49
+
+	measure 'Net Inventory PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Net Inventory],filter_)
+			
+			RETURN Net_PM
+		lineageTag: a1c51a58-bd49-486a-9088-9e3c06bf4d54
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Inflated Inventory],filter_)
+			
+			RETURN Net_PM
+		lineageTag: e450dc66-6c0e-4227-ad00-877c695da019
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Expired Inventory],filter_)
+			
+			RETURN Net_PM
+		lineageTag: d4285329-2bbd-4d47-804a-db22e39ebd96
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DSO PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -1)
+			VAR Net_PM = Calculate([DSO],Filter_)
+			Return
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", Net_PM, BLANK())
+		formatString: 0
+		lineageTag: 6bc0d88b-1789-42c2-988d-a9c07a0d74fb
+
+	measure 'DPO PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DPO],filter_)
+			Return
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", Net_PM, BLANK())
+		formatString: 0
+		lineageTag: 9d6914cb-166c-481f-b866-f6065ccaa1d0
+
+	measure 'DIO PP' = ```
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[P_YearPeriod Seq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DIO],filter_)
+			Return 
+			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Net_PM,BLANK())
+			```
+		formatString: 0
+		lineageTag: d0d62941-df3d-4645-ac92-a3d25fd8f8af
+
+	measure DIO_AFX_Base =
+			
+			VAR _Months = 3
+			VAR _TotalCOGS = CALCULATE([Total COGS GR L3M_F66],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR _AvgInventory = CALCULATE([Inventory Avg L4M_AFX],KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR DIO_AFX = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
+			RETURN
+			DIO_AFX
+		lineageTag: b0673e43-b8e3-40f2-9a23-471c82837c7d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([OEE%],filter_)
+			
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3b8f33e5-3af8-4eb3-9916-b2aea00f4a02
+
+	measure Switch_Plan_WC = ```
+			SWITCH(
+			    VALUES( Working_Capital_Parameter[Working_Capital_Parameter] ),
+			    "Gross Inventory", [Gross Inventory_APN_Base],
+			    "Net Inventory", [Net Inventory_APN_Base],
+			    "DIO", [DIO_APN_Base],
+			    "DSO", [DSO_APN_Base],
+			    "DPO", [DPO_APN_Base]
+			)
+			
+			```
+		lineageTag: 658d96ab-c80b-42f5-befc-3d8ec474e452
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Flex_WC = ```
+			SWITCH(
+			    VALUES( Working_Capital_Parameter[Working_Capital_Parameter] ),
+			    "Gross Inventory", [Gross Inventory_AFX_Base],
+			    "Net Inventory", [Net Inventory_AFX_Base],
+			    "DIO", [DIO_AFX_Base]
+			)
+			
+			```
+		lineageTag: 46263d21-280a-490a-baef-9d581928d279
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory_AFX_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
+		lineageTag: c05aef6d-5685-4ab3-af7c-0bb5bb953c45
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & obs PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([SSSO: Salvage & Obsolescence],filter_)
+			RETURN
+			Result
+		lineageTag: 68157b7b-90a6-440e-a750-0b87c9dd110c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obs linked to Conv PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([SSSO: Obsolescenes linked to Conversions],filter_)
+			RETURN
+			Result
+		lineageTag: 027efcd4-d1f1-4410-bacc-1a5c6010a89d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-Off PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([SSSO: Scrap-Off],filter_)
+			RETURN
+			Result
+		lineageTag: b08e2569-5ed5-4c29-9801-4402499164c1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Total Distribution on COGS Actual],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 49395a6f-12c8-4016-afad-5d08aa82f954
+
+	measure 'Total Logistics on Net Sales Actual PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Total Logistics on Net Sales Actual],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 21996a4c-ef72-4af6-aa84-59e99a24a463
+
+	measure 'SSSO: Salvage & Obs_AFX_Base' =
+			
+			VAR AFX = [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
+			
+			RETURN
+			AFX
+		lineageTag: 5dda1a5e-5009-423c-a999-166fbd6b3bcd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obso Conv_AFX_Base' =
+			
+			VAR AFX = [SSSO: Scrap-off F66_Base] + [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
+			Return
+			AFX
+		lineageTag: cae50f8b-c92f-4b8b-a1bd-310acaee02f4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Net Sales Actual],filter_)
+			RETURN
+			Result
+		formatString: 0.0
+		lineageTag: e2bcada7-43d7-477c-aa57-800102ff4a70
+
+	measure 'COGS Actual PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([COGS Actual],filter_)
+			RETURN
+			Result
+		formatString: 0.0
+		lineageTag: f0462e0d-b875-48f9-9878-6473a83a932e
+
+	measure 'Cust Fine PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Customer Fines],filter_)
+			RETURN
+			Result
+		formatString: 0.0
+		lineageTag: 895686ef-3c9f-40c0-b11e-4b8b3368da05
+
+	measure 'Bias PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Bias%],filter_)
+			RETURN
+			Result
+		lineageTag: 27e874e4-745a-4a32-9057-86b4bb5ca3e0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 PP' = CALCULATE([Bias PP], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: af2c9731-fe6e-4c90-9fdb-198ae72485f0
+
+	measure 'Bias Lag4 PP' = CALCULATE([Bias PP], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 39bdf3b9-ed61-4dc5-b0d3-2b95eb4e9a17
+
+	measure 'FA% PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([FA% CSCA],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 73cf70d3-678d-455d-bf99-2e02a975939c
+
+	measure 'FA% Lag2 PP' = CALCULATE([FA% PP],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 74a51d70-e8cf-4e0c-a465-7ff1f75c0ac4
+
+	measure 'FA% Lag4 PP' = CALCULATE([FA% PP],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 031bcabd-5af4-4709-8142-0dece8bcad86
+
+	measure 'SA PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Schedule Attn],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 0cdf13f3-51ad-42d5-9af0-c0cb95692960
+
+	measure 'CFR PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([CFR],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d6df3d20-8599-4dac-a1ff-ae651ab9ed1a
+
+	measure 'FA% Lag2 PY' = CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8b9fed1f-107d-453b-92e5-5719f61eb176
+
+	measure 'FA% Lag4 PY' = CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 9f37f77a-4c3c-4070-9a9e-11bafce01fb8
+
+	measure 'Bias Lag2 PY' = CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 321385cc-4fcf-4202-b79b-18a66443e1f6
+
+	measure 'Bias Lag4 PY' = CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: a45cfdc6-5bbf-43c4-95cc-d6bff0efaf48
+
+	measure 'Service Rate% PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Service Rate%],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 60347ad6-f8fc-4c47-a02f-3409573f5371
+
+	measure 'FA% Lag2 MoM%' = CALCULATE([FA% MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		lineageTag: 319628f8-62ec-48d1-8a4e-79111c461e72
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% Lag4 MoM%' = CALCULATE([FA% MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: aacab4de-94d8-4c1b-9e23-e9dd9791fc56
+
+	measure 'FA% Lag2 YoY%' = CALCULATE([FA% YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d46358d2-30a1-43df-8325-df8738a3e162
+
+	measure 'FA% Lag4 YoY%' = CALCULATE([FA% YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 57ec18bc-5b77-428f-b286-21c8a1bb5f95
+
+	measure 'FA% Lag2 Target Diff' = CALCULATE([FA% Target Diff%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		lineageTag: e5c1ef98-f4ef-48ae-ba53-14835e36396b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% Lag4 Target Diff' = CALCULATE([FA% Target Diff%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		lineageTag: 8e209fbc-412d-4a74-bb83-4ca81c6a8b3e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 Target Diff%' = CALCULATE([Bias Target Diff%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		lineageTag: ccfcff81-c0ff-404f-96fa-ba181ab769f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag4 Target Diff%' = CALCULATE([Bias Target Diff%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		lineageTag: fa95dbcc-dc92-427d-9d5b-f71b9f98808d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 MoM%' = CALCULATE([Bias MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		lineageTag: 48a9e8f6-a6d1-4c2a-95f5-438f9a510942
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag4 MoM%' = CALCULATE([Bias MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		lineageTag: 50edeb50-5289-489a-b6ee-7cbcf6c46553
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 YoY%' = CALCULATE([Bias YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		lineageTag: df5af22c-1b99-4145-82fa-f378180c0ce3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag4 YoY%' = CALCULATE([Bias YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		lineageTag: 3e285136-99d9-4890-95eb-12da2bce5ef2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Operations = ```
+			SWITCH(
+			    VALUES( Operations_Parameter[Operations_Parameter] ),
+			    "OEE%", [OEE Target],
+			    "Schedule Attainment%", [Schedule Attn Target],
+			    "On Time Closure of Deviations%",[Deviations Plan],
+			    "CAPA Completion Rate%",[CAPA Plan],
+			    "RFT%", [RFT Plan]
+			)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 46ad6b7c-6671-4187-b08a-d072791c8fce
+
+	measure Switch_Plan_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_APN_Base],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_APN_Base],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off APN_Base],
+			    "Net Sales", [Net Sales_APN_Base],
+			    "COGS", [COGS_APN_Base],
+			    "Distribution to COGS", [Total Distribution on COGS_APN_Base],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_APN_Base],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income APN_Base],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		lineageTag: 7168448d-b758-4fcd-8195-1e2f65824ef8
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
+	measure Switch_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_AFX_Base],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_AFX_Base],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off F66_Base]
+			)
+			
+			```
+		lineageTag: fdc38a5b-b697-43de-a8c2-ec8696ad9eec
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory MoM' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Inflated Inventory],filter_)
+			VAR Result = [Inflated Inventory] - Net_PM
+			RETURN
+			Result
+		lineageTag: bb4e146c-5b4c-46ed-ac4b-03acd354b979
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory MoM' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Expired Inventory],filter_)
+			VAR Result = [Expired Inventory] - Net_PM
+			RETURN
+			Result
+		lineageTag: 42dc6417-4ea5-4c0e-b49c-6d9cb360d473
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DSO MoM' =
+			
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(all(Dim_Date),Dim_Date[P_YearPeriod Seq]= YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DSO],filter_)
+			VAR Result = [DSO] - Net_PM
+			RETURN
+			Result
+		lineageTag: cd694068-0782-45b4-b49c-6973310618d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DPO MoM' =
+			
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[P_YearPeriod Seq]) )
+			VAR Filter_ = Filter(all(Dim_Date),Dim_Date[P_YearPeriod Seq]= YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DPO],filter_)
+			VAR Result = [DPO] - Net_PM
+			RETURN
+			Result
+		lineageTag: f85f40b2-8708-4ab2-92f9-fad3d45ab063
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DIO MoM' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([DIO],filter_)
+			VAR Result = [DIO] - Net_PM
+			RETURN
+			Result
+		lineageTag: 3111b21c-4c4a-4c7a-ab83-4501487deadc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual' = CALCULATE(SUM(Fact_COPA_Global[Net POV Actual]), KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		lineageTag: 682c3c2c-720d-478a-94e9-44e65156dce3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net POV Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Net POV Actual] - Result,Result)
+			```
+		lineageTag: 4ecf8c42-c212-4df6-937d-8497767eadf6
+
+	measure 'Net POV Actual MoM_Final' = ```
+			VAR kpi_ =  [Net POV Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 5d7cb07d-bd7f-4341-86c3-84375f89c222
+
+	measure 'Net POV Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Net POV Actual],filter_)
+			VAR Result = DIVIDE(([Net POV Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 93b051de-7475-4ea2-b620-5d43aa135d85
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Net POV Actual],filter_)
+			RETURN
+			Result
+		lineageTag: 4e0e3e2f-2661-4da2-972f-863b10b305c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Net POV Actual],filter_)
+		lineageTag: 29ecad30-d9c1-4234-94db-8d1d0ccd6b05
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual YoY_Final' =
+			VAR kpi_ =  [Net POV Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 12e2f707-f8ec-4256-865c-38481a755787
+
+	measure Measure
+		lineageTag: e9d4cb81-bb81-499f-ad01-6f283f4f5457
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	measure 'Net POV Actual YoY%' = DIVIDE(([Net POV Actual] - [Net POV Actual PY]),[Net POV Actual PY])
+		lineageTag: 7701f75a-1f69-4eae-95f0-d7cd8f2013da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Net POV Actual]
+			    )
+		lineageTag: 9598874d-c497-40c2-8633-cd4a9fe83908
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV APN_base' = SUM(Fact_COPA_Global[Net POV Plan])
+		lineageTag: a8d2f4f1-4fe1-4a22-9389-4a5e89bb3b36
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net POV Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: 301e3dec-612a-496a-8657-32bb285890ec
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV_APN' =
+			VAR Plan = [Net POV APN_Base]
+			Return
+			DIVIDE([Net POV Actual] - Plan,Plan)
+		lineageTag: a581a5a4-553c-4d68-b20c-12937ff33abf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV_APN_Final' =
+			VAR kpi_ = [Net POV_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 9a60fce9-5d4b-4628-8230-e466db210ba0
+
+	measure 'Gross PPV Actual' = CALCULATE(SUM(Fact_COPA_Global[Gross PPV Actual]),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		lineageTag: 1ead4e52-fd37-4ab8-aea4-abc040372c6e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Actual LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Gross PPV Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Gross PPV Actual] - Result,Result)
+			```
+		lineageTag: 7c15aa88-6832-4b29-a0e9-6a08a46f91f9
+
+	measure 'Gross PPV Actual MoM_Final' = ```
+			VAR kpi_ =  [Gross PPV Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 088513ca-926c-4fee-a2e4-3dcebe3c88f5
+
+	measure 'Gross PPV Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Gross PPV Actual],filter_)
+			VAR Result = DIVIDE(([Gross PPV Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 058cf2fa-bd3b-4a18-9060-a82004adb2e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Gross PPV Actual],filter_)
+			RETURN
+			Result
+		lineageTag: a0e35219-aa70-4363-b603-aadd96d325fa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Gross PPV Actual],filter_)
+		lineageTag: 7b258b2d-3328-463c-9014-78e12fac572a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Actual YoY_Final' =
+			VAR kpi_ =  [Gross PPV Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: df241a7a-007b-4735-a700-c278553da8e0
+
+	measure 'Gross PPV Actual YoY%' = DIVIDE(([Gross PPV Actual] - [Gross PPV Actual PY]),[Gross PPV Actual PY])
+		lineageTag: 33f866a0-7cda-4fe5-8110-4ffcd3dec3e3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Gross PPV Actual]
+			    )
+		lineageTag: 88360143-f6fc-4fd7-aabf-4efff20e0c55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV APN_base' = SUM(Fact_COPA_Global[Net PPV Plan])
+		lineageTag: de280fd9-4fea-47b7-b6ff-33357cfa4d25
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Gross PPV Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: 8d027159-2f62-4152-b05a-2140d42e9c67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV_APN' =
+			VAR Plan = [Gross PPV APN_base]
+			Return
+			DIVIDE([Gross PPV Actual] - Plan,Plan)
+		lineageTag: 7007a5b7-69e0-4ff1-ac59-8c846363ab54
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV_APN_Final' =
+			VAR kpi_ = [Gross PPV_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: f0adb735-c9c5-4ed5-8d43-c99e05d56821
+
+	measure 'Operating Income Actual' = CALCULATE(SUM(Fact_COPA_Global[Operating Income Actual]),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		lineageTag: f7defad4-2cb8-4f72-91b9-90f0fbd9b957
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income Actual LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Operating Income Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Operating Income Actual] - Result,Result)
+			```
+		lineageTag: 8c10fe0d-cdfb-4e80-a0fb-9ee887b51012
+
+	measure 'Operating Income Actual MoM_Final' = ```
+			VAR kpi_ =  [Operating Income Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: c8493e31-9063-46c3-bb02-bac5a15573fa
+
+	measure 'Operating Income Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Operating Income Actual],filter_)
+			VAR Result = DIVIDE(([Operating Income Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		lineageTag: 29f5c337-86a5-497f-8784-511376572379
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Operating Income Actual],filter_)
+			RETURN
+			Result
+		lineageTag: 66657473-b000-4b62-a63f-72808fa9f6bb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Operating Income Actual],filter_)
+		lineageTag: 467dd3e0-fe51-44a1-9a51-a856b05d13e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income Actual YoY_Final' =
+			VAR kpi_ =  [Operating Income Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 664c82ab-7f58-4015-a7e3-484096d4a034
+
+	measure 'Operating Income Actual YoY%' = DIVIDE(([Operating Income Actual] - [Operating Income Actual PY]),[Operating Income Actual PY])
+		lineageTag: e54b6630-2cf7-4660-a1db-1eb366e30013
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Operating Income Actual]
+			    )
+		lineageTag: d81418f5-044a-4068-90e1-916efd908f8b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income APN_Base' = SUM(Fact_COPA_Global[Operating Income Plan])
+		lineageTag: a79a8550-10e9-4694-8105-e243ddfd9e3b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Operating Income PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		lineageTag: c118920e-4b83-4888-99e4-9216ce087e4c
+
+	measure 'Operating Income PY' = ```
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			    
+			
+			        Calculate( [Operating Income Actual], filter_ )
+			```
+		lineageTag: e84c64f1-cbf8-4049-8a7d-8e60094973f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income_APN' =
+			VAR Plan = [Operating Income APN_Base]
+			Return
+			DIVIDE([Operating Income Actual] - Plan,Plan)
+		lineageTag: bfb9e7ef-845f-4223-8b4b-9e4ec38f569f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income_APN_Final' =
+			VAR kpi_ = [Operating Income_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 410ed7a6-5a45-4fea-a9f3-988336757311
+
+	measure 'FA% Lag 2 Target Diff%' = [FA% Lag2] - 0.62
+		lineageTag: a5cd57a3-8215-44d5-a39d-27910edd6dcf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% Lag 4 Target Diff%' = [FA% Lag4] - 0.7
+		lineageTag: 24005a5d-c869-4b31-ade1-d0d9bdb2f15b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% Lag2 Target' = 0.62
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8ab6b503-9f0c-4913-87d5-cd2929fbe7c6
+
+	measure 'Net Sales Actual LYTD_Final' =
+			
+			VAR kpi_ =  [Net Sales Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 7e06759b-301d-408e-aae2-6dd8fd96e6ba
+
+	measure 'Gross PPV Actual LYTD_Final' =
+			
+			VAR kpi_ =  [Gross PPV Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: f6718f6f-db76-481b-a199-b29dbd7bdcb7
+
+	measure 'Net POV Actual LYTD_Final' =
+			
+			VAR kpi_ =  [Net POV Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c9d0f241-90fe-4fc9-b054-311f1551886b
+
+	measure 'Operating Income Actual LYTD_Final' =
+			
+			VAR kpi_ =  [Operating Income Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 1a1dfabb-e62c-4ef0-b9f4-406c05203c7d
+
+	measure 'OEE% LYTD_Final' =
+			
+			VAR kpi_ =  [OEE LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 611bdc4b-e841-4d32-aab5-4782e02250f3
+
+	measure 'InCount LYTD' = ```
+			
+			    
+			VAR In_ =  ADDCOLUMNS(SUMMARIZE(Dim_Date, Dim_Date[P_YearPeriod]), "Measure", [InCount_PY])
+			
+			VAR InCountLYTD = SUMX(In_, [Measure])
+			RETURN InCountLYTD
+			```
+		lineageTag: 2de2ca06-1c9e-49a2-9087-861deceddac3
+
+	measure InCount_PY =
+			
+			VAR AllDates = ALL(Dim_Date)
+			VAR CurrentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR PYSeq = CurrentSeq - 12
+			
+			RETURN
+			    CALCULATE([In Count], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		lineageTag: 98576661-56d0-46c6-9031-6665b358b566
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure OutCount_PY =
+			
+			VAR AllDates = ALL(Dim_Date)
+			VAR CurrentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR PYSeq = CurrentSeq - 12
+			
+			RETURN
+			    CALCULATE([Out Count], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		lineageTag: e1a4f5c3-d71b-47aa-bf2d-31b340a5f638
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OutCount LYTD' = ```
+			
+			    
+			VAR Out =  ADDCOLUMNS(SUMMARIZE(Dim_Date, Dim_Date[P_YearPeriod]), "Measure", [OutCount_PY])
+			
+			VAR OutCountLYTD = SUMX(Out, [Measure])
+			RETURN OutCountLYTD
+			
+			```
+		lineageTag: 66de8ccd-1fc5-4caf-9562-120e4ff06797
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure UpSeconds_PY =
+			
+			VAR AllDates = ALL(Dim_Date)
+			VAR CurrentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR PYSeq = CurrentSeq - 12
+			
+			RETURN
+			    CALCULATE([Up Seconds], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		lineageTag: 9f674593-2788-4174-83ce-13b517dd6149
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure DownSeconds_PY =
+			
+			VAR AllDates = ALL(Dim_Date)
+			VAR CurrentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR PYSeq = CurrentSeq - 12
+			
+			RETURN
+			    CALCULATE([Down Seconds], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		lineageTag: 442a67b7-bec6-4060-8f79-86922b07a187
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DownSeconds LYTD' = ```
+			
+			    
+			VAR Out =  ADDCOLUMNS(SUMMARIZE(Dim_Date, Dim_Date[P_YearPeriod]), "Measure", [DownSeconds_PY])
+			
+			VAR OutCountLYTD = SUMX(Out, [Measure])
+			RETURN OutCountLYTD
+			
+			```
+		lineageTag: 39fa85fc-725d-46a9-81fc-2d4deb109e93
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'UpSeconds LYTD' = ```
+			
+			    
+			VAR Out =  ADDCOLUMNS(SUMMARIZE(Dim_Date, Dim_Date[P_YearPeriod]), "Measure", [UpSeconds_PY])
+			
+			VAR OutCountLYTD = SUMX(Out, [Measure])
+			RETURN OutCountLYTD
+			
+			```
+		lineageTag: 51a654c1-7d37-479b-90ad-31a97f081c68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'TotalElapsed LYTD' = [UpSeconds LYTD] + [DownSeconds LYTD]
+		lineageTag: 34d3296c-93f8-4368-b145-b8dab9164fc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure RunQty_PY =
+			
+			VAR AllDates = ALL(Dim_Date)
+			VAR CurrentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR PYSeq = CurrentSeq - 12
+			
+			RETURN
+			    CALCULATE([Run Theoretical Quantity], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		lineageTag: 91720cb9-3cb3-4558-9891-f6aa8da2c63d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RunQty LYTD' = ```
+			
+			    
+			VAR Out =  ADDCOLUMNS(SUMMARIZE(Dim_Date, Dim_Date[P_YearPeriod]), "Measure", [RunQty_PY])
+			
+			VAR OutCountLYTD = SUMX(Out, [Measure])
+			RETURN OutCountLYTD
+			
+			```
+		lineageTag: 220ead1d-6250-48a2-a10c-e829033e3e57
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RunSpeed LYTD' = ```
+			DIVIDE([RunQty LYTD], [TotalElapsed LYTD]) 
+			```
+		lineageTag: 97d22ade-9c81-473d-90f3-566e121d72e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Qloss LYTD' = [InCount LYTD] - [OutCount LYTD]
+		lineageTag: a31c9d6d-a6f0-4f5d-9588-8bcb6b51bba4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Abs Demand Draft Var 5 Digit' =
+			CALCULATE(
+			SUMX(
+			    SUMMARIZE(
+			        Fact_Forecast_Accuracy,Fact_Forecast_Accuracy[SSID 5-Digit],
+			        Fact_Forecast_Accuracy[Fiscal Year/Period],
+			        "Variance", ABS([Demand Draft] - [Total Shipments])),[Variance]),
+			REMOVEFILTERS(Fact_Forecast_Accuracy[Source Material Key])
+			)
+		lineageTag: c0875e69-fce8-48bb-9f36-78ba6bc34738
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% 5 Digit' = ```
+			
+			VAR TotalShipments = [Total Shipments]
+			VAR VarianceAgg = [Abs Demand Draft Var 5 Digit]
+			
+			RETURN 
+			IF(
+			    ISBLANK(VarianceAgg),
+			    BLANK(),  // Return BLANK if VarianceAgg is blank or zero
+			    VAR Result = 1 - DIVIDE(VarianceAgg, TotalShipments, 1)
+			    RETURN IF(Result < 0, 0, Result)
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e6563f0c-c756-47c1-8111-d804bd23a9e1
+
+	measure 'FA% CSCA' = SWITCH(SELECTEDVALUE(Par_SSID_5Digit[Par Name]),"SSID", [FA% SSID],"5 Digit",[FA% 5 Digit],[FA% SSID])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 284d0bae-709c-4ef2-a95f-3647c4ebf971
+
+	measure 'Abs Demand Draft Var 5 Digit LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Abs Demand Draft 5 Digit_PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			
+			```
+		lineageTag: aa244a65-ed21-470a-9104-4c7b6683e681
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% SSID LYTD' = ```
+			
+			VAR TotalShipments = [Total Shipments LYTD]
+			VAR VarianceAgg = [Abs Demand Draft Var SSID LYTD]
+			
+			RETURN 
+			IF(
+			    ISBLANK(VarianceAgg),
+			    BLANK(),  // Return BLANK if VarianceAgg is blank or zero
+			    VAR Result = 1 - DIVIDE(VarianceAgg, TotalShipments, 1)
+			    RETURN IF(Result < 0, 0, Result)
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 2842d072-5016-4168-a95d-999998f716e8
+
+	measure 'FA% 5 Digit LYTD' = ```
+			
+			VAR TotalShipments = [Total Shipments LYTD]
+			VAR VarianceAgg = [Abs Demand Draft Var 5 Digit LYTD]
+			
+			RETURN 
+			IF(
+			    ISBLANK(VarianceAgg),
+			    BLANK(),  // Return BLANK if VarianceAgg is blank or zero
+			    VAR Result = 1 - DIVIDE(VarianceAgg, TotalShipments, 1)
+			    RETURN IF(Result < 0, 0, Result)
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 057244a0-c1e4-4056-bf9c-aaf9882f9a13
+
+	measure 'FA% CSCA LYTD' =
+			
+			Var FA_lytd = SWITCH(VALUES(Par_SSID_5Digit[Par Name]),"SSID", [FA% SSID LYTD],"5 Digit",[FA% 5 Digit LYTD],[FA% SSID LYTD])
+			
+			RETURN [FA% CSCA] - FA_lytd
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 33cc7793-7ae9-479b-bdb0-829abde293d9
+
+	measure 'Abs Demand Draft SSID_PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Abs Demand Draft Var SSID],filter_)
+			
+			```
+		lineageTag: 7f3e398f-88df-48f1-a793-6dda6ea50276
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Abs Demand Draft 5 Digit_PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Abs Demand Draft Var 5 Digit],filter_)
+			
+			```
+		lineageTag: 5195bcaa-dc7a-44cb-85fb-062beb1198df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% CSCA LYTD_Final' =
+			
+			VAR kpi_ =  [FA% CSCA LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 5f5790cd-3b64-4d89-a836-fcfd7255db3d
+
+	measure ShowExternalFlag = ```
+			
+			VAR ToggleSelection = SELECTEDVALUE(External_Toggle[Show External], "Yes")
+			RETURN
+			    IF(
+			        ToggleSelection = "No",
+			        IF(
+			            MAX(Dim_Value_Stream[IsExternal]) = "Yes", 
+			            0, 
+			            1
+			        ),
+			        1
+			    )
+			```
+		formatString: 0
+		lineageTag: 3685e3ef-195e-4ff6-97bb-35aea647e52d
+
+	measure 'On Delivery' = SUM(Fact_Service[On Delivery EA])
+		lineageTag: 229e7541-5e00-4d2a-b65e-33b90f91bdb1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Order = SUM(Fact_Service[Order EA])
+		lineageTag: 0b7b7138-7bca-411d-b5d3-fa9d824ae80f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On Time Closure of Deviations%' =
+			
+			DIVIDE(SUM(Fact_Quality[Deviation: Total Closed on Time in Period]),SUM(Fact_Quality[Deviation: Total Closed in Period]))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d4645308-60fc-4e0c-a23b-d9305755c218
+
+	measure 'On Time Closure of Deviations PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([On Time Closure of Deviations%],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 33e04bb9-6f7b-4181-b33c-b98190f05d30
+
+	measure 'On Time Closure of Deviations PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([On Time Closure of Deviations%],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 8a588cdd-6d98-4569-83cc-c863037ee40a
+
+	measure 'On Time Closure of Deviations MoM%' =
+			
+			VAR Result =  [On Time Closure of Deviations%] - [On Time Closure of Deviations PP]
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: a29e44c4-328b-47ce-aa7d-fd44f8cff825
+
+	measure 'On Time Closure of Deviations MoM_Final' = ```
+			
+			VAR kpi_ = [On Time Closure of Deviations MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: 544a7783-6d86-499d-a48c-ca300631e8a7
+
+	measure 'On Time Closure of Deviations YoY%' =
+			
+			IF(ISBLANK([On Time Closure of Deviations PY]), BLANK(),[On Time Closure of Deviations%] - [On Time Closure of Deviations PY])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 466085c4-9776-4863-a705-9d04c9b42df8
+
+	measure 'On Time Closure of Deviations YoY_Final' =
+			
+			VAR kpi_ =  [On Time Closure of Deviations YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 387a7d6f-d67e-4bea-9811-c67bbb167c48
+
+	measure 'On Time Closure of Deviations YTD' = TOTALYTD([On Time Closure of Deviations%],Dim_Date[Date])
+		lineageTag: 91fa4bcd-e300-4fd2-a79e-c61a0357fd4b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Deviations Closed on Time' = SUM(Fact_Quality[Deviation: Total Closed on Time in Period])
+		formatString: 0
+		lineageTag: 31957436-d150-46ea-b348-d71683ee3dea
+
+	measure 'Deviations Closed on Time PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Deviations Closed on Time],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: 7ab7675a-5f72-4b7a-8724-1bf05ffe8bdb
+
+	measure 'Deviations Closed on Time LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Deviations Closed on Time PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: e4079846-7178-4fc9-a4b5-64ce1b2c5392
+
+	measure 'Deviations Closed' = SUM(Fact_Quality[Deviation: Total Closed in Period])
+		formatString: 0
+		lineageTag: 9e989189-f8eb-4e84-958f-67f8730d5a50
+
+	measure 'Deviations Closed PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Deviations Closed],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: dc6f4023-5869-4e1b-a67c-fa58181dc949
+
+	measure 'Deviations Closed LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Deviations Closed PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 001ea44e-7655-49ac-a187-92728a39f4ec
+
+	measure 'On Time Closure of Deviations LYTD' =
+			
+			VAR LYTD = DIVIDE([Deviations Closed on Time LYTD],[Deviations Closed LYTD])
+			
+			RETURN
+			IF(ISBLANK(LYTD), BLANK(),[On Time Closure of Deviations%] - LYTD)
+		lineageTag: 7fae2f03-cc3d-4a63-9fca-a884929942e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On Time Closure of Deviations LYTD_Final' =
+			
+			VAR kpi_ =  [On Time Closure of Deviations LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 42126af4-96de-4561-be5b-7b063de313b4
+
+	measure 'Deviations Plan' = AVERAGE(Fact_Quality[Deviations Target])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: a3a6001d-4bdc-41a7-b308-7cf394d85e74
+
+	measure 'On Time Closure of Deviations Target Diff%' = [On Time Closure of Deviations%] - [Deviations Plan]
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 51c7cb97-fc18-487a-8002-f1e05b6c85f4
+
+	measure 'On Time Closure of Deviations Target Final' = ```
+			
+			VAR kpi_ =  [On Time Closure of Deviations Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: a90824fb-a6f9-422b-9d1b-3b1430a77b18
+
+	measure 'CAPA Closed on Time' = SUM(Fact_Quality[CAPA: Total Closed on Time in Period])
+		formatString: 0
+		lineageTag: c17e172d-c84f-4a64-835b-76a078c2cf5e
+
+	measure 'CAPA Closed' = SUM(Fact_Quality[CAPA: Total Closed In Period])
+		formatString: 0
+		lineageTag: 1cf5fe20-2e63-4e19-ae84-463fc280c193
+
+	measure 'CAPA Completion Rate' = DIVIDE([CAPA Closed on Time],[CAPA Closed])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 95429529-8a7d-45b7-8b6e-d5bad5e76c58
+
+	measure 'CAPA Completion Rate PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([CAPA Completion Rate],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e63663f1-96aa-44ca-bc1b-2e9f966a52a2
+
+	measure 'CAPA Completion Rate PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([CAPA Completion Rate],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 4f728359-d007-4b29-ac74-b136abf86fe2
+
+	measure 'CAPA Completion Rate MoM%' =
+			
+			VAR Result =  [CAPA Completion Rate] - [CAPA Completion Rate PP]
+			RETURN
+			Result
+		lineageTag: 212427c4-30e4-4569-98f1-68c33d80698e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion Rate MoM_Final' = ```
+			
+			VAR kpi_ = [CAPA Completion Rate MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: c531dd52-961f-4ed3-bd0f-f6e6000d461a
+
+	measure 'CAPA Completion Rate YoY%' =
+			
+			IF(ISBLANK([CAPA Completion Rate PY]), BLANK(),[CAPA Completion Rate] - [CAPA Completion Rate PY])
+		lineageTag: 25d26084-3881-4836-8969-c03db6081bc7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion Rate YoY_Final' =
+			
+			VAR kpi_ =  [CAPA Completion Rate YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 06efc617-ee13-41dd-baf6-7603c7c711ca
+
+	measure 'CAPA Completion Rate YTD' = TOTALYTD([CAPA Completion Rate],Dim_Date[Date])
+		lineageTag: 4f00a904-3a16-4ab2-bedb-65b681f155ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Closed PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([CAPA Closed],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: b29adf15-0c8c-4aca-8b60-76b4a5bff20b
+
+	measure 'CAPA Closed on Time PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([CAPA Closed on Time],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: 7a9566a2-7105-4d47-86d8-a1e3c6dcb871
+
+	measure 'CAPA Closed on Time LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [CAPA Closed on Time PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: b2628a98-48c8-4a14-a5f2-e1ea0c380d7b
+
+	measure 'CAPA Closed LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [CAPA Closed PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 4bad0a02-c854-401f-ba71-ffdb697c67d5
+
+	measure 'CAPA Completion Rate LYTD' = DIVIDE([CAPA Closed on Time LYTD],[CAPA Closed LYTD])
+		lineageTag: 483bb444-3458-4a92-a264-c458a2f3647c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion Rate LYTD_Final' =
+			
+			VAR kpi_ =  [CAPA Completion Rate LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 93c1104e-7f92-4fe6-a9d4-d9de8458bcde
+
+	measure 'CAPA Plan' = AVERAGE(Fact_Quality[CAPA Target])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d7650970-b9d2-41e1-ad8b-9874b6e5d62d
+
+	measure 'CAPA Completion Rate Target Diff%' = [CAPA Completion Rate] - [CAPA Plan]
+		lineageTag: 8a1826ca-21e0-48f5-8f72-21082526065e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion Rate Target Final' = ```
+			
+			VAR kpi_ =  [CAPA Completion Rate Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: df258cae-ede0-4427-b29a-dd60ff2ebd2f
+
+	measure 'Total # of Batches w deviations' = SUM(Fact_Quality[RFT: Total # of Batches with Deviations])
+		formatString: 0
+		lineageTag: 7e3a64d3-13d8-4d45-ab58-13b9d775ba40
+
+	measure 'Total # of Finished Goods Batches' = SUM(Fact_Quality[RFT: Total # of Finished Goods Batches])
+		formatString: 0
+		lineageTag: 88cc745b-d8b7-4d76-a482-86db76701827
+
+	measure RFT% =
+			
+			Var kpi_ = DIVIDE([Total # of Batches w deviations],[Total # of Finished Goods Batches])
+			
+			Return
+			IF(ISBLANK(kpi_),BLANK(),1-kpi_)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e3341eff-45f1-49b5-83f9-55afabc1a42a
+
+	measure 'RFT% PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([RFT%],filter_)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f6f5daba-e19c-4670-b27c-20dca12c8df7
+
+	measure 'RFT% PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([RFT%],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: aa3be89c-964f-4ad7-8101-10e2db2d7950
+
+	measure 'RFT MoM%' =
+			
+			VAR Result =  [RFT%] - [RFT% PP]
+			RETURN
+			Result
+		lineageTag: 5aff3cae-1da6-499e-a99b-333e16060855
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT MoM_Final' = ```
+			
+			VAR kpi_ = [RFT MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: 3a9a90c8-f768-457b-962e-8de5d03dd601
+
+	measure 'RFT YTD' = TOTALYTD([RFT%],Dim_Date[Date])
+		lineageTag: cf26356a-f861-4f08-8a29-b1e803a0e00b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT YoY%' =
+			
+			IF(ISBLANK([RFT% PY]),BLANK(),[RFT%] - [RFT% PY])
+		lineageTag: 70bae1a7-4731-4594-bc65-85144df2611f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT YoY_Final' =
+			
+			VAR kpi_ =  [RFT YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 173440f2-a2da-4758-8e2c-89e5b783808b
+
+	measure 'Total # of Batches w deviations PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total # of Batches w deviations],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: 3c2afce1-e288-4058-960c-c6700b02bc71
+
+	measure 'Total # of Finished Goods Batches PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total # of Finished Goods Batches],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: d4b4eb5d-64af-4f8d-bc71-56b053f770d6
+
+	measure 'Total # of Batches w deviations LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Total # of Batches w deviations PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 43c91248-bef7-4738-b96d-1d06e98d2738
+
+	measure 'Total # of Finished Goods Batches LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Total # of Finished Goods Batches PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: 0
+		lineageTag: 747fd609-8b76-4da0-9c8f-700ef38b7999
+
+	measure 'RFT LYTD' =
+			
+			Var kpi_ = DIVIDE([Total # of Batches w deviations LYTD],[Total # of Finished Goods Batches LYTD])
+			
+			Return
+			IF(ISBLANK(kpi_),BLANK(),1-kpi_)
+		lineageTag: 7989ef8d-2b4f-4939-83c6-79260258ac00
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT LYTD_Final' =
+			
+			VAR kpi_ =  [RFT LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: fa4fc465-e9bf-4867-9f32-b86bb319c8af
+
+	measure 'RFT Plan' = AVERAGE(Fact_Quality[RFT Target])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 31822323-d99d-4571-85d1-c72c8d365b32
+
+	measure 'RFT Target Diff%' = [RFT%] - [RFT Plan]
+		lineageTag: 194d664e-67de-4ffb-ae26-92f7dcfdf980
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT Target Final' = ```
+			
+			VAR kpi_ =  [RFT Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: d8d8affd-ba71-4c0a-a12c-866cfd0e0b64
+
+	measure 'Critical or Major Observations' = (SUM(Fact_Quality[External Audits: Critical Findings]) + SUM(Fact_Quality[External Audits: Major Findings]))/3
+		formatString: 0
+		lineageTag: d966a903-becc-4282-bc01-81b7a1fb8785
+
+	measure 'Critical or Major Observations PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Critical or Major Observations],filter_)
+			RETURN
+			Result
+		formatString: 0
+		lineageTag: 806fb950-2d5e-40ec-95da-e2e923cee781
+
+	measure 'Critical or Major Observations PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Critical or Major Observations],filter_)
+			
+			```
+		formatString: 0
+		lineageTag: 6753a7d1-a0c6-4a12-a808-5951422d717b
+
+	measure 'Critical or Major Observations YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Critical or Major Observations]
+			    )
+		formatString: 0
+		lineageTag: 4aa8b54a-66b0-4cc2-bd96-dbca56a655c2
+
+	measure 'Critical or Major Observations YoY%' =
+			
+			DIVIDE(([Critical or Major Observations] - [Critical or Major Observations PY]),[Critical or Major Observations PY])
+		lineageTag: 466aa6b1-a529-44c6-9f87-366ccad8b458
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Critical or Major Observations MoM%' =
+			
+			DIVIDE(([Critical or Major Observations] - [Critical or Major Observations PP]),[Critical or Major Observations PP])
+		lineageTag: d6e0038f-7790-487e-96c2-31f85d5b92f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Critical or Major Observations MoM_Final' = ```
+			
+			VAR kpi_ = [Critical or Major Observations MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		lineageTag: 984174b7-9fd8-4622-969a-e46817b3f4d2
+
+	measure 'Critical or Major Observations YoY_Final' =
+			
+			VAR kpi_ =  [Critical or Major Observations YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 08c12c06-db29-4cdd-a6af-fe91f5ba1569
+
+	measure 'Critical or Major Observations LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Critical or Major Observations PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Critical or Major Observations] - Result,Result)
+			```
+		lineageTag: 4c797d01-b750-4ddd-bb89-52e25aefb6a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Critical or Major Observations LYTD_Final' =
+			
+			VAR kpi_ =  [Critical or Major Observations LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 540097a8-5a75-4168-91e5-587b9a4c00c8
+
+	measure DSO_APN_Base =
+			
+			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Plan_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Plan_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		lineageTag: c0182232-6355-4f58-b268-c664a677e288
+
+	measure 'ABP Variance' = SUM(Fact_DSO_DPO_ABP[ABP_Variance])*1000
+		formatString: 0
+		lineageTag: f3a47495-0f92-47a2-82e6-13df475dc8bb
+
+	measure 'ABP Variance_APN_Base' = SUM(Fact_DSO_DPO_ABP[ABP_Variance_Plan])*1000
+		lineageTag: 01de310b-7071-4630-8ec8-f4eb287ab435
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance_APN' =
+			
+			VAR Plan = [ABP Variance_APN_Base]
+			Return
+			DIVIDE([ABP Variance] - Plan,Plan)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 86475614-9c08-4f1b-8c2d-4fe370e78d4e
+
+	measure 'ABP Variance_APN_Final' =
+			
+			VAR kpi_ = [ABP Variance_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: ed91c662-52e7-4ab7-9ac9-846e8024663f
+
+	measure DSO_APN =
+			
+			VAR Plan = [DSO_APN_Base]
+			Return
+			DIVIDE([DSO] - Plan,Plan)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: cd97b757-0f40-472d-98f5-a4286fffa392
+
+	measure DSO_APN_Final =
+			
+			VAR kpi_ = [DSO_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 911fbc7a-a7e1-445a-b016-bb039e5cf369
+
+	measure DPO_APN_Base =
+			
+			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Plan_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Plan_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		lineageTag: 828f35b9-39e3-4c7a-8008-85040514ed06
+
+	measure DPO_APN =
+			
+			VAR Plan = [DPO_APN_Base]
+			Return
+			DIVIDE([DPO] - Plan,Plan)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 978c56d0-d760-4dcd-b260-326fd435f358
+
+	measure DPO_APN_Final =
+			
+			VAR kpi_ = [DPO_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 5898639d-6f98-4ae4-84ed-da03c8e48e38
+
+	measure 'ABP Variance PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([ABP Variance],filter_)
+			RETURN
+			Result
+		lineageTag: 22096135-3c90-46ad-8d56-2e511a0cd778
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([ABP Variance],filter_)
+		lineageTag: 948d024c-22f0-4f39-980c-427e9819ecd0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance YoY%' = DIVIDE(([ABP Variance] - [ABP Variance PY]),[ABP Variance PY])
+		lineageTag: 4defcb38-23dc-4953-82e7-c4811e09abae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance YoY_Final' =
+			VAR kpi_ =  [ABP Variance YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		lineageTag: 0411fd22-a813-4196-80fe-5a3b035f82cf
+
+	measure 'ABP Variance MoM%' =
+			
+			VAR Result = DIVIDE(([ABP Variance] - [ABP Variance PP]), [ABP Variance PP])
+			RETURN
+			Result
+		lineageTag: ba33b857-b276-4ffc-8d08-003e51a83c2a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance MoM_Final' = ```
+			VAR kpi_ =  [ABP Variance MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: 7691bc0d-7b26-4995-8a50-62620991a6c7
+
+	measure 'ABP Variance LYTD' = ```
+			
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ABP Variance PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([ABP Variance] - Result,Result)
+			```
+		lineageTag: cad9adcc-2b7c-48e5-8898-03b67ad1a54b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance LYTD_Final' =
+			VAR kpi_ =  [ABP Variance LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 2d8d18d5-851f-4546-9597-89813dbb967c
+
+	measure Sales_bar_graph =
+			
+			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Sales_Parameter],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Sales_Parameter])
+		lineageTag: 7a3d34ff-216f-4751-81e9-5b518bae42a4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Sales_Parameter[Parameter Name]),
+				    "FA% Lag 2", "0.0%",
+				    "FA% Lag 4", "0.0%",
+				    "Bias% Lag 2", "0.0%",
+				    "Bias% Lag 4", "0.0%",
+				    "Service%", "0.0%",
+				    "CFR%", "0.0%",
+				    "Service Top 11","#,0"
+				)
+
+	measure Working_Capital_bar_graph =
+			
+			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Working Capital],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Working Capital])
+		lineageTag: 80070bed-940d-4ccf-9d43-623944ab1872
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Operating_Income_bar_graph =
+			
+			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Operating_Parameter],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Operating_Parameter])
+		lineageTag: 6298cb05-0938-4cd5-b947-84a48a0e36e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [ABP Variance]
+			    )
+		lineageTag: f27858ea-29ee-482d-bfc0-8dfb385f06d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Top 11' = ```
+			SUMX(
+			  FILTER( values(Fact_Service[Customer Hierarchy]), Fact_Service[Customer Hierarchy]  
+			  IN {
+			    "AMAZON",
+			    "COSTCO",
+			    "CVS",
+			    "DOLLAR GENERAL",
+			    "KROGER",
+			    "MEIJER",
+			    "SAM'S CLUB",
+			    "TARGET",
+			    "TOPCO",
+			    "WALGREENS",
+			    "WALMART"
+			}),
+			    
+			    VAR ServiceRate = CALCULATE(
+			        
+			        DIVIDE( SUM( Fact_Service[On Delivery EA] ), SUM( Fact_Service[Order EA] ) ),
+			    REMOVEFILTERS( Bridge_CSCA_CSCI[Area] ), REMOVEFILTERS( Dim_Profit_Center[Level 3] ) )
+			    
+			    RETURN
+			    
+			    IF( ServiceRate >= 0.90, 1, 0 )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: df125f1d-502a-4b16-bc3a-62baab07647c
+
+	measure 'Top 11 Retailers CFR > 90%' = ```
+			SUMX(
+			  FILTER( values(Fact_CFR[Customer Hierarchy]), Fact_CFR[Customer Hierarchy]  
+			  IN {
+			    "AMAZON",
+			    "COSTCO",
+			    "CVS",
+			    "DOLLAR GENERAL",
+			    "KROGER",
+			    "MEIJER",
+			    "SAM'S CLUB",
+			    "TARGET",
+			    "TOPCO",
+			    "WALGREENS",
+			    "WALMART"
+			}),
+			    
+			    VAR CFR = 
+			  CALCULATE(     
+			DIVIDE(SUM(Fact_CFR[Total Delivery Qty]),SUM(Fact_CFR[Total Order Qty])))
+			    
+			    RETURN
+			    
+			    IF( CFR >= 0.90, 1, 0 )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 6e7218de-97af-4113-9169-f5bdc319f9f5
+
+	measure 'Service Top 11 PY' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Service Top 11],filter_)
+		formatString: 0
+		lineageTag: 2518550b-15ac-448e-a836-9691dfcc5731
+
+	measure 'Service Top 11 PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Service Top 11],filter_)
+			RETURN
+			Result
+		formatString: 0
+		lineageTag: d4df7a30-a561-41c0-af99-33c6ff363881
+
+	measure 'Service Top 11 MoM%' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Service Top 11],filter_)
+			VAR Result = DIVIDE([Service Top 11] - Net_PM,Net_PM)
+			RETURN
+			Result
+		formatString: 0
+		lineageTag: 3a339552-dbde-4973-a5b6-96356997c308
+
+	measure 'Service Top 11 MoM_Final' = ```
+			
+			VAR kpi_ =  [Service Top 11 MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: a23e64ca-5e62-46d1-bb6b-3f189d8d193f
+
+	measure 'Service Top 11 YoY%' = DIVIDE([Service Top 11] - [Service Top 11 PY], [Service Top 11 PY])
+		formatString: 0
+		lineageTag: 952f5126-1d1e-41ee-adc3-d068dc1f41de
+
+	measure 'Service Top 11 YoY_Final' =
+			
+			VAR kpi_ =  [Service Top 11 YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: c4b5297e-c302-421e-aa4d-38b721858be6
+
+	measure 'Service Top 11 Target' = 7
+		formatString: 0
+		lineageTag: 7d53f875-05d8-45b8-9300-c26825166515
+
+	measure 'Service Top 11 Target Diff%' = DIVIDE([Service Top 11] - [Service Top 11 Target],[Service Top 11 Target])
+		formatString: 0
+		lineageTag: f0dcfb2e-3a04-4e6c-af84-e0d804a100a7
+
+	measure 'Service Top 11 Target Final' = ```
+			
+			VAR kpi_ =  [Service Top 11 Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		lineageTag: be09e07a-4949-4c4b-aae7-3f25f09be6c9
+
+	measure 'Service Top 11 LYTD Base' = ```
+			SUMX(
+			  FILTER( values(Fact_Service[Customer Hierarchy]), Fact_Service[Customer Hierarchy]  
+			  IN {
+			    "AMAZON",
+			    "COSTCO",
+			    "CVS",
+			    "DOLLAR GENERAL",
+			    "KROGER",
+			    "MEIJER",
+			    "SAM'S CLUB",
+			    "TARGET",
+			    "TOPCO",
+			    "WALGREENS",
+			    "WALMART"
+			}),
+			    
+			    VAR ServiceRate = CALCULATE(
+			        
+			        DIVIDE( [On Delivery LYTD], [Order EA LYTD] ),
+			    REMOVEFILTERS( Bridge_CSCA_CSCI[Area] ), REMOVEFILTERS( Dim_Profit_Center[Level 3] ) )
+			    
+			    RETURN
+			    
+			    IF( ServiceRate >= 0.90, 1, 0 )
+			)
+			```
+		formatString: 0
+		lineageTag: b48ba971-4982-4025-bb3a-9755fb350e63
+
+	measure 'Service Top 11 YTD' = ```
+			
+			SUMX(
+			  FILTER( values(Fact_Service[Customer Hierarchy]), Fact_Service[Customer Hierarchy]  
+			  IN {
+			    "AMAZON",
+			    "COSTCO",
+			    "CVS",
+			    "DOLLAR GENERAL",
+			    "KROGER",
+			    "MEIJER",
+			    "SAM'S CLUB",
+			    "TARGET",
+			    "TOPCO",
+			    "WALGREENS",
+			    "WALMART"
+			}),
+			    
+			    VAR ServiceRate = CALCULATE(
+			        
+			        DIVIDE( SUM( Fact_Service[On Delivery EA] ), SUM( Fact_Service[Order EA] ) ),
+			    REMOVEFILTERS( Bridge_CSCA_CSCI[Area] ), REMOVEFILTERS( Dim_Profit_Center[Level 3] ) )
+			    
+			    Var Result = IF( ServiceRate >= 0.90, 1, 0 )
+			    RETURN TOTALYTD(Result,Dim_Date[Date])
+			)
+			```
+		formatString: 0
+		lineageTag: 274be111-f374-4942-8aaf-13bd20897307
+
+	measure 'Service Top 11 LYTD' = DIVIDE([Service Top 11] - [Service Top 11 LYTD Base], [Service Top 11 LYTD Base])
+		lineageTag: 1a3d0f8c-77d8-49bb-af7a-36711a136d35
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Top 11 LYTD_Final' =
+			
+			VAR kpi_ =  [Service Top 11 LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		lineageTag: 2aa6f8e6-e705-4cd4-b885-a00a14f61c2e
+
+	measure 'Total Logistics Actual LYTD' = ```
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Total Logistics Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([Total Logistics Actual] - Result,Result)
+			```
+		displayFolder: Logistic
+		lineageTag: c4ad6b27-50d4-434e-a626-8ef287525d01
+
+	measure 'Total Logistics Actual LYTD_Final' =
+			
+			VAR kpi_ =  [Total Logistics Actual LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		displayFolder: Logistic
+		lineageTag: 00af8cb4-2afe-45a0-a1f4-40dee5c0fd6a
+
+	measure 'Total Logistics Actual MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Total Logistics Actual],filter_)
+			VAR Result = DIVIDE(([Total Logistics Actual] - Net_PM),Net_PM)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic
+		lineageTag: aecd1849-cc16-4f9b-988b-c21f217b4007
+
+	measure 'Total Logistics Actual MoM_Final' = ```
+			VAR kpi_ =  [Total Logistics Actual MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Logistic
+		lineageTag: 2c233431-43d1-44df-a028-62cd7d7aa930
+
+	measure 'Total Logistics Actual PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Total Logistics Actual],filter_)
+			RETURN
+			Result
+		formatString: 0.0
+		displayFolder: Logistic
+		lineageTag: f2e07778-23cf-4d8b-80b6-2908c3e51fb6
+
+	measure 'Total Logistics Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Total Logistics Actual],filter_)
+		formatString: 0.0
+		displayFolder: Logistic
+		lineageTag: ee2e5b19-38e5-4b7c-980f-de513aafe696
+
+	measure 'Total Logistics Actual YoY%' = DIVIDE(([Total Logistics Actual] - [Total Logistics Actual PY]),[Total Logistics Actual PY])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic
+		lineageTag: 3eaea7f2-0c2f-4b3d-97cb-d6fa9f9979d1
+
+	measure 'Total Logistics Actual YoY_Final' =
+			VAR kpi_ =  [Total Logistics Actual YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		displayFolder: Logistic
+		lineageTag: baeeebfd-9bf6-4f85-a6af-e3a173a1ec89
+
+	measure 'Total Logistics Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Total Logistics Actual]
+			    )
+		formatString: 0.0
+		displayFolder: Logistic
+		lineageTag: 8b17f568-7af0-4f78-a5c2-f0208c236fb5
+
+	measure 'Distribution Actual YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [Distribution Actual]
+			    )
+		formatString: #,0.0
+		lineageTag: 991d5fa4-4623-4dd6-b22a-ae9083ee4b60
+
+	measure 'Distribution Actual LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Distribution Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		formatString: #,0.0
+		lineageTag: 1b866793-cf0e-47df-b06a-ca3ce6bb4dd7
+
+	measure 'Distribution Actual PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Distribution Actual],filter_)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 017c54df-87d2-47e2-a364-7cda99909c99
+
+	measure 'OEE Baseline' = AVERAGE(Fact_OEE_Baseline[_OEE Baseline])
+		lineageTag: 90a3bd8c-93d6-4e7e-b284-59ee0f2e1e87
+
+	measure 'OEE Quarterly Target' =
+			
+			VAR MaxSelectedQtr = MAX( Dim_Date[P_QuarterNumber] )
+			RETURN
+			CALCULATE(
+			    SWITCH(
+			        TRUE(),
+			        MaxSelectedQtr = 1, ([OEE Target]  - [OEE Baseline]) * 0.25 + [OEE Baseline],
+			        MaxSelectedQtr = 2, ([OEE Target]  - [OEE Baseline]) * 0.50 + [OEE Baseline],
+			        MaxSelectedQtr = 3, ([OEE Target]  - [OEE Baseline]) * 0.75 + [OEE Baseline],
+			        MaxSelectedQtr = 4,  [OEE Target],
+			        BLANK()
+			    )
+			)
+		formatString: #,##0.00 %
+		lineageTag: 1a2dec3c-d4da-4fb1-9cb0-74b758008b68
+
+	measure 'Selected Filters' =
+			
+			"Business Unit: " & IF(
+			    ISFILTERED('Dim_Profit_Center'[FP&A Cluster]),
+			    CONCATENATEX(VALUES('Dim_Profit_Center'[FP&A Cluster]), 'Dim_Profit_Center'[FP&A Cluster], ", "),
+			    "All"
+			)
+			& " | Value Stream: " & IF(
+			    ISFILTERED('Dim_Value_Stream'[Value_Stream_Final]),
+			    CONCATENATEX(VALUES('Dim_Value_Stream'[Value_Stream_Final]), 'Dim_Value_Stream'[Value_Stream_Final], ", "),
+			    "All"
+			)
+			& " | Period: " & IF(
+			    ISFILTERED('Dim_DateSlicer'[P_YearPeriod]),
+			    CONCATENATEX(VALUES('Dim_DateSlicer'[P_YearPeriod]), 'Dim_DateSlicer'[P_YearPeriod], ", "),
+			    "All"
+			)
+			& " | PTD/YTD: " & IF(
+			    ISFILTERED('CG_PeriodSelection'[Period]),
+			    CONCATENATEX(VALUES('CG_PeriodSelection'[Period]), 'CG_PeriodSelection'[Period], ", "),
+			    "All"
+			)
+			& " | Comparison: " & IF(
+			    ISFILTERED('MetricSelector'[Metric]),
+			    CONCATENATEX(VALUES('MetricSelector'[Metric]), 'MetricSelector'[Metric], ", "),
+			    "All"
+			)
+		lineageTag: 2589295c-73b8-40ae-8d3a-c6af2eaacd72
+
+	column Measures
+		dataType: string
+		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f
+		summarizeBy: none
+		sourceColumn: Measures
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measure = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Measures = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Measures", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

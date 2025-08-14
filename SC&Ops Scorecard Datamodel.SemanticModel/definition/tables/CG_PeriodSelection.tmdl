@@ -1,0 +1,61 @@
+table CG_PeriodSelection
+	lineageTag: dba42b4b-ba38-47f1-a418-c2087a0813a0
+
+	calculationGroup
+
+		calculationItem PTD = ```
+				
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        FILTER(
+				            VALUES( Dim_Date[P_Year] ),
+				            VALUE( Dim_Date[P_Year] ) = VALUE( [LastSelectedYear_P] )
+				        ),
+				        FILTER(
+				            VALUES( Dim_Date[P_MonthFull] ),
+				            VALUE( Dim_Date[P_MonthFull] ) = VALUE( [LastSelectedMonth_P] )
+				        ),
+				        FILTER( VALUES( Dim_Date[Date] ), Dim_Date[Date] <= [LastSelectedDate] )
+				    )
+				
+				```
+
+		calculationItem YTD = ```
+				
+				IF (
+				    CONTAINSSTRING ( SELECTEDMEASURENAME (), "Inventory" )
+				    || CONTAINSSTRING ( SELECTEDMEASURENAME (), "DSO" )
+				    || CONTAINSSTRING ( SELECTEDMEASURENAME (), "DPO" )
+				    || CONTAINSSTRING ( SELECTEDMEASURENAME (), "DIO" ),
+				    CALCULATE ( 
+				        SELECTEDMEASURE (),
+				        CG_PeriodSelection[Period] = "PTD" 
+				    ),
+				
+				    CALCULATE (
+				        SELECTEDMEASURE (),
+				        FILTER ( VALUES ( Dim_Date[P_Year] ), Dim_Date[P_Year] = [LastSelectedYear_P] ),
+				        FILTER ( VALUES ( Dim_Date[Date] ), Dim_Date[Date] <= [LastSelectedDate] )
+				    )
+				    
+				)
+				```
+
+	column Period
+		dataType: string
+		lineageTag: c4668b98-e4be-4a69-b234-d065042b837e
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b5a798d-6084-47cd-bae5-fda4cdc6ec1d
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

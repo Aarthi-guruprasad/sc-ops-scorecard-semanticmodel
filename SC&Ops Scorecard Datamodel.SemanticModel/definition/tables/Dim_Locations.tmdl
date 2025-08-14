@@ -1,0 +1,94 @@
+table Dim_Locations
+	lineageTag: aabbe84a-a398-4d88-9446-c821f0ed3c6e
+
+	column 'Location UUID'
+		dataType: string
+		lineageTag: 53a01a96-a66f-47e4-af58-da8a2dd172cf
+		summarizeBy: none
+		sourceColumn: Location UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Location Name'
+		dataType: string
+		lineageTag: c0b27a63-3aeb-45bf-b6ba-a96b5097640f
+		summarizeBy: none
+		sourceColumn: Location Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Area Output'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d0f222ae-dc0f-4f01-a70a-ff189522fe90
+		summarizeBy: none
+		sourceColumn: Area Output
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site UUID'
+		dataType: string
+		lineageTag: a5f324dd-2243-4fa0-a93f-22004795c05b
+		summarizeBy: none
+		sourceColumn: Site UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Name'
+		dataType: string
+		lineageTag: d5be1572-859a-4190-9aa4-3ac2ecf5a070
+		summarizeBy: none
+		sourceColumn: Site Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column _Target
+		dataType: double
+		lineageTag: 2df51f00-2e58-45af-ac24-e65a8258a87e
+		summarizeBy: sum
+		sourceColumn: _Target
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Area Name'
+		dataType: string
+		lineageTag: 30527b41-bd0b-49fe-b528-89b24982e317
+		summarizeBy: none
+		sourceColumn: Area Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region = LOOKUPVALUE(Dim_Sites[Region],Dim_Sites[Site UUID],Dim_Locations[Site UUID])
+		lineageTag: 9cb59468-b5f9-441c-8a18-defddd57c6aa
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Group'
+		dataType: string
+		lineageTag: b9dcdb8e-b229-493f-b953-5a99b263e38a
+		summarizeBy: none
+		sourceColumn: Site Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Locations = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"f4665093-da49-4ee7-81e6-a4c4d63c0af5" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="f4665093-da49-4ee7-81e6-a4c4d63c0af5"]}[Data],
+				    #"Dim Locations_" = #"f4665093-da49-4ee7-81e6-a4c4d63c0af5"{[entity="Dim Locations",version=""]}[Data],
+				    #"Trimmed Text" = Table.TransformColumns(#"Dim Locations_",{{"Site Name", Text.Trim, type text}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Trimmed Text", "Site Group", each if [Site Name] = "PMH" then "MI OTC" else if [Site Name] = "PMI ALC" then "MI OTC" else if [Site Name] = "PMI Plant 5" then "MI OTC" else if [Site Name] = "PMI Tablet Manufacturing" then "MI OTC" else if [Site Name] = "PNY" then "NY OTC" else if [Site Name] = "POC" then "Oral Care" else if [Site Name] = "PVT" then "Nutrition Infant Formula" else if [Site Name] = "PWI" then "Nutrition Infant Formula" else if [Site Name] = "POH" then "Nutrition Infant Formula" else if [Site Name] = "Plant 7" then "MI OTC" else [Site Name])
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,75 @@
+table Dim_ComparableFilter
+	lineageTag: 7e3758cb-5965-46de-bf4d-c15e89b4b57c
+
+	column P_Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 682c413a-4601-4047-a94f-b8f7fa17f498
+		summarizeBy: sum
+		sourceColumn: P_Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_YearMonth Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: d37af9f6-3736-4dd0-8ece-3c7988ab0fda
+		summarizeBy: sum
+		sourceColumn: P_YearMonth Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Comparable Version'
+		dataType: string
+		lineageTag: ddd27dd4-179a-4b08-9265-aea0e910546e
+		summarizeBy: none
+		sourceColumn: Comparable Version
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sort
+		dataType: int64
+		formatString: 0
+		lineageTag: 33408b96-d648-4513-888b-4ee142d3ffa6
+		summarizeBy: sum
+		sourceColumn: Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exchange Rate'
+		dataType: string
+		lineageTag: bdbd9db3-b883-4408-9144-39e773e6ce12
+		summarizeBy: none
+		sourceColumn: Exchange Rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exchange Rate Financial'
+		dataType: string
+		lineageTag: 645f876c-b55e-44e9-8e26-a21f5c908721
+		summarizeBy: none
+		sourceColumn: Exchange Rate Financial
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_ComparableFilter = m
+		mode: import
+		source =
+				let
+				    Source = Dim_Date,
+				    #"Removed Duplicates" = Table.Distinct(Source, {"P_YearMonth"}),
+				    #"Sorted Rows" = Table.Buffer(Table.Sort(#"Removed Duplicates",{{"P_YearMonth Number", Order.Descending}})),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Sorted Rows",{"P_Year", "P_YearMonth Number", "P_YearPeriod_Slicer"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"P_YearPeriod_Slicer", "Comparable Version"}}),
+				    CurrentYear = List.Max(#"Renamed Columns"[P_Year]),
+				    #"Add Plan and Flex rows" = Table.InsertRows(#"Renamed Columns", 0, { [P_Year = CurrentYear, P_YearMonth Number = 0, Comparable Version = "Plan"], [P_Year = CurrentYear, P_YearMonth Number = 0, Comparable Version = "Flex"] }),
+				    #"Added Sort Code" = Table.AddIndexColumn(#"Add Plan and Flex rows", "Sort", 0, 1, Int64.Type),
+				    #"Added Exchange Rate column" = Table.AddColumn(#"Added Sort Code", "Exchange Rate", each if [Comparable Version] = "Plan" then "APN" else if [Comparable Version] = "Flex" then "AFX" else "ACT01", type text),
+				    #"Added Financial Exchange Rate column" = Table.AddColumn(#"Added Exchange Rate column", "Exchange Rate Financial", each if [Exchange Rate] = "AFX" then "F66" else [Exchange Rate], type text)
+				in
+				    #"Added Financial Exchange Rate column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

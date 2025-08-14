@@ -1,0 +1,109 @@
+table Fact_SALESORDER_PBI_Full
+	lineageTag: 6ea71ed5-6561-4778-a768-a73d6eb531b6
+
+	column 'Order quantity in base unit'
+		dataType: double
+		lineageTag: ff5f3a8e-7008-48e2-89ef-a8e719259db7
+		summarizeBy: sum
+		sourceColumn: Order quantity in base unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Reason for rejection'
+		dataType: double
+		lineageTag: 05c89f05-3d40-4d4c-b0a5-de3acd636b9d
+		summarizeBy: none
+		sourceColumn: Reason for rejection
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Sales Document Type'
+		dataType: string
+		lineageTag: c77c2269-98ad-44d8-8f30-989432628fd1
+		summarizeBy: none
+		sourceColumn: Sales Document Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sold-to party'
+		dataType: string
+		lineageTag: 2b26e917-bc0f-429a-bc48-9614d03c61fd
+		summarizeBy: none
+		sourceColumn: Sold-to party
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales Document Item Category'
+		dataType: string
+		lineageTag: bd0f72a3-d62f-42f6-8617-6ae106c7fc99
+		summarizeBy: none
+		sourceColumn: Sales Document Item Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Requested delivery date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7b950261-e30e-4f66-bb89-10d4966820ac
+		summarizeBy: none
+		sourceColumn: Requested delivery date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Sales Organization'
+		dataType: string
+		lineageTag: bd43ca29-2cf0-492e-b1a4-52387dc663ab
+		summarizeBy: none
+		sourceColumn: Sales Organization
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Material Number'
+		dataType: string
+		lineageTag: 56ca8ebe-e4b6-400c-b305-d5176ac53367
+		summarizeBy: none
+		sourceColumn: Global Material Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Global Brand Code'
+		dataType: string
+		lineageTag: f1e4449e-825f-4cb2-85da-06f257f2f1fa
+		summarizeBy: none
+		sourceColumn: Global Brand Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: fd36c63f-f878-4a4a-8192-86b7355c2b73
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_SALESORDER_PBI_Full = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = PowerPlatform.Dataflows([]),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"af5f0ee8-34d5-4817-9dab-155d2354647b" = Workspaces{[workspaceId="af5f0ee8-34d5-4817-9dab-155d2354647b"]}[Data],
+				    #"ece93404-cf3c-4c89-af4b-abff6e8aa130" = #"af5f0ee8-34d5-4817-9dab-155d2354647b"{[dataflowId="ece93404-cf3c-4c89-af4b-abff6e8aa130"]}[Data],
+				    Fact_SALESORDER_PBI_Full_ = #"ece93404-cf3c-4c89-af4b-abff6e8aa130"{[entity="Fact_SALESORDER_PBI_Full",version=""]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(Fact_SALESORDER_PBI_Full_,{"Order quantity in base unit", "Reason for rejection", "Sales Document Type", "Sold-to party", "Sales Document Item Category", "Requested delivery date", "Sales Organization", "Global Material Number", "Global Brand Code", "Profit Center"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Other Columns",{{"Profit Center", type text}, {"Order quantity in base unit", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

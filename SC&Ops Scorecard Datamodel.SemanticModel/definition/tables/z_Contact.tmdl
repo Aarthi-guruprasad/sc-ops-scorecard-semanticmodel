@@ -1,0 +1,76 @@
+table z_Contact
+	lineageTag: 77f239a2-113e-41b0-8e79-463aa6e1f4f2
+
+	column 'KPI Name'
+		dataType: string
+		lineageTag: 0a8c460d-2ada-40b6-aaa2-cedebfe6fd34
+		summarizeBy: none
+		sourceColumn: KPI Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Owner'
+		dataType: string
+		lineageTag: 94295b0e-e29b-4372-9b15-9a3c4c319f4a
+		summarizeBy: none
+		sourceColumn: Data Owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Owner'
+		dataType: string
+		lineageTag: 9e6ac94b-c951-47c8-9317-fc01c988be7e
+		summarizeBy: none
+		sourceColumn: Business Owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segments
+		dataType: string
+		lineageTag: 1218e24b-1571-4907-b8a2-6a254475ae3e
+		summarizeBy: none
+		sourceColumn: Segments
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Original Report name'
+		dataType: string
+		lineageTag: c740cd2c-8973-4686-891d-20e9e99bd18e
+		summarizeBy: none
+		sourceColumn: Original Report name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report Page'
+		dataType: string
+		lineageTag: 078f3c6e-a3f9-412f-9661-51187fe686ec
+		summarizeBy: none
+		sourceColumn: Report Page
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report Link'
+		dataType: string
+		lineageTag: 36f6bbe9-ebec-4a77-b390-d5107e3b5f13
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: Report Link
+
+		annotation SummarizationSetBy = Automatic
+
+	partition z_Contact = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Help&Information%20Document%20V1.0.xlsx"), null, true),
+				    z_Contact_Sheet = Source{[Item="z_Contact",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(z_Contact_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"KPI Name", type text}, {"Data Owner", type text}, {"Business Owner", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

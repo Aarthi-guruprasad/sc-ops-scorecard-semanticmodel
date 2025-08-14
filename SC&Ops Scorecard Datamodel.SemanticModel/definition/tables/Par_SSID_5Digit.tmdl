@@ -1,0 +1,55 @@
+table Par_SSID_5Digit
+	lineageTag: c4da376c-967f-43c3-a1b1-39f9f6f9cc86
+
+	column Parameter
+		lineageTag: 03fa189e-5fca-42e5-b5d3-4ae288ad6aa3
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: d4e1c4e4-aace-48ae-a82f-db58df983717
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 170cc4b7-2063-4344-b984-9f07a447f16c
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Par Name'
+		lineageTag: 29cd37bc-9864-4613-a519-8ede1b67c465
+		summarizeBy: none
+		sourceColumn: [Value4]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Par_SSID_5Digit = calculated
+		mode: import
+		source =
+				{
+				    ("SSID", NAMEOF('Fact_Forecast_Accuracy'[SSID]), 0, "SSID"),
+				    ("5 Digit", NAMEOF('Fact_Forecast_Accuracy'[SSID 5-Digit]), 1, "5 Digit")
+				}
+
+	annotation PBI_Id = 5506541579714b3e968cb0f15f404daf
+

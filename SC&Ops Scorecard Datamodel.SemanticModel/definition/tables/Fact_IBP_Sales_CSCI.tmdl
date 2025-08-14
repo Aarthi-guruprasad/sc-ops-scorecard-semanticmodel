@@ -1,0 +1,120 @@
+table Fact_IBP_Sales_CSCI
+	lineageTag: 2edc4502-00af-4d54-881e-146c19913caa
+
+	column Lag
+		dataType: double
+		formatString: 0
+		lineageTag: a0967dac-8c16-4919-91d4-ff45a50197cd
+		summarizeBy: sum
+		sourceColumn: Lag
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'FP: End Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 150c4c33-827e-407a-b083-7670043f3d67
+		summarizeBy: none
+		sourceColumn: FP: End Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: 40f88d8f-189e-48f1-ac39-926dbe63f009
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sales BOM Indicator'
+		dataType: string
+		lineageTag: 6aa8fc3d-5451-4082-bca0-04cc7d027628
+		summarizeBy: none
+		sourceColumn: Sales BOM Indicator
+
+		annotation SummarizationSetBy = Automatic
+
+	column Enriched_Qty
+		dataType: double
+		lineageTag: 44d49e8f-ab3a-48ee-9a3b-6875bbd640c8
+		summarizeBy: sum
+		sourceColumn: Enriched_Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Base Scenario'
+		dataType: string
+		lineageTag: 1e9a31de-ba6b-48c1-91ac-d28f32e94805
+		summarizeBy: none
+		sourceColumn: Base Scenario
+
+		annotation SummarizationSetBy = Automatic
+
+	column Constrained_Qty
+		dataType: double
+		lineageTag: 85883139-84fb-4cd3-ad25-8d1592bfb9a0
+		summarizeBy: sum
+		sourceColumn: Constrained_Qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Plant Global Material key'
+		dataType: string
+		lineageTag: f4c63a61-8724-49a4-b2bf-8b1903db18a8
+		summarizeBy: none
+		sourceColumn: Plant Global Material key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand ID'
+		dataType: string
+		lineageTag: 0de40ce0-ef3b-4905-90f8-2ad1cd80821d
+		summarizeBy: none
+		sourceColumn: Brand ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 73920ccb-2447-4eca-ba74-2454d9f37e06
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_IBP_Sales_CSCI = m
+		mode: import
+		queryGroup: Fact
+		source = ```
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"af5f0ee8-34d5-4817-9dab-155d2354647b" = Workspaces{[workspaceId="af5f0ee8-34d5-4817-9dab-155d2354647b"]}[Data],
+				    #"d02340bb-ecc8-41a4-95c5-e9240f9eb60d" = #"af5f0ee8-34d5-4817-9dab-155d2354647b"{[dataflowId="d02340bb-ecc8-41a4-95c5-e9240f9eb60d"]}[Data],
+				    Fact_IBP_Demand_ = #"d02340bb-ecc8-41a4-95c5-e9240f9eb60d"{[entity="Fact_IBP_Demand",version=""]}[Data],
+				    #"Filtered Rows1" = Table.SelectRows(Fact_IBP_Demand_, 
+				        each not (
+				            (   [Lag] = 4 and [#"FP: End Date"] = #date(2025, 2, 1) and ([Location ID] = "088A" or [Location ID] = "216A" or [Location ID] = "155A" or [Location ID] = "210A" or [Location ID] = "256A")   ) or 
+				            (   [Lag] = 4 and [#"FP: End Date"] = #date(2025, 3, 1) and ([Location ID] = "088A" or [Location ID] = "216A" or [Location ID] = "155A" or [Location ID] = "210A" or [Location ID] = "256A")   ) or 
+				            (   [Lag] = 4 and [#"FP: End Date"] = #date(2025, 3, 29) and ([Location ID] = "088A" or [Location ID] = "216A" or [Location ID] = "155A" or [Location ID] = "210A" or [Location ID] = "256A")    )
+				        )
+				    ),
+				    #"Appended Query" = Table.Combine({#"Filtered Rows1", #"Fact_IBP_CSCI_Temp_Fix"}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Appended Query",{"Lag", "FP: End Date", "Product ID", "Sales BOM Indicator", "Enriched_Qty", "Base Scenario", "Constrained_Qty", "Plant Global Material key", "Brand ID", "Profit Center"})
+				in
+				    #"Removed Other Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

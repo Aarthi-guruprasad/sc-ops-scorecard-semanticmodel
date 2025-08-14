@@ -1,0 +1,69 @@
+table Fact_BW_Inventory
+	lineageTag: ddf6162f-8219-4798-8dd6-2db6fd2e0166
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: e90ec6ba-6261-499e-82ac-8997b0184b97
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Expiration Bucket'
+		dataType: int64
+		formatString: 0
+		lineageTag: e8056a95-c28e-4b1e-863f-62dc0b6937b2
+		summarizeBy: none
+		sourceColumn: Expiration Bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: 75d31d74-4562-4526-b16d-21ac56ebf48f
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sum Amount Stock Value Inflated'
+		dataType: double
+		lineageTag: 5ff30c50-5e73-4b5f-9b18-b482e69b5fe6
+		summarizeBy: sum
+		sourceColumn: Sum Amount Stock Value Inflated
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2259da66-38de-462a-8da7-5d8bafe6a21c
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Material
+		dataType: string
+		lineageTag: 8334c6c7-a005-4f12-b821-d518b09fd079
+		summarizeBy: none
+		sourceColumn: Material
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_BW_Inventory = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_BW_Inventory = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "BW - Inventory - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_BW_Inventory[Sum Amount Stock Value Inflated] = CALCULATE(#(lf)    [Sum_Report_Currency_BW],#(lf)    KEEPFILTERS(Fact_BW_Inventory[Attribute] = ""Stock Value Ext""),#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD"")#(lf))#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[Date],#(lf)    Fact_BW_Inventory[Profit Center],#(lf)    Fact_BW_Inventory[Expiration Bucket],#(lf)    Fact_BW_Inventory[Attribute],#(lf)    Fact_BW_Inventory[Material],#(lf)    #(lf)    ""Sum Amount Stock Value Inflated"", [Sum Amount Stock Value Inflated]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[Date] ASC,#(lf)    Fact_BW_Inventory[Profit Center] ASC,#(lf)    Fact_BW_Inventory[Expiration Bucket] ASC,#(lf)    Fact_BW_Inventory[Attribute] ASC,#(lf)    Fact_BW_Inventory[Material] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_BW_Inventory,{{"Dim_Date[Date]", "Date"}, {"Fact_BW_Inventory[Profit Center]", "Profit Center"}, {"Fact_BW_Inventory[Expiration Bucket]", "Expiration Bucket"}, {"Fact_BW_Inventory[Attribute]", "Attribute"}, {"[Sum Amount Stock Value Inflated]", "Sum Amount Stock Value Inflated"}, {"Fact_BW_Inventory[Material]", "Material"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

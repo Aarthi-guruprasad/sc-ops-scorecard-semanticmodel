@@ -1,0 +1,35 @@
+table 'Old to New SKU'
+	lineageTag: 20627dbf-7fa0-45e0-98cd-3270d651c0db
+
+	column 'New MDG code'
+		dataType: string
+		lineageTag: b724688a-a1d1-40e5-bb90-8a6eb5f40b52
+		summarizeBy: none
+		sourceColumn: New MDG code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Old MDG code'
+		dataType: string
+		lineageTag: 4eea1ea9-4f4e-4b49-997d-6f1a3ce25bcf
+		summarizeBy: none
+		sourceColumn: Old MDG code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Old to New SKU' = m
+		mode: import
+		source =
+				let
+				    Source = PowerPlatform.Dataflows(null),
+				    Workspaces = Source{[Id="Workspaces"]}[Data],
+				    #"e4fac527-27c5-4962-adf1-31f1d752bb56" = Workspaces{[workspaceId="e4fac527-27c5-4962-adf1-31f1d752bb56"]}[Data],
+				    #"48cf564a-885e-4b24-b927-c7b08859e356" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="48cf564a-885e-4b24-b927-c7b08859e356"]}[Data],
+				    #"Old to New SKU_" = #"48cf564a-885e-4b24-b927-c7b08859e356"{[entity="Old to New SKU",version=""]}[Data]
+				in
+				    #"Old to New SKU_"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,39 @@
+table Bridge_Site
+	lineageTag: dda014a2-0b0e-4eb5-964a-922e11167e7b
+
+	column Site
+		dataType: string
+		lineageTag: 86333606-3fa4-47df-90c5-3f0507302427
+		summarizeBy: none
+		sourceColumn: Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Group'
+		dataType: string
+		lineageTag: b0fb06b4-4bcb-4a05-ae53-9ebff8a22989
+		summarizeBy: none
+		sourceColumn: Site Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_Site = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjQwNlDSUQrw9VSK1QFyDY0gXA8o1xTM9YuEcM0NwFx/ZwjXxBDMDQuBciF6/YF6YwE=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Plant = _t, Desc = _t]),
+				    #"Added Custom" = Table.AddColumn(Source, "Plant Desc", each [Plant] &" - "&[Desc]),
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Site Group", each if [Desc] = "PMI" then "MI OTC" else if [Desc] = "PMH" then "MI OTC" else if [Desc] = "PNY" then "NY OTC" else if [Desc] = "POC" then "Oral Care" else if [Desc] = "PVT" then "Nutrition Infant Formula" else if [Desc] = "POH" then "Nutrition Infant Formula" else null),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Added Conditional Column",{"Desc"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"Desc", "Site"}}),
+				    #"Appended Query" = Table.Combine({#"Renamed Columns", Site_OEE, Site_Quality}),
+				    #"Removed Duplicates" = Table.Distinct(#"Appended Query"),
+				    #"Trimmed Text" = Table.TransformColumns(#"Removed Duplicates",{{"Site", Text.Trim, type text}}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Trimmed Text", "Site Group", each if [Site] = "HER" then "HER" else if [Site] = "LDM" then "LDM" else if [Site] = "MGX" then "MGX" else if [Site] = "PMI" then "MI OTC" else if [Site] = "PMH" then "MI OTC" else if [Site] = "PMI Plant 5" then "MI OTC" else if [Site] = "PMI Tablet Manufacturing" then "MI OTC" else if [Site] = "Plant 7" then "MI OTC" else if [Site] = "PMI ALC" then "MI OTC" else if [Site] = "PVT" then "Nutrition" else if [Site] = "POH" then "Nutrition" else if [Site] = "PWI" then "Nutrition" else if [Site] = "PNY" then "NY OTC" else if [Site] = "POC" then "Oral Care" else if [Site] = "PGR" then "Oral Care" else if [Site] = "PUK" then "PUK" else if [Site] = "Sandbox" then "Sandbox" else "CSCI")
+				in
+				    #"Added Conditional Column1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

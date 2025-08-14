@@ -1,0 +1,155 @@
+table Fact_DSO_DPO_ABP
+	lineageTag: 42c2f978-eeb8-42e5-954a-e7ac149924bd
+
+	measure 'DPO New' =
+			
+			Var num = SUM(Fact_DSO_DPO_ABP[DPO_Num])
+			VAR den = SUM(Fact_DSO_DPO_ABP[DPO_Den])
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		lineageTag: 824d6143-a542-4575-88cd-1dbd7c4690b8
+
+	measure 'DSO New' =
+			
+			Var num = SUM(Fact_DSO_DPO_ABP[DSO_Num])
+			VAR den = SUM(Fact_DSO_DPO_ABP[DSO_Den])
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		lineageTag: 2f9d81b8-2e56-4338-b692-5274c0324ead
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: 2e11ab81-820d-4529-907f-19f6221b5c4d
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Period End Date Key'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: f229a501-f19f-4041-b50e-e678fecae428
+		summarizeBy: none
+		sourceColumn: Fiscal Period End Date Key
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DPO_Num
+		dataType: double
+		lineageTag: 6bb27fef-3e74-45d6-8c1c-3b631abcaed2
+		summarizeBy: sum
+		sourceColumn: DPO_Num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DPO_Den
+		dataType: double
+		lineageTag: a4e9414c-b108-4a0d-ae91-40adba7aae7d
+		summarizeBy: sum
+		sourceColumn: DPO_Den
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DPO_Plan_Num
+		dataType: double
+		lineageTag: 3e3b050d-30ba-43e2-9f72-8389c2ed3215
+		summarizeBy: sum
+		sourceColumn: DPO_Plan_Num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DPO_Plan_Den
+		dataType: double
+		lineageTag: 275afb9f-49e6-48c5-b359-ed3e782ea4a2
+		summarizeBy: sum
+		sourceColumn: DPO_Plan_Den
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DSO_Num
+		dataType: double
+		lineageTag: 6f4e92d5-dfb2-4f36-8134-d1645d3128fb
+		summarizeBy: sum
+		sourceColumn: DSO_Num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DSO_Den
+		dataType: double
+		lineageTag: 1bbb06e7-7634-4f8c-846f-0aca875e37d5
+		summarizeBy: sum
+		sourceColumn: DSO_Den
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DSO_Plan_Num
+		dataType: double
+		lineageTag: 2ac91d53-696c-458b-aeb9-22a2fd17b927
+		summarizeBy: sum
+		sourceColumn: DSO_Plan_Num
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DSO_Plan_Den
+		dataType: double
+		lineageTag: 523620c7-9d2e-4f6a-8def-0841475f28bb
+		summarizeBy: sum
+		sourceColumn: DSO_Plan_Den
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ABP_Variance
+		dataType: double
+		lineageTag: 21411917-1bf4-45ef-bf10-6f7504288716
+		summarizeBy: sum
+		sourceColumn: ABP_Variance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ABP_Variance_Plan
+		dataType: double
+		lineageTag: 9dd544aa-ea1b-42f9-8033-b87fb3628165
+		summarizeBy: sum
+		sourceColumn: ABP_Variance_Plan
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_DSO_DPO_ABP = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Fact_DSO_DPO_ABP = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CFIN%20-%20Group%20Reporting", "Z - Metrics Feed", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Profit Center Hierarchy'[Profit Center],#(lf)    'FISCAL CALENDAR'[Fiscal Period End Date Key],#(lf)    ""DPO NUM"", [DPO NUM],#(lf)    ""DPO DEN"", [DPO DEN],#(lf)    ""DPO Plan NUM"", [DPO Plan NUM],#(lf)    ""DPO Plan DEN"", [DPO Plan DEN],#(lf)    ""DSO NUM"", [DSO NUM],#(lf)    ""DSO DEN"", [DSO DEN],#(lf)    ""DSO Plan NUM"", [DSO Plan NUM],#(lf)    ""DSO Plan DEN"", [DSO Plan DEN],#(lf)    ""ABP Variance"", [ABP Variance],#(lf)    ""ABP Variance Plan"", [ABP Variance Plan]#(lf))#(lf)ORDER BY #(lf)    'Profit Center Hierarchy'[Profit Center] ASC,#(lf)    'FISCAL CALENDAR'[Fiscal Period End Date Key] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_DSO_DPO_ABP,{{"Profit Center Hierarchy[Profit Center]", "Profit Center"}, {"FISCAL CALENDAR[Fiscal Period End Date Key]", "Fiscal Period End Date Key"}, {"[DPO NUM]", "DPO_Num"}, {"[DPO DEN]", "DPO_Den"}, {"[DPO Plan NUM]", "DPO_Plan_Num"}, {"[DPO Plan DEN]", "DPO_Plan_Den"}, {"[DSO NUM]", "DSO_Num"}, {"[DSO DEN]", "DSO_Den"}, {"[DSO Plan NUM]", "DSO_Plan_Num"}, {"[DSO Plan DEN]", "DSO_Plan_Den"}, {"[ABP Variance]", "ABP_Variance"}, {"[ABP Variance Plan]", "ABP_Variance_Plan"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Fiscal Period End Date Key", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,38 @@
+table Dim_Value_Stream_Grant
+	lineageTag: 9ee66c44-1aae-4be6-af6e-b30443ff3106
+
+	column Mat/Plant
+		dataType: string
+		lineageTag: 0cf2a23c-3053-4360-893c-963a5c1dd62f
+		summarizeBy: none
+		sourceColumn: Mat/Plant
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: 307a7a00-ba70-4080-9c79-591add7e4431
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream_clean' = LEFT([Value Stream], SEARCH(" ", [Value Stream]) - 1)
+		lineageTag: 7ab47a61-b854-4d17-9167-8cee8eba92f0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Value_Stream_Grant = m
+		mode: import
+		source =
+				let
+				    VS = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Inventory%20Reporting", "Inventory Master Data", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Inventory Master Data'[Mat/Plant],#(lf)    'Inventory Master Data'[Value Stream]#(lf))#(lf)ORDER BY #(lf)    'Inventory Master Data'[Mat/Plant] ASC,#(lf)    'Inventory Master Data'[Value Stream] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(VS,{{"Inventory Master Data[Mat/Plant]", "Mat/Plant"}, {"Inventory Master Data[Value Stream]", "Value Stream"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

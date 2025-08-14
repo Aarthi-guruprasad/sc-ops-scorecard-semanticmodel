@@ -1,0 +1,269 @@
+relationship f3b17087-64bf-02bb-3373-dbbe9e404d1d
+	fromColumn: Fact_CFIN_Inventory.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 4d8003a8-ffd8-f33f-01a1-4ee284259a62
+	fromColumn: Fact_CFIN_Inventory.'Account Number'
+	toColumn: Dim_Inventory_GL_Account.'G/L Account Number'
+
+relationship AutoDetected_6f90f6e1-7c99-488c-b834-02cb8e43fcd0
+	fromColumn: Fact_Group_Reporting.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 5ef485a5-7754-d697-c2d6-c3280ca275d1
+	fromColumn: Fact_Group_Reporting.'Account Number'
+	toColumn: Dim_Inventory_GL_Account.'G/L Account Number'
+
+relationship AutoDetected_7428a845-97ac-430f-b9cf-6795359e7e8c
+	fromColumn: Fact_SSSO.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship AutoDetected_b2af7003-7d36-45f2-b87d-fdb942c52ad8
+	fromColumn: Fact_SSSO.'Functional Area'
+	toColumn: Dim_FA.'Functional Area'
+
+relationship 6150bcd4-9cb8-9d33-f8e9-461d119a4d7b
+	fromColumn: Fact_SSSO.'Account Number'
+	toColumn: Dim_Inventory_GL_Account.'G/L Account Number'
+
+relationship a377446d-d4e4-945c-4bc6-5c3647cfc929
+	fromColumn: Fact_BW_Inventory.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 7839103e-44c0-85f5-09e9-78ac11ffdc2c
+	fromColumn: Fact_BW_Inventory.'Expiration Bucket'
+	toColumn: Dim_Expiration_Buckets.Index
+
+relationship AutoDetected_e58780f5-86ad-43bf-ae8d-fccfa425d90e
+	fromColumn: Fact_OEE.'Location UUID'
+	toColumn: Dim_Locations.'Location UUID'
+
+relationship AutoDetected_fc3a2dc9-28da-4e17-bcbb-7c27fecf857c
+	fromColumn: Fact_OEE.'Site UUID'
+	toColumn: Dim_Sites.'Site UUID'
+
+relationship AutoDetected_bacd5843-612c-4166-9722-ca6037243537
+	fromColumn: Fact_OEE.'Area UUID'
+	toColumn: Dim_Area.'Area UUID'
+
+relationship e105d9e9-ac26-bc20-890b-81a8a5ef7a0e
+	fromColumn: Fact_OEE.Date
+	toColumn: Dim_Date.Date
+
+relationship c4cf3ed6-3abc-68ce-d2ec-9dd37a047adf
+	fromColumn: Fact_CFIN_Inventory.Date
+	toColumn: Dim_Date.Date
+
+relationship 2089f985-05ad-eb87-9b0d-e2ff5be0812d
+	fromColumn: Fact_SSSO.Date
+	toColumn: Dim_Date.Date
+
+relationship 5cb7346d-2efc-b792-fec0-34c072daad4a
+	fromColumn: Fact_Group_Reporting.Date
+	toColumn: Dim_Date.Date
+
+relationship 491d4e06-199a-be24-ef5d-0dee25713236
+	fromColumn: Fact_BW_Inventory.Date
+	toColumn: Dim_Date.Date
+
+relationship c2d48ffa-de5f-b499-4f12-b5e1be5aab4a
+	fromColumn: Fact_CFIN_Inventory.'Material Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship 0187e0f8-ccac-dbde-f53f-079acb57bf33
+	fromColumn: Fact_SSSO.'Material Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship 1d302b80-5847-0da1-c771-ed9e3b46fe63
+	fromColumn: Fact_BW_Inventory.Material
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship de067fd6-6382-b000-b5b5-5eb0a07f4a6c
+	fromColumn: Fact_Forecast_Accuracy.P_EndDate
+	toColumn: Dim_Date.Date
+
+relationship 3d5ab49a-2c9c-392a-18ff-e11c282970ad
+	fromColumn: Fact_Forecast_Accuracy.'Global Material Key'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship 3cc0cd81-005d-475e-b166-374ee09cc5d0
+	fromColumn: Fact_Forecast_Accuracy.'Profit Center Key'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 660a1a0f-a206-dfe0-9889-892090bd0182
+	fromColumn: Fact_Service.'Fiscal WE Date'
+	toColumn: Dim_Date.Date
+
+relationship 42a730b9-59b1-7611-073e-e6f3bc44b980
+	fromColumn: Fact_Service.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 0f9d1a4d-e2c8-6e60-4270-0af44866f33f
+	fromColumn: Fact_Service.'Material Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship AutoDetected_0b4dfa06-2779-4880-b308-1d009120ddbf
+	fromColumn: Dim_Profit_Center.Area
+	toColumn: Bridge_CSCA_CSCI.Area
+
+relationship 3582c665-a011-4ce6-28cb-0af4151bae05
+	fromColumn: Dim_Locations.Region
+	toColumn: Bridge_CSCA_CSCI.Area
+
+relationship AutoDetected_15fef1fb-762b-4ac6-afaf-444a9cc39f72
+	fromColumn: Fact_Logistics.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 8c707b46-0462-b8f2-6687-0a69654b104f
+	fromColumn: Fact_Logistics.Date
+	toColumn: Dim_Date.Date
+
+relationship ac262bf0-ee2f-8897-6c96-d51d0e65bf6a
+	fromColumn: Fact_Schedule.Weekdate
+	toColumn: Dim_Date.Date
+
+relationship c3d4b1f4-9b9c-01e1-6d8f-7176e6149496
+	fromColumn: Fact_Schedule.Workcenter
+	toColumn: Dim_WC_Table_SA.Workcenter
+
+relationship c71a866d-0b44-9a69-369c-0cfc182d6758
+	fromColumn: Fact_Schedule.Plant
+	toColumn: Dim_Plant_Desc_SA.Plant
+
+relationship AutoDetected_fb0960e3-554c-4a1b-b374-59315ffbf60e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: D_PRODUCT_TEXT_CV.'Global Product Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship b3bce197-3423-d141-2643-714974f573c3
+	fromColumn: Fact_IBP_Sales_CSCI.'Product ID'
+	toColumn: D_PRODUCT_TEXT_CV.'Global Product Number (short)'
+
+relationship 144a31d2-50af-ec00-e9eb-73f8da8b3d9c
+	fromColumn: Fact_IBP_Sales_CSCI.'Brand ID'
+	toColumn: Dim_Brand.'Brand ID'
+
+relationship dadf3dad-3c9a-a9c3-a46e-829ece78cf70
+	fromColumn: Fact_IBP_Sales_CSCI.'FP: End Date'
+	toColumn: Dim_Date.Date
+
+relationship 876121aa-a1d6-0a52-d5c6-965c4772f973
+	fromColumn: Fact_IBP_Sales_CSCI.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship ec6c2109-b7d9-9430-8bb3-2628485ddc33
+	toCardinality: many
+	fromColumn: Fact_SSSO.Category
+	toColumn: Dim_ComparableFilter.'Exchange Rate'
+
+relationship 8d6aff40-e7c0-f648-1d5e-1dca7e2e4b6c
+	toCardinality: many
+	fromColumn: Fact_Group_Reporting.Category
+	toColumn: Dim_ComparableFilter.'Exchange Rate'
+
+relationship 54945aad-a298-92ae-8121-30b67d9fa16f
+	toCardinality: many
+	fromColumn: Fact_CFIN_Inventory.Category
+	toColumn: Dim_ComparableFilter.'Exchange Rate'
+
+relationship b351ae97-1833-d3f3-66c1-fdf606167cfe
+	fromColumn: Fact_SALESORDER_PBI_Full.'Requested delivery date'
+	toColumn: Dim_Date.Date
+
+relationship 756a7e19-deca-9cee-b3a9-7a8d5862545c
+	fromColumn: Fact_SALESORDER_PBI_Full.'Global Brand Code'
+	toColumn: Dim_Brand.'Brand ID'
+
+relationship 305f9b75-c61e-b6f4-c9a4-3d395375d4d9
+	fromColumn: Fact_SALESORDER_PBI_Full.'Global Material Number'
+	toColumn: D_PRODUCT_TEXT_CV.'Global Product Number'
+
+relationship 36d8e168-0b8f-7cab-08bf-37c82307937c
+	fromColumn: Fact_SALESORDER_PBI_Full.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 0aacb90b-4d5b-099c-0257-1d505aa06c87
+	fromColumn: Fact_SALESORDER_PBI_Full.'Reason for rejection'
+	toColumn: Dim_Rejection_Reason_Code.'SAP Reason Code Number'
+
+relationship 535dcc49-1450-7175-b6af-35344cea456d
+	fromColumn: Fact_BS.Date
+	toColumn: Dim_Date.Date
+
+relationship 21e4b818-8d2a-95a3-42f8-4b2fdfde1c88
+	fromColumn: Fact_BS.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 25413bf7-e6e3-631f-2db8-412a4aa2f9a6
+	fromColumn: Fact_Customer_Fines.'Document Date'
+	toColumn: Dim_Date.Date
+
+relationship 8330d6be-343e-c038-34a2-406c12ca2bd2
+	fromColumn: Fact_CFR.Date
+	toColumn: Dim_Date.Date
+
+relationship 3c32feb0-a608-c623-e5a6-7aa1863f8bae
+	fromColumn: Fact_CFR.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship fc38ce83-37d0-58b5-a112-1b49603eec09
+	fromColumn: Fact_CFR.'Material Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship 662e9deb-0e21-e05c-cf9a-fd019a3fb6f5
+	fromColumn: Fact_Schedule.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 6056fe2d-4572-39d9-7793-63656a448ef5
+	fromColumn: Fact_Schedule.'Material Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship AutoDetected_73683448-b31b-4611-86ae-fa744459c1fc
+	fromColumn: Fact_COPA_Global.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 2fe85a4c-9541-bedb-1f3e-26d0c62926d0
+	fromColumn: Fact_COPA_Global.Date
+	toColumn: Dim_Date.Date
+
+relationship e737b9fc-deae-d50a-4115-3acc6d8b63fc
+	fromColumn: Fact_Customer_Fines.'Global Product Number'
+	toColumn: Dim_Value_Stream.'Global Product Number'
+
+relationship 161de9ff-9e85-be7a-498a-02fab48d7c8d
+	fromColumn: Fact_Quality.'Closing Date'
+	toColumn: Dim_Date.Date
+
+relationship 0cdf198c-9407-af5d-892f-284cd36f3b49
+	fromColumn: Fact_DSO_DPO_ABP.'Profit Center'
+	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship a32b20a2-02aa-2691-c268-24c331a5e8d7
+	fromColumn: Fact_DSO_DPO_ABP.'Fiscal Period End Date Key'
+	toColumn: Dim_Date.Date
+
+relationship 405fc067-f674-2007-df26-85e05599643d
+	fromColumn: Fact_Forecast_Accuracy.'Profit Center Key'
+	toColumn: Dim_Profit_Center_FA.'Profit Center Key'
+
+relationship 28f02660-38f3-cd79-71fb-0819fb22a69a
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: Fact_OEE_Baseline.'Location UUID'
+	toColumn: Dim_Locations.'Location UUID'
+
+relationship 34fe806d-4db2-88ce-4271-f3f6cbafaf7e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: Bridge_Site_Area.'Site Hierarchy'
+	toColumn: Dim_Plant_Desc_SA.Desc
+
+relationship 610458fb-1b72-bd26-c8d9-0e3fdb327735
+	fromColumn: Dim_Locations.'Site Name'
+	toColumn: Bridge_Site_Area.'Site Hierarchy'
+
+relationship 61b27430-eb57-f4de-a832-efae3ee287a7
+	fromColumn: Fact_Quality.Site
+	toColumn: Bridge_Site_Area.'Site Hierarchy'
+
