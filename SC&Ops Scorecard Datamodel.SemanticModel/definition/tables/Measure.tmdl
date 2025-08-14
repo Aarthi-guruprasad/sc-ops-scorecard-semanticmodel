@@ -4554,7 +4554,7 @@ table Measure
 			CALCULATE(
 			SUMX(
 			    SUMMARIZE(
-			        Fact_Forecast_Accuracy,Fact_Forecast_Accuracy[5 Digit Key],
+			        Fact_Forecast_Accuracy,Fact_Forecast_Accuracy[SSID 5-Digit],
 			        Fact_Forecast_Accuracy[Fiscal Year/Period],
 			        "Variance", ABS([Demand Draft] - [Total Shipments])),[Variance]),
 			REMOVEFILTERS(Fact_Forecast_Accuracy[Source Material Key])
