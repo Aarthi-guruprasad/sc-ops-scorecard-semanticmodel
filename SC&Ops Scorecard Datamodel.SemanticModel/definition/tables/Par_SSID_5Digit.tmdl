@@ -48,7 +48,7 @@ table Par_SSID_5Digit
 		source =
 				{
 				    ("SSID", NAMEOF('Fact_Forecast_Accuracy'[SSID]), 0, "SSID"),
-				    ("5 Digit", NAMEOF('Fact_Forecast_Accuracy'[5 Digit Key]), 1, "5 Digit")
+				    ("5 Digit", NAMEOF('Fact_Forecast_Accuracy'[SSID 5-Digit]), 1, "5 Digit")
 				}
 
 	annotation PBI_Id = 5506541579714b3e968cb0f15f404daf
