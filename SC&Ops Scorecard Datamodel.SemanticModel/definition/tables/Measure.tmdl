@@ -5950,7 +5950,7 @@ table Measure
 		formatString: #,##0.00 %
 		lineageTag: 1a2dec3c-d4da-4fb1-9cb0-74b758008b68
 
-	measure 'Selected Filters' = ```
+	measure 'Selected Filters CSCA' = ```
 			
 			"Business Unit: " & 
 			IF(
@@ -5984,6 +5984,35 @@ table Measure
 			)
 			```
 		lineageTag: 2589295c-73b8-40ae-8d3a-c6af2eaacd72
+
+	measure 'Selected Filters CSCI' = ```
+			
+			"Cluster: " & 
+			IF(
+			    ISFILTERED('Dim_Profit_Center'[FP&A Cluster]),
+			    CONCATENATEX(VALUES('Dim_Profit_Center'[FP&A Cluster]), 'Dim_Profit_Center'[FP&A Cluster], ", "),
+			    "All"
+			)
+			& " |  " 
+			& IF(
+			    ISFILTERED('Dim_DateSlicer'[P_YearPeriod]),
+			    CONCATENATEX(VALUES('Dim_DateSlicer'[P_YearPeriod]), 'Dim_DateSlicer'[P_YearPeriod], ", "),
+			    "All"
+			)
+			& " |  " 
+			& IF(
+			    ISFILTERED('CG_PeriodSelection'[Period]),
+			    CONCATENATEX(VALUES('CG_PeriodSelection'[Period]), 'CG_PeriodSelection'[Period], ", "),
+			    "All"
+			)
+			& " |  " 
+			& IF(
+			    ISFILTERED('MetricSelector'[Metric]),
+			    CONCATENATEX(VALUES('MetricSelector'[Metric]), 'MetricSelector'[Metric], ", "),
+			    "All"
+			)
+			```
+		lineageTag: 423325f4-791c-4ea5-a78c-727c534a476e
 
 	column Measures
 		dataType: string
