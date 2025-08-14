@@ -5950,33 +5950,39 @@ table Measure
 		formatString: #,##0.00 %
 		lineageTag: 1a2dec3c-d4da-4fb1-9cb0-74b758008b68
 
-	measure 'Selected Filters' =
+	measure 'Selected Filters' = ```
 			
-			"Business Unit: " & IF(
+			"Business Unit: " & 
+			IF(
 			    ISFILTERED('Dim_Profit_Center'[FP&A Cluster]),
 			    CONCATENATEX(VALUES('Dim_Profit_Center'[FP&A Cluster]), 'Dim_Profit_Center'[FP&A Cluster], ", "),
 			    "All"
 			)
-			& " | Value Stream: " & IF(
+			& " | Value Stream: " 
+			&  IF(
 			    ISFILTERED('Dim_Value_Stream'[Value_Stream_Final]),
 			    CONCATENATEX(VALUES('Dim_Value_Stream'[Value_Stream_Final]), 'Dim_Value_Stream'[Value_Stream_Final], ", "),
 			    "All"
 			)
-			& " | Period: " & IF(
+			& " |  " 
+			& IF(
 			    ISFILTERED('Dim_DateSlicer'[P_YearPeriod]),
 			    CONCATENATEX(VALUES('Dim_DateSlicer'[P_YearPeriod]), 'Dim_DateSlicer'[P_YearPeriod], ", "),
 			    "All"
 			)
-			& " | PTD/YTD: " & IF(
+			& " |  " 
+			& IF(
 			    ISFILTERED('CG_PeriodSelection'[Period]),
 			    CONCATENATEX(VALUES('CG_PeriodSelection'[Period]), 'CG_PeriodSelection'[Period], ", "),
 			    "All"
 			)
-			& " | Comparison: " & IF(
+			& " |  " 
+			& IF(
 			    ISFILTERED('MetricSelector'[Metric]),
 			    CONCATENATEX(VALUES('MetricSelector'[Metric]), 'MetricSelector'[Metric], ", "),
 			    "All"
 			)
+			```
 		lineageTag: 2589295c-73b8-40ae-8d3a-c6af2eaacd72
 
 	column Measures
