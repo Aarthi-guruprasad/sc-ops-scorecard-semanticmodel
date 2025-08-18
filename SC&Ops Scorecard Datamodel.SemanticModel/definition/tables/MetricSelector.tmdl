@@ -2573,7 +2573,7 @@ table MetricSelector
 	column SortOrder
 		formatString: 0
 		lineageTag: 8254b6bf-0377-44ec-b442-6ca89c51ee98
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [SortOrder]
 
