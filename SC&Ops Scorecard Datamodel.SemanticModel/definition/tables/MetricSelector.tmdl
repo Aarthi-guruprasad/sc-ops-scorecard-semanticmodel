@@ -2451,7 +2451,7 @@ table MetricSelector
 		displayFolder: KPI Color_Measure
 		lineageTag: 5a552db2-9736-4306-b944-f7bc3ae29986
 
-	measure 'Service Top 11_Color' = ```
+	measure 'Service Top 11_Color' =
 			
 			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
 			
@@ -2460,7 +2460,8 @@ table MetricSelector
 			        _sel,
 			        "vs PP", [Service Top 11 MoM%],
 			        "LYTD", [Service Top 11 LYTD],
-			        "vs YoY", [Service Top 11 YoY%],  
+			        "vs YoY", [Service Top 11 YoY%],
+			        "vs Plan", [Service Top 11 Target Diff%],
 			        BLANK()
 			    )
 			
@@ -2470,7 +2471,6 @@ table MetricSelector
 			            "#D7191C",  -- red for ▼ down
 			            "#1A9641"   -- green for ▲ up
 			        )
-			```
 		displayFolder: Cond.format_measure
 		lineageTag: e8e7e1cc-8b00-4e63-9474-d4cf30fd95a4
 
