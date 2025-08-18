@@ -2980,6 +2980,7 @@ table Measure
 		lineageTag: 17d4541b-ecef-4574-80e1-af6f34948ead
 
 	measure 'Variances Act' = SUM(Fact_Logistics[Variances Act])
+		formatString: 0.0
 		lineageTag: 18b246d9-93e1-4418-b7b7-bd3a7b5fa1eb
 
 	measure 'Last Closed Period' = MAX('Other_Last Closed Month'[Period])
@@ -5351,13 +5352,12 @@ table Measure
 		lineageTag: c0182232-6355-4f58-b268-c664a677e288
 
 	measure 'ABP Variance' = SUM(Fact_DSO_DPO_ABP[ABP_Variance])*1000
-		formatString: 0
+		formatString: 0.0
 		lineageTag: f3a47495-0f92-47a2-82e6-13df475dc8bb
 
 	measure 'ABP Variance_APN_Base' = SUM(Fact_DSO_DPO_ABP[ABP_Variance_Plan])*1000
+		formatString: 0.0
 		lineageTag: 01de310b-7071-4630-8ec8-f4eb287ab435
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ABP Variance_APN' =
 			
@@ -5442,9 +5442,8 @@ table Measure
 			VAR Result = Calculate([ABP Variance],filter_)
 			RETURN
 			Result
+		formatString: 0.0
 		lineageTag: 22096135-3c90-46ad-8d56-2e511a0cd778
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ABP Variance PY' =
 			VAR alldate_ = all(Dim_Date)
@@ -5453,9 +5452,8 @@ table Measure
 			
 			RETURN
 			Calculate([ABP Variance],filter_)
+		formatString: 0.0
 		lineageTag: 948d024c-22f0-4f39-980c-427e9819ecd0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ABP Variance YoY%' = DIVIDE(([ABP Variance] - [ABP Variance PY]),[ABP Variance PY])
 		lineageTag: 4defcb38-23dc-4953-82e7-c4811e09abae
@@ -5480,9 +5478,8 @@ table Measure
 			VAR Result = DIVIDE(([ABP Variance] - [ABP Variance PP]), [ABP Variance PP])
 			RETURN
 			Result
+		formatString: 0.0
 		lineageTag: ba33b857-b276-4ffc-8d08-003e51a83c2a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ABP Variance MoM_Final' = ```
 			VAR kpi_ =  [ABP Variance MoM%]
@@ -5504,9 +5501,8 @@ table Measure
 			return
 			DIVIDE([ABP Variance] - Result,Result)
 			```
+		formatString: 0.0
 		lineageTag: cad9adcc-2b7c-48e5-8898-03b67ad1a54b
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ABP Variance LYTD_Final' =
 			VAR kpi_ =  [ABP Variance LYTD]
@@ -5563,9 +5559,8 @@ table Measure
 			        ),
 			        [ABP Variance]
 			    )
+		formatString: 0.0
 		lineageTag: f27858ea-29ee-482d-bfc0-8dfb385f06d0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Service Top 11' = ```
 			SUMX(
