@@ -1,13 +1,19 @@
 table KPI_Metadata
 	lineageTag: cee11cc8-5c38-4057-bf37-2cec58f821a2
 
-	measure 'Green Count (Visible)' =
+	measure 'Green Count (Visible)' = ```
 			
 			CALCULATE (
-			    DISTINCTCOUNT ( KPI_Metadata[KPI_ID] ),
-			    KEEPFILTERS ( VALUES ( KPI_Metadata[KPI_ID] ) ),
-			    FILTER ( ALLSELECTED ( KPI_Metadata ), [KPI Status Numeric] = 1 )
+			    COUNTROWS ( KPI_Metadata ),
+			    FILTER (
+			        KPI_Metadata,
+			        [KPI Status Numeric] = 1
+			            && NOT ISBLANK ( [KPI Status Numeric] )
+			    )
 			)
+			
+			```
+		formatString: 0
 		lineageTag: 1d2a050a-42ae-4ed0-934e-9ae67f4e4418
 
 	measure 'KPI Status Icon' = ```
@@ -685,12 +691,18 @@ table KPI_Metadata
 		formatString: 0
 		lineageTag: be19d0b0-cf51-4fac-94ab-03e50a49644e
 
-	measure 'Red Count (Last Closed)' =
+	measure 'Red Count (Last Closed)' = ```
 			
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
-			    FILTER ( KPI_Metadata, [KPI Status Numeric] = 0 )
+			    FILTER (
+			        KPI_Metadata,
+			        [KPI Status Numeric] = 0
+			            && NOT ISBLANK ( [KPI Status Numeric] )
+			    )
 			)
+			
+			```
 		formatString: 0
 		lineageTag: ad666069-eafc-4514-a3f0-22ac58d64ae5
 
@@ -698,6 +710,296 @@ table KPI_Metadata
 			
 			SELECTEDVALUE(KPI_Metadata[Metrics])
 		lineageTag: 0dcfdbc0-c2d0-429a-a583-a8e937ca7f1d
+
+	measure 'KPI Status Icon (Sales Growth)' = ```
+			
+			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
+			
+			VAR _timeMode =
+			    SELECTEDVALUE ( CG_PeriodSelection[Period] )
+			
+			VAR _signRule =
+			    IF (
+			        _timeMode = "YTD",
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_YTD], KPI_Metadata[KPI_ID], _kpiID ),
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_PTD], KPI_Metadata[KPI_ID], _kpiID )
+			    )
+			
+			-- Assign value based on KPI_ID
+			VAR _value =
+			    SWITCH (
+			        _kpiID,
+			        "FA_Lag1_vsPlan", [FA Target L1 Diff raw],
+			        "FA_Lag1_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag1_vsYoY", [FA% YoY L1 raw CSCI],
+			        "FA_Lag1_vsPP", [FA% MoM L1 raw CSCI],
+			
+			        "FA_Lag2_vsPlan", [FA% Lag 2 Target Diff%],
+			        "FA_Lag2_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "FA_Lag2_vsYoY", [FA% Lag2 YoY%],
+			        "FA_Lag2_vsPP", [FA% Lag2 MoM%],
+			
+			        "FA_Lag4_CSCA_vsPlan", [FA% Lag 4 Target Diff%],
+			        "FA_Lag4_CSCA_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "FA_Lag4_CSCA_vsYoY", [FA% Lag4 YoY%],
+			        "FA_Lag4_CSCA_vsPP", [FA% Lag4 MoM%],
+			        "FA_Lag4_CSCI_vsPlan", [FA Target L4 Diff raw],
+			        "FA_Lag4_CSCI_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag4_CSCI_vsYoY", [FA% YoY L4 raw CSCI],
+			        "FA_Lag4_CSCI_vsPP", [FA% MoM CSCI L4],
+			
+			        "Bias_Lag1_vsPlan", [Bias Target Diff%_CSCI L1],
+			        "Bias_Lag1_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="1")),
+			        "Bias_Lag1_vsYoY", [Bias YoY % L1 Raw CSCI],
+			        "Bias_Lag1_vsPP", [Bias MoM%_raw L1 CSCI],
+			        
+			        "Bias_Lag2_vsPlan", [Bias Lag2 Target Diff%],
+			        "Bias_Lag2_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "Bias_Lag2_vsYoY", [Bias Lag2 YoY%],
+			        "Bias_Lag2_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			
+			        "Bias_Lag4_CSCA_vsPlan", [Bias Lag4 Target Diff%],
+			        "Bias_Lag4_CSCA_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCA_vsYoY", [Bias Lag4 YoY%],
+			        "Bias_Lag4_CSCA_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCI_vsPlan", [Bias Target Diff%_CSCI L4],
+			        "Bias_Lag4_CSCI_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
+			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
+			        "Service_Top_11_vsPlan", [Service Top 11 Target Diff%],
+			        "Service_Top_11_vsYoY", [Service Top 11 YoY%],
+			        "Service_Top_11_vsLYTD", [Service Top 11 LYTD],
+			        "Service_Top_11_vsPP", [Service Top 11 MoM%],
+			        "Case_fill_rate_vsPlan", [CFR Target Diff%],
+			        "Case_fill_rate_vsPP", [CFR MoM%],
+			        "Case_fill_rate_vsYoY", [CFR YoY%],
+			        "Case_fill_rate_vsLYTD", [CFR LYTD],
+			        BLANK()
+			    )
+			
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        ISBLANK ( _value ), BLANK(),
+			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
+			        IF ( _value < 0, "🔴", "🟢" )
+			    )
+			```
+		lineageTag: b206bd87-be69-4542-b8bd-a539f8e7747d
+
+	measure 'KPI Status Icon (Operations&Quality)' =
+			
+			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
+			
+			VAR _timeMode =
+			    SELECTEDVALUE ( CG_PeriodSelection[Period] )
+			
+			VAR _signRule =
+			    IF (
+			        _timeMode = "YTD",
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_YTD], KPI_Metadata[KPI_ID], _kpiID ),
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_PTD], KPI_Metadata[KPI_ID], _kpiID )
+			    )
+			
+			-- Assign value based on KPI_ID
+			VAR _value =
+			    SWITCH (
+			        _kpiID,
+			        "OEE_vsPlan", [OEE Target diff%],
+			        "OEE_vsPP", [OEE% MoM%],
+			        "OEE_vsYoY", [OEE% YoY%],
+			        "OEE_vsLYTD", [OEE LYTD],
+			
+			        "Schedule_Attainment_vsPlan", [Schedule Attn Target Diff%],
+			        "Schedule_Attainment_vsPP", [SA MoM%],
+			        "Schedule_Attainment_vsYoY", [SA YoY%],
+			        "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
+			
+			        "On_Time_Deviation_vsPlan", [On Time Closure of Deviations Target Diff%],
+			        "On_Time_Deviation_vsYoY", [On Time Closure of Deviations YoY%],
+			        "On_Time_Deviation_vsLYTD", [On Time Closure of Deviations LYTD],
+			        "On_Time_Deviation_vsPP", [On Time Closure of Deviations MoM%],
+			
+			        "CAPA_Completion_vsPlan", [CAPA Completion Rate Target Diff%],
+			        "CAPA_Completion_vsPP", [CAPA Completion Rate MoM%],
+			        "CAPA_Completion_vsYoY", [CAPA Completion Rate YoY%],
+			        "CAPA_Completion_vsLYTD", [CAPA Closed LYTD],
+			
+			        "Right_First_Time_vsPlan", [RFT Target Diff%],
+			        "Right_First_Time_vsPP", [RFT MoM%],
+			        "Right_First_Time_vsYoY", [RFT YoY%],
+			        "Right_First_Time_vsLYTD", [RFT LYTD],
+			
+			        "Critical/Major_vsPP", [Critical or Major Observations MoM%],
+			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
+			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
+			
+			
+			        BLANK()
+			    )
+			
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        ISBLANK ( _value ), BLANK(),
+			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
+			        IF ( _value < 0, "🔴", "🟢" )
+			    )
+		lineageTag: 4d1f87cd-4d92-4b56-9c53-254b724f1f1c
+
+	measure 'KPI Status Icon (Working Capital)' =
+			
+			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
+			
+			VAR _timeMode =
+			    SELECTEDVALUE ( CG_PeriodSelection[Period] )
+			
+			VAR _signRule =
+			    IF (
+			        _timeMode = "YTD",
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_YTD], KPI_Metadata[KPI_ID], _kpiID ),
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_PTD], KPI_Metadata[KPI_ID], _kpiID )
+			    )
+			
+			-- Assign value based on KPI_ID
+			VAR _value =
+			    SWITCH (
+			        _kpiID,
+			        "Net_Inventory_vsPlan", [Net Inventory_APN],
+			        "Net_Inventory_vsFlex", [Net Inventory_AFX],
+			        "Net_Inventory_vsLYTD", [Net Inventory LYTD],
+			        "Net_Inventory_vsPP", [Net Inventory MoM%],
+			        "Net_Inventory_vsYoY", [Net Inventory YoY%],
+			
+			        "Gross_Inventory_vsPlan", [Gross Inventory_APN],
+			        "Gross_Inventory_vsFlex", [Gross Inventory_AFX],
+			        "Gross_Inventory_vsLYTD", [Gross Inv LYTD],
+			        "Gross_Inventory_vsPP", [Gross Inventory MoM%],
+			        "Gross_Inventory_vsYoY", [Gross Inventory YoY%],
+			
+			        "Expired_Inventory_vsPP", [Expired Inventory MoM%],
+			        "Expired_Inventory_vsYoY", [Expired Inventory YoY%],
+			        "Expired_Inventory_vsLYTD", [Expired Inventory LYTD],
+			
+			        "Inflated_Inventory_vsPP", [Inflated Inventory MoM%],
+			        "Inflated_Inventory_vsYoY", [Inflated Inventory YoY%],
+			        "Inflated_Inventory_vsLYTD", [Inflated Inv LYTD],
+			
+			        "DIO_vsPlan", [DIO_APN],
+			        "DIO_vsPP", [DIO MoM%],
+			        "DIO_vsFlex", [DIO_AFX],
+			        "DIO_vsYoY", [DIO YoY%],
+			
+			        "DPO_vsPP", [DPO MoM%],
+			        "DPO_vsYoY", [DPO YoY%],
+			
+			        "DSO_vsPP", [DSO MoM%],
+			        "DSO_vsYoY", [DSO YoY%],
+			
+			        BLANK()
+			    )
+			
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        ISBLANK ( _value ), BLANK(),
+			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
+			        IF ( _value < 0, "🔴", "🟢" )
+			    )
+		lineageTag: 995204bd-ef24-4f64-8edb-f72456b8146a
+
+	measure 'KPI Status Icon (Operating Income)' =
+			
+			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
+			
+			VAR _timeMode =
+			    SELECTEDVALUE ( CG_PeriodSelection[Period] )
+			
+			VAR _signRule =
+			    IF (
+			        _timeMode = "YTD",
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_YTD], KPI_Metadata[KPI_ID], _kpiID ),
+			        LOOKUPVALUE ( KPI_Metadata[SignRule_PTD], KPI_Metadata[KPI_ID], _kpiID )
+			    )
+			
+			-- Assign value based on KPI_ID
+			VAR _value =
+			    SWITCH (
+			        _kpiID,
+			        "SSSO_Conversions_vsPlan", [SSSO: Obsolescenes linked to Conversions_APN],
+			        "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
+			        "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
+			        "SSSO_Conversions_vsYoY", [SSSO: Obs linked to Conv YoY%],
+			        "SSSO_Conversions_vsFlex", [SSSO: Obs linked to conv F66_Final],
+			
+			        "SSSO_Salvage_Obsolescence_vsPlan", [SSSO: Salvage & Obsolescence_APN],
+			        "SSSO_Salvage_Obsolescence_vsLYTD", [SSSO: Salvage LYTD],
+			        "SSSO_Salvage_Obsolescence_vsPP", [SSSO: Salvage & obs MoM%],
+			        "SSSO_Salvage_Obsolescence_vsYoY", [SSSO: Salvage YoY%],
+			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obs F66_Final],
+			
+			        "SSSO_Scrap_vsPlan", [SSSO: Scrap-Off_APN],
+			        "SSSO_Scrap_vsLYTD", [SSSO: Scrap-off LYTD],
+			        "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
+			        "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
+			        "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			
+			        "Net_Sales_vsPlan", [Net Sales_APN],
+			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
+			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
+			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
+			
+			        "COGS_vsPlan", [COGS_APN],
+			        "COGS_vsPP", [COGS Actual MoM%],
+			        "COGS_vsYoY", [COGS Actual YoY%],
+			        "COGS_vsLYTD", [COGS Actual LYTD],
+			
+			        "Log_to_Sales_vsPlan", [Total Logistics on Net Sales_APN],
+			        "Log_to_Sales_vsPP", [Total Logistics on Net Sales Actual MoM%],
+			        "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
+			        "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
+			
+			        "Dist_to_COGS_vsPlan", [Total Distribution on COGS_APN],
+			        "Dist_to_COGS_vsPP", [Total Distribution on COGS Actual MoM%],
+			        "Dist_to_COGS_vsYoY", [Total Distribution on COGS Actual YoY%],
+			        "Dist_to_COGS_vsLYTD", [Total Distribution on COGS LYTD],
+			
+			        "Net_POV_vsPlan", [Net POV_APN],
+			        "Net_POV_vsPP", [Net POV Actual MoM%],
+			        "Net_POV_vsYoY", [Net POV Actual YoY%],
+			        "Net_POV_vsLYTD", [Net POV Actual LYTD],
+			
+			        "Gross_PPV_vsPlan", [Gross PPV_APN],
+			        "Gross_PPV_vsPP", [Gross PPV Actual MoM%],
+			        "Gross_PPV_vsYoY", [Gross PPV Actual YoY%],
+			        "Gross_PPV_vsLYTD", [Gross PPV Actual LYTD],
+			
+			        "Operating_Income_vsPlan", [Operating Income_APN],
+			        "Operating_Income_vsPP", [Operating Income Actual MoM%],
+			        "Operating_Income_vsYoY", [Operating Income Actual YoY%],
+			        "Operating_Income_vsLYTD", [Operating Income Actual LYTD],
+			
+			        "ABP_Variances_vsPlan", [ABP Variance_APN],
+			        "ABP_Variances_vsPP", [ABP Variance MoM%],
+			        "ABP_Variances_vsYoY", [ABP Variance YoY%],
+			        "ABP_Variances_vsLYTD", [ABP Variance LYTD],
+			
+			        "Customer_Fines_vsPlan", [Cust Fine Target Diff%],
+			        "Customer_Fines_vsPP", [Cust Fine MoM%],
+			        "Customer_Fines_vsYoY", [Cust fine YoY%],
+			        "Customer_Fines_vsLYTD", [Cust Fine LYTD],
+			
+			        BLANK()
+			    )
+			
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        ISBLANK ( _value ), BLANK(),
+			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
+			        IF ( _value < 0, "🔴", "🟢" )
+			    )
+		lineageTag: 3c43eba9-48bb-4ce1-9c55-2f528ebaecca
 
 	column Metrics
 		lineageTag: fb6eb0f0-7794-44a9-b2f4-eebff3e474bc
@@ -934,17 +1236,17 @@ table KPI_Metadata
 				        {"Inventory", "SSSO: Scrap", "SSSO_Scrap_vsYoY", "vs YoY","CSCI","GoodIfNeg","GoodIfNeg"},
 				        {"Inventory", "SSSO: Scrap", "SSSO_Scrap_vsFlex", "vs Flex","CSCI","GoodIfNeg","GoodIfNeg"},
 				
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
 				
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Procurement", "Net PPV ($)", "Net_PPV_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Procurement", "Gross PPV ($)", "Gross_PPV_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
 				        {"Procurement", "DPO (days)", "DPO_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
 				        {"Procurement", "DPO (days)", "DPO_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
@@ -958,17 +1260,17 @@ table KPI_Metadata
 				        {"Procurement", "DPO (days)", "DPO_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
 				        {"Procurement", "DPO (days)", "DPO_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
 				
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "On Time Closure of Deviations (%)", "OTC_Deviations_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "On Time Closure of Deviations (%)", "On_Time_Deviation_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
 				        {"Manufacturing", "CAPA Completion Rate (%)", "CAPA_Completion_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
 				        {"Manufacturing", "CAPA Completion Rate (%)", "CAPA_Completion_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
@@ -993,30 +1295,18 @@ table KPI_Metadata
 				        {"Manufacturing", "Right First Time (%)", "Right_First_Time_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
 				        {"Manufacturing", "Right First Time (%)", "Right_First_Time_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
 				        {"Manufacturing", "Right First Time (%)", "Right_First_Time_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
+				        
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
 				
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
-				
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "Major Regulatory Observations (#)", "Reg_Obs_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
-				
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
-				
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
-				        {"Manufacturing", "CB / Micro Hits (#)", "CB_Micro_Hits_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Manufacturing", "Critical/Major Observations", "Critical/Major_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
 				        {"Manufacturing", "OEE (%)", "OEE_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
 				        {"Manufacturing", "OEE (%)", "OEE_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
@@ -1153,6 +1443,11 @@ table KPI_Metadata
 				        {"Customer Service", "Case Fill Rate %", "Case_fill_rate_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
 				        {"Customer Service", "Case Fill Rate %", "Case_fill_rate_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
 				
+				        {"Customer Service", "Service Top 11", "Service_Top_11_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Customer Service", "Service Top 11", "Service_Top_11_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Customer Service", "Service Top 11", "Service_Top_11_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Customer Service", "Service Top 11", "Service_Top_11_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
+				
 				        // {"EHS / ESG", "ASTM - No. of Incidents (#)", "ASTM_Incidents_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
 				        // {"EHS / ESG", "ASTM - No. of Incidents (#)", "ASTM_Incidents_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
 				        // {"EHS / ESG", "ASTM - No. of Incidents (#)", "ASTM_Incidents_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
@@ -1215,17 +1510,17 @@ table KPI_Metadata
 				        // {"Cross Functional", "NPI, Relaunch, Conv. OTIF (%)", "NPI_OTIF_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
 				        // {"Cross Functional", "NPI, Relaunch, Conv. OTIF (%)", "NPI_OTIF_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsYoY", "vs YoY","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsFlex", "vs Flex","CSCA","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsLYTD", "LYTD","CSCA","BadIfNeg","BadIfNeg"},
 				
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
-				        // {"Cross Functional", "Operating Income ($)", "Operating_Income_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPlan", "vs Plan","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsPP", "vs PP","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
+				        {"Cross Functional", "Operating Income ($)", "Operating_Income_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"},
 				
 				        // {"Cross Functional", "Voluntary Turnover (%)", "Vol_Turnover_vsPlan", "vs Plan","CSCA","BadIfNeg","BadIfNeg"},
 				        // {"Cross Functional", "Voluntary Turnover (%)", "Vol_Turnover_vsPP", "vs PP","CSCA","BadIfNeg","BadIfNeg"},
@@ -1262,6 +1557,7 @@ table KPI_Metadata
 				        {"Cross Functional", "Learning Program Completion (%)", "Learning_Completion_vsYoY", "vs YoY","CSCI","BadIfNeg","BadIfNeg"},
 				        {"Cross Functional", "Learning Program Completion (%)", "Learning_Completion_vsFlex", "vs Flex","CSCI","BadIfNeg","BadIfNeg"},
 				        {"Cross Functional", "Learning Program Completion (%)", "Learning_Completion_vsLYTD", "LYTD","CSCI","BadIfNeg","BadIfNeg"}
+				        
 				
 				    }
 				)
