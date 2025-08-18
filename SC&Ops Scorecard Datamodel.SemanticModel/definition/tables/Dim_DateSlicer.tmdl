@@ -166,6 +166,48 @@ table Dim_DateSlicer
 
 		annotation UnderlyingDateTimeDataType = Date
 
+	column 'Is Last 6 Closed Months' =
+			
+			VAR _lastClosedSeq =
+			    CALCULATE (
+			        MAX ( Dim_DateSlicer[P_YearPeriod Seq] ),
+			        FILTER ( ALL ( Dim_DateSlicer ), Dim_DateSlicer[Is Closed] = "True" )
+			    )
+			VAR _firstClosedSeq =
+			    CALCULATE (
+			        MIN ( Dim_DateSlicer[P_YearPeriod Seq] ),
+			        FILTER ( ALL ( Dim_DateSlicer ), Dim_DateSlicer[Is Closed] = "True" )
+			    )
+			VAR _minSeq = MAX ( _firstClosedSeq, _lastClosedSeq - 5 )
+			RETURN
+			    IF (
+			        Dim_DateSlicer[Is Closed] = "True" &&
+			        Dim_DateSlicer[P_YearPeriod Seq] >= _minSeq &&
+			        Dim_DateSlicer[P_YearPeriod Seq] <= _lastClosedSeq,
+			        1,
+			        0
+			    )
+		formatString: 0
+		lineageTag: 8d11c041-10c7-48fb-98bc-42290c66b276
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Is_LastClosed_Period =
+			
+			VAR _lastClosedSeq =
+			    CALCULATE (
+			        MAX ( Dim_DateSlicer[P_YearPeriod Seq] ),
+			        FILTER ( ALL ( Dim_DateSlicer ), Dim_DateSlicer[Is Closed] = "True" )
+			    )
+			RETURN
+			IF ( Dim_DateSlicer[P_YearPeriod Seq] = _lastClosedSeq, 1, 0 )
+		formatString: 0
+		lineageTag: 916fd844-2a28-4642-9e44-f3743f09c574
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_DateSlicer = m
 		mode: import
 		source =

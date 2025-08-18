@@ -93,6 +93,7 @@ ref table Fact_DSO_DPO_ABP
 ref table Dim_Profit_Center_FA
 ref table Fact_OEE_Baseline
 ref table Bridge_Site_Area
+ref table KPI_Metadata
 
 ref cultureInfo en-US
 
