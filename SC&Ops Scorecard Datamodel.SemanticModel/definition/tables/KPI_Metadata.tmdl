@@ -578,6 +578,11 @@ table KPI_Metadata
 			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
 			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
 			
+			        "Service_Top_11_vsPlan", [Service Top 11 Target Diff%],
+			        "Service_Top_11_vsYoY", [Service Top 11 YoY%],
+			        "Service_Top_11_vsLYTD", [Service Top 11 LYTD],
+			        "Service_Top_11_vsPP", [Service Top 11 MoM%],
+			
 			        "Net_Inventory_vsPlan", [Net Inventory_APN],
 			        "Net_Inventory_vsFlex", [Net Inventory_AFX],
 			        "Net_Inventory_vsLYTD", [Net Inventory LYTD],
@@ -649,6 +654,25 @@ table KPI_Metadata
 			        "Schedule_Attainment_vsYoY", [SA YoY%],
 			        "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
 			
+			        "On_Time_Deviation_vsPlan", [On Time Closure of Deviations Target Diff%],
+			        "On_Time_Deviation_vsYoY", [On Time Closure of Deviations YoY%],
+			        "On_Time_Deviation_vsLYTD", [On Time Closure of Deviations LYTD],
+			        "On_Time_Deviation_vsPP", [On Time Closure of Deviations MoM%],
+			
+			        "CAPA_Completion_vsPlan", [CAPA Completion Rate Target Diff%],
+			        "CAPA_Completion_vsPP", [CAPA Completion Rate MoM%],
+			        "CAPA_Completion_vsYoY", [CAPA Completion Rate YoY%],
+			        "CAPA_Completion_vsLYTD", [CAPA Closed LYTD],
+			
+			        "Right_First_Time_vsPlan", [RFT Target Diff%],
+			        "Right_First_Time_vsPP", [RFT MoM%],
+			        "Right_First_Time_vsYoY", [RFT YoY%],
+			        "Right_First_Time_vsLYTD", [RFT LYTD],
+			
+			        "Critical/Major_vsPP", [Critical or Major Observations MoM%],
+			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
+			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
+			
 			        "Net_Sales_vsPlan", [Net Sales_APN],
 			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
 			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
@@ -676,6 +700,27 @@ table KPI_Metadata
 			        "Case_fill_rate_vsPP", [CFR MoM%],
 			        "Case_fill_rate_vsYoY", [CFR YoY%],
 			        "Case_fill_rate_vsLYTD", [CFR LYTD],
+			
+			        "ABP_Variances_vsPlan", [ABP Variance_APN],
+			        "ABP_Variances_vsPP", [ABP Variance MoM%],
+			        "ABP_Variances_vsYoY", [ABP Variance YoY%],
+			        "ABP_Variances_vsLYTD", [ABP Variance LYTD],
+			
+			        "Net_POV_vsPlan", [Net POV_APN],
+			        "Net_POV_vsPP", [Net POV Actual MoM%],
+			        "Net_POV_vsYoY", [Net POV Actual YoY%],
+			        "Net_POV_vsLYTD", [Net POV Actual LYTD],
+			
+			        "Gross_PPV_vsPlan", [Gross PPV_APN],
+			        "Gross_PPV_vsPP", [Gross PPV Actual MoM%],
+			        "Gross_PPV_vsYoY", [Gross PPV Actual YoY%],
+			        "Gross_PPV_vsLYTD", [Gross PPV Actual LYTD],
+			
+			        "Operating_Income_vsPlan", [Operating Income_APN],
+			        "Operating_Income_vsPP", [Operating Income Actual MoM%],
+			        "Operating_Income_vsYoY", [Operating Income Actual YoY%],
+			        "Operating_Income_vsLYTD", [Operating Income Actual LYTD],
+			
 			        BLANK()
 			    )
 			
