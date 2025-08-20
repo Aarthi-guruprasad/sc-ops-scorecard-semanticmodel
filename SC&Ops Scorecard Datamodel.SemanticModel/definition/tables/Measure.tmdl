@@ -130,10 +130,12 @@ table Measure
 
 	measure 'Net Inventory' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base])
 		formatString: #,0.0
+		displayFolder: Net Inventory
 		lineageTag: ab1cbb42-348c-421e-8f32-2cb1762129d4
 
 	measure 'Gross Inventory' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves])
 		formatString: #,0.0
+		displayFolder: Gross Inventory
 		lineageTag: 181f4461-1371-405d-9adf-08008747ebbd
 
 	measure 'Inventory Avg L4M' =
@@ -149,9 +151,11 @@ table Measure
 			        [Net Inventory]
 			    )
 		formatString: #,0.0
+		displayFolder: DIO
 		lineageTag: 184b6241-3ed8-4bb5-a16e-5a7f4a0a28d9
 
 	measure 'Total COGS GR' = SUM(Fact_Group_Reporting[Total COGS GR])
+		displayFolder: DIO
 		lineageTag: 7c59e34e-3e2f-439b-9632-f9af99f809b9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -169,6 +173,7 @@ table Measure
 			        ),
 			        [Total COGS GR]
 			    )
+		displayFolder: DIO
 		lineageTag: d9229ae6-16d7-4dfa-aef0-7eda0ffcd68a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -181,26 +186,32 @@ table Measure
 			RETURN
 			    DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
 		formatString: 0
+		displayFolder: DIO
 		lineageTag: dd2f5f12-d99c-4f8e-a108-82e3e69dce9f
 
 	measure 'SSSO: Scrap-Off' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
 		formatString: 0.0
+		displayFolder: SSSO Scrap-Off
 		lineageTag: fb6011ed-9f0b-4a06-ba96-5ea00ae2ee25
 
 	measure 'SSSO Obsolescence' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
 		formatString: 0.0
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: d73fe601-a954-46b3-8399-fbf2703a2883
 
 	measure 'SSSO Salvage' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
 		formatString: 0.0
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 5ac3a033-6d99-444c-8235-c4e0a72039b4
 
 	measure 'SSSO: Obsolescenes linked to Conversions' = [SSSO: Scrap-Off] + [SSSO Obsolescence] + [SSSO Salvage]
 		formatString: 0.0
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 562692b2-b615-40c6-93ab-08c5d8dbe254
 
 	measure 'SSSO: Salvage & Obsolescence' = [SSSO Obsolescence] + ([SSSO Salvage])
 		formatString: 0.0
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: faf75843-20fd-4343-9166-4da7af7c42e3
 
 	measure 'Net Inventory YTD' =
@@ -215,10 +226,12 @@ table Measure
 			        [Net Inventory]
 			    )
 		formatString: 0.0
+		displayFolder: Net Inventory
 		lineageTag: 3bbe80c1-41ea-4f68-9e94-7100e4713ea6
 
 	measure 'Net Inventory YoY%' = DIVIDE(([Net Inventory] - [Net Inventory PY]),[Net Inventory PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Net Inventory
 		lineageTag: 140ca208-2cd8-4228-a4c9-085509ba07f6
 
 		extendedProperty MeasureTemplate =
@@ -238,6 +251,7 @@ table Measure
 			RETURN
 			Calculate([Net Inventory],filter_)
 		formatString: 0.0
+		displayFolder: Net Inventory
 		lineageTag: a20b24c0-15be-4139-a0f3-3ecc069c940f
 
 	measure 'Net Inventory MoM%' =
@@ -250,6 +264,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Net Inventory
 		lineageTag: 8a130a4b-2077-4fcb-bbb0-38a05cde013f
 
 	measure 'Gross Inventory YTD' =
@@ -264,6 +279,7 @@ table Measure
 			        [Gross Inventory]
 			    )
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: b5217a39-6c9e-4c8d-9ed8-67b26b2660b8
 
 	measure 'Gross Inventory PY' = ```
@@ -277,10 +293,12 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: ba349cc3-e124-441c-a43c-4b6bf0266c39
 
 	measure 'Gross Inventory YoY%' = DIVIDE(([Gross Inventory] - [Gross Inventory PY]),[Gross Inventory PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Gross Inventory
 		lineageTag: 27f29739-fc1d-4516-8aac-54cc8a65cfd0
 
 	measure 'Gross Inventory MoM%' =
@@ -293,6 +311,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Gross Inventory
 		lineageTag: 9b84a80c-99a4-47c6-b0ef-e0da54183cd4
 
 	measure 'SSSO: Obs linked to Conv YTD' =
@@ -307,6 +326,7 @@ table Measure
 			        [SSSO: Obsolescenes linked to Conversions]
 			    )
 		formatString: 0.0
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: f00ab7e4-27e7-4d33-bd44-f9b6ee803aff
 
 	measure 'SSSO: Obs linked to Conv PY' = ```
@@ -320,12 +340,14 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: e0d1f119-9211-4a62-b624-d37517b52167
 
 	measure 'SSSO: Obs linked to Conv YoY%' =
 			
 			DIVIDE(([SSSO: Obsolescenes linked to Conversions] - [SSSO: Obs linked to Conv PY]),[SSSO: Obs linked to Conv PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 0fb58fe1-7d21-432a-b139-61251e7f072f
 
 	measure 'SSSO: Obs linked to Conv MoM%' =
@@ -338,6 +360,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 18431b9b-9f5b-4965-aa5d-024c7938ba37
 
 	measure 'SSSO: Salvage YTD' =
@@ -352,6 +375,7 @@ table Measure
 			        [SSSO: Salvage & Obsolescence]
 			    )
 		formatString: 0.0
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: cd143dcf-4712-41bf-9f5d-27d511637f4a
 
 	measure 'SSSO: Salvage & Obs PY' = ```
@@ -365,10 +389,12 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: f4fc588e-4a8d-4e39-9316-8c7c83bedc1a
 
 	measure 'SSSO: Salvage YoY%' = DIVIDE(([SSSO: Salvage & Obsolescence] - [SSSO: Salvage & Obs PY]),[SSSO: Salvage & Obs PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: c01dc9d9-8d64-45f9-99cc-08498b55bd17
 
 	measure 'SSSO: Salvage & obs MoM%' =
@@ -381,6 +407,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: c43bc164-f4dd-4721-977e-68f035b73e93
 
 	measure 'SSSO: Scrap-Off PY' = ```
@@ -394,10 +421,12 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: SSSO Scrap-Off
 		lineageTag: d28647b9-e899-4858-bd06-372993df56fe
 
 	measure 'SSSO: Scrap-Off YoY%' = DIVIDE(([SSSO: Scrap-Off] - [SSSO: Scrap-Off PY]),[SSSO: Scrap-Off PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 5b4ff4bc-f544-46b2-b2c1-679f770ad319
 
 	measure 'SSSO: Scrap-Off YTD' =
@@ -412,6 +441,7 @@ table Measure
 			        [SSSO: Scrap-Off]
 			    )
 		formatString: 0.0
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 22f1a0aa-0bc5-4c48-965a-138c127afc49
 
 	measure 'SSSO: Scrap-Off MoM%' =
@@ -424,6 +454,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Scrap-Off
 		lineageTag: abb1d546-65e8-4f73-a954-f27372de2284
 
 	measure 'DIO PY' = ```
@@ -437,13 +468,16 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: DIO
 		lineageTag: e6ef20d4-80a4-4856-819f-9b826edeaf0b
 
 	measure 'DIO YoY%' = DIVIDE(([DIO] - [DIO PY]),[DIO PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DIO
 		lineageTag: fb07b4ec-fee9-4c45-9960-d9087180153f
 
 	measure 'DIO YTD' = TOTALYTD([DIO],Dim_Date[Date])
+		displayFolder: DIO
 		lineageTag: f925f772-6f28-4397-9a88-da9958434049
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -458,6 +492,7 @@ table Measure
 			RETURN
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DIO
 		lineageTag: e8e2db32-9833-4e62-988d-967b66f08d3b
 
 	measure 'SSSO: Salvage YoY_Final' =
@@ -472,6 +507,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: a8ecb3fa-43e4-4575-bc04-7c4a7770bff1
 
 	measure 'SSSO: Obs linked to Conv YoY_Final' =
@@ -486,6 +522,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: c9cfc228-551e-4069-b2fe-15f87df615cb
 
 	measure 'SSSO: Scrap-Off YoY_Final' =
@@ -500,6 +537,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Scrap-Off
 		lineageTag: e18c5881-a10e-42a3-9b8f-98ea6e7ccd1b
 
 	measure 'DIO YoY_Final' =
@@ -514,6 +552,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: DIO
 		lineageTag: a9b71bec-1ac2-4cc0-9e22-0e79134f0e95
 
 	measure 'Gross Inventory YoY_Final' =
@@ -528,6 +567,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Gross Inventory
 		lineageTag: a530ffa9-4e91-4476-8337-32b3143b172b
 
 	measure 'Net Inventory YoY_Final' =
@@ -542,6 +582,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net Inventory
 		lineageTag: 733a3aac-7ad4-4e0f-ac0a-590a7ce992c3
 
 	measure 'DIO MoM_Final' = ```
@@ -557,6 +598,7 @@ table Measure
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
 			```
+		displayFolder: DIO
 		lineageTag: 5e5ea728-f04f-4252-8fda-2903aa2d4bd0
 
 	measure 'SSSO: Scrap-Off MoM_Final' = ```
@@ -568,6 +610,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 491f2458-e1c0-44e9-abc7-1d20ac969db3
 
 	measure 'SSSO: Obs Linked to Conv MoM_Final' = ```
@@ -579,6 +622,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 6a3eafbe-55cd-460f-8d3f-e6288ea5b0d2
 
 	measure 'Gross Inventory MoM_Final' = ```
@@ -590,6 +634,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Gross Inventory
 		lineageTag: 3da32a40-2e9a-4d27-91c4-3dd6a2e5f13d
 
 	measure 'Net Inventory MoM_Final' = ```
@@ -601,6 +646,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Net Inventory
 		lineageTag: 29421bfe-a592-48a7-ac59-e1d88215cb2c
 
 	measure 'SSSO: Salvage MoM_Final' = ```
@@ -612,9 +658,11 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: daff27e1-fdd7-4d08-ad1d-fd703eb1a417
 
 	measure 'Total Shipments' = SUM(Fact_Forecast_Accuracy[Total Shipments])
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: a5e83a55-eccc-4e25-9c03-48daa0ee7ddc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -628,11 +676,13 @@ table Measure
 			        "Variance", ABS([Demand Draft] - [Total Shipments])),[Variance]),
 			REMOVEFILTERS(Fact_Forecast_Accuracy[Source Material Key])
 			)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 3f06f1dc-fc9f-402f-9aec-d566b7ccadcf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Demand Draft' = SUM(Fact_Forecast_Accuracy[Demand Draft])
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: fbf269cf-f42c-4a57-99cd-cad432808fd4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -651,6 +701,7 @@ table Measure
 			)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 2b2069c5-6535-47ad-95db-089e9020509b
 
 	measure 'FA% MoM%' =
@@ -663,6 +714,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 965af87e-1352-4d15-bcb8-a7e292cca73b
 
 	measure 'FA% MoM_Final' = ```
@@ -674,10 +726,12 @@ table Measure
 			Return 
 			Result_
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 7fb22ffa-3bff-460d-ba13-d79e9f87056e
 
 	measure 'FA% YTD' = TOTALYTD([FA% CSCA],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: e8c2fa8a-2e8b-4033-ac41-0ecc5c1958bc
 
 	measure 'FA% PY' = ```
@@ -691,10 +745,12 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 04f859d2-41cf-4a67-bf8a-140a2a4df5a5
 
 	measure 'FA% YoY%' = [FA% CSCA] - [FA% PY]
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 5f0e0d26-8723-4f72-a8d1-6a360db69338
 
 	measure 'FA% YoY_Final' =
@@ -709,16 +765,19 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 7567f433-6c42-4bfb-a180-9022e9551b0c
 
 	measure 'Service Rate%' =
 			CALCULATE(SUM(Fact_Service[On Delivery EA])/SUM(Fact_Service[Order EA]),
 			REMOVEFILTERS(Bridge_CSCA_CSCI[Area]),REMOVEFILTERS(Dim_Profit_Center[Level 3]))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Rate CSCA
 		lineageTag: 887a4d69-b579-4175-9eeb-cc6ce1a42aee
 
 	measure 'Service Rate% YTD' = TOTALYTD([Service Rate%],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Rate CSCA
 		lineageTag: d6338872-6b28-45d3-a6ca-397cbd0fbf38
 
 	measure 'Service Rate% PY' = ```
@@ -732,6 +791,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Rate CSCA
 		lineageTag: 4dbaec03-b970-4498-b934-43395f91ea19
 
 	measure 'Service Rate% YoY_Final' =
@@ -746,6 +806,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Service Rate CSCA
 		lineageTag: 5fc56eed-e057-424c-838f-67ca0c4abedb
 
 	measure 'Service Rate% MoM%' =
@@ -757,6 +818,7 @@ table Measure
 			VAR Result = [Service Rate%] - Net_PM
 			RETURN
 			Result
+		displayFolder: Service Rate CSCA
 		lineageTag: 6fbbb692-2eb6-4b42-830e-c21f2e74f313
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -770,6 +832,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: bd8c3781-f72f-49a3-93ec-4ce6f131a505
 
 	measure Bias% =
@@ -779,6 +842,7 @@ table Measure
 			    [Total Shipments],
 			    1)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 1a3e1c22-6fd8-4fc2-a471-53b451acd73b
 
 	measure 'Bias MoM%' =
@@ -790,6 +854,7 @@ table Measure
 			VAR Result = [Bias%] - Net_PM
 			RETURN
 			Result
+		displayFolder: Bias CSCA
 		lineageTag: d24d2404-f4e5-4b5b-9e48-e147e65e8a78
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -803,9 +868,11 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Bias CSCA
 		lineageTag: e89753d3-3443-4f04-b83f-2e5cb4d62971
 
 	measure 'Service Rate YoY%' = [Service Rate%] - [Service Rate% PY]
+		displayFolder: Service Rate CSCA
 		lineageTag: c12addd9-9c40-4d2a-9f05-e564487bb36e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -821,9 +888,11 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: c9c28b3c-5307-4293-bb8c-88c3bdb403e4
 
 	measure 'Bias YoY%' = [Bias%] - [Bias PY]
+		displayFolder: Bias CSCA
 		lineageTag: 8ddbe253-7b88-4b5d-b835-c3fcc8f1b445
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -840,14 +909,17 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Bias CSCA
 		lineageTag: 7eb80396-a437-4a33-b613-93039ab055e4
 
 	measure 'Bias YTD' = TOTALYTD([Bias%],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 089997b2-ab0e-4b53-8655-a7433ed3c519
 
 	measure 'Inflated Inventory' = SUM(Fact_BW_Inventory[Sum Amount Stock Value Inflated])
 		formatString: 0.0
+		displayFolder: Inflated Inventory
 		lineageTag: 9b66eb0d-42fa-41a6-ab03-a48a8c3e7090
 
 	measure 'Inflated Inventory YTD' =
@@ -862,6 +934,7 @@ table Measure
 			        [Inflated Inventory]
 			    )
 		formatString: 0.0
+		displayFolder: Inflated Inventory
 		lineageTag: c5d963b6-b96a-41fe-83df-01df7fc52540
 
 	measure 'Inflated Inventory PY' = ```
@@ -875,9 +948,11 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: Inflated Inventory
 		lineageTag: eeb986c9-d6de-418c-88a9-e5adf21eeaa6
 
 	measure 'Inflated Inventory YoY%' = DIVIDE(([Inflated Inventory] - [Inflated Inventory PY]),[Inflated Inventory PY])
+		displayFolder: Inflated Inventory
 		lineageTag: 96254605-fb4f-4bcb-8b96-6d89fd788895
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -894,6 +969,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Inflated Inventory
 		lineageTag: 73e68a48-2a0f-4b92-9f68-df0efcd24b03
 
 	measure 'Inflated Inventory MoM%' =
@@ -905,6 +981,7 @@ table Measure
 			VAR Result = DIVIDE(([Inflated Inventory] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Inflated Inventory
 		lineageTag: 645aab62-e41b-4ee2-aa18-421af4d7e237
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -918,6 +995,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Inflated Inventory
 		lineageTag: 42fcadb3-a970-40f3-828d-beac3d8fc741
 
 	measure 'Expired Inventory' =
@@ -925,6 +1003,7 @@ table Measure
 			                    KEEPFILTERS(Dim_Expiration_Buckets[Expiration Bucket] = "Expired")
 			    )
 		formatString: 0.0
+		displayFolder: Expired Inventory
 		lineageTag: d241f22f-6a8a-44de-87f0-46862925d847
 
 	measure 'Expired Inventory PY' = ```
@@ -938,9 +1017,11 @@ table Measure
 			
 			```
 		formatString: 0.0
+		displayFolder: Expired Inventory
 		lineageTag: dbe0627f-3d40-4d77-a3fc-a3a361ff5c53
 
 	measure 'Expired Inventory YoY%' = DIVIDE(([Expired Inventory] - [Expired Inventory PY]),[Expired Inventory PY])
+		displayFolder: Expired Inventory
 		lineageTag: d01f521c-3994-4e4a-a6fe-5255eac954e3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -957,6 +1038,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Expired Inventory
 		lineageTag: d634fb5a-0dda-420c-8d91-d30d2d9d7d2a
 
 	measure 'Expired Inventory YTD' =
@@ -970,6 +1052,7 @@ table Measure
 			        ),
 			        [Expired Inventory]
 			    )
+		displayFolder: Expired Inventory
 		lineageTag: c537c5cf-c3ac-41a1-a6ac-30baa29c8735
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -983,6 +1066,7 @@ table Measure
 			VAR Result = DIVIDE(([Expired Inventory] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Expired Inventory
 		lineageTag: 86b8ba4d-f18a-4900-9715-bdcbbff19ef5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -996,59 +1080,73 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Expired Inventory
 		lineageTag: 92aef5f6-0be1-4ec1-8a8f-c296775a9b49
 
 	measure 'Quality Loss' = [In Count] - [Out Count]
+		displayFolder: OEE
 		lineageTag: 698bfbc8-db07-4eea-b831-e4ce9438a928
 
 	measure 'Run Speed' = DIVIDE( [Run Theoretical Quantity], [Total Elapsed Time])
+		displayFolder: OEE
 		lineageTag: 8ecd97ba-b4d8-4ba0-a419-a566aad45f64
 
 	measure 'Run Theoretical Quantity' = SUM(Fact_OEE[Run Theoretical Quantity])
+		displayFolder: OEE
 		lineageTag: 242a1948-8c38-405e-bbd5-97a192ebd8ee
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Total Elapsed Time' = [Up Seconds] + [Down Seconds]
+		displayFolder: OEE
 		lineageTag: bbaf02c3-6cdf-4bd0-b89f-e837ed1e62e0
 
 	measure Availability = DIVIDE( [Up Seconds] , [Total Elapsed Time])
+		displayFolder: OEE
 		lineageTag: 25dc4fbe-6586-4d4b-8ad4-9fd740a3ae06
 
 	measure 'Down Seconds' = SUM(Fact_OEE[Down Seconds])
+		displayFolder: OEE
 		lineageTag: be4c4681-b923-487c-86fc-addfef5d759b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'In Count' = SUM(Fact_OEE[In Count])
+		displayFolder: OEE
 		lineageTag: 4140725a-1de7-46c9-a2a6-4014b9e0c5c3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure OEE% = [Availability] * [Performance] * [Quality]
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OEE
 		lineageTag: 59aacec0-203e-46dc-88c6-4157674831dc
 
 	measure 'Out Count' = SUM(Fact_OEE[Out Count])
+		displayFolder: OEE
 		lineageTag: 6f7edca5-9be9-44a3-a245-a50f9926ba95
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Performance = DIVIDE( ([Out Count] + [Quality Loss]) ,([Up Seconds] * [Run Speed]) )
+		displayFolder: OEE
 		lineageTag: d520f40a-3ce7-447b-836e-91d83015325c
 
 	measure Quality = DIVIDE( [Out Count] , ([Out Count] + [Quality Loss]))
+		displayFolder: OEE
 		lineageTag: ef6b2eed-0950-4663-838c-3e1aee1027cd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Up Seconds' = SUM(Fact_OEE[Up Seconds])
+		displayFolder: OEE
 		lineageTag: 8afdb4fd-e7c5-40ac-b903-e66b8b83dbc8
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'OEE% YTD' = TOTALYTD([OEE%],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OEE
 		lineageTag: f014e406-db96-404d-8ecb-9285c2ed75be
 
 	measure 'OEE% PY' =
@@ -1060,9 +1158,11 @@ table Measure
 			RETURN
 			Calculate([OEE%],filter_)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OEE
 		lineageTag: 98ce04d3-0309-4fb6-b1f4-33bfa1175fb9
 
 	measure 'OEE% YoY%' = [OEE%] - [OEE% PY]
+		displayFolder: OEE
 		lineageTag: 276cf5bd-1e9e-440a-ac33-4dca9a086f53
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1079,6 +1179,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: OEE
 		lineageTag: 727b12a7-c5e4-446c-946b-d7c9d7dff91a
 
 	measure 'OEE% MoM%' =
@@ -1090,6 +1191,7 @@ table Measure
 			VAR Result = [OEE%] - Net_PM
 			RETURN
 			Result
+		displayFolder: OEE
 		lineageTag: c7acba63-af25-424b-9e36-17186a3d5711
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1103,6 +1205,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: OEE
 		lineageTag: 5a256b58-eeed-4adc-82e8-4bd97e383744
 
 	measure Switch_YoY_OI = ```
@@ -1123,6 +1226,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 55e0225c-6990-43d7-8b96-6d1119ba881e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1146,6 +1250,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 5afa0918-1f82-41f7-92bb-228d94f303f3
 
 		formatStringDefinition =
@@ -1169,14 +1274,17 @@ table Measure
 			INT(NOT ISEMPTY(Fact_CFIN_Inventory) &&
 			                        NOT ISEMPTY(Fact_BW_Inventory))
 		formatString: 0
+		displayFolder: Misc
 		lineageTag: 24c1a302-5b6b-4e40-9e11-cafa44dc639a
 
 	measure 'FA% Lag2' = CALCULATE([FA% CSCA],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: b81950d5-8ab5-475b-93f0-357ef042c805
 
 	measure 'FA% Lag4' = CALCULATE([FA% CSCA],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: c498bc62-c723-4016-a9bc-2baa41067d8e
 
 	measure Switch_YoY_Sales =
@@ -1191,6 +1299,7 @@ table Measure
 			            "Service Top 11", [Service Top 11 PY],
 			            BLANK())
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Switch Measures
 		lineageTag: 60a5ad7b-77d6-444b-aed0-b32a5c8cbf46
 
 	measure Switch_YTD_Sales = ```
@@ -1206,6 +1315,7 @@ table Measure
 			            BLANK())
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 454e0097-983e-40fc-823c-84896952712f
 
 		formatStringDefinition =
@@ -1221,10 +1331,12 @@ table Measure
 				)
 
 	measure Dummy = "--"
+		displayFolder: Misc
 		lineageTag: 2049e684-7f2a-4464-9bf6-205c89f3c95a
 
 	measure 'OEE Target' = AVERAGE(Dim_Locations[_Target])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OEE
 		lineageTag: 15b8c1af-ca3d-43c0-af1d-87c2d1e94fd5
 
 	measure 'OEE Target_Final' = ```
@@ -1236,9 +1348,11 @@ table Measure
 			Return 
 			Result_  & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: OEE
 		lineageTag: cdb3a6f6-5435-44b5-9bda-fa287167f4d8
 
 	measure 'OEE Target diff%' = [OEE%] - [OEE Target]
+		displayFolder: OEE
 		lineageTag: 3e0d8c08-e6cd-4306-8cdc-7c65eebd523a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1255,6 +1369,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Switch Measures
 		lineageTag: 454fb01e-53cc-4c26-8800-a30c14f31b6f
 
 	measure Switch_YTD_Operations = ```
@@ -1268,6 +1383,7 @@ table Measure
 			            )
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 68fe463c-34f9-4f8c-8525-075917555f91
 
 		formatStringDefinition =
@@ -1283,6 +1399,7 @@ table Measure
 				)
 
 	measure 'Closed Period' = MAX(Dim_Date[P_YearPeriod])
+		displayFolder: Misc
 		lineageTag: bc58d87a-a458-4fb9-995d-27630420ef13
 
 	measure 'Service Target Final' = ```
@@ -1294,13 +1411,16 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: 8bb8bb93-720a-41b4-a0da-1def644a2b08
 
 	measure 'Service Target' = 0.9
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Rate CSCA
 		lineageTag: 627b20f4-253d-4e32-8a1d-173e007622d9
 
 	measure 'Service Target Diff%' = [Service Rate%] - 0.9
+		displayFolder: Service Rate CSCA
 		lineageTag: 6192f793-2d2b-4dc6-a7de-5f4792807a39
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1316,6 +1436,7 @@ table Measure
 			"Schedule Attainment%", 0.92,
 			"CFR%", 0.94,
 			"Service Top 11", [Service Top 11 Target])
+		displayFolder: Switch Measures
 		lineageTag: 6a4d05a3-5bba-40ce-9ccb-d44ad91b71a7
 
 		formatStringDefinition =
@@ -1340,6 +1461,7 @@ table Measure
 			DIVIDE([SSSO: Salvage & Obsolescence] - Result,Result)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 522319d5-cde0-4adf-8650-2227b5632c3b
 
 	measure Comparison_Filter =
@@ -1354,6 +1476,7 @@ table Measure
 			    0
 			)
 		formatString: 0
+		displayFolder: Misc
 		lineageTag: 297e1fbb-694b-49ef-b447-6dd7d32153db
 
 	measure 'SSSO: Salvage LYTD_Final' =
@@ -1368,6 +1491,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: c8e1d0d6-63cf-40e3-a913-51e4cd51baec
 
 	measure 'Total Logistics Actual' = sum(Fact_Logistics[Amount Total Logistics Act])
@@ -1378,6 +1502,7 @@ table Measure
 
 	measure 'Total Logistics on Net Sales Actual' = DIVIDE([Total Logistics Actual], [Net Sales Actual])
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: cbb9192f-b2cf-4c13-ac11-c00c4d9f2834
 
 	measure 'Total Logistics on Net Sales Actual MoM%' =
@@ -1389,6 +1514,7 @@ table Measure
 			VAR Result = DIVIDE(([Total Logistics on Net Sales Actual] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 5bcbf093-f7fa-4ac1-953d-020babee4228
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1401,6 +1527,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 7c1dd430-09a0-4bbc-8b0b-a18a7353f301
 
 	measure 'Total Logistics on Net Sales Actual PY' =
@@ -1411,9 +1538,11 @@ table Measure
 			RETURN
 			Calculate([Total Logistics on Net Sales Actual],filter_)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: d5a31556-8130-42f6-ab18-5cec6c2b09d1
 
 	measure 'Total Logistics on Net Sales Actual YoY%' = DIVIDE(([Total Logistics on Net Sales Actual] - [Total Logistics on Net Sales Actual PY]),[Total Logistics on Net Sales Actual PY])
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 0b1fbe3f-6411-4bee-b41c-2c42fb5ccaf1
 
 	measure 'Total Logistics on Net Sales Actual YoY_Final' =
@@ -1427,10 +1556,12 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Logistic vs Net Sales
 		lineageTag: c1020b66-b8a1-4d2e-a5bf-6609fe16d33a
 
 	measure 'Total Logistics on Net Sales Actual YTD' = DIVIDE( [Total logistics actual YTD], [Net Sales Actual YTD] )
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 876740fb-35e2-474c-a62b-bee8c5513fba
 
 	measure 'Total Logistics Plan' = sum(Fact_Logistics[Amount Total Logistics Plan])
@@ -1440,6 +1571,7 @@ table Measure
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net Sales Actual' = CALCULATE(sum(Fact_Logistics[Net Sales Act]) , KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		displayFolder: Net Sales
 		lineageTag: 9606c3f8-dbc0-4ce5-8d31-1571c7cd3841
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1447,6 +1579,7 @@ table Measure
 	measure 'Net Sales Plan' = ```
 			sum(Fact_Logistics[Net Sales Plan]) 
 			```
+		displayFolder: Net Sales
 		lineageTag: a61ab426-9ab0-480a-a74f-c4c610e685df
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1457,6 +1590,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Schedule Attainment
 		lineageTag: 0763e022-0de3-4c7a-957d-9b0d69758676
 
 	measure 'SA MoM%' =
@@ -1469,6 +1603,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Schedule Attainment
 		lineageTag: e3c05ffe-a15c-490c-ae09-25a135c59516
 
 	measure 'SA MoM_Final' = ```
@@ -1480,6 +1615,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Schedule Attainment
 		lineageTag: 7770fdeb-5f90-48d0-aecb-ef32aa18cdd3
 
 	measure 'SA PY' = ```
@@ -1493,10 +1629,12 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Schedule Attainment
 		lineageTag: 18064b59-a3ba-48f6-9948-db29c35e3494
 
 	measure 'SA YoY%' = [Schedule Attn] - [SA PY]
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Schedule Attainment
 		lineageTag: 552326dc-8d30-43bd-a68a-ec2e7771100f
 
 	measure 'SA YoY_Final' =
@@ -1511,10 +1649,12 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Schedule Attainment
 		lineageTag: f7997757-254f-4515-a060-48e832e0a28d
 
 	measure 'SA YTD' = TOTALYTD([Schedule Attn],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Schedule Attainment
 		lineageTag: 262a6732-35de-437b-a6df-e652bd6d0b94
 
 	measure 'SSSO: Obs LYTD' = ```
@@ -1526,6 +1666,7 @@ table Measure
 			return
 			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Result,Result)
 			```
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 91bbeda9-37ed-48bd-8d67-7d32fd48fd78
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1542,6 +1683,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 98ed311a-c660-46f1-b793-47fe4a9ef04b
 
 	measure 'SSSO: Scrap-off LYTD' = ```
@@ -1553,6 +1695,7 @@ table Measure
 			return
 			DIVIDE([SSSO: Scrap-Off] - Result,Result)
 			```
+		displayFolder: SSSO Scrap-Off
 		lineageTag: e48d7b6f-8e08-452e-bb79-f3074cced861
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1569,6 +1712,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 316effff-f4a0-4f8c-a943-541a8d426b57
 
 	measure 'Expired Inventory LYTD' = ```
@@ -1580,6 +1724,7 @@ table Measure
 			return
 			DIVIDE([Expired Inventory] - Result,Result)
 			```
+		displayFolder: Expired Inventory
 		lineageTag: 0a4410a4-7467-48f9-a52b-33b847efd3eb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1596,6 +1741,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Expired Inventory
 		lineageTag: 9140535e-84cd-4c21-897e-094b1a7ce388
 
 	measure 'Net Inventory LYTD' = ```
@@ -1607,6 +1753,7 @@ table Measure
 			return
 			DIVIDE([Net Inventory] - Result,Result)
 			```
+		displayFolder: Net Inventory
 		lineageTag: f14979e2-92d3-44d9-858c-08d95b5170c9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1623,6 +1770,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net Inventory
 		lineageTag: bfa70ddd-90ae-4179-b065-a7a0c943d852
 
 	measure 'Gross Inv LYTD' = ```
@@ -1634,6 +1782,7 @@ table Measure
 			return
 			DIVIDE([Gross Inventory] - Result,Result)
 			```
+		displayFolder: Gross Inventory
 		lineageTag: ee1252bd-3a1c-49fd-bac9-7efd395e1d68
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1650,6 +1799,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Gross Inventory
 		lineageTag: a20a292a-4b3e-4119-8be1-50293d815c7c
 
 	measure 'Inflated Inv LYTD' = ```
@@ -1661,6 +1811,7 @@ table Measure
 			return
 			DIVIDE([Inflated Inventory] - Result,Result)
 			```
+		displayFolder: Inflated Inventory
 		lineageTag: e99eb12f-5ad3-45ed-b43a-8f05fd69e574
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1677,6 +1828,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Inflated Inventory
 		lineageTag: 3123b53e-4ff5-45de-85dd-b56f93987c7f
 
 	measure 'Abs Demand Draft Var SSID LYTD' = ```
@@ -1689,6 +1841,7 @@ table Measure
 			Result
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 21913c1a-f1aa-4646-a402-6a5245c4f03b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1703,6 +1856,7 @@ table Measure
 			Calculate([Total Shipments],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: bf9c1f1f-48eb-42d9-824a-04bd2e1f01b3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1717,6 +1871,7 @@ table Measure
 			Calculate([Demand Draft],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: ad09f2b5-753f-4f9c-bf79-cea517d8bf60
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1730,6 +1885,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: ac94a969-3364-47cd-966d-498cc0a2fc9e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1743,6 +1899,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 2eeb01ec-e144-4bee-b427-36bebe36fb41
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1758,6 +1915,7 @@ table Measure
 			RETURN
 			[Bias%] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCA
 		lineageTag: faa51ea4-40c2-4976-9f58-f6ff4f66f547
 
 	measure 'Bias% LYTD_Final' =
@@ -1772,6 +1930,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Bias CSCA
 		lineageTag: 25d92ae1-72a7-4baf-806c-7f9e37178e80
 
 	measure 'On Delivery PY' = ```
@@ -1784,6 +1943,7 @@ table Measure
 			Calculate(SUM(Fact_Service[On Delivery EA]),filter_)
 			
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: e35a7974-3b30-4d92-8d47-df731e16e29d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1798,6 +1958,7 @@ table Measure
 			Calculate(SUM(Fact_Service[Order EA]),filter_)
 			
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: 1a578270-15f3-4ed2-91fc-18155ff875c4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1811,6 +1972,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: 37f6a4fd-751f-44e4-9f3c-72922369532a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1824,6 +1986,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Service Rate CSCA
 		lineageTag: 2a331d7d-5548-4b77-b2f0-f91920297a23
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1835,6 +1998,7 @@ table Measure
 			RETURN
 			[Service Rate%] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Service Rate CSCA
 		lineageTag: a261ab25-734f-45b1-9098-844703b727c0
 
 	measure 'Service LYTD_Final' =
@@ -1849,6 +2013,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Service Rate CSCA
 		lineageTag: e6e2ffa9-c3ba-4edc-92b0-39f5c2afbb31
 
 	measure '10% adh PY' =
@@ -1859,6 +2024,7 @@ table Measure
 			RETURN
 			Calculate(SUM(Fact_Schedule[+/- 10% Adh no penatly early]),filter_)
 		formatString: 0
+		displayFolder: Schedule Attainment
 		lineageTag: 55149e56-1446-4d1b-94be-3291f02686d2
 
 	measure 'SA Orders PY' =
@@ -1869,6 +2035,7 @@ table Measure
 			RETURN
 			Calculate(COUNT(Fact_Schedule[Order Number]),filter_)
 		formatString: 0
+		displayFolder: Schedule Attainment
 		lineageTag: fc495e93-4093-405e-adfd-52c6aeb7749a
 
 	measure 'SA Orders LYTD' = ```
@@ -1881,6 +2048,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: Schedule Attainment
 		lineageTag: 38988536-c9a8-48fb-9877-7cf70ce8577b
 
 	measure '10% adh LYTD' = ```
@@ -1893,6 +2061,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: Schedule Attainment
 		lineageTag: 9b2d34ba-c737-46cb-b62b-bcb0cefd7a43
 
 	measure 'Schedule Attn LYTD' =
@@ -1902,6 +2071,7 @@ table Measure
 			RETURN
 			[Schedule Attn] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Schedule Attainment
 		lineageTag: 037e0363-67c1-477c-9988-e49593b0542e
 
 	measure 'Schedule Attn LYTD_Final' =
@@ -1916,6 +2086,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Schedule Attainment
 		lineageTag: eafdc8e4-5706-4e9c-8be5-2f6c33b1d917
 
 	measure 'Availability PY' =
@@ -1926,6 +2097,7 @@ table Measure
 			
 			RETURN
 			Calculate([Availability],filter_)
+		displayFolder: OEE
 		lineageTag: b512ee63-1d69-4d0e-8bc1-1e8f618ae761
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1938,6 +2110,7 @@ table Measure
 			
 			RETURN
 			Calculate([Performance],filter_)
+		displayFolder: OEE
 		lineageTag: da127939-584d-4900-a4ef-4f3b6b5a338d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1950,6 +2123,7 @@ table Measure
 			
 			RETURN
 			Calculate([Quality],filter_)
+		displayFolder: OEE
 		lineageTag: 5ee6bf44-be1f-4988-a991-50da4c7a810b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1957,6 +2131,7 @@ table Measure
 	measure 'Availability LYTD' =
 			
 			DIVIDE([UpSeconds LYTD], [TotalElapsed LYTD])
+		displayFolder: OEE
 		lineageTag: de3816b7-d1a5-46cb-b4bf-5da8e3aa74c7
 
 	measure 'Performance LYTD' =
@@ -1966,6 +2141,7 @@ table Measure
 			
 			RETURN
 			    DIVIDE(Numerator, Denominator)
+		displayFolder: OEE
 		lineageTag: 1ddb54d5-050e-43d1-8a12-2b57e145043d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1975,6 +2151,7 @@ table Measure
 			Var QLoss = [InCount LYTD] - [OutCount LYTD]
 			RETURN
 			DIVIDE( [OutCount LYTD] , ([OutCount LYTD] + QLoss))
+		displayFolder: OEE
 		lineageTag: 92b75578-8ec5-494c-a7ee-61a73956103a
 
 	measure 'OEE LYTD' =
@@ -1983,6 +2160,7 @@ table Measure
 			
 			RETURN
 			[OEE%] - LYTD
+		displayFolder: OEE
 		lineageTag: 90a8417d-c800-4c0b-8d3f-58caf8318edc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1995,6 +2173,7 @@ table Measure
 			
 			RETURN
 			Calculate([Net Sales Actual],filter_)
+		displayFolder: Net Sales
 		lineageTag: f0612baf-df21-450e-a16c-039e5d48c41d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2021,6 +2200,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Net Sales
 		lineageTag: fb8d8412-bf55-43bf-8414-1a1ab1e79c6a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2045,6 +2225,7 @@ table Measure
 			Return
 			[Total Logistics on Net Sales Actual] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 351fd67f-c2ac-43b4-8493-63a39ba5f98a
 
 	measure 'Total Logistics on Net Sales LYTD_Final' =
@@ -2059,18 +2240,22 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Logistic vs Net Sales
 		lineageTag: ed46c9e3-b567-40c7-9237-807f4341333a
 
 	measure 'COGS Actual' = CALCULATE(SUM( Fact_Logistics[COGS Act] ),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
 		formatString: #,0.0
+		displayFolder: COGS
 		lineageTag: 7e900fc1-d7da-4408-9791-f6d9ca525dfb
 
 	measure 'Distribution Actual' = SUM( Fact_Logistics[Distribution Act] )
 		formatString: #,0.0
+		displayFolder: Distribution on COGS
 		lineageTag: 40143676-6e68-474c-b987-12a57612168e
 
 	measure 'Total Distribution on COGS Actual' = DIVIDE([Distribution Actual], [COGS Actual])
 		formatString: #,##0.00 %
+		displayFolder: Distribution on COGS
 		lineageTag: 246bab5b-5f23-426b-9849-450fdf0789a8
 
 	measure 'Total Distribution on COGS Actual MoM%' =
@@ -2081,6 +2266,7 @@ table Measure
 			VAR Result = DIVIDE(([Total Distribution on COGS Actual] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Distribution on COGS
 		lineageTag: f6164a6e-06c1-4955-83d5-08abb011d1e6
 
 	measure 'Total Distribution on COGS Actual MoM_Final' = ```
@@ -2091,6 +2277,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Distribution on COGS
 		lineageTag: 0c7a413d-99e8-4b48-b21a-8d7fd310406f
 
 	measure 'Total Distribution on COGS Actual PY' =
@@ -2101,9 +2288,11 @@ table Measure
 			RETURN
 			Calculate([Total Distribution on COGS Actual],filter_)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
 		lineageTag: b3e849b6-697a-45f6-9fa0-3beb717c91d6
 
 	measure 'Total Distribution on COGS Actual YoY%' = DIVIDE(([Total Distribution on COGS Actual] - [Total Distribution on COGS Actual PY]),[Total Distribution on COGS Actual PY])
+		displayFolder: Distribution on COGS
 		lineageTag: c09fcb89-9bdd-4a8b-b91f-2686a2899661
 
 	measure 'Total Distribution on COGS Actual YoY_Final' =
@@ -2118,10 +2307,12 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Distribution on COGS
 		lineageTag: 9156dd9a-b554-4e7b-80d6-f589adb6b8c9
 
 	measure 'Total Distribution on COGS Actual YTD' = DIVIDE([Distribution Actual YTD], [COGS Actual YTD])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
 		lineageTag: 335e9732-9e14-4c58-9e92-ede5ae25f272
 
 	measure 'Total Distribution on COGS LYTD' =
@@ -2129,6 +2320,7 @@ table Measure
 			Return
 			[Total Distribution on COGS Actual] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Distribution on COGS
 		lineageTag: ab07fa53-6a44-45df-a715-931823e5b402
 
 	measure 'Total Distribution on COGS LYTD_Final' =
@@ -2142,6 +2334,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Distribution on COGS
 		lineageTag: b37b284b-95ec-42e5-9d2a-991a43506dc0
 
 	measure 'Net Sales Actual LYTD' = ```
@@ -2152,6 +2345,7 @@ table Measure
 			return
 			DIVIDE([Net Sales Actual] - Result,Result)
 			```
+		displayFolder: Net Sales
 		lineageTag: f5bfd51e-577e-4068-b2e9-744e962a282b
 
 	measure 'Net Sales Actual MoM%' =
@@ -2163,6 +2357,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Net Sales
 		lineageTag: 6402244c-beb6-4584-a832-01ff1ee84f22
 
 	measure 'Net Sales Actual MoM_Final' = ```
@@ -2173,6 +2368,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Net Sales
 		lineageTag: e78dd823-bb95-4db5-a192-f06a3242bf6d
 
 	measure 'Net Sales Actual PY' =
@@ -2183,10 +2379,12 @@ table Measure
 			RETURN
 			Calculate([Net Sales Actual],filter_)
 		formatString: 0.0
+		displayFolder: Net Sales
 		lineageTag: 7d117047-c6a0-448d-b58d-ba3bb75c27ee
 
 	measure 'Net Sales Actual YoY%' = DIVIDE(([Net Sales Actual] - [Net Sales Actual PY]),[Net Sales Actual PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Net Sales
 		lineageTag: 49a31613-3c41-4efb-8aa7-a9f551f83f1f
 
 	measure 'Net Sales Actual YoY_Final' =
@@ -2200,6 +2398,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net Sales
 		lineageTag: c0a2ff2e-d5c9-4fbf-b171-b109474523f9
 
 	measure 'Net Sales Actual YTD' =
@@ -2214,6 +2413,7 @@ table Measure
 			        [Net Sales Actual]
 			    )
 		formatString: 0.0
+		displayFolder: Net Sales
 		lineageTag: b11edf8c-cefe-4cc3-9526-21036874bc4b
 
 	measure 'SSSO: Scrap-Off_APN' =
@@ -2222,6 +2422,7 @@ table Measure
 			RETURN
 			DIVIDE([SSSO: Scrap-Off] - Plan,Plan)
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: SSSO Scrap-Off
 		lineageTag: ac65b08e-974a-42b0-a164-9bdd48dcd45f
 
 	measure 'SSSO: Scrap-Off APN_Final' =
@@ -2236,14 +2437,17 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 21844987-f1a1-4719-9392-b4ba21d78b12
 
 	measure 'SSSO Obs_APN' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: ef4d35ac-aa06-4f48-a4a4-4d9cda974439
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO Salvage_APN' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 42afcbf4-21ef-466e-81e4-3fe05d52eec2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2254,6 +2458,7 @@ table Measure
 			
 			RETURN
 			DIVIDE([SSSO: Salvage & Obsolescence] - Plan,Plan)
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 3750435d-8780-4de0-b54c-fd42db22cda1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2263,6 +2468,7 @@ table Measure
 			VAR Plan = [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] +[SSSO Salvage_APN]
 			Return
 			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Plan,Plan)
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: f749e5b8-d710-409c-a57b-d0ce29623db1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2279,6 +2485,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: f3640b8a-837f-4e21-a79b-b392ad024a5a
 
 	measure 'SSSO: Salvage & Obs APN_Final' =
@@ -2293,24 +2500,29 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 13f4ceed-7b2c-4721-aaee-65f9cbfad71a
 
 	measure 'SSSO: Scrap-off APN_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		displayFolder: SSSO Scrap-Off
 		lineageTag: c6bc5888-52a9-46b0-aff9-98de4d5c2701
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO Obs_F66' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 24f7c7c7-ab3c-4583-8e31-c89184dc2fc5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO Salvage_F66' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "23"))
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: fdd0a9a8-340f-4261-a9e7-fc3a78a59f05
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO: Scrap-off F66_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 1d590305-543e-4d21-8faa-9582eeec4b33
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2320,6 +2532,7 @@ table Measure
 			VAR Flex = [SSSO: Scrap-off F66_Base] + [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
 			Return
 			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Flex, Flex)
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: a06d55b6-f48d-470b-b41e-50dbc63128f0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2330,6 +2543,7 @@ table Measure
 			
 			RETURN
 			DIVIDE([SSSO: Salvage & Obsolescence] - Flex,Flex)
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 1a881af0-4245-494d-8526-6454c17d25b4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2339,6 +2553,7 @@ table Measure
 			VAR Flex = [SSSO: Scrap-off F66_Base]
 			RETURN
 			DIVIDE([SSSO: Scrap-Off] - Flex,Flex)
+		displayFolder: SSSO Scrap-Off
 		lineageTag: ef5b0062-6b17-4490-b459-3e6908ed4afc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2355,6 +2570,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Scrap-Off
 		lineageTag: 6107e8fa-1aff-4a71-84f7-5b5204a2d9ba
 
 	measure 'SSSO: Salvage & Obs F66_Final' =
@@ -2369,6 +2585,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 92da5366-dd8d-4034-9f95-08feb5414b03
 
 	measure 'SSSO: Obs linked to conv F66_Final' =
@@ -2383,6 +2600,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 17d4210d-01ea-401a-bc1c-e4b9a420bf74
 
 	measure 'Net Inventory_APN' =
@@ -2391,6 +2609,7 @@ table Measure
 			Return
 			DIVIDE([Net Inventory] - Plan,Plan)
 		formatString: 0.0
+		displayFolder: Net Inventory
 		lineageTag: dea91ab1-376e-41a2-94b9-40567c1f94d3
 
 	measure 'Net Inventory_APN_Final' =
@@ -2405,6 +2624,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Net Inventory
 		lineageTag: 05f96b73-d8ea-435f-a993-a27a69a9d52c
 
 	measure 'Gross Inventory_APN' =
@@ -2413,6 +2633,7 @@ table Measure
 			Return
 			DIVIDE([Gross Inventory] - Plan,Plan)
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: cd27f9ca-ed25-446c-bf30-03a5aada6bf4
 
 	measure 'Gross Inventory_APN_Final' =
@@ -2427,14 +2648,17 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Gross Inventory
 		lineageTag: 35691105-4dc0-4a68-9821-d66b3535504f
 
 	measure 'Total COGS GR_APN' = SUM(Fact_Group_Reporting[Total COGS GR_APN])
+		displayFolder: DIO
 		lineageTag: 47f7134b-c8f8-42b3-b492-7f9692953709
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Total COGS GR_F66' = SUM(Fact_Group_Reporting[Total COGS GR_F66])
+		displayFolder: DIO
 		lineageTag: 1b8dbd3a-8a79-424b-887b-b6a3e7c2ed20
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2452,6 +2676,7 @@ table Measure
 			        ),
 			        [Total COGS GR_APN]
 			    )
+		displayFolder: DIO
 		lineageTag: f71acd17-18a7-4150-a734-a979fafc2a2b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2469,6 +2694,7 @@ table Measure
 			        ),
 			        [Total COGS GR_F66]
 			    )
+		displayFolder: DIO
 		lineageTag: 1b45230a-a501-4705-af53-d950841efdad
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2485,6 +2711,7 @@ table Measure
 			            ),
 			        [Net Inventory_APN_Base]
 			    )
+		displayFolder: DIO
 		lineageTag: 50049c20-3838-40dc-8005-65e907a8c38f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2494,6 +2721,7 @@ table Measure
 			VAR Plan = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_AFX])
 			Return
 			DIVIDE([Net Inventory] - Plan,Plan)
+		displayFolder: Net Inventory
 		lineageTag: 1a6d149f-7ab4-4821-84dc-b2135765c2fe
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2510,6 +2738,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Net Inventory
 		lineageTag: 7765cc42-76e3-482e-accd-37b7dea30b8c
 
 	measure 'Gross Inventory_AFX' =
@@ -2517,6 +2746,7 @@ table Measure
 			VAR Plan = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
 			Return
 			DIVIDE([Gross Inventory] - Plan,Plan)
+		displayFolder: Gross Inventory
 		lineageTag: 3166704e-1944-4b2f-82b2-b8d899f5ea54
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2533,6 +2763,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Gross Inventory
 		lineageTag: 34b31ed7-35e2-435c-9750-0a286d955337
 
 	measure 'Inventory Avg L4M_AFX' =
@@ -2547,6 +2778,7 @@ table Measure
 			            ),
 			        [Net Inventory_AFX_Base]
 			    )
+		displayFolder: DIO
 		lineageTag: 1d836b86-74d9-4914-a758-13d1e8843eb0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2560,16 +2792,19 @@ table Measure
 			VAR result_ = DIVIDE([DIO] - DIO_APN,DIO_APN)
 			Return
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",result_,BLANK())
+		displayFolder: DIO
 		lineageTag: 3efae6b5-9132-4770-8bbc-31d9ccb31773
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_APN])
 		formatString: 0.0
+		displayFolder: Net Inventory
 		lineageTag: 0d105d9e-a36a-4628-a7fb-8bddb0fa9c2c
 
 	measure 'Net Inventory_AFX_Base' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_AFX])
 		formatString: 0.0
+		displayFolder: Net Inventory
 		lineageTag: 9807b10b-d809-47da-96bb-8dea45b15067
 
 	measure DIO_AFX =
@@ -2581,6 +2816,7 @@ table Measure
 			RETURN
 			DIVIDE([DIO] - DIO_AFX,DIO_AFX)
 		formatString: 0
+		displayFolder: DIO
 		lineageTag: d193275c-5ee7-4be5-bc27-aa4de6535bfa
 
 	measure DIO_APN_Final =
@@ -2595,6 +2831,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: DIO
 		lineageTag: da4d3b8d-384c-414c-b722-42a516f9194b
 
 	measure DIO_AFX_Final =
@@ -2609,13 +2846,16 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: DIO
 		lineageTag: 84156bc6-800c-4d2d-98eb-a622c97edbf3
 
 	measure 'Bias Target' = 0.03
 		formatString: 0%;-0%;0%
+		displayFolder: Bias CSCA
 		lineageTag: 9b70de51-c52b-40ec-b49f-fa4d3d19c7a5
 
 	measure 'Bias Target Diff%' = [Bias%] - 0.03
+		displayFolder: Bias CSCA
 		lineageTag: 31b95f59-f1f2-4e9e-8ad3-b700a5ec0a67
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2629,9 +2869,11 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Bias CSCA
 		lineageTag: 6f405e16-c864-4672-abad-4618e66d8990
 
 	measure 'FA% Target Diff%' = [FA% CSCA] - 0.7
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f8c238b7-9903-49f5-8b93-b1fee299a466
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2645,10 +2887,12 @@ table Measure
 			Return 
 			Result_
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: a97a81a8-42c9-4673-8b3b-8e973fd3df0e
 
 	measure 'FA% Target' = 0.7
 		formatString: 0%;-0%;0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f9f909fa-4805-4fff-9fa6-ae40907d873d
 
 	measure DIO_APN_Base =
@@ -2659,6 +2903,7 @@ table Measure
 			VAR DIO_APN = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
 			Return DIO_APN
 		formatString: 0
+		displayFolder: DIO
 		lineageTag: 9725eeeb-adca-4efd-bbae-1628c705f73d
 
 	measure 'SSSO: Obso Conv_APN_Base' =
@@ -2666,6 +2911,7 @@ table Measure
 			VAR Plan = [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] + [SSSO Salvage_APN]
 			Return
 			Plan
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 4a4d94d0-443e-4361-8ee4-263d08ffd0ff
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2676,12 +2922,14 @@ table Measure
 			
 			RETURN
 			Plan
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 3123962c-f633-44ad-8d28-5c9edc3ed778
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_APN])
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: 923789d1-04ab-4bf1-81cf-7a23a989ff04
 
 	measure 'DSO MoM%' =
@@ -2693,6 +2941,7 @@ table Measure
 			RETURN
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DSO
 		lineageTag: f00c3261-e678-4bc3-a778-0e350c9d9463
 
 	measure 'DSO MoM_Final' = ```
@@ -2703,6 +2952,7 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: DSO
 		lineageTag: a4851f23-dcc5-4b93-8c61-36da0c83138e
 
 	measure 'DSO PY' =
@@ -2713,12 +2963,14 @@ table Measure
 			RETURN
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", py,BLANK())
 		formatString: 0
+		displayFolder: DSO
 		lineageTag: fe74a30a-f128-4741-b255-ca2807093aa5
 
 	measure 'DSO YoY%' =
 			
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",DIVIDE(([DSO] - [DSO PY]),[DSO PY]),BLANK())
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DSO
 		lineageTag: 3aa2fbeb-9adb-446e-8192-f6b3d54c7143
 
 	measure 'DSO YoY_Final' =
@@ -2732,6 +2984,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: DSO
 		lineageTag: 81ef3bf6-840e-4121-ae52-954adcc5f548
 
 	measure 'DPO MoM%' =
@@ -2743,6 +2996,7 @@ table Measure
 			RETURN
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Result,BLANK())
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DPO
 		lineageTag: 14d57b82-c1d1-40d7-aacc-2a071f0d1aa7
 
 	measure 'DPO PY' =
@@ -2752,6 +3006,7 @@ table Measure
 			VAR py = Calculate([DPO],filter_)
 			RETURN
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", py,BLANK())
+		displayFolder: DPO
 		lineageTag: e71f96e7-d219-4803-aab8-122e31db49dc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2764,12 +3019,14 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: DPO
 		lineageTag: 55aeb62b-3023-4793-ac4e-61ac62bcb03b
 
 	measure 'DPO YoY%' =
 			
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",DIVIDE(([DPO] - [DPO PY]),[DPO PY]),BLANK())
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DPO
 		lineageTag: 46cee9b0-13c2-4a75-86e6-40e0bdfe09b6
 
 	measure 'DPO YoY_Final' =
@@ -2783,10 +3040,12 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: DPO
 		lineageTag: 1e459b4e-d603-4789-bced-26ddb25e6c69
 
 	measure 'A&P Actual' = SUM( Fact_Logistics[A&P Act] )
 		formatString: #,0.0
+		displayFolder: Logistic
 		lineageTag: b6cfb028-53cd-4da8-94e0-b182d12c82d1
 
 	measure 'COGS Actual YTD' =
@@ -2801,6 +3060,7 @@ table Measure
 			        [COGS Actual]
 			    )
 		formatString: 0.0
+		displayFolder: COGS
 		lineageTag: 66521ec5-41cf-4b2f-b04e-9150d2a8ea42
 
 	measure 'COGS Actual YoY_Final' =
@@ -2814,9 +3074,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: COGS
 		lineageTag: c55cb5a3-2c97-4468-9b42-27bb2165fcd2
 
 	measure 'COGS Actual YoY%' = DIVIDE(([COGS Actual] - [COGS Actual PY]),[COGS Actual PY])
+		displayFolder: COGS
 		lineageTag: 8d5d26fc-0402-42c2-9751-1908eea9f002
 
 	measure 'COGS Actual PY' =
@@ -2827,6 +3089,7 @@ table Measure
 			RETURN
 			Calculate([COGS Actual],filter_)
 		formatString: 0.0
+		displayFolder: COGS
 		lineageTag: b8d4fa82-0c70-4cce-bdb4-deb8e98cda0b
 
 	measure 'COGS Actual MoM_Final' = ```
@@ -2837,6 +3100,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: COGS
 		lineageTag: 3ce3d6f9-c8e2-490f-99dd-87e17815011c
 
 	measure 'COGS Actual MoM%' =
@@ -2844,6 +3108,7 @@ table Measure
 			VAR Result = DIVIDE(([COGS Actual] - [COGS Actual PP]), [COGS Actual PP])
 			RETURN
 			Result
+		displayFolder: COGS
 		lineageTag: bec1d2f8-05fd-45df-b5fb-9c2a5633ac42
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2859,6 +3124,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: COGS
 		lineageTag: 31d4fe84-7b85-40da-921f-0e31ebca0212
 
 	measure 'COGS Actual LYTD' = ```
@@ -2876,6 +3142,7 @@ table Measure
 			DIVIDE([COGS Actual] - Result,Result)
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: COGS
 		lineageTag: d8f994c5-a505-40f9-897d-e130bbe14d4c
 
 	measure 'Net Sales_APN' =
@@ -2884,10 +3151,12 @@ table Measure
 			Return
 			DIVIDE([Net Sales Actual] - Plan,Plan)
 		formatString: 0.0
+		displayFolder: Net Sales
 		lineageTag: c8f6ad87-2541-4e46-9b36-3c1e8929f88e
 
 	measure 'Net Sales_APN_Base' = SUM(Fact_Logistics[Net Sales Plan])
 		formatString: 0.0
+		displayFolder: Net Sales
 		lineageTag: 9f154c40-d040-4652-ab9a-8c71ec47430a
 
 	measure 'Net Sales_APN_Final' =
@@ -2902,10 +3171,12 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Net Sales
 		lineageTag: 9ab22e72-1632-49da-b30e-478950c77f2c
 
 	measure COGS_APN_Base = SUM(Fact_Logistics[COGS Plan])
 		formatString: 0.0
+		displayFolder: COGS
 		lineageTag: cea78f18-8adc-4a21-a812-c9505f437c7b
 
 	measure COGS_APN_Final =
@@ -2919,6 +3190,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: COGS
 		lineageTag: bfeb341f-a5df-4b86-99cf-b3497b92efdd
 
 	measure COGS_APN =
@@ -2926,10 +3198,12 @@ table Measure
 			Return
 			DIVIDE([COGS Actual] - Plan,Plan)
 		formatString: 0.0
+		displayFolder: COGS
 		lineageTag: 2070f4d1-eb29-4830-a546-f0a69c842f1b
 
 	measure 'Total Logistics on Net Sales_APN_Base' = DIVIDE([Total Logistics Plan], [Net Sales Plan])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: bc33c33c-ee18-4264-b324-a6653a2b62c1
 
 	measure 'Total Logistics on Net Sales_APN_Final' =
@@ -2943,20 +3217,24 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 5e0fc1d5-94c9-4209-8919-df2326df76c6
 
 	measure 'Total Logistics on Net Sales_APN' =
 			VAR Plan = [TOTAL LOGISTICS ON NET SALES_APN_Base]
 			Return
 			DIVIDE([TOTAL LOGISTICS ON NET SALES Actual] - Plan,Plan)
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 6f110007-c1f5-4959-b021-e638515216df
 
 	measure 'Distribution Plan' = SUM( Fact_Logistics[Distribution Plan] )
 		formatString: #,0.0
+		displayFolder: Logistic
 		lineageTag: 1cee0a10-6ba2-43b6-9537-cb1877f531b1
 
 	measure 'Total Distribution on COGS_APN_Base' = DIVIDE([Distribution Plan], [COGS_APN_Base])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
 		lineageTag: 20d604fe-5412-4f66-9dc1-e4eeaeba852f
 
 	measure 'Total Distribution on COGS_APN_Final' =
@@ -2971,22 +3249,27 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_  & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Distribution on COGS
 		lineageTag: aa5e4a3c-44cb-492d-97ba-1983faff1881
 
 	measure 'Total Distribution on COGS_APN' =
 			VAR Plan = [TOTAL DISTRIBUTION ON COGS_APN_Base]
 			Return
 			DIVIDE([TOTAL DISTRIBUTION ON COGS Actual] - Plan,Plan)
+		displayFolder: Distribution on COGS
 		lineageTag: 17d4541b-ecef-4574-80e1-af6f34948ead
 
 	measure 'Variances Act' = SUM(Fact_Logistics[Variances Act])
 		formatString: 0.0
+		displayFolder: Logistic
 		lineageTag: 18b246d9-93e1-4418-b7b7-bd3a7b5fa1eb
 
 	measure 'Last Closed Period' = MAX('Other_Last Closed Month'[Period])
+		displayFolder: Misc
 		lineageTag: a456bda2-a8b3-4ca5-8f3e-396099d120bc
 
 	measure 'Customer Fines' = SUM(Fact_Customer_Fines[Split Amount])
+		displayFolder: Customer Fines
 		lineageTag: cd5c859a-f58b-4c18-a251-dfac7c02e692
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2995,10 +3278,12 @@ table Measure
 			
 			SWITCH(SELECTEDVALUE(CG_PeriodSelection[Period]), "PTD", 5000000/12, "YTD", 5000000,5000000/12)
 		formatString: 0.0
+		displayFolder: Customer Fines
 		lineageTag: c3739011-c277-427f-8f38-9f257bc37879
 
 	measure 'Cust Fine Target Diff%' = ([Customer Fines] - [Customer Fines Target])/[Customer Fines Target]
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Fines
 		lineageTag: c3cf8efd-60bf-4447-b97e-83a79c27ccf5
 
 	measure 'Cust fine Target Final' = ```
@@ -3010,6 +3295,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Customer Fines
 		lineageTag: 302e159f-02ca-4240-95cd-574c5822ae41
 
 	measure 'Cust fine PY' = ```
@@ -3022,6 +3308,7 @@ table Measure
 			Calculate([Customer Fines],filter_)
 			
 			```
+		displayFolder: Customer Fines
 		lineageTag: 9cbdfb3e-a977-4ed4-9153-1750b35e5d8a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3035,6 +3322,7 @@ table Measure
 			VAR Result = DIVIDE(([Customer Fines] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Customer Fines
 		lineageTag: fe18fc17-577b-41a9-aa1b-6d734ca202f0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3048,9 +3336,11 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Customer Fines
 		lineageTag: ebbcda50-cd61-4217-8cbf-4062252d8abc
 
 	measure 'Cust fine YoY%' = DIVIDE(([Customer Fines] - [Cust fine PY]),[Cust fine PY])
+		displayFolder: Customer Fines
 		lineageTag: d8fc74b6-ea15-419f-ab5b-93c07a181dbb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3066,6 +3356,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Customer Fines
 		lineageTag: 7f35a72a-ad49-4fc6-a1de-ab260d7e3659
 
 	measure 'Cust Fine LYTD' = ```
@@ -3077,6 +3368,7 @@ table Measure
 			return
 			DIVIDE([Customer Fines] - Result,Result)
 			```
+		displayFolder: Customer Fines
 		lineageTag: f082c729-559a-4147-919a-3224a0289d29
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3093,6 +3385,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Customer Fines
 		lineageTag: e2b8381c-1566-419d-a46b-d188e7aee462
 
 	measure 'Cust Fine YTD' =
@@ -3106,12 +3399,14 @@ table Measure
 			        ),
 			        [Customer Fines]
 			    )
+		displayFolder: Customer Fines
 		lineageTag: 491729bf-985d-4a67-8c09-e5f7944fb6d6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure CFR = DIVIDE(SUM(Fact_CFR[Total Delivery Qty]),SUM(Fact_CFR[Total Order Qty]))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CFR
 		lineageTag: 83654486-06bd-4611-a666-f4c519e66c22
 
 	measure 'CFR MoM%' =
@@ -3123,6 +3418,7 @@ table Measure
 			VAR Result = [CFR] - Net_PM
 			RETURN
 			Result
+		displayFolder: CFR
 		lineageTag: a5228272-383a-403f-a1df-0c5eb0e4c58c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3136,6 +3432,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: CFR
 		lineageTag: a3a2a02b-5174-4a2d-b8e5-ce9364027251
 
 	measure 'CFR PY' = ```
@@ -3149,9 +3446,11 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CFR
 		lineageTag: f5cbfb6a-9765-40a7-bc2a-b009faf0d190
 
 	measure 'CFR YoY%' = [CFR] - [CFR PY]
+		displayFolder: CFR
 		lineageTag: ce2aa45d-dce4-46b8-818a-54b52a7a34a4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3168,17 +3467,21 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: CFR
 		lineageTag: 02349e52-cc46-4d70-aae2-21cf5f0ee688
 
 	measure 'CFR YTD' = TOTALYTD([CFR],Dim_Date[Date])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CFR
 		lineageTag: 6cf517c7-1ebc-4631-84ed-dc9ad0bda325
 
 	measure 'CFR Target' = 0.94
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CFR
 		lineageTag: 8bbb56f3-5ed0-49de-973d-a77b571c748e
 
 	measure 'CFR Target Diff%' = [CFR] - 0.94
+		displayFolder: CFR
 		lineageTag: ec953ac8-eea9-46b4-a964-7e1d07b91b8d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3192,6 +3495,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: CFR
 		lineageTag: 99e52b5f-6b97-486d-95ed-9af365e6dbc1
 
 	measure 'CFR Orders LYTD' = ```
@@ -3204,6 +3508,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: CFR
 		lineageTag: 80f18d2e-06f0-45be-9cfa-e61b46184e05
 
 	measure 'CFR Orders PY' =
@@ -3213,6 +3518,7 @@ table Measure
 			
 			RETURN
 			Calculate(SUM(Fact_CFR[Total Order Qty]),filter_)
+		displayFolder: CFR
 		lineageTag: cd726723-73fe-48bf-b648-45c7a2297aeb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3224,6 +3530,7 @@ table Measure
 			
 			RETURN
 			Calculate(SUM(Fact_CFR[Total Delivery Qty]),filter_)
+		displayFolder: CFR
 		lineageTag: f688c17e-624e-4e30-8f66-b3dda6d7e256
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3237,6 +3544,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: CFR
 		lineageTag: bfa6947f-50c9-405e-84bf-7d0ac7d6a49a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3247,6 +3555,7 @@ table Measure
 			
 			RETURN
 			[CFR] - LYTD
+		displayFolder: CFR
 		lineageTag: aa344dab-9b4c-4adb-8287-425bd5799471
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3263,6 +3572,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: CFR
 		lineageTag: 848a9169-1ce4-443f-9f9e-cb5a55d25b96
 
 	measure 'Schedule Attn Target' = ```
@@ -3279,10 +3589,12 @@ table Measure
 			)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Schedule Attainment
 		lineageTag: e957bc12-a25a-4558-b37a-9fa5c668af90
 
 	measure 'Schedule Attn Target Diff%' = [Schedule Attn] - 0.92
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Schedule Attainment
 		lineageTag: 368e7ee8-4894-41bd-bc41-9ca1726622c8
 
 	measure 'Schedule Attn Target Final' = ```
@@ -3294,34 +3606,43 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Schedule Attainment
 		lineageTag: b73a7e1c-d281-40f3-a4b2-faa86574c30d
 
 	measure 'Bias% Lag 2' = CALCULATE([Bias%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 17de22a2-87ff-49bf-86bb-dc2d7c9d4548
 
 	measure 'Bias% Lag 4' = CALCULATE([Bias%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: ec6dde8d-416d-4a4d-8283-a3949d80e5ad
 
 	measure 'FA% Lag2 MoM_Final' = CALCULATE([FA% MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f5b7a238-1542-43b3-83b9-234764c5b2b2
 
 	measure 'FA% Lag4 MoM_Final' = CALCULATE([FA% MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 10a7b0ab-74da-4eed-93ba-421bba673144
 
 	measure 'FA% Lag2 YTD' = CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: d4f2b3eb-73a4-4081-b735-45fdd659570f
 
 	measure 'FA% Lag4 YTD' = CALCULATE([FA% YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f1a705da-865a-4c1e-92a9-946cae5afcfc
 
 	measure 'FA% Lag2 YoY_Final' = CALCULATE([FA% YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 0a4838cf-2a77-4adc-b8eb-b5c34e9f41b0
 
 	measure 'FA% Lag4 YoY_Final' = CALCULATE([FA% YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 48be6021-6ecb-4f61-8443-571475aba586
 
 	measure 'FA% Lag2 Target_Final' = ```
@@ -3333,6 +3654,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 5724b98e-7ae9-4c7f-af35-c9e2c3ccd295
 
 	measure 'FA% Lag4 Target_Final' = ```
@@ -3344,33 +3666,42 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: aace5e30-2c4b-446d-9be4-445043d6cceb
 
 	measure 'Bias% Lag2 YTD' = CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 3717fe84-6e88-431a-a391-0b7c5a96ea1b
 
 	measure 'Bias% Lag4 YTD' = CALCULATE([Bias YTD],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		displayFolder: Bias CSCA
 		lineageTag: f110cf14-10af-4d24-8acb-94386f93722b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias% Lag2 MoM_Final' = CALCULATE([Bias MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: 5157d3ba-6d28-48f7-a042-1711b507c54d
 
 	measure 'Bias% Lag4 MoM_Final' = CALCULATE([Bias MoM_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: 4057c104-8b6d-4d85-a4c2-4e7e6c42e89c
 
 	measure 'Bias% Lag2 YoY_Final' = CALCULATE([Bias YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: ff13f938-aadc-4d15-8d88-959041903777
 
 	measure 'Bias% Lag4 YoY_Final' = CALCULATE([Bias YoY_Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: 82910963-7603-445c-8ed0-8300cd828ec5
 
 	measure 'Bias% Lag2 Target_Final' = CALCULATE([Bias Target Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: f1d1f4a2-79d6-4535-8f06-b949d1ab8c03
 
 	measure 'Bias% Lag4 Target_Final' = CALCULATE([Bias Target Final],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4")) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCA
 		lineageTag: 6f47bf01-3bf2-4b63-9fb9-ed2d7b8c2784
 
 	measure Switch_YoY_WC = ```
@@ -3386,6 +3717,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 4bb47335-25f8-49c4-8c4b-2fe57298f8d6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3403,6 +3735,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 3dfab3aa-5487-40cc-b7f9-d097382a68cf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3415,10 +3748,12 @@ table Measure
 			
 			RETURN Net_PM
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: 4afd3352-435d-44d6-8cb0-ef4b0a996b95
 
 	measure 'Gross Inventory AFX_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
 		formatString: 0.0
+		displayFolder: Gross Inventory
 		lineageTag: ef997859-1e98-4aaa-987a-ffffbca1df49
 
 	measure 'Net Inventory PP' =
@@ -3428,6 +3763,7 @@ table Measure
 			VAR Net_PM = Calculate([Net Inventory],filter_)
 			
 			RETURN Net_PM
+		displayFolder: Net Inventory
 		lineageTag: a1c51a58-bd49-486a-9088-9e3c06bf4d54
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3439,6 +3775,7 @@ table Measure
 			VAR Net_PM = Calculate([Inflated Inventory],filter_)
 			
 			RETURN Net_PM
+		displayFolder: Inflated Inventory
 		lineageTag: e450dc66-6c0e-4227-ad00-877c695da019
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3450,6 +3787,7 @@ table Measure
 			VAR Net_PM = Calculate([Expired Inventory],filter_)
 			
 			RETURN Net_PM
+		displayFolder: Expired Inventory
 		lineageTag: d4285329-2bbd-4d47-804a-db22e39ebd96
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3462,6 +3800,7 @@ table Measure
 			Return
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", Net_PM, BLANK())
 		formatString: 0
+		displayFolder: DSO
 		lineageTag: 6bc0d88b-1789-42c2-988d-a9c07a0d74fb
 
 	measure 'DPO PP' =
@@ -3472,6 +3811,7 @@ table Measure
 			Return
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE", Net_PM, BLANK())
 		formatString: 0
+		displayFolder: DPO
 		lineageTag: 9d6914cb-166c-481f-b866-f6065ccaa1d0
 
 	measure 'DIO PP' = ```
@@ -3483,6 +3823,7 @@ table Measure
 			IF(SELECTEDVALUE(Dim_Date[Is Closed]) = "TRUE",Net_PM,BLANK())
 			```
 		formatString: 0
+		displayFolder: DIO
 		lineageTag: d0d62941-df3d-4645-ac92-a3d25fd8f8af
 
 	measure DIO_AFX_Base =
@@ -3493,6 +3834,7 @@ table Measure
 			VAR DIO_AFX = DIVIDE( _AvgInventory, _TotalCOGS ) * (30.3333*_Months)
 			RETURN
 			DIO_AFX
+		displayFolder: DIO
 		lineageTag: b0673e43-b8e3-40f2-9a23-471c82837c7d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3506,6 +3848,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: OEE
 		lineageTag: 3b8f33e5-3af8-4eb3-9916-b2aea00f4a02
 
 	measure Switch_Plan_WC = ```
@@ -3519,6 +3862,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 658d96ab-c80b-42f5-befc-3d8ec474e452
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3532,11 +3876,13 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 46263d21-280a-490a-baef-9d581928d279
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross Inventory_AFX_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_AFX])
+		displayFolder: Gross Inventory
 		lineageTag: c05aef6d-5685-4ab3-af7c-0bb5bb953c45
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3549,6 +3895,7 @@ table Measure
 			VAR Result = Calculate([SSSO: Salvage & Obsolescence],filter_)
 			RETURN
 			Result
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 68157b7b-90a6-440e-a750-0b87c9dd110c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3561,6 +3908,7 @@ table Measure
 			VAR Result = Calculate([SSSO: Obsolescenes linked to Conversions],filter_)
 			RETURN
 			Result
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 027efcd4-d1f1-4410-bacc-1a5c6010a89d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3573,6 +3921,7 @@ table Measure
 			VAR Result = Calculate([SSSO: Scrap-Off],filter_)
 			RETURN
 			Result
+		displayFolder: SSSO Scrap-Off
 		lineageTag: b08e2569-5ed5-4c29-9801-4402499164c1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3585,6 +3934,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
 		lineageTag: 49395a6f-12c8-4016-afad-5d08aa82f954
 
 	measure 'Total Logistics on Net Sales Actual PP' =
@@ -3596,6 +3946,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Logistic vs Net Sales
 		lineageTag: 21996a4c-ef72-4af6-aa84-59e99a24a463
 
 	measure 'SSSO: Salvage & Obs_AFX_Base' =
@@ -3604,6 +3955,7 @@ table Measure
 			
 			RETURN
 			AFX
+		displayFolder: SSSO Salvage & Obs
 		lineageTag: 5dda1a5e-5009-423c-a999-166fbd6b3bcd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3613,6 +3965,7 @@ table Measure
 			VAR AFX = [SSSO: Scrap-off F66_Base] + [SSSO Obs_F66] - ABS([SSSO Salvage_F66])
 			Return
 			AFX
+		displayFolder: SSSO Obs linked to Conv
 		lineageTag: cae50f8b-c92f-4b8b-a1bd-310acaee02f4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3625,6 +3978,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0
+		displayFolder: Net Sales
 		lineageTag: e2bcada7-43d7-477c-aa57-800102ff4a70
 
 	measure 'COGS Actual PP' =
@@ -3636,6 +3990,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0
+		displayFolder: COGS
 		lineageTag: f0462e0d-b875-48f9-9878-6473a83a932e
 
 	measure 'Cust Fine PP' =
@@ -3647,6 +4002,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0
+		displayFolder: Customer Fines
 		lineageTag: 895686ef-3c9f-40c0-b11e-4b8b3368da05
 
 	measure 'Bias PP' =
@@ -3657,16 +4013,19 @@ table Measure
 			VAR Result = Calculate([Bias%],filter_)
 			RETURN
 			Result
+		displayFolder: Bias CSCA
 		lineageTag: 27e874e4-745a-4a32-9057-86b4bb5ca3e0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag2 PP' = CALCULATE([Bias PP], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: af2c9731-fe6e-4c90-9fdb-198ae72485f0
 
 	measure 'Bias Lag4 PP' = CALCULATE([Bias PP], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 39bdf3b9-ed61-4dc5-b0d3-2b95eb4e9a17
 
 	measure 'FA% PP' =
@@ -3678,14 +4037,17 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 73cf70d3-678d-455d-bf99-2e02a975939c
 
 	measure 'FA% Lag2 PP' = CALCULATE([FA% PP],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 74a51d70-e8cf-4e0c-a465-7ff1f75c0ac4
 
 	measure 'FA% Lag4 PP' = CALCULATE([FA% PP],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 031bcabd-5af4-4709-8142-0dece8bcad86
 
 	measure 'SA PP' =
@@ -3697,6 +4059,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Schedule Attainment
 		lineageTag: 0cdf13f3-51ad-42d5-9af0-c0cb95692960
 
 	measure 'CFR PP' =
@@ -3708,22 +4071,27 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CFR
 		lineageTag: d6df3d20-8599-4dac-a1ff-ae651ab9ed1a
 
 	measure 'FA% Lag2 PY' = CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 8b9fed1f-107d-453b-92e5-5719f61eb176
 
 	measure 'FA% Lag4 PY' = CALCULATE([FA% PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 9f37f77a-4c3c-4070-9a9e-11bafce01fb8
 
 	measure 'Bias Lag2 PY' = CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: 321385cc-4fcf-4202-b79b-18a66443e1f6
 
 	measure 'Bias Lag4 PY' = CALCULATE([Bias PY],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
 		lineageTag: a45cfdc6-5bbf-43c4-95cc-d6bff0efaf48
 
 	measure 'Service Rate% PP' =
@@ -3735,61 +4103,74 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Rate CSCA
 		lineageTag: 60347ad6-f8fc-4c47-a02f-3409573f5371
 
 	measure 'FA% Lag2 MoM%' = CALCULATE([FA% MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 319628f8-62ec-48d1-8a4e-79111c461e72
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% Lag4 MoM%' = CALCULATE([FA% MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: aacab4de-94d8-4c1b-9e23-e9dd9791fc56
 
 	measure 'FA% Lag2 YoY%' = CALCULATE([FA% YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: d46358d2-30a1-43df-8325-df8738a3e162
 
 	measure 'FA% Lag4 YoY%' = CALCULATE([FA% YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 57ec18bc-5b77-428f-b286-21c8a1bb5f95
 
 	measure 'FA% Lag2 Target Diff' = CALCULATE([FA% Target Diff%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: e5c1ef98-f4ef-48ae-ba53-14835e36396b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% Lag4 Target Diff' = CALCULATE([FA% Target Diff%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 8e209fbc-412d-4a74-bb83-4ca81c6a8b3e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag2 Target Diff%' = CALCULATE([Bias Target Diff%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		displayFolder: Bias CSCA
 		lineageTag: ccfcff81-c0ff-404f-96fa-ba181ab769f2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag4 Target Diff%' = CALCULATE([Bias Target Diff%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		displayFolder: Bias CSCA
 		lineageTag: fa95dbcc-dc92-427d-9d5b-f71b9f98808d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag2 MoM%' = CALCULATE([Bias MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		displayFolder: Bias CSCA
 		lineageTag: 48a9e8f6-a6d1-4c2a-95f5-438f9a510942
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag4 MoM%' = CALCULATE([Bias MoM%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		displayFolder: Bias CSCA
 		lineageTag: 50edeb50-5289-489a-b6ee-7cbcf6c46553
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag2 YoY%' = CALCULATE([Bias YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "2"))
+		displayFolder: Bias CSCA
 		lineageTag: df5af22c-1b99-4145-82fa-f378180c0ce3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Lag4 YoY%' = CALCULATE([Bias YoY%],KEEPFILTERS(Fact_Forecast_Accuracy[LAGs] = "4"))
+		displayFolder: Bias CSCA
 		lineageTag: 3e285136-99d9-4890-95eb-12da2bce5ef2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3806,6 +4187,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Switch Measures
 		lineageTag: 46ad6b7c-6671-4187-b08a-d072791c8fce
 
 	measure Switch_Plan_OI = ```
@@ -3826,6 +4208,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 7168448d-b758-4fcd-8195-1e2f65824ef8
 
 		formatStringDefinition =
@@ -3854,6 +4237,7 @@ table Measure
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: fdc38a5b-b697-43de-a8c2-ec8696ad9eec
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3867,6 +4251,7 @@ table Measure
 			VAR Result = [Inflated Inventory] - Net_PM
 			RETURN
 			Result
+		displayFolder: Inflated Inventory
 		lineageTag: bb4e146c-5b4c-46ed-ac4b-03acd354b979
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3880,6 +4265,7 @@ table Measure
 			VAR Result = [Expired Inventory] - Net_PM
 			RETURN
 			Result
+		displayFolder: Expired Inventory
 		lineageTag: 42dc6417-4ea5-4c0e-b49c-6d9cb360d473
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3892,6 +4278,7 @@ table Measure
 			VAR Result = [DSO] - Net_PM
 			RETURN
 			Result
+		displayFolder: DSO
 		lineageTag: cd694068-0782-45b4-b49c-6973310618d0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3904,6 +4291,7 @@ table Measure
 			VAR Result = [DPO] - Net_PM
 			RETURN
 			Result
+		displayFolder: DPO
 		lineageTag: f85f40b2-8708-4ab2-92f9-fad3d45ab063
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3917,11 +4305,13 @@ table Measure
 			VAR Result = [DIO] - Net_PM
 			RETURN
 			Result
+		displayFolder: DIO
 		lineageTag: 3111b21c-4c4a-4c7a-ab83-4501487deadc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net POV Actual' = CALCULATE(SUM(Fact_COPA_Global[Net POV Actual]), KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		displayFolder: Net POV
 		lineageTag: 682c3c2c-720d-478a-94e9-44e65156dce3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3934,6 +4324,7 @@ table Measure
 			return
 			DIVIDE([Net POV Actual] - Result,Result)
 			```
+		displayFolder: Net POV
 		lineageTag: 4ecf8c42-c212-4df6-937d-8497767eadf6
 
 	measure 'Net POV Actual MoM_Final' = ```
@@ -3944,6 +4335,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Net POV
 		lineageTag: 5d7cb07d-bd7f-4341-86c3-84375f89c222
 
 	measure 'Net POV Actual MoM%' =
@@ -3954,6 +4346,7 @@ table Measure
 			VAR Result = DIVIDE(([Net POV Actual] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Net POV
 		lineageTag: 93b051de-7475-4ea2-b620-5d43aa135d85
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3965,6 +4358,7 @@ table Measure
 			VAR Result = Calculate([Net POV Actual],filter_)
 			RETURN
 			Result
+		displayFolder: Net POV
 		lineageTag: 4e0e3e2f-2661-4da2-972f-863b10b305c9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3976,6 +4370,7 @@ table Measure
 			
 			RETURN
 			Calculate([Net POV Actual],filter_)
+		displayFolder: Net POV
 		lineageTag: 29ecad30-d9c1-4234-94db-8d1d0ccd6b05
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3991,14 +4386,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net POV
 		lineageTag: 12e2f707-f8ec-4256-865c-38481a755787
 
-	measure Measure
-		lineageTag: e9d4cb81-bb81-499f-ad01-6f283f4f5457
-
-		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
-
 	measure 'Net POV Actual YoY%' = DIVIDE(([Net POV Actual] - [Net POV Actual PY]),[Net POV Actual PY])
+		displayFolder: Net POV
 		lineageTag: 7701f75a-1f69-4eae-95f0-d7cd8f2013da
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4014,11 +4406,13 @@ table Measure
 			        ),
 			        [Net POV Actual]
 			    )
+		displayFolder: Net POV
 		lineageTag: 9598874d-c497-40c2-8633-cd4a9fe83908
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net POV APN_base' = SUM(Fact_COPA_Global[Net POV Plan])
+		displayFolder: Net POV
 		lineageTag: a8d2f4f1-4fe1-4a22-9389-4a5e89bb3b36
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4031,6 +4425,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Net POV
 		lineageTag: 301e3dec-612a-496a-8657-32bb285890ec
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4039,6 +4434,7 @@ table Measure
 			VAR Plan = [Net POV APN_Base]
 			Return
 			DIVIDE([Net POV Actual] - Plan,Plan)
+		displayFolder: Net POV
 		lineageTag: a581a5a4-553c-4d68-b20c-12937ff33abf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4054,9 +4450,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Net POV
 		lineageTag: 9a60fce9-5d4b-4628-8230-e466db210ba0
 
 	measure 'Gross PPV Actual' = CALCULATE(SUM(Fact_COPA_Global[Gross PPV Actual]),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		displayFolder: Gross PPV
 		lineageTag: 1ead4e52-fd37-4ab8-aea4-abc040372c6e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4069,6 +4467,7 @@ table Measure
 			return
 			DIVIDE([Gross PPV Actual] - Result,Result)
 			```
+		displayFolder: Gross PPV
 		lineageTag: 7c15aa88-6832-4b29-a0e9-6a08a46f91f9
 
 	measure 'Gross PPV Actual MoM_Final' = ```
@@ -4079,6 +4478,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Gross PPV
 		lineageTag: 088513ca-926c-4fee-a2e4-3dcebe3c88f5
 
 	measure 'Gross PPV Actual MoM%' =
@@ -4089,6 +4489,7 @@ table Measure
 			VAR Result = DIVIDE(([Gross PPV Actual] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Gross PPV
 		lineageTag: 058cf2fa-bd3b-4a18-9060-a82004adb2e1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4100,6 +4501,7 @@ table Measure
 			VAR Result = Calculate([Gross PPV Actual],filter_)
 			RETURN
 			Result
+		displayFolder: Gross PPV
 		lineageTag: a0e35219-aa70-4363-b603-aadd96d325fa
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4111,6 +4513,7 @@ table Measure
 			
 			RETURN
 			Calculate([Gross PPV Actual],filter_)
+		displayFolder: Gross PPV
 		lineageTag: 7b258b2d-3328-463c-9014-78e12fac572a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4126,9 +4529,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Gross PPV
 		lineageTag: df241a7a-007b-4735-a700-c278553da8e0
 
 	measure 'Gross PPV Actual YoY%' = DIVIDE(([Gross PPV Actual] - [Gross PPV Actual PY]),[Gross PPV Actual PY])
+		displayFolder: Gross PPV
 		lineageTag: 33f866a0-7cda-4fe5-8110-4ffcd3dec3e3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4144,11 +4549,13 @@ table Measure
 			        ),
 			        [Gross PPV Actual]
 			    )
+		displayFolder: Gross PPV
 		lineageTag: 88360143-f6fc-4fd7-aabf-4efff20e0c55
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross PPV APN_base' = SUM(Fact_COPA_Global[Net PPV Plan])
+		displayFolder: Gross PPV
 		lineageTag: de280fd9-4fea-47b7-b6ff-33357cfa4d25
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4161,6 +4568,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Gross PPV
 		lineageTag: 8d027159-2f62-4152-b05a-2140d42e9c67
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4169,6 +4577,7 @@ table Measure
 			VAR Plan = [Gross PPV APN_base]
 			Return
 			DIVIDE([Gross PPV Actual] - Plan,Plan)
+		displayFolder: Gross PPV
 		lineageTag: 7007a5b7-69e0-4ff1-ac59-8c846363ab54
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4184,9 +4593,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Gross PPV
 		lineageTag: f0adb735-c9c5-4ed5-8d43-c99e05d56821
 
 	measure 'Operating Income Actual' = CALCULATE(SUM(Fact_COPA_Global[Operating Income Actual]),KEEPFILTERS( Dim_Profit_Center[FP&A Country] <> "Feldkirchen"))
+		displayFolder: Operating Income
 		lineageTag: f7defad4-2cb8-4f72-91b9-90f0fbd9b957
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4199,6 +4610,7 @@ table Measure
 			return
 			DIVIDE([Operating Income Actual] - Result,Result)
 			```
+		displayFolder: Operating Income
 		lineageTag: 8c10fe0d-cdfb-4e80-a0fb-9ee887b51012
 
 	measure 'Operating Income Actual MoM_Final' = ```
@@ -4209,6 +4621,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Operating Income
 		lineageTag: c8493e31-9063-46c3-bb02-bac5a15573fa
 
 	measure 'Operating Income Actual MoM%' =
@@ -4219,6 +4632,7 @@ table Measure
 			VAR Result = DIVIDE(([Operating Income Actual] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Operating Income
 		lineageTag: 29f5c337-86a5-497f-8784-511376572379
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4230,6 +4644,7 @@ table Measure
 			VAR Result = Calculate([Operating Income Actual],filter_)
 			RETURN
 			Result
+		displayFolder: Operating Income
 		lineageTag: 66657473-b000-4b62-a63f-72808fa9f6bb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4241,6 +4656,7 @@ table Measure
 			
 			RETURN
 			Calculate([Operating Income Actual],filter_)
+		displayFolder: Operating Income
 		lineageTag: 467dd3e0-fe51-44a1-9a51-a856b05d13e2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4256,9 +4672,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Operating Income
 		lineageTag: 664c82ab-7f58-4015-a7e3-484096d4a034
 
 	measure 'Operating Income Actual YoY%' = DIVIDE(([Operating Income Actual] - [Operating Income Actual PY]),[Operating Income Actual PY])
+		displayFolder: Operating Income
 		lineageTag: e54b6630-2cf7-4660-a1db-1eb366e30013
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4274,11 +4692,13 @@ table Measure
 			        ),
 			        [Operating Income Actual]
 			    )
+		displayFolder: Operating Income
 		lineageTag: d81418f5-044a-4068-90e1-916efd908f8b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Operating Income APN_Base' = SUM(Fact_COPA_Global[Operating Income Plan])
+		displayFolder: Operating Income
 		lineageTag: a79a8550-10e9-4694-8105-e243ddfd9e3b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4291,6 +4711,7 @@ table Measure
 			return
 			Result
 			```
+		displayFolder: Operating Income
 		lineageTag: c118920e-4b83-4888-99e4-9216ce087e4c
 
 	measure 'Operating Income PY' = ```
@@ -4303,6 +4724,7 @@ table Measure
 			
 			        Calculate( [Operating Income Actual], filter_ )
 			```
+		displayFolder: Operating Income
 		lineageTag: e84c64f1-cbf8-4049-8a7d-8e60094973f6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4311,6 +4733,7 @@ table Measure
 			VAR Plan = [Operating Income APN_Base]
 			Return
 			DIVIDE([Operating Income Actual] - Plan,Plan)
+		displayFolder: Operating Income
 		lineageTag: bfb9e7ef-845f-4223-8b4b-9e4ec38f569f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4326,20 +4749,24 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: Operating Income
 		lineageTag: 410ed7a6-5a45-4fea-a9f3-988336757311
 
 	measure 'FA% Lag 2 Target Diff%' = [FA% Lag2] - 0.62
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: a5cd57a3-8215-44d5-a39d-27910edd6dcf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% Lag 4 Target Diff%' = [FA% Lag4] - 0.7
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 24005a5d-c869-4b31-ade1-d0d9bdb2f15b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% Lag2 Target' = 0.62
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 8ab6b503-9f0c-4913-87d5-cd2929fbe7c6
 
 	measure 'Net Sales Actual LYTD_Final' =
@@ -4354,6 +4781,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net Sales
 		lineageTag: 7e06759b-301d-408e-aae2-6dd8fd96e6ba
 
 	measure 'Gross PPV Actual LYTD_Final' =
@@ -4368,6 +4796,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Gross PPV
 		lineageTag: f6718f6f-db76-481b-a199-b29dbd7bdcb7
 
 	measure 'Net POV Actual LYTD_Final' =
@@ -4382,6 +4811,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Net POV
 		lineageTag: c9d0f241-90fe-4fc9-b054-311f1551886b
 
 	measure 'Operating Income Actual LYTD_Final' =
@@ -4396,6 +4826,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Operating Income
 		lineageTag: 1a1dfabb-e62c-4ef0-b9f4-406c05203c7d
 
 	measure 'OEE% LYTD_Final' =
@@ -4410,6 +4841,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: OEE
 		lineageTag: 611bdc4b-e841-4d32-aab5-4782e02250f3
 
 	measure 'InCount LYTD' = ```
@@ -4420,6 +4852,7 @@ table Measure
 			VAR InCountLYTD = SUMX(In_, [Measure])
 			RETURN InCountLYTD
 			```
+		displayFolder: OEE
 		lineageTag: 2de2ca06-1c9e-49a2-9087-861deceddac3
 
 	measure InCount_PY =
@@ -4430,6 +4863,7 @@ table Measure
 			
 			RETURN
 			    CALCULATE([In Count], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		displayFolder: OEE
 		lineageTag: 98576661-56d0-46c6-9031-6665b358b566
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4442,6 +4876,7 @@ table Measure
 			
 			RETURN
 			    CALCULATE([Out Count], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		displayFolder: OEE
 		lineageTag: e1a4f5c3-d71b-47aa-bf2d-31b340a5f638
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4455,6 +4890,7 @@ table Measure
 			RETURN OutCountLYTD
 			
 			```
+		displayFolder: OEE
 		lineageTag: 66de8ccd-1fc5-4caf-9562-120e4ff06797
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4467,6 +4903,7 @@ table Measure
 			
 			RETURN
 			    CALCULATE([Up Seconds], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		displayFolder: OEE
 		lineageTag: 9f674593-2788-4174-83ce-13b517dd6149
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4479,6 +4916,7 @@ table Measure
 			
 			RETURN
 			    CALCULATE([Down Seconds], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		displayFolder: OEE
 		lineageTag: 442a67b7-bec6-4060-8f79-86922b07a187
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4492,6 +4930,7 @@ table Measure
 			RETURN OutCountLYTD
 			
 			```
+		displayFolder: OEE
 		lineageTag: 39fa85fc-725d-46a9-81fc-2d4deb109e93
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4505,11 +4944,13 @@ table Measure
 			RETURN OutCountLYTD
 			
 			```
+		displayFolder: OEE
 		lineageTag: 51a654c1-7d37-479b-90ad-31a97f081c68
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'TotalElapsed LYTD' = [UpSeconds LYTD] + [DownSeconds LYTD]
+		displayFolder: OEE
 		lineageTag: 34d3296c-93f8-4368-b145-b8dab9164fc7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4522,6 +4963,7 @@ table Measure
 			
 			RETURN
 			    CALCULATE([Run Theoretical Quantity], FILTER(AllDates, Dim_Date[YearPeriodSeq] = PYSeq))
+		displayFolder: OEE
 		lineageTag: 91720cb9-3cb3-4558-9891-f6aa8da2c63d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4535,6 +4977,7 @@ table Measure
 			RETURN OutCountLYTD
 			
 			```
+		displayFolder: OEE
 		lineageTag: 220ead1d-6250-48a2-a10c-e829033e3e57
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4542,11 +4985,13 @@ table Measure
 	measure 'RunSpeed LYTD' = ```
 			DIVIDE([RunQty LYTD], [TotalElapsed LYTD]) 
 			```
+		displayFolder: OEE
 		lineageTag: 97d22ade-9c81-473d-90f3-566e121d72e6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Qloss LYTD' = [InCount LYTD] - [OutCount LYTD]
+		displayFolder: OEE
 		lineageTag: a31c9d6d-a6f0-4f5d-9588-8bcb6b51bba4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4560,6 +5005,7 @@ table Measure
 			        "Variance", ABS([Demand Draft] - [Total Shipments])),[Variance]),
 			REMOVEFILTERS(Fact_Forecast_Accuracy[Source Material Key])
 			)
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: c0875e69-fce8-48bb-9f36-78ba6bc34738
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4578,10 +5024,12 @@ table Measure
 			)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: e6563f0c-c756-47c1-8111-d804bd23a9e1
 
 	measure 'FA% CSCA' = SWITCH(SELECTEDVALUE(Par_SSID_5Digit[Par Name]),"SSID", [FA% SSID],"5 Digit",[FA% 5 Digit],[FA% SSID])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 284d0bae-709c-4ef2-a95f-3647c4ebf971
 
 	measure 'Abs Demand Draft Var 5 Digit LYTD' = ```
@@ -4594,6 +5042,7 @@ table Measure
 			Result
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: aa244a65-ed21-470a-9104-4c7b6683e681
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4612,6 +5061,7 @@ table Measure
 			)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 2842d072-5016-4168-a95d-999998f716e8
 
 	measure 'FA% 5 Digit LYTD' = ```
@@ -4628,6 +5078,7 @@ table Measure
 			)
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 057244a0-c1e4-4056-bf9c-aaf9882f9a13
 
 	measure 'FA% CSCA LYTD' =
@@ -4636,6 +5087,7 @@ table Measure
 			
 			RETURN [FA% CSCA] - FA_lytd
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 33cc7793-7ae9-479b-bdb0-829abde293d9
 
 	measure 'Abs Demand Draft SSID_PY' = ```
@@ -4648,6 +5100,7 @@ table Measure
 			Calculate([Abs Demand Draft Var SSID],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 7f3e398f-88df-48f1-a793-6dda6ea50276
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4662,6 +5115,7 @@ table Measure
 			Calculate([Abs Demand Draft Var 5 Digit],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 5195bcaa-dc7a-44cb-85fb-062beb1198df
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4678,6 +5132,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 5f5790cd-3b64-4d89-a836-fcfd7255db3d
 
 	measure ShowExternalFlag = ```
@@ -4695,14 +5150,17 @@ table Measure
 			    )
 			```
 		formatString: 0
+		displayFolder: Misc
 		lineageTag: 3685e3ef-195e-4ff6-97bb-35aea647e52d
 
 	measure 'On Delivery' = SUM(Fact_Service[On Delivery EA])
+		displayFolder: Service Rate CSCA
 		lineageTag: 229e7541-5e00-4d2a-b65e-33b90f91bdb1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Order = SUM(Fact_Service[Order EA])
+		displayFolder: Service Rate CSCA
 		lineageTag: 0b7b7138-7bca-411d-b5d3-fa9d824ae80f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4711,6 +5169,7 @@ table Measure
 			
 			DIVIDE(SUM(Fact_Quality[Deviation: Total Closed on Time in Period]),SUM(Fact_Quality[Deviation: Total Closed in Period]))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: d4645308-60fc-4e0c-a23b-d9305755c218
 
 	measure 'On Time Closure of Deviations PP' =
@@ -4722,6 +5181,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 33e04bb9-6f7b-4181-b33c-b98190f05d30
 
 	measure 'On Time Closure of Deviations PY' = ```
@@ -4735,6 +5195,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 8a588cdd-6d98-4569-83cc-c863037ee40a
 
 	measure 'On Time Closure of Deviations MoM%' =
@@ -4743,6 +5204,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: a29e44c4-328b-47ce-aa7d-fd44f8cff825
 
 	measure 'On Time Closure of Deviations MoM_Final' = ```
@@ -4754,12 +5216,14 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 544a7783-6d86-499d-a48c-ca300631e8a7
 
 	measure 'On Time Closure of Deviations YoY%' =
 			
 			IF(ISBLANK([On Time Closure of Deviations PY]), BLANK(),[On Time Closure of Deviations%] - [On Time Closure of Deviations PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 466085c4-9776-4863-a705-9d04c9b42df8
 
 	measure 'On Time Closure of Deviations YoY_Final' =
@@ -4774,15 +5238,18 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 387a7d6f-d67e-4bea-9811-c67bbb167c48
 
 	measure 'On Time Closure of Deviations YTD' = TOTALYTD([On Time Closure of Deviations%],Dim_Date[Date])
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 91fa4bcd-e300-4fd2-a79e-c61a0357fd4b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Deviations Closed on Time' = SUM(Fact_Quality[Deviation: Total Closed on Time in Period])
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 31957436-d150-46ea-b348-d71683ee3dea
 
 	measure 'Deviations Closed on Time PY' = ```
@@ -4796,6 +5263,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 7ab7675a-5f72-4b7a-8724-1bf05ffe8bdb
 
 	measure 'Deviations Closed on Time LYTD' = ```
@@ -4808,10 +5276,12 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: e4079846-7178-4fc9-a4b5-64ce1b2c5392
 
 	measure 'Deviations Closed' = SUM(Fact_Quality[Deviation: Total Closed in Period])
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 9e989189-f8eb-4e84-958f-67f8730d5a50
 
 	measure 'Deviations Closed PY' = ```
@@ -4825,6 +5295,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: dc6f4023-5869-4e1b-a67c-fa58181dc949
 
 	measure 'Deviations Closed LYTD' = ```
@@ -4837,6 +5308,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 001ea44e-7655-49ac-a187-92728a39f4ec
 
 	measure 'On Time Closure of Deviations LYTD' =
@@ -4845,6 +5317,7 @@ table Measure
 			
 			RETURN
 			IF(ISBLANK(LYTD), BLANK(),[On Time Closure of Deviations%] - LYTD)
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 7fae2f03-cc3d-4a63-9fca-a884929942e7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4861,14 +5334,17 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 42126af4-96de-4561-be5b-7b063de313b4
 
 	measure 'Deviations Plan' = AVERAGE(Fact_Quality[Deviations Target])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: a3a6001d-4bdc-41a7-b308-7cf394d85e74
 
 	measure 'On Time Closure of Deviations Target Diff%' = [On Time Closure of Deviations%] - [Deviations Plan]
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: On Time Closure of Deviations
 		lineageTag: 51c7cb97-fc18-487a-8002-f1e05b6c85f4
 
 	measure 'On Time Closure of Deviations Target Final' = ```
@@ -4880,18 +5356,22 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: On Time Closure of Deviations
 		lineageTag: a90824fb-a6f9-422b-9d1b-3b1430a77b18
 
 	measure 'CAPA Closed on Time' = SUM(Fact_Quality[CAPA: Total Closed on Time in Period])
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: c17e172d-c84f-4a64-835b-76a078c2cf5e
 
 	measure 'CAPA Closed' = SUM(Fact_Quality[CAPA: Total Closed In Period])
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: 1cf5fe20-2e63-4e19-ae84-463fc280c193
 
 	measure 'CAPA Completion Rate' = DIVIDE([CAPA Closed on Time],[CAPA Closed])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CAPA Completion Rate
 		lineageTag: 95429529-8a7d-45b7-8b6e-d5bad5e76c58
 
 	measure 'CAPA Completion Rate PP' =
@@ -4903,6 +5383,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CAPA Completion Rate
 		lineageTag: e63663f1-96aa-44ca-bc1b-2e9f966a52a2
 
 	measure 'CAPA Completion Rate PY' = ```
@@ -4916,6 +5397,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CAPA Completion Rate
 		lineageTag: 4f728359-d007-4b29-ac74-b136abf86fe2
 
 	measure 'CAPA Completion Rate MoM%' =
@@ -4923,6 +5405,7 @@ table Measure
 			VAR Result =  [CAPA Completion Rate] - [CAPA Completion Rate PP]
 			RETURN
 			Result
+		displayFolder: CAPA Completion Rate
 		lineageTag: 212427c4-30e4-4569-98f1-68c33d80698e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4936,11 +5419,13 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: CAPA Completion Rate
 		lineageTag: c531dd52-961f-4ed3-bd0f-f6e6000d461a
 
 	measure 'CAPA Completion Rate YoY%' =
 			
 			IF(ISBLANK([CAPA Completion Rate PY]), BLANK(),[CAPA Completion Rate] - [CAPA Completion Rate PY])
+		displayFolder: CAPA Completion Rate
 		lineageTag: 25d26084-3881-4836-8969-c03db6081bc7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4957,9 +5442,11 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: CAPA Completion Rate
 		lineageTag: 06efc617-ee13-41dd-baf6-7603c7c711ca
 
 	measure 'CAPA Completion Rate YTD' = TOTALYTD([CAPA Completion Rate],Dim_Date[Date])
+		displayFolder: CAPA Completion Rate
 		lineageTag: 4f00a904-3a16-4ab2-bedb-65b681f155ca
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4975,6 +5462,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: b29adf15-0c8c-4aca-8b60-76b4a5bff20b
 
 	measure 'CAPA Closed on Time PY' = ```
@@ -4988,6 +5476,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: 7a9566a2-7105-4d47-86d8-a1e3c6dcb871
 
 	measure 'CAPA Closed on Time LYTD' = ```
@@ -5000,6 +5489,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: b2628a98-48c8-4a14-a5f2-e1ea0c380d7b
 
 	measure 'CAPA Closed LYTD' = ```
@@ -5012,9 +5502,11 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: CAPA Completion Rate
 		lineageTag: 4bad0a02-c854-401f-ba71-ffdb697c67d5
 
 	measure 'CAPA Completion Rate LYTD' = DIVIDE([CAPA Closed on Time LYTD],[CAPA Closed LYTD])
+		displayFolder: CAPA Completion Rate
 		lineageTag: 483bb444-3458-4a92-a264-c458a2f3647c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5031,13 +5523,16 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: CAPA Completion Rate
 		lineageTag: 93c1104e-7f92-4fe6-a9d4-d9de8458bcde
 
 	measure 'CAPA Plan' = AVERAGE(Fact_Quality[CAPA Target])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: CAPA Completion Rate
 		lineageTag: d7650970-b9d2-41e1-ad8b-9874b6e5d62d
 
 	measure 'CAPA Completion Rate Target Diff%' = [CAPA Completion Rate] - [CAPA Plan]
+		displayFolder: CAPA Completion Rate
 		lineageTag: 8a1826ca-21e0-48f5-8f72-21082526065e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5051,14 +5546,17 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: CAPA Completion Rate
 		lineageTag: df258cae-ede0-4427-b29a-dd60ff2ebd2f
 
 	measure 'Total # of Batches w deviations' = SUM(Fact_Quality[RFT: Total # of Batches with Deviations])
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: 7e3a64d3-13d8-4d45-ab58-13b9d775ba40
 
 	measure 'Total # of Finished Goods Batches' = SUM(Fact_Quality[RFT: Total # of Finished Goods Batches])
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: 88cc745b-d8b7-4d76-a482-86db76701827
 
 	measure RFT% =
@@ -5068,6 +5566,7 @@ table Measure
 			Return
 			IF(ISBLANK(kpi_),BLANK(),1-kpi_)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RFT
 		lineageTag: e3341eff-45f1-49b5-83f9-55afabc1a42a
 
 	measure 'RFT% PY' = ```
@@ -5081,6 +5580,7 @@ table Measure
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RFT
 		lineageTag: f6f5daba-e19c-4670-b27c-20dca12c8df7
 
 	measure 'RFT% PP' =
@@ -5092,6 +5592,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RFT
 		lineageTag: aa3be89c-964f-4ad7-8101-10e2db2d7950
 
 	measure 'RFT MoM%' =
@@ -5099,6 +5600,7 @@ table Measure
 			VAR Result =  [RFT%] - [RFT% PP]
 			RETURN
 			Result
+		displayFolder: RFT
 		lineageTag: 5aff3cae-1da6-499e-a99b-333e16060855
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5112,9 +5614,11 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: RFT
 		lineageTag: 3a9a90c8-f768-457b-962e-8de5d03dd601
 
 	measure 'RFT YTD' = TOTALYTD([RFT%],Dim_Date[Date])
+		displayFolder: RFT
 		lineageTag: cf26356a-f861-4f08-8a29-b1e803a0e00b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5122,6 +5626,7 @@ table Measure
 	measure 'RFT YoY%' =
 			
 			IF(ISBLANK([RFT% PY]),BLANK(),[RFT%] - [RFT% PY])
+		displayFolder: RFT
 		lineageTag: 70bae1a7-4731-4594-bc65-85144df2611f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5138,6 +5643,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: RFT
 		lineageTag: 173440f2-a2da-4758-8e2c-89e5b783808b
 
 	measure 'Total # of Batches w deviations PY' = ```
@@ -5151,6 +5657,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: 3c2afce1-e288-4058-960c-c6700b02bc71
 
 	measure 'Total # of Finished Goods Batches PY' = ```
@@ -5164,6 +5671,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: d4b4eb5d-64af-4f8d-bc71-56b053f770d6
 
 	measure 'Total # of Batches w deviations LYTD' = ```
@@ -5176,6 +5684,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: 43c91248-bef7-4738-b96d-1d06e98d2738
 
 	measure 'Total # of Finished Goods Batches LYTD' = ```
@@ -5188,6 +5697,7 @@ table Measure
 			Result
 			```
 		formatString: 0
+		displayFolder: RFT
 		lineageTag: 747fd609-8b76-4da0-9c8f-700ef38b7999
 
 	measure 'RFT LYTD' =
@@ -5196,6 +5706,7 @@ table Measure
 			
 			Return
 			IF(ISBLANK(kpi_),BLANK(),1-kpi_)
+		displayFolder: RFT
 		lineageTag: 7989ef8d-2b4f-4939-83c6-79260258ac00
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5212,13 +5723,16 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: RFT
 		lineageTag: fa4fc465-e9bf-4867-9f32-b86bb319c8af
 
 	measure 'RFT Plan' = AVERAGE(Fact_Quality[RFT Target])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: RFT
 		lineageTag: 31822323-d99d-4571-85d1-c72c8d365b32
 
 	measure 'RFT Target Diff%' = [RFT%] - [RFT Plan]
+		displayFolder: RFT
 		lineageTag: 194d664e-67de-4ffb-ae26-92f7dcfdf980
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5232,10 +5746,12 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: RFT
 		lineageTag: d8d8affd-ba71-4c0a-a12c-866cfd0e0b64
 
 	measure 'Critical or Major Observations' = (SUM(Fact_Quality[External Audits: Critical Findings]) + SUM(Fact_Quality[External Audits: Major Findings]))/3
 		formatString: 0
+		displayFolder: Critical or Major Obs
 		lineageTag: d966a903-becc-4282-bc01-81b7a1fb8785
 
 	measure 'Critical or Major Observations PP' =
@@ -5247,6 +5763,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0
+		displayFolder: Critical or Major Obs
 		lineageTag: 806fb950-2d5e-40ec-95da-e2e923cee781
 
 	measure 'Critical or Major Observations PY' = ```
@@ -5260,6 +5777,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: Critical or Major Obs
 		lineageTag: 6753a7d1-a0c6-4a12-a808-5951422d717b
 
 	measure 'Critical or Major Observations YTD' =
@@ -5274,11 +5792,13 @@ table Measure
 			        [Critical or Major Observations]
 			    )
 		formatString: 0
+		displayFolder: Critical or Major Obs
 		lineageTag: 4aa8b54a-66b0-4cc2-bd96-dbca56a655c2
 
 	measure 'Critical or Major Observations YoY%' =
 			
 			DIVIDE(([Critical or Major Observations] - [Critical or Major Observations PY]),[Critical or Major Observations PY])
+		displayFolder: Critical or Major Obs
 		lineageTag: 466aa6b1-a529-44c6-9f87-366ccad8b458
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5286,6 +5806,7 @@ table Measure
 	measure 'Critical or Major Observations MoM%' =
 			
 			DIVIDE(([Critical or Major Observations] - [Critical or Major Observations PP]),[Critical or Major Observations PP])
+		displayFolder: Critical or Major Obs
 		lineageTag: d6e0038f-7790-487e-96c2-31f85d5b92f5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5299,6 +5820,7 @@ table Measure
 			Return 
 			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
 			```
+		displayFolder: Critical or Major Obs
 		lineageTag: 984174b7-9fd8-4622-969a-e46817b3f4d2
 
 	measure 'Critical or Major Observations YoY_Final' =
@@ -5313,6 +5835,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Critical or Major Obs
 		lineageTag: 08c12c06-db29-4cdd-a6af-fe91f5ba1569
 
 	measure 'Critical or Major Observations LYTD' = ```
@@ -5324,6 +5847,7 @@ table Measure
 			return
 			DIVIDE([Critical or Major Observations] - Result,Result)
 			```
+		displayFolder: Critical or Major Obs
 		lineageTag: 4c797d01-b750-4ddd-bb89-52e25aefb6a5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5340,6 +5864,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Critical or Major Obs
 		lineageTag: 540097a8-5a75-4168-91e5-587b9a4c00c8
 
 	measure DSO_APN_Base =
@@ -5349,14 +5874,17 @@ table Measure
 			RETURN
 			DIVIDE(num,den,0)
 		formatString: 0
+		displayFolder: DSO
 		lineageTag: c0182232-6355-4f58-b268-c664a677e288
 
 	measure 'ABP Variance' = SUM(Fact_DSO_DPO_ABP[ABP_Variance])*1000
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: f3a47495-0f92-47a2-82e6-13df475dc8bb
 
 	measure 'ABP Variance_APN_Base' = SUM(Fact_DSO_DPO_ABP[ABP_Variance_Plan])*1000
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: 01de310b-7071-4630-8ec8-f4eb287ab435
 
 	measure 'ABP Variance_APN' =
@@ -5365,6 +5893,7 @@ table Measure
 			Return
 			DIVIDE([ABP Variance] - Plan,Plan)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: ABP Variance
 		lineageTag: 86475614-9c08-4f1b-8c2d-4fe370e78d4e
 
 	measure 'ABP Variance_APN_Final' =
@@ -5379,6 +5908,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: ABP Variance
 		lineageTag: ed91c662-52e7-4ab7-9ac9-846e8024663f
 
 	measure DSO_APN =
@@ -5387,6 +5917,7 @@ table Measure
 			Return
 			DIVIDE([DSO] - Plan,Plan)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DSO
 		lineageTag: cd97b757-0f40-472d-98f5-a4286fffa392
 
 	measure DSO_APN_Final =
@@ -5401,6 +5932,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: DSO
 		lineageTag: 911fbc7a-a7e1-445a-b016-bb039e5cf369
 
 	measure DPO_APN_Base =
@@ -5410,6 +5942,7 @@ table Measure
 			RETURN
 			DIVIDE(num,den,0)
 		formatString: 0
+		displayFolder: DPO
 		lineageTag: 828f35b9-39e3-4c7a-8008-85040514ed06
 
 	measure DPO_APN =
@@ -5418,6 +5951,7 @@ table Measure
 			Return
 			DIVIDE([DPO] - Plan,Plan)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: DPO
 		lineageTag: 978c56d0-d760-4dcd-b260-326fd435f358
 
 	measure DPO_APN_Final =
@@ -5432,6 +5966,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: DPO
 		lineageTag: 5898639d-6f98-4ae4-84ed-da03c8e48e38
 
 	measure 'ABP Variance PP' =
@@ -5443,6 +5978,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: 22096135-3c90-46ad-8d56-2e511a0cd778
 
 	measure 'ABP Variance PY' =
@@ -5453,9 +5989,11 @@ table Measure
 			RETURN
 			Calculate([ABP Variance],filter_)
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: 948d024c-22f0-4f39-980c-427e9819ecd0
 
 	measure 'ABP Variance YoY%' = DIVIDE(([ABP Variance] - [ABP Variance PY]),[ABP Variance PY])
+		displayFolder: ABP Variance
 		lineageTag: 4defcb38-23dc-4953-82e7-c4811e09abae
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5471,6 +6009,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			)
+		displayFolder: ABP Variance
 		lineageTag: 0411fd22-a813-4196-80fe-5a3b035f82cf
 
 	measure 'ABP Variance MoM%' =
@@ -5479,6 +6018,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: ba33b857-b276-4ffc-8d08-003e51a83c2a
 
 	measure 'ABP Variance MoM_Final' = ```
@@ -5489,6 +6029,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: ABP Variance
 		lineageTag: 7691bc0d-7b26-4995-8a50-62620991a6c7
 
 	measure 'ABP Variance LYTD' = ```
@@ -5502,6 +6043,7 @@ table Measure
 			DIVIDE([ABP Variance] - Result,Result)
 			```
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: cad9adcc-2b7c-48e5-8898-03b67ad1a54b
 
 	measure 'ABP Variance LYTD_Final' =
@@ -5515,11 +6057,13 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: ABP Variance
 		lineageTag: 2d8d18d5-851f-4546-9597-89813dbb967c
 
 	measure Sales_bar_graph =
 			
 			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Sales_Parameter],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Sales_Parameter])
+		displayFolder: Misc
 		lineageTag: 7a3d34ff-216f-4751-81e9-5b518bae42a4
 
 		formatStringDefinition =
@@ -5537,6 +6081,7 @@ table Measure
 	measure Working_Capital_bar_graph =
 			
 			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Working Capital],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Working Capital])
+		displayFolder: Misc
 		lineageTag: 80070bed-940d-4ccf-9d43-623944ab1872
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5544,6 +6089,7 @@ table Measure
 	measure Operating_Income_bar_graph =
 			
 			SWITCH(SELECTEDVALUE(External_Toggle[Show External]),"No", CALCULATE([Switch Operating_Parameter],KEEPFILTERS(Dim_Value_Stream[IsExternal] = "No")), "Yes",[Switch Operating_Parameter])
+		displayFolder: Operating Income
 		lineageTag: 6298cb05-0938-4cd5-b947-84a48a0e36e2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5560,6 +6106,7 @@ table Measure
 			        [ABP Variance]
 			    )
 		formatString: 0.0
+		displayFolder: ABP Variance
 		lineageTag: f27858ea-29ee-482d-bfc0-8dfb385f06d0
 
 	measure 'Service Top 11' = ```
@@ -5591,6 +6138,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: df125f1d-502a-4b16-bc3a-62baab07647c
 
 	measure 'Top 11 Retailers CFR > 90%' = ```
@@ -5621,6 +6169,7 @@ table Measure
 			
 			```
 		formatString: 0
+		displayFolder: CFR
 		lineageTag: 6e7218de-97af-4113-9169-f5bdc319f9f5
 
 	measure 'Service Top 11 PY' =
@@ -5632,6 +6181,7 @@ table Measure
 			RETURN
 			Calculate([Service Top 11],filter_)
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: 2518550b-15ac-448e-a836-9691dfcc5731
 
 	measure 'Service Top 11 PP' =
@@ -5643,6 +6193,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: d4df7a30-a561-41c0-af99-33c6ff363881
 
 	measure 'Service Top 11 MoM%' =
@@ -5655,6 +6206,7 @@ table Measure
 			RETURN
 			Result
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: 3a339552-dbde-4973-a5b6-96356997c308
 
 	measure 'Service Top 11 MoM_Final' = ```
@@ -5666,10 +6218,12 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Service Top 11
 		lineageTag: a23e64ca-5e62-46d1-bb6b-3f189d8d193f
 
 	measure 'Service Top 11 YoY%' = DIVIDE([Service Top 11] - [Service Top 11 PY], [Service Top 11 PY])
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: 952f5126-1d1e-41ee-adc3-d068dc1f41de
 
 	measure 'Service Top 11 YoY_Final' =
@@ -5684,14 +6238,17 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Service Top 11
 		lineageTag: c4b5297e-c302-421e-aa4d-38b721858be6
 
 	measure 'Service Top 11 Target' = 7
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: 7d53f875-05d8-45b8-9300-c26825166515
 
 	measure 'Service Top 11 Target Diff%' = DIVIDE([Service Top 11] - [Service Top 11 Target],[Service Top 11 Target])
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: f0dcfb2e-3a04-4e6c-af84-e0d804a100a7
 
 	measure 'Service Top 11 Target Final' = ```
@@ -5703,6 +6260,7 @@ table Measure
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Service Top 11
 		lineageTag: be09e07a-4949-4c4b-aae7-3f25f09be6c9
 
 	measure 'Service Top 11 LYTD Base' = ```
@@ -5733,6 +6291,7 @@ table Measure
 			)
 			```
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: b48ba971-4982-4025-bb3a-9755fb350e63
 
 	measure 'Service Top 11 YTD' = ```
@@ -5763,9 +6322,11 @@ table Measure
 			)
 			```
 		formatString: 0
+		displayFolder: Service Top 11
 		lineageTag: 274be111-f374-4942-8aaf-13bd20897307
 
 	measure 'Service Top 11 LYTD' = DIVIDE([Service Top 11] - [Service Top 11 LYTD Base], [Service Top 11 LYTD Base])
+		displayFolder: Service Top 11
 		lineageTag: 1a3d0f8c-77d8-49bb-af7a-36711a136d35
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5782,6 +6343,7 @@ table Measure
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Service Top 11
 		lineageTag: 2aa6f8e6-e705-4cd4-b885-a00a14f61c2e
 
 	measure 'Total Logistics Actual LYTD' = ```
@@ -5901,6 +6463,7 @@ table Measure
 			        [Distribution Actual]
 			    )
 		formatString: #,0.0
+		displayFolder: Distribution on COGS
 		lineageTag: 991d5fa4-4623-4dd6-b22a-ae9083ee4b60
 
 	measure 'Distribution Actual LYTD' = ```
@@ -5913,6 +6476,7 @@ table Measure
 			Result
 			```
 		formatString: #,0.0
+		displayFolder: Distribution on COGS
 		lineageTag: 1b866793-cf0e-47df-b06a-ca3ce6bb4dd7
 
 	measure 'Distribution Actual PY' =
@@ -5923,9 +6487,11 @@ table Measure
 			RETURN
 			Calculate([Distribution Actual],filter_)
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
 		lineageTag: 017c54df-87d2-47e2-a364-7cda99909c99
 
 	measure 'OEE Baseline' = AVERAGE(Fact_OEE_Baseline[_OEE Baseline])
+		displayFolder: OEE
 		lineageTag: 90a3bd8c-93d6-4e7e-b284-59ee0f2e1e87
 
 	measure 'OEE Quarterly Target' =
@@ -5943,6 +6509,7 @@ table Measure
 			    )
 			)
 		formatString: #,##0.00 %
+		displayFolder: OEE
 		lineageTag: 1a2dec3c-d4da-4fb1-9cb0-74b758008b68
 
 	measure 'Selected Filters CSCA' = ```
@@ -5978,6 +6545,7 @@ table Measure
 			    "All"
 			)
 			```
+		displayFolder: Misc
 		lineageTag: 2589295c-73b8-40ae-8d3a-c6af2eaacd72
 
 	measure 'Selected Filters CSCI' = ```
@@ -6007,7 +6575,2254 @@ table Measure
 			    "All"
 			)
 			```
+		displayFolder: Misc
 		lineageTag: 423325f4-791c-4ea5-a78c-727c534a476e
+
+	measure 'ABP Variance _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ABP Variance MoM%],
+			        "LYTD", [ABP Variance LYTD],
+			        "vs YoY", [ABP Variance YoY%],
+			        "vs Plan", [ABP Variance_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#D7191C",  -- red for ▲ up
+			            "#1A9641"  -- green for ▼ down
+			        )
+		displayFolder: ABP Variance
+		lineageTag: dda3e5b0-c04c-4d94-b3f7-10636779617b
+
+	measure 'ABP Variance _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ABP Variance MoM%],
+			        "LYTD", [ABP Variance LYTD],
+			        "vs YoY", [ABP Variance YoY%],
+			        "vs Plan", [ABP Variance_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#D7191C",  -- red
+			            "#001489"  -- Blue for ▼ down
+			        )
+			)
+			```
+		displayFolder: ABP Variance
+		lineageTag: 5a552db2-9736-4306-b944-f7bc3ae29986
+
+	measure 'ABP Variance Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [ABP Variance MoM_Final],
+			      "LYTD", [ABP Variance LYTD_Final],
+			      "vs YoY", [ABP Variance YoY_Final],
+			      "vs Plan", [ABP Variance_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: ABP Variance
+		lineageTag: 1b4f5894-c1e9-45a4-a0ad-2f4c000d0841
+
+	measure FA_CSCA_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [FA% MoM%],
+			        "LYTD", [FA% CSCA LYTD],
+			        "vs YoY", [FA% YoY%],  
+			        "vs Plan", Switch(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag 2 Target Diff%], "4", [FA% Lag 4 Target Diff%]),
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			    )
+			)
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: f7814614-4b3d-457c-a6b1-09fcccc76831
+
+	measure Forecast_Accuracy_Lag = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [FA% MoM_Final],
+			      "LYTD",               [FA% CSCA LYTD_Final],
+			      "vs YoY",               [FA% YoY_Final],
+			      "vs Plan", SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag2 Target_Final],"4",[FA% Lag4 Target_Final]),
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: 0df02182-49ea-4ccc-b141-c65ea0001be0
+
+	measure Forecast_Accuracy_Lag_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [FA% MoM%],
+			        "LYTD", [FA% CSCA LYTD],
+			        "vs YoY", [FA% YoY%],  
+			        "vs Plan", Switch(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag 2 Target Diff%],
+			        "4",[FA% Lag 4 Target Diff%]),
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#000000",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+			    )
+			)
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: cc90c6c1-1a6e-4f64-80a9-d71e27f6a224
+
+	measure 'Gross Inventory _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Gross Inventory MoM%],
+			        "LYTD", [Gross Inv LYTD],
+			        "vs YoY", [Gross Inventory YoY%],
+			        "vs Plan", [Gross Inventory_APN],
+			        "vs Flex", [Gross Inventory_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#001489"   -- Green for ▼ down
+			        )
+			)
+			```
+		displayFolder: Gross Inventory
+		lineageTag: 93daddeb-ac4c-4805-a0e5-37cff8c957ad
+
+	measure Gross_Inventory = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Gross Inventory MoM_Final],
+			      "LYTD",               [Gross Inv LYTD_Final],
+			      "vs YoY",               [Gross Inventory YoY_Final],
+			      "vs Plan", [Gross Inventory_APN_Final],
+			      "vs Flex", [Gross Inventory_AFX_Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: Gross Inventory
+		lineageTag: ceafa47a-354b-4324-8248-ae2bf82e8e14
+
+	measure Gross_Inventory_Color =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Gross Inventory MoM%],
+			        "LYTD", [Gross Inv LYTD],
+			        "vs YoY", [Gross Inventory YoY%],
+			        "vs Plan", [Gross Inventory_APN],
+			        "vs Flex", [Gross Inventory_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+		displayFolder: Gross Inventory
+		lineageTag: 01a21988-f77d-49c9-a7cc-a6f087fc4e81
+
+	measure 'Inflated Inventory _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Inflated Inventory MoM%],
+			        "LYTD", [Inflated Inv LYTD],
+			        "vs YoY", [Inflated Inventory YoY%], 
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#001489"   -- Green for ▼ down
+			        )
+			)
+			```
+		displayFolder: Inflated Inventory
+		lineageTag: ee18417c-4d91-4374-9d7d-b658161639bf
+
+	measure Inflated_Inventory = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Inflated Inventory MoM_Final],
+			      "LYTD",               [Inflated Inv LYTD_Final],
+			      "vs YoY",               [Inflated Inventory YoY_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: Inflated Inventory
+		lineageTag: 4142541c-b983-4249-81dc-8c2cd55b1fb4
+
+	measure Inflated_Inventory_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Inflated Inventory MoM%],
+			        "LYTD", [Inflated Inv LYTD],
+			        "vs YoY", [Inflated Inventory YoY%], 
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			```
+		displayFolder: Inflated Inventory
+		lineageTag: 856c2e81-9dbc-41c9-bdac-120fa14755e8
+
+	measure 'Net Inventory _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net Inventory MoM%],
+			        "LYTD", [Net Inventory LYTD],
+			        "vs YoY", [Net Inventory YoY%],
+			        "vs Plan", [Net Inventory_APN],
+			        "vs Flex", [Net Inventory_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#001489"   -- Green for ▼ down
+			        )
+			)
+			```
+		displayFolder: Net Inventory
+		lineageTag: e6e21601-117e-4ef0-a1db-fd0f376470e0
+
+	measure 'Net POV_Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net POV Actual MoM%],
+			        "LYTD", [Net POV Actual LYTD],
+			        "vs YoY", [Net POV Actual YoY%], 
+			        "vs Plan", [Net POV_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#000000", 
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: Net POV
+		lineageTag: 06476168-c605-4c2b-853c-f9c7f43b6551
+
+	measure 'Net POV_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net POV Actual MoM%],
+			        "LYTD", [Net POV Actual LYTD],
+			        "vs YoY", [Net POV Actual YoY%], 
+			        "vs Plan", [Net POV_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: Net POV
+		lineageTag: 8f3d95c8-f2a7-4423-8652-b9e33244f269
+
+	measure Net_Inventory = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Net Inventory MoM_Final],
+			      "LYTD",               [Net Inv LYTD_Final],
+			      "vs YoY",               [Net Inventory YoY_Final],
+			      "vs Plan", [Net Inventory_APN_Final],
+			      "vs Flex", [Net Inventory_AFX_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: Net Inventory
+		lineageTag: 9641f29e-d5e6-47d5-b11c-7eff043f4732
+
+	measure Net_Inventory_Color =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net Inventory MoM%],
+			        "LYTD", [Net Inventory LYTD],
+			        "vs YoY", [Net Inventory YoY%],
+			        "vs Plan", [Net Inventory_APN],
+			        "vs Flex", [Net Inventory_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+		displayFolder: Net Inventory
+		lineageTag: 2682106c-541b-4134-a970-546eb8033819
+
+	measure 'CAPA _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [CAPA Completion Rate MoM%],
+			        "LYTD", [CAPA Completion Rate LYTD],
+			        "vs YoY", [CAPA Completion Rate YoY%],
+			        "vs Plan", [CAPA Completion Rate Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: CAPA Completion Rate
+		lineageTag: 19d83f4e-8863-433f-ba49-f0a77c7be310
+
+	measure 'CAPA _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [CAPA Completion Rate MoM%],
+			        "LYTD", [CAPA Completion Rate LYTD],
+			        "vs YoY", [CAPA Completion Rate YoY%],
+			        "vs Plan", [CAPA Completion Rate Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: CAPA Completion Rate
+		lineageTag: 712ff5f9-1a54-47fa-93e9-1f7a435b47ea
+
+	measure 'CAPA Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [CAPA Completion Rate MoM_Final],
+			      "LYTD", [CAPA Completion Rate LYTD_Final],
+			      "vs YoY", [CAPA Completion Rate YoY_Final],
+			      "vs Plan", [CAPA Completion Rate Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: CAPA Completion Rate
+		lineageTag: 57b5adf4-217b-479f-847b-5a886f1da021
+
+	measure 'RFT _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [RFT MoM%],
+			        "LYTD", [RFT LYTD],
+			        "vs YoY", [RFT YTD],
+			        "vs Plan", [RFT Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: RFT
+		lineageTag: 42b2e445-ffda-49e5-b252-bdc8d21c0e73
+
+	measure 'RFT _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [RFT MoM%],
+			        "LYTD", [RFT LYTD],
+			        "vs YoY", [RFT YoY%],
+			        "vs Plan", [RFT Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: RFT
+		lineageTag: a0b8ff3a-6bb4-465b-9af2-1f29f6636561
+
+	measure 'RFT Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [RFT MoM_Final],
+			      "LYTD", [RFT LYTD_Final],
+			      "vs YoY", [RFT YoY_Final],
+			      "vs Plan", [RFT Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: RFT
+		lineageTag: 93c1f698-59ac-4d8b-9b41-da39e8f315ec
+
+	measure 'Critical or Major Observations _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Critical or Major Observations MoM%],
+			        "LYTD", [Critical or Major Observations LYTD],
+			        "vs YoY", [Critical or Major Observations YTD],
+			        "vs Plan","--",
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: Critical or Major Obs
+		lineageTag: 1d7617d7-9fc4-4d04-97a7-5004c9f8a209
+
+	measure 'Critical or Major Observations _Color_KPI' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Critical or Major Observations MoM%],
+			        "LYTD", [Critical or Major Observations LYTD],
+			        "vs YoY", [Critical or Major Observations YoY%],
+			        "vs Plan", "--",
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+		displayFolder: Critical or Major Obs
+		lineageTag: 8cd7b0dd-015f-48f8-9b44-f780b10f0122
+
+	measure 'Critical or Major Observations Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Critical or Major Observations MoM_Final],
+			      "LYTD", [Critical or Major Observations LYTD_Final],
+			      "vs YoY", [Critical or Major Observations YoY_Final],
+			      "vs Plan", "--",
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Critical or Major Obs
+		lineageTag: 0380be26-08ae-45e6-80ed-64eed0bab944
+
+	measure 'Deviations _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [On Time Closure of Deviations MoM%],
+			        "LYTD", [On Time Closure of Deviations LYTD],
+			        "vs YoY", [On Time Closure of Deviations YoY%],
+			        "vs Plan", [On Time Closure of Deviations Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: On Time Closure of Deviations
+		lineageTag: d417ef57-f4c6-4a2b-8e95-a2e12e2002e0
+
+	measure 'Deviations _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [On Time Closure of Deviations MoM%],
+			        "LYTD", [On Time Closure of Deviations LYTD],
+			        "vs YoY", [On Time Closure of Deviations YoY%],
+			        "vs Plan", [On Time Closure of Deviations Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: On Time Closure of Deviations
+		lineageTag: 1cac5b71-4aa9-4944-9ecf-1851147a27d8
+
+	measure 'Deviations Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [On Time Closure of Deviations MoM_Final],
+			      "LYTD", [On Time Closure of Deviations LYTD_Final],
+			      "vs YoY", [On Time Closure of Deviations YoY_Final],
+			      "vs Plan", [On Time Closure of Deviations Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: On Time Closure of Deviations
+		lineageTag: ed252ca9-2aa6-4023-971d-d70acef28a88
+
+	measure 'Bias Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Bias MoM_Final],
+			      "LYTD",               [Bias% LYTD_Final],
+			      "vs YoY",               [Bias YoY_Final],
+			      "vs Plan", [Bias Target Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: Bias CSCA
+		lineageTag: 35cd6896-b861-469f-b15d-3080e543393e
+
+	measure Bias_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%],
+			        "LYTD", [Bias% LYTD],
+			        "vs YoY", [Bias YoY%],
+			        "vs Plan", [Bias Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#000000",  // black for blank
+			        IF(
+			            ABS(kpi_value) <= 0.03,     // between -3% and +3%
+			            "#1A9641",                  // green
+			            "#D7191C"                   // red
+			        )
+			    )
+			
+			```
+		displayFolder: Bias CSCA
+		lineageTag: d9006fc7-626b-453f-8839-d76881195577
+
+	measure Bias_CSCA_Color_KPI = ```
+			
+			/*
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			// Current KPI value (raw % bias)
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%],
+			        "LYTD", [Bias% LYTD],
+			        "vs YoY", [Bias YoY%],
+			        "vs Plan", [Bias Target Diff%],
+			        BLANK()
+			    )
+			
+			// Previous period's KPI value
+			VAR prev_kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", CALCULATE([Bias MoM%], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        "LYTD", CALCULATE([Bias% LYTD], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        "vs YoY", CALCULATE([Bias YoY%], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        "vs Plan", CALCULATE([Bias Target Diff%], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        BLANK()
+			    )
+			
+			// Is bias within acceptable range of -5% to +5%
+			VAR isAcceptable = NOT ISBLANK(kpi_value) && ABS(kpi_value) <= 0.05
+			
+			// Is bias improving (getting closer to 0 compared to previous)
+			VAR isImproving = 
+			    NOT isAcceptable &&
+			    NOT ISBLANK(kpi_value) &&
+			    NOT ISBLANK(prev_kpi_value) &&
+			    ABS(kpi_value) < ABS(prev_kpi_value)
+			
+			RETURN
+			    IF(
+			        _sel = "YTD", "#000000",  // black for YTD
+			        IF(
+			            ISBLANK(kpi_value), "#000000",  // black for blank
+			            IF(
+			                isAcceptable || isImproving,
+			                "#1A9641",  // green for acceptable or improving
+			                "#D7191C"   // red for bad + not improving
+			            )
+			        )
+			    )
+			
+			//another calculation
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%],
+			        "LYTD", [Bias% LYTD],
+			        "vs YoY", [Bias YoY%],
+			        "vs Plan", [Bias Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  
+			        IF(
+			            ABS(kpi_value) <= 0.03,     // between -3% and +3%
+			            "#001489",                  // Blue
+			            "#D7191C"                   // red
+			        )
+			    )
+			*/
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			VAR BiasValue = [Bias%] 
+			VAR CompValue =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%],
+			        "LYTD", [Bias% LYTD],
+			        "vs YoY", [Bias YoY%],
+			        "vs Plan", [Bias Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(CompValue), "#001489",  // fallback for blank
+			        IF(
+			            ABS(BiasValue) <= 0.03,     // green for bias within ±3%
+			            "#001489",                  // green
+			            "#D7191C"                   // red
+			        )
+			    )
+			
+			```
+		displayFolder: Bias CSCA
+		lineageTag: e07330fb-b52a-4afa-9cb5-8ad0efe057ea
+
+	measure 'CFR _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [CFR MoM%],
+			        "LYTD", [CFR LYTD],
+			        "vs YoY", [CFR YoY%],
+			        "vs Plan", [CFR Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: CFR
+		lineageTag: e4ca5e4c-aaf6-4845-ae38-4787454da709
+
+	measure 'CFR _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [CFR MoM%],
+			        "LYTD", [CFR LYTD],
+			        "vs YoY", [CFR YoY%],
+			        "vs Plan", [CFR Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: CFR
+		lineageTag: b54c830d-13b8-4beb-b276-a7252188ff39
+
+	measure CFR_switch = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [CFR MoM_Final],
+			      "LYTD",               [CFR LYTD_Final],
+			      "vs YoY",               [CFR YoY_Final],
+			      "vs Plan", [CFR Target Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: CFR
+		lineageTag: 0f8b1637-a243-466d-b38d-32eaa49bf546
+
+	measure COGS_Actual = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [COGS Actual MoM_Final],
+			      "LYTD",               [COGS Actual LYTD_Final],
+			      "vs YoY",               [COGS Actual YoY_Final],
+			      "vs Plan", [COGS_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: COGS
+		lineageTag: 6d9487a3-6008-4ad4-9dd1-62a455d2f02f
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure COGS_Actual_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [COGS Actual MoM%],
+			        "LYTD", [COGS Actual LYTD],
+			        "vs YoY", [COGS Actual YoY%], 
+			        "vs Plan", [COGS_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#000000",         // black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  // green → down is good (COGS reduced)
+			            "#D7191C"   // red → up is bad (COGS increased)
+			        )
+			    )
+			
+			```
+		displayFolder: COGS
+		lineageTag: 64617715-861c-49d7-80aa-96d3fe6cf662
+
+	measure COGS_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [COGS Actual MoM%],
+			        "LYTD", [COGS Actual LYTD],
+			        "vs YoY", [COGS Actual YoY%], 
+			        "vs Plan", [COGS_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",   -- Blue for ▼ down
+			            "#D7191C"    -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: COGS
+		lineageTag: 6280ce49-6091-4ed0-95ad-54efeb144211
+
+	measure 'Cust Fine_Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Cust Fine MoM%],
+			        "LYTD", [Cust Fine LYTD],
+			        "vs YoY", [Cust fine YoY%], 
+			        "vs Plan", [Cust Fine Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			```
+		displayFolder: Customer Fines
+		lineageTag: 567425fd-d2c2-4c4b-8601-b934c144f23b
+
+	measure 'Cust Fine_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Cust Fine MoM%],
+			        "LYTD", [Cust Fine LYTD],
+			        "vs YoY", [Cust fine YoY%], 
+			        "vs Plan", [Cust Fine Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: Customer Fines
+		lineageTag: 8f456d45-80a7-47a0-888a-6a94759b6b3a
+
+	measure 'Customer Fine Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Cust Fine MoM_Final],
+			      "LYTD",               [Cust fine LYTD_Final],
+			      "vs YoY",               [Cust fine YoY_Final],
+			      "vs Plan", [Cust fine Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Customer Fines
+		lineageTag: 7d24d324-ecca-4e2d-8e7a-a707ebe03941
+
+	measure DIO_ = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [DIO MoM_Final],
+			      "YTD",               [DIO YTD],
+			      "vs YoY",               [DIO YoY_Final],
+			      "vs Plan", [DIO_APN_Final],
+			      "vs Flex", [DIO_AFX_Final],
+			      BLANK()
+			    )
+			
+			```
+		formatString: 0.0
+		displayFolder: DIO
+		lineageTag: 21e1375a-300b-4aad-bd12-18a069b96c6b
+
+	measure DIO_Color =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DIO MoM%],
+			        "YTD", [DIO YTD],
+			        "vs YoY", [DIO YoY%],
+			        "vs Plan", [DIO_APN],
+			        "vs Flex", [DIO_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			            _sel = "YTD",
+			            "#000000",  -- Always black for YTD
+			        IF(
+			            ISBLANK(kpi_value), "#000000",  -- black for blank
+			            IF(
+			                kpi_value < 0,
+			                "#1A9641",  -- Green for ▼ down
+			                "#D7191C"   -- Red for ▲ up
+			            )
+			        )
+			    )
+		displayFolder: DIO
+		lineageTag: 453cac8f-4b98-4d01-b350-016983217915
+
+	measure DIO_Color_KPI =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DIO MoM%],
+			        "YTD", [DIO YTD],
+			        "vs YoY", [DIO YoY%],
+			        "vs Plan", [DIO_APN],
+			        "vs Flex", [DIO_AFX],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			            _sel = "YTD",
+			            "#000000",  -- Always black for YTD
+			        IF(
+			            ISBLANK(kpi_value), "#001489",  -- black for blank
+			            IF(
+			                kpi_value < 0,
+			                "#001489",  -- Green for ▼ down
+			                "#D7191C"   -- Red for ▲ up
+			            )
+			        )
+			    )
+		displayFolder: DIO
+		lineageTag: c924dc8f-d16b-4243-a5a4-07c58f38141f
+
+	measure DPO = ```
+			
+			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			RETURN
+			DIVIDE(num,den,0) 
+			 
+			 /*
+			 VAR _Months = 3
+			VAR _COGS = -CALCULATE( [COGS Actual]+ [A&P Actual]+[Variances Act]+[Distribution Actual] , DATESINPERIOD(Dim_Date[P_DateKey_Monthly], MAX( Dim_Date[P_DateKey_Monthly] ), -3, MONTH) )
+			VAR _AvgAP = [Accounts Payable Avg L4M]
+			RETURN
+			    DIVIDE( _AvgAP, _COGS ) * (30.3334*_Months)
+			    */
+			```
+		formatString: 0
+		displayFolder: DPO
+		lineageTag: 4318eaad-12d6-402e-8b6a-c68c4ecdb181
+
+	measure DPO_ =
+			VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [DPO MoM_Final],
+			      "LYTD",             BLANK(),
+			      "vs YoY",               [DPO YoY_Final],
+			      "vs Plan", [DPO_APN_Final],
+			      BLANK()
+			    )
+		displayFolder: DPO
+		lineageTag: 03c321ea-6235-4816-9e0e-d027a8dbd14e
+
+	measure DPO_Color = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DPO MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [DPO YoY%], 
+			        "vs Plan", [DPO_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			                "#1A9641",  -- Green for ▼ down
+			                "#D7191C"   -- Red for ▲ up
+			        )
+			```
+		displayFolder: DPO
+		lineageTag: 065ebdbd-7356-4922-9657-ae2e162ee6da
+
+	measure DPO_Color_KPI = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DPO MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [DPO YoY%], 
+			        "vs Plan",[DPO_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#001489"   -- Green for ▼ down
+			        )
+			)
+			```
+		displayFolder: DPO
+		lineageTag: 4faa936f-df86-4205-b4f8-72c30df21673
+
+	measure DSO =
+			
+			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
+			RETURN
+			DIVIDE(num,den,0)
+			/*
+			VAR _Months = 3
+			VAR _NIV = CALCULATE( [Net Sales Actual], DATESINPERIOD(Dim_Date[P_DateKey_Monthly], MAX( Dim_DateSlicer[P_DateKey_Monthly] ), -3, MONTH) )
+			VAR _AvgAR = [Accounts Receivable Avg L4M]
+			RETURN
+			    DIVIDE( _AvgAR, _NIV ) * (30.3334*_Months)
+			*/
+		formatString: 0
+		displayFolder: DSO
+		lineageTag: d4c2a733-714c-4395-b963-2899e727949f
+
+	measure 'DSO New' =
+			
+			Var num = SUM(Fact_DSO_DPO_ABP[DSO_Num])
+			VAR den = SUM(Fact_DSO_DPO_ABP[DSO_Den])
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		displayFolder: DSO
+		lineageTag: 2f9d81b8-2e56-4338-b692-5274c0324ead
+
+	measure DSO_ =
+			VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [DSO MoM_Final],
+			      "LYTD",             BLANK(),
+			      "vs YoY",               [DSO YoY_Final],
+			      "vs Plan", [DSO_APN_Final],
+			      BLANK()
+			    )
+		displayFolder: DSO
+		lineageTag: f98738c3-9514-46ea-8165-cdf96cb4bf38
+
+	measure DSO_Color = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DSO MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [DSO YoY%], 
+			        "vs Plan",[DSO_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			         IF(
+			            kpi_value < 0,
+			                "#1A9641",  -- Green for ▼ down
+			                "#D7191C"   -- Red for ▲ up
+			        )
+			```
+		displayFolder: DSO
+		lineageTag: 314e75e4-2c75-4785-8b19-e9ae5dc36e72
+
+	measure DSO_Color_KPI = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [DSO MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [DSO YoY%], 
+			        "vs Plan",[DSO_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			                "#001489",  -- Green for ▼ down
+			                "#D7191C"   -- Red for ▲ up
+			        )
+			)
+			```
+		displayFolder: DSO
+		lineageTag: 3c8fc342-ffdd-4485-9ac5-90be41a9847e
+
+	measure 'DPO New' =
+			
+			Var num = SUM(Fact_DSO_DPO_ABP[DPO_Num])
+			VAR den = SUM(Fact_DSO_DPO_ABP[DPO_Den])
+			RETURN
+			DIVIDE(num,den,0)
+		formatString: 0
+		displayFolder: DPO
+		lineageTag: 824d6143-a542-4575-88cd-1dbd7c4690b8
+
+	measure Expired_Inventory = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Expired Inventory MoM_Final],
+			      "LYTD",               [Expired Inv LYTD_Final],
+			      "vs YoY",               [Expired Inventory YoY_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: Expired Inventory
+		lineageTag: b78799df-3f7e-4d42-821f-a0626242d7d4
+
+	measure Expired_Inventory_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Expired Inventory MoM%],
+			        "LYTD", [Expired Inventory LYTD],
+			        "vs YoY", [Expired Inventory YoY%], 
+			        BLANK()
+			    )
+			
+			RETURN
+			             IF(
+			                kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#1A9641"   -- Green for ▼ down
+			            )
+			```
+		displayFolder: Expired Inventory
+		lineageTag: 8fdc36f2-2570-456f-a9ff-1c7abacfa8a9
+
+	measure Expired_Inventory_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Expired Inventory MoM%],
+			        "LYTD", [Expired Inventory LYTD],
+			        "vs YoY", [Expired Inventory YoY%], 
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			            IF(
+			                kpi_value > 0,
+			                "#D7191C",  -- Red for ▲ up
+			                "#001489"   -- Green for ▼ down
+			            )
+			    )
+			```
+		displayFolder: Expired Inventory
+		lineageTag: c5c1c3af-1c1c-4b02-80f5-a8031ab38518
+
+	measure 'Gross PPV_Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Gross PPV Actual MoM%],
+			        "LYTD", [Gross PPV Actual LYTD],
+			        "vs YoY", [Gross PPV Actual YoY%], 
+			        "vs Plan", [Gross PPV_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- Green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: Gross PPV
+		lineageTag: 467e9056-b60b-48ad-bdb4-6bad800f7a8b
+
+	measure 'Gross PPV_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Gross PPV Actual MoM%],
+			        "LYTD", [Gross PPV Actual LYTD],
+			        "vs YoY", [Gross PPV Actual YoY%], 
+			        "vs Plan", [Gross PPV_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			)
+			```
+		displayFolder: Gross PPV
+		lineageTag: ff3db1d0-0de0-4034-9a40-b86613134aa7
+
+	measure Gross_PPV = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Gross PPV Actual MoM_Final],
+			      "LYTD",               [Gross PPV Actual LYTD_Final],
+			      "vs YoY",               [Gross PPV Actual YoY_Final],
+			      "vs Plan", [Gross PPV_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Gross PPV
+		lineageTag: 98e3fa41-abe5-4d5f-9504-0093e42bb23c
+
+	measure Net_Sales_Actual = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Net Sales Actual MoM_Final],
+			      "LYTD",               [Net Sales Actual LYTD_Final],
+			      "vs YoY",               [Net Sales Actual YoY_Final],
+			      "vs Plan", [Net Sales_APN_Final],
+			      "vs Flex", BLANK(),
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Net Sales
+		lineageTag: 8aee09ca-7e26-4aa1-a4d4-8fe9827f5614
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure Net_Sales_Actual_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net Sales Actual MoM%],
+			        "LYTD", [Net Sales Actual LYTD],
+			        "vs YoY", [Net Sales Actual YoY%], 
+			        "vs Plan", [Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+			```
+		displayFolder: Net Sales
+		lineageTag: def946ce-1480-40c7-8802-3344b832f624
+
+	measure Net_Sales_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Net Sales Actual MoM%],
+			        "LYTD", [Net Sales Actual LYTD],
+			        "vs YoY", [Net Sales Actual YoY%], 
+			        "vs Plan", [Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			)
+			```
+		displayFolder: Net Sales
+		lineageTag: 2b4eac49-7816-4d78-a77b-3791ac9194d1
+
+	measure OEE = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [OEE% MoM_Final],
+			      "LYTD",               [OEE% LYTD_Final],
+			      "vs YOY",               [OEE% YoY_Final],
+			      "vs Plan", [OEE Target_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: OEE
+		lineageTag: 6bf0cc01-ebf7-412a-9cde-0514745abb15
+
+	measure OEE_Color =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [OEE% MoM%],
+			        "YTD", [OEE% YTD],
+			        "vs YoY", [OEE% YoY%],
+			        "vs Plan", [OEE Target diff%],
+			        "LYTD", [OEE LYTD],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#000000",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+			    )
+			)
+		displayFolder: OEE
+		lineageTag: 980502bb-cbd9-42f8-b167-7100ed8741b6
+
+	measure OEE_Color_KPI =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [OEE% MoM%],
+			        "YTD", [OEE% YTD],
+			        "vs YoY", [OEE% YoY%],
+			        "vs Plan", [OEE Target diff%],
+			        "LYTD", [OEE LYTD],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			    )
+			)
+		displayFolder: OEE
+		lineageTag: 8d1da3f5-b9ed-4277-8cd5-4d0f18cbbc9f
+
+	measure Operating_Income_Actual = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Operating Income Actual MoM_Final],
+			      "LYTD",               [Operating Income Actual LYTD_Final],
+			      "vs YoY",               [Operating Income Actual YoY_Final],
+			      "vs Plan", [Operating Income_APN_Final],
+			      "vs Flex", BLANK(),
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Operating Income
+		lineageTag: 2793fa3d-f884-41c0-9f3c-69edd8de2774
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Operating_Income_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Operating Income Actual MoM%],
+			        "LYTD", [Operating Income Actual LYTD],
+			        "vs YoY", [Operating Income Actual YoY%], 
+			        "vs Plan", [Operating Income_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#000000", 
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: 53ff79f7-8992-4158-bb1d-8f799bd6ca3e
+
+	measure Operating_Income_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Operating Income Actual MoM%],
+			        "LYTD", [Operating Income Actual LYTD],
+			        "vs YoY", [Operating Income Actual YoY%], 
+			        "vs Plan", [Operating Income_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: 298cc23d-a900-484d-812d-b4cc7caf9cc2
+
+	measure SA = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [SA MoM_Final],
+			      "LYTD",               [Schedule Attn LYTD_Final],
+			      "vs YoY",               [SA YoY_Final],
+			      "vs Plan", [Schedule Attn Target Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: Schedule Attainment
+		lineageTag: 5a08dda7-84dd-4620-bb9e-a3079c2313fd
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure 'SA _Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SA MoM%],
+			        "LYTD", [Schedule Attn LYTD],
+			        "vs YoY", [SA YoY%],
+			        "vs Plan", [Schedule Attn Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value >= 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: Schedule Attainment
+		lineageTag: 6a8b82f4-aeff-46ad-8c49-7755b8a36d00
+
+	measure 'SA _Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SA MoM%],
+			        "LYTD", [Schedule Attn LYTD],
+			        "vs YoY", [SA YoY%],
+			        "vs Plan", [Schedule Attn Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value >= 0,
+			            "#001489",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: Schedule Attainment
+		lineageTag: caa01288-2c52-48ff-894e-d1d05f4bb009
+
+	measure 'Service rate_Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Service Rate% MoM%],
+			        "LYTD", [Service Rate LYTD],
+			        "vs YoY", [Service Rate YoY%],  
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+			```
+		displayFolder: Service Rate CSCA
+		lineageTag: a1ef24e0-4d13-4f17-973f-4e210e679beb
+
+	measure 'Service rate_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Service Rate% MoM%],
+			        "LYTD", [Service Rate LYTD],
+			        "vs YoY", [Service Rate YoY%],  
+			        "vs Plan", [Service Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			)
+			```
+		displayFolder: Service Rate CSCA
+		lineageTag: 46e78951-5837-4fef-9f51-205ae49cc154
+
+	measure 'Service Top 11_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Service Top 11 MoM%],
+			        "LYTD", [Service Top 11 LYTD],
+			        "vs YoY", [Service Top 11 YoY%],
+			        "vs Plan", [Service Top 11 Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#1A9641"   -- green for ▲ up
+			        )
+		displayFolder: Service Top 11
+		lineageTag: e8e7e1cc-8b00-4e63-9474-d4cf30fd95a4
+
+	measure 'Service Top 11_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Service Top 11 MoM%],
+			        "LYTD", [Service Top 11 LYTD],
+			        "vs YoY", [Service Top 11 YoY%],  
+			        "vs Plan", [Service Top 11 Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			)
+			```
+		displayFolder: Service Top 11
+		lineageTag: 60ff18b0-064d-44b0-8fb3-ac11463b8035
+
+	measure 'Service Top 11_Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Service Top 11 MoM_Final],
+			      "LYTD",               [Service Top 11 LYTD_Final],
+			      "vs YoY",               [Service Top 11 YoY_Final],
+			      "vs Plan", [Service Top 11 Target Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: Service Top 11
+		lineageTag: 6d7a320f-1686-4dbc-a8f8-b55b9fc6ac42
+
+	measure Service_rate = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Service Rate% MoM_Final],
+			      "LYTD",               [Service LYTD_Final],
+			      "vs YoY",               [Service Rate% YoY_Final],
+			      "vs Plan", [Service Target Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: Service Rate CSCA
+		lineageTag: 62cd4ac5-ee85-432e-a828-97324dfd5c90
+
+	measure 'Total Distribution on COGS Actual _Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Total Distribution on COGS Actual MoM%],
+			        "LYTD", [Total Distribution on COGS LYTD],
+			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
+			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641", -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down 
+			        )
+			```
+		displayFolder: Distribution on COGS
+		lineageTag: c69957fc-fb79-4116-84f9-e51d8533fd37
+
+	measure 'Total Distribution on COGS_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Total Distribution on COGS Actual MoM%],
+			        "LYTD", [Total Distribution on COGS LYTD],
+			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
+			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489", -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down 
+			        )
+			    )
+			```
+		displayFolder: Distribution on COGS
+		lineageTag: 51c879fd-830d-4ec0-920d-4f053f3a1c98
+
+	measure 'Total Logistics on Net Sales Actual _Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Total Logistics on Net Sales Actual MoM%],
+			        "LYTD", [Total Logistics on Net Sales LYTD],
+			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
+			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641", -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down 
+			        )
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: e0294879-b309-4989-9fc5-9bed23b9675c
+
+	measure 'Total Logistics on Net Sales_Color' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Total Logistics on Net Sales Actual MoM%],
+			        "LYTD", [Total Logistics on Net Sales LYTD],
+			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
+			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489", -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down 
+			        )
+			    )
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 55eb21b6-62f6-4426-b6f2-921d7afdf911
+
+	measure Total_Distribution_on_COGS = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Total Distribution on COGS Actual MoM_Final],
+			      "LYTD",               [Total Distribution on COGS LYTD_Final],
+			      "vs YoY",               [Total Distribution on COGS Actual YoY_Final],
+			      "vs Plan", [Total Distribution on COGS_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Distribution on COGS
+		lineageTag: 836c8524-513b-4a4a-9fd6-67c388c39b7a
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure Total_Logistics_on_Net_Sales = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Total Logistics on Net Sales Actual MoM_Final],
+			      "LYTD",               [Total Logistics on Net Sales LYTD_Final],
+			      "vs YoY",               [Total Logistics on Net Sales Actual YoY_Final],
+			      "vs Plan", [Total Logistics on Net Sales_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 10eacfe4-5cad-4ffa-a768-47d7baabe1fc
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure SSSO_Obs_Linked_Color =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Obs linked to Conv MoM%],
+			        "LYTD", [SSSO: Obs LYTD],
+			        "vs YoY", [SSSO: Obs linked to Conv YoY%],
+			        "vs Plan", [SSSO: Obsolescenes linked to Conversions_APN],
+			        "vs Flex", [SSSO: Obsolescenes linked to Conversions_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- Green for ▼ down
+			            "#D7191C"   -- Red for ▲ up
+			        )
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 21e5f5e0-6233-4941-999f-0a0e89de6c67
+
+	measure SSSO_Obs_Linked_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Obs linked to Conv MoM%],
+			        "LYTD", [SSSO: Obs LYTD],
+			        "vs YoY", [SSSO: Obs linked to Conv YoY%],
+			        "vs Plan", [SSSO: Obsolescenes linked to Conversions_APN],
+			        "vs Flex", [SSSO: Obsolescenes linked to Conversions_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- Green for ▼ down
+			            "#D7191C"   -- Red for ▲ up
+			        )
+			)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 75bc24f5-8115-4d15-ab6e-b81b9aafc5ed
+
+	measure SSSO_Obs_Linked = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [SSSO: Obs Linked to Conv MoM_Final],
+			      "LYTD",               [SSSO: Obs LYTD_Final],
+			      "vs YoY",               [SSSO: Obs linked to Conv YoY_Final],
+			      "vs Plan",[SSSO: Obs linked to conv APN_Final],
+			      "vs Flex", [SSSO: Obs linked to conv F66_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 64f7d605-77e5-46ad-b7aa-f26bec298bb9
+
+	measure SSSO_Salvage&Obs_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Salvage & obs MoM%],
+			        "LYTD", [SSSO: Salvage LYTD],
+			        "vs YoY", [SSSO: Salvage YoY%], 
+			        "vs Plan", [SSSO: Salvage & Obsolescence_APN],
+			        "vs Flex", [SSSO: Salvage & Obsolescence_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- Green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			    )
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 410517ff-808b-48ae-ba4d-da03b48e6432
+
+	measure SSSO_Salvage&Obs_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Salvage & obs MoM%],
+			        "LYTD", [SSSO: Salvage LYTD],
+			        "vs YoY", [SSSO: Salvage YoY%], 
+			        "vs Plan", [SSSO: Salvage & Obsolescence_APN],
+			        "vs Flex", [SSSO: Salvage & Obsolescence_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- Green for ▼ down
+			            "#D7191C"   -- red for ▲ up
+			        )
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: f0454bf2-86f2-4625-abb9-b1206d4604c4
+
+	measure SSSO_Scrap_off_Color = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Scrap-Off MoM%],
+			        "LYTD", [SSSO: Scrap-off LYTD],
+			        "vs YoY", [SSSO: Scrap-Off YoY%], 
+			        "vs Plan", [SSSO: Scrap-Off_APN],
+			        "vs Flex", [SSSO: Scrap-Off_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- Green for ▼ down
+			            "#D7191C"   -- Red for ▲ up
+			        )
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: ceecbcf4-8b0d-484e-9d44-1c39040f940a
+
+	measure SSSO_Scrap_Off_ = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [SSSO: Scrap-Off MoM_Final],
+			      "LYTD",               [SSSO: Scrap-off LYTD_Final],
+			      "vs YoY",               [SSSO: Scrap-Off YoY_Final],
+			      "vs Plan", [SSSO: Scrap-Off APN_Final],
+			      "vs Flex", [SSSO: Scrap-Off F66_Final],
+			      BLANK()
+			    )
+			
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: 611d4f8e-c69f-41a1-be89-4bfc6f8e6e5c
+
+	measure SSSO_Scrap_off_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Scrap-Off MoM%],
+			        "LYTD", [SSSO: Scrap-off LYTD],
+			        "vs YoY", [SSSO: Scrap-Off YoY%], 
+			        "vs Plan", [SSSO: Scrap-Off_APN],
+			        "vs Flex", [SSSO: Scrap-Off_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- Green for ▼ down
+			            "#D7191C"   -- Red for ▲ up
+			        )
+			    )
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: 878dd288-eec4-4485-b5fd-870f4fdfcd70
+
+	measure SSSO_Salvage&Obs = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP",[SSSO: Salvage MoM_Final],
+			      "LYTD",[SSSO: Salvage LYTD_Final],
+			      "vs YoY",[SSSO: Salvage YoY_Final],
+			      "vs Plan",[SSSO: Salvage & Obs APN_Final],
+			      "vs Flex", [SSSO: Salvage & Obs F66_Final],
+			      BLANK()
+			    )
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 4aee5ee6-baab-4f49-a851-5243d4568032
+
+	measure Reference_lbl_title = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", "vs PP",
+			      "LYTD",  "LYTD",
+			      "vs YoY", "vs YoY",
+			      "vs Plan", "vs Plan",
+			      "vs Flex", "vs Flex",
+			      BLANK()
+			    )
+			```
+		displayFolder: Misc
+		lineageTag: 0f0991da-2fa9-488c-a956-7d8b2c3546ee
+
+	measure Net_POV = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Net POV Actual MoM_Final],
+			      "LYTD",               [Net POV Actual LYTD_Final],
+			      "vs YoY",               [Net POV Actual YoY_Final],
+			      "vs Plan", [Net POV_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: Net POV
+		lineageTag: d76ea9a6-406f-4b8f-8531-8c1d35856890
 
 	column Measures
 		dataType: string
@@ -6029,4 +8844,3 @@ table Measure
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-

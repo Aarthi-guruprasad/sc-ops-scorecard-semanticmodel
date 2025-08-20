@@ -5,11 +5,13 @@ table 'CSCI Measures'
 			// SUM(Fact_IBP_Sales_CSCI[Enriched_Qty])
 			
 			ROUND(SUM(Fact_IBP_Sales_CSCI[Enriched_Qty]),0)
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: dacc5fac-2698-44c2-b697-fff11dee633e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Const. Qty' = SUM(Fact_IBP_Sales_CSCI[Constrained_Qty])
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 0e0a87b8-9487-4919-94cb-8ef12248c46c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -21,6 +23,7 @@ table 'CSCI Measures'
 			    KEEPFILTERS(Fact_IBP_Sales_CSCI[Sales BOM Indicator] <> "N"),
 			    REMOVEFILTERS(Fact_IBP_Sales_CSCI[Lag])
 			)
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: de5765f5-1b30-4178-ad62-65f7cbaf2901
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -32,6 +35,7 @@ table 'CSCI Measures'
 			    KEEPFILTERS(Fact_IBP_Sales_CSCI[Base Scenario] = "Fcst"),
 			    KEEPFILTERS(Fact_IBP_Sales_CSCI[Sales BOM Indicator] <> "N")
 			)
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: e230fe31-7df1-49ff-b717-a453b38b5b80
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -51,6 +55,7 @@ table 'CSCI Measures'
 			        KEEPFILTERS(_TableLag)
 			    )
 		formatString: 0
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 5aaeabc5-3e1e-4613-bf0d-bab0b8e5d483
 
 	measure 'Fcst L4' =
@@ -68,6 +73,7 @@ table 'CSCI Measures'
 			        KEEPFILTERS(_TableLag)
 			    )
 		formatString: 0
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 0d52ade3-c554-4e66-a748-b6e2adeb10f9
 
 	measure FA% = ```
@@ -126,6 +132,7 @@ table 'CSCI Measures'
 			    IF(_FACC < 0, 0, _FACC)
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 015c46d8-4ff0-41bb-9324-56ae146d0cfa
 
 	measure 'FA% L1' = ```
@@ -164,6 +171,7 @@ table 'CSCI Measures'
 			IF( _FACC<0,0,_FACC)
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: d317b434-6974-4468-bfcc-eef2cfae02bb
 
 	measure 'FA% L4' = ```
@@ -202,6 +210,7 @@ table 'CSCI Measures'
 			IF( _FACC<0,0,_FACC)
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 532581ab-0c75-42df-8c5f-ffc7f64c8a59
 
 	measure 'FA% MoM CSCI' = ```
@@ -217,6 +226,7 @@ table 'CSCI Measures'
 			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 16297d63-57d7-426b-a383-78520879ea69
 
 	measure 'FA% YoY CSCI' = ```
@@ -238,6 +248,7 @@ table 'CSCI Measures'
 			    )
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 7388aa69-17f9-429b-ab99-1f6e98cce81e
 
 	measure FA%_PY = ```
@@ -251,10 +262,12 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: c2a8acb5-d618-41e1-b998-af954a26b318
 
 	measure FA%_YTD = TOTALYTD([FA%],Dim_Date[Date])
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 8e7addc2-d488-45b1-ac80-876470ddc4ea
 
 	measure Forecast_Accuracy_Switch = ```
@@ -271,6 +284,7 @@ table 'CSCI Measures'
 			    )
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 13178d33-b19f-4128-b9b6-40124405f869
 
 	measure 'Bias % CSCI' = ```
@@ -286,6 +300,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: ef835fb5-0837-4e77-8068-ea4370ec23ce
 
 	measure 'Bias L1 CSCI' = ```
@@ -310,6 +325,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: dad8bc0f-6040-4712-8519-25b8f69ebd9a
 
 	measure 'Bias L4 CSCI' = ```
@@ -333,6 +349,7 @@ table 'CSCI Measures'
 			)
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: c0d4d283-14f7-4035-85b9-96c770c7b9e5
 
 	measure 'Bias%_PY CSCI' = ```
@@ -346,6 +363,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCI
 		lineageTag: 860b874c-4185-4ee7-983a-0566b2db0360
 
 	measure 'Bias MoM%_raw CSCI' =
@@ -357,6 +375,7 @@ table 'CSCI Measures'
 			VAR Result = [Bias % CSCI] - Net_PM
 			RETURN
 			Result
+		displayFolder: Bias CSCI
 		lineageTag: c82fc719-65b2-407c-b2ea-6b82ec906bc3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -373,12 +392,14 @@ table 'CSCI Measures'
 			    kpi_
 			
 			```
+		displayFolder: Bias CSCI
 		lineageTag: 0981000b-5d43-491f-8c01-5ff0af7d7bba
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias_YTD CSCI' = TOTALYTD([Bias % CSCI],Dim_Date[Date])
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: 2b9ed217-4fcf-40f2-a661-c5bfdad5e803
 
 	measure 'Bias% MoM CSCI' = ```
@@ -394,6 +415,7 @@ table 'CSCI Measures'
 			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			
 			```
+		displayFolder: Bias CSCI
 		lineageTag: f702b21c-1fd7-46f1-bae7-3012c37b5245
 
 	measure 'Bias% YoY CSCI' =
@@ -413,6 +435,7 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Bias CSCI
 		lineageTag: ce012a7d-3f6a-4f78-8df7-211e8f64c0dc
 
 	measure 'Bias_Switch CSCI' = ```
@@ -429,6 +452,7 @@ table 'CSCI Measures'
 			    )
 			
 			```
+		displayFolder: Bias CSCI
 		lineageTag: 778f8595-43fc-4a45-9ef9-32e783c8e496
 
 	measure 'Bias% _Color CSCI' =
@@ -458,6 +482,7 @@ table 'CSCI Measures'
 			        )
 			    )
 			    )
+		displayFolder: Bias CSCI
 		lineageTag: 598c3c23-da5a-48d0-9584-6cc8873294f2
 
 	measure 'Expiring Inventory' = CALCULATE(SUM(Fact_BW_Inventory[Sum Amount Stock Value Inflated]), KEEPFILTERS('Dim_Expiration_Buckets'[Expiration Bucket] in {"6M","6M-12M"}))
@@ -492,16 +517,19 @@ table 'CSCI Measures'
 			        )
 			    )
 			)
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: f2684556-de33-46fd-b6be-115f11dfb899
 
 	measure SSSO = ```
 			SUM(Fact_SSSO[SSSO]) 
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: bd31d2a8-b90b-4715-824f-42c18d294d04
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO Shrinkage' = CALCULATE(SUM(Fact_SSSO[SSSO]),KEEPFILTERS(Fact_SSSO[Functional Area] = "24"))
+		displayFolder: SSSO Shrinkage
 		lineageTag: 5acfd304-889c-4531-b87c-d4e4b02fa8fb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -516,6 +544,7 @@ table 'CSCI Measures'
 			Calculate([SSSO Shrinkage],filter_)
 			
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: 7fbde81e-4153-44bf-b12d-95c6d15e7f04
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -529,6 +558,7 @@ table 'CSCI Measures'
 			VAR Result = DIVIDE(([SSSO Shrinkage] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: SSSO Shrinkage
 		lineageTag: 53417ac9-3b24-4d5a-97bc-b5f34615bc74
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -542,9 +572,11 @@ table 'CSCI Measures'
 			Return 
 			Result_
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: a3d1e4fb-5c6a-48fc-9de1-fe9290e472f2
 
 	measure 'SSSO: Shrinkage YoY%' = DIVIDE(([SSSO Shrinkage] - [SSSO: Shrinkage PY]),[SSSO: Shrinkage PY])
+		displayFolder: SSSO Shrinkage
 		lineageTag: 3ab2e423-fbef-4316-a418-d46e309ed963
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -561,6 +593,7 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_
 			)
+		displayFolder: SSSO Shrinkage
 		lineageTag: 471154e3-5eac-4459-b529-82820a171622
 
 	measure 'SSSO: Shrinkage YTD' =
@@ -574,6 +607,7 @@ table 'CSCI Measures'
 			        ),
 			        [SSSO Shrinkage]
 			    )
+		displayFolder: SSSO Shrinkage
 		lineageTag: 87979c10-427e-48be-80de-1b52333242c5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -592,6 +626,7 @@ table 'CSCI Measures'
 			      BLANK()
 			    )
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: c59f8a92-8b27-432e-9083-537a3de11787
 
 	measure SSSO_Shrinkage_Color = ```
@@ -623,6 +658,7 @@ table 'CSCI Measures'
 			    )
 			)
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: e76a146b-77c1-488c-8385-b1dbda346da1
 
 	measure Sales_Switch_YTD =
@@ -633,6 +669,7 @@ table 'CSCI Measures'
 			            "Bias% Lag 1", CALCULATE([Bias_YTD CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1)),
 			            "Bias% Lag 4", CALCULATE([Bias_YTD CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4)))
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Switch Measures
 		lineageTag: c0e8d328-8195-4593-b3af-42466ebb7d8b
 
 	measure Sales_Switch_YoY =
@@ -643,6 +680,7 @@ table 'CSCI Measures'
 			            "Bias% Lag 1", [Bias% PY L1 CSCI],
 			            "Bias% Lag 4", [Bias% PY L4 CSCI])
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Switch Measures
 		lineageTag: 38cdf87f-91ef-4316-a7ae-e307d830247b
 
 	measure OI_Switch_YTD = ```
@@ -660,6 +698,7 @@ table 'CSCI Measures'
 			            )
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: fe534250-3f30-474f-a3c1-27d80e431cc8
 
 		formatStringDefinition =
@@ -695,6 +734,7 @@ table 'CSCI Measures'
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: 7dcd0453-be68-4c81-807b-105cc5a91297
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -708,6 +748,7 @@ table 'CSCI Measures'
 			return
 			DIVIDE([SSSO Shrinkage] - Result,Result)
 			```
+		displayFolder: SSSO Shrinkage
 		lineageTag: 5343bbcb-c548-49e7-9e04-83b008d51d56
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -724,9 +765,11 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: SSSO Shrinkage
 		lineageTag: 53e12583-2b11-4aba-b789-fad6c991de74
 
 	measure Order_Qty_base = SUM(Fact_SALESORDER_PBI_Full[Order quantity in base unit])
+		displayFolder: Service Level CSCI
 		lineageTag: 4b89571f-50d4-43d7-abb4-3690f6423eac
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -735,12 +778,14 @@ table 'CSCI Measures'
 			CALCULATE(
 			    [Order_Qty_base],
 			    KEEPFILTERS(Dim_Rejection_Reason_Code[SAP Reason Code Number] <> -1))
+		displayFolder: Service Level CSCI
 		lineageTag: 34c87ef2-9a4b-4e7e-aa5f-96aae7f75866
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Service Level %' = ( 1 - ([Cut_Qty_Base]/[Order_Qty_base]) ) * DIVIDE([Order_Qty_base], [Order_Qty_base])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Level CSCI
 		lineageTag: edbf0c29-4255-4982-bb36-51907cb647d5
 
 	measure 'Service Level PY' = ```
@@ -754,6 +799,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Level CSCI
 		lineageTag: 47964b33-869e-43d3-b306-e4ee6b0006ec
 
 	measure 'Service Level MoM%' =
@@ -765,6 +811,7 @@ table 'CSCI Measures'
 			VAR Result = DIVIDE(([Service Level %] - Net_PM),Net_PM)
 			RETURN
 			Result
+		displayFolder: Service Level CSCI
 		lineageTag: 4b02b545-f51e-481f-991e-f04b8a9f9f36
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -778,6 +825,7 @@ table 'CSCI Measures'
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 74a86cdb-189a-4ac9-bd83-f61577f121fd
 
 	measure 'Service Level LYTD' = ```
@@ -788,6 +836,7 @@ table 'CSCI Measures'
 			
 			
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: d8b02648-df3e-4270-b9f0-0022fff7e3f3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -804,10 +853,12 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Service Level CSCI
 		lineageTag: d36e5481-6808-470e-923b-39d494a982c0
 
 	measure 'Service Level YoY%' = DIVIDE(([Service Level %] - [Service Level PY]),[Service Level PY])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Level CSCI
 		lineageTag: 751687be-42a3-4d3f-9ebd-ebb08dbefb08
 
 	measure 'Service Level YoY_Final' = ```
@@ -824,6 +875,7 @@ table 'CSCI Measures'
 			)
 			
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 703b1e92-58ff-4d90-895d-2967a700cac9
 
 	measure 'Service Level Switch' = ```
@@ -839,6 +891,7 @@ table 'CSCI Measures'
 			      BLANK()
 			    )
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: a7055224-0e97-45a1-b357-9f84b4cd82c6
 
 	measure Service_Level_Color = ```
@@ -869,10 +922,11 @@ table 'CSCI Measures'
 			    )
 			)
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 19fe3cab-3c64-4ea6-bc4b-87077c2b54d6
 
 	measure 'FA Target Diff%_CSCI' = [FA%] - [FA Target CSCI]
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: cf0db7df-c1a5-4af0-a708-68530c47b547
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -886,11 +940,11 @@ table 'CSCI Measures'
 			Return 
 			Result_
 			```
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 4c0f1626-59dc-4cd0-b4c5-079f06649e8a
 
 	measure 'Bias Target Diff%_CSCI' = [Bias % CSCI] - [Bias Target CSCI]
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: d1eeef59-8861-47ff-9efc-1ad1563ff82f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -904,11 +958,11 @@ table 'CSCI Measures'
 			Return 
 			Result_
 			```
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: d7bc5c3f-e893-4ad0-9b20-f8547daadf10
 
 	measure 'Service Target Diff%_CSCI' = [Service Level %] - 0.9
-		displayFolder: Target Calcs
+		displayFolder: Service Level CSCI
 		lineageTag: 64f53c1e-4bc5-4570-822a-6f07ca503a65
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -922,11 +976,12 @@ table 'CSCI Measures'
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
-		displayFolder: Target Calcs
+		displayFolder: Service Level CSCI
 		lineageTag: 17f532af-2aa6-4e9b-b6c5-0a31cb4cceae
 
 	measure 'SSSO: Shrinkage APN_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "24"))
 		formatString: 0.0
+		displayFolder: SSSO Shrinkage
 		lineageTag: 66afb7a1-acaf-496d-a5d6-13f4849c3f96
 
 	measure 'SSSO: Shrinkage_APN' =
@@ -935,6 +990,7 @@ table 'CSCI Measures'
 			RETURN
 			DIVIDE([SSSO: Scrap-Off] - Plan,Plan)
 		formatString: 0.0
+		displayFolder: SSSO Shrinkage
 		lineageTag: 23f1cdcd-dc22-4815-8c01-b9c71356b147
 
 	measure 'SSSO: Shrinkage APN_Final' =
@@ -949,9 +1005,11 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_
 			)
+		displayFolder: SSSO Shrinkage
 		lineageTag: 7d3f350c-30df-4af1-a55c-eeb352b16cfc
 
 	measure 'SSSO: Shrinkage F66_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "24"))
+		displayFolder: SSSO Shrinkage
 		lineageTag: 5652679b-a0ce-46b8-abec-6b76f8d5af3a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -961,6 +1019,7 @@ table 'CSCI Measures'
 			VAR Flex = [SSSO: Shrinkage F66_Base]
 			RETURN
 			DIVIDE([SSSO: Scrap-Off] - Flex,Flex)
+		displayFolder: SSSO Shrinkage
 		lineageTag: 81965bcb-f878-4c5f-b1cd-4502a924e23f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -977,45 +1036,13 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_
 			)
+		displayFolder: SSSO Shrinkage
 		lineageTag: 72a0ac18-b702-4686-8069-28dbef2319d4
 
 	measure 'Service level% YTD' = TOTALYTD([Service Level %],Dim_Date[Date])
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Service Level CSCI
 		lineageTag: a57316ee-d427-4504-bd22-16ac30edb1bd
-
-	measure DSO =
-			
-			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
-			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DSO_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
-			RETURN
-			DIVIDE(num,den,0)
-			/*
-			VAR _Months = 3
-			VAR _NIV = CALCULATE( [Net Sales Actual], DATESINPERIOD(Dim_Date[P_DateKey_Monthly], MAX( Dim_DateSlicer[P_DateKey_Monthly] ), -3, MONTH) )
-			VAR _AvgAR = [Accounts Receivable Avg L4M]
-			RETURN
-			    DIVIDE( _AvgAR, _NIV ) * (30.3334*_Months)
-			*/
-		formatString: 0
-		lineageTag: d4c2a733-714c-4395-b963-2899e727949f
-
-	measure DPO = ```
-			
-			Var num = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Num]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
-			VAR den = CALCULATE(SUM(Fact_DSO_DPO_ABP[DPO_Den]),KEEPFILTERS(Dim_Date[Is Closed] = "TRUE"))
-			RETURN
-			DIVIDE(num,den,0) 
-			 
-			 /*
-			 VAR _Months = 3
-			VAR _COGS = -CALCULATE( [COGS Actual]+ [A&P Actual]+[Variances Act]+[Distribution Actual] , DATESINPERIOD(Dim_Date[P_DateKey_Monthly], MAX( Dim_Date[P_DateKey_Monthly] ), -3, MONTH) )
-			VAR _AvgAP = [Accounts Payable Avg L4M]
-			RETURN
-			    DIVIDE( _AvgAP, _COGS ) * (30.3334*_Months)
-			    */
-			```
-		formatString: 0
-		lineageTag: 4318eaad-12d6-402e-8b6a-c68c4ecdb181
 
 	measure 'Service Level PP' =
 			
@@ -1026,6 +1053,7 @@ table 'CSCI Measures'
 			RETURN
 			Result
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Level CSCI
 		lineageTag: 4fe77bdc-2064-47e1-a1c7-d36b0b8a2d5c
 
 	measure 'Bias L1 PP CSCI' =
@@ -1037,6 +1065,7 @@ table 'CSCI Measures'
 			RETURN
 			Result
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: ffa93328-633a-40f7-9e0b-ba48ac4b0968
 
 	measure 'Bias L4 PP CSCI' =
@@ -1048,12 +1077,15 @@ table 'CSCI Measures'
 			RETURN
 			Result
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Bias CSCI
 		lineageTag: c2c77398-25d6-44bd-b62a-827d6c126229
 
 	measure 'Bias% MoM CSCI L1' = CALCULATE([Bias% MoM CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1)) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCI
 		lineageTag: 1475ec87-a540-46d8-8e69-cdfff62891a2
 
 	measure 'Bias% MoM CSCI L4' = CALCULATE([Bias% MoM CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4)) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCI
 		lineageTag: 1985e13a-770e-40df-96fd-e53051bc756f
 
 	measure 'Bias% PY L1 CSCI' = ```
@@ -1068,16 +1100,20 @@ table 'CSCI Measures'
 			RETURN Result
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCI
 		lineageTag: a0011fe4-8e69-4404-9ed9-9208a65c236c
 
 	measure 'Bias% PY L4 CSCI' = CALCULATE([Bias%_PY CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4))
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCI
 		lineageTag: e05dfc98-898e-4053-9b4a-a18d9a38b6a5
 
 	measure 'Bias% YoY CSCI L1' = CALCULATE([Bias% YoY CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1)) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCI
 		lineageTag: b7cace8d-a4a3-4ce2-a796-c7595a4efcab
 
 	measure 'Bias% YoY CSCI L4' = CALCULATE([Bias% YoY CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4)) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Bias CSCI
 		lineageTag: cf1f93d3-152e-4f36-973a-3516ffd8642e
 
 	measure 'FA% L1 PP CSCI' = ```
@@ -1091,6 +1127,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 769fbf53-2ba9-4cb8-bde1-2d0e7385154e
 
 	measure 'FA% L1 YoY CSCI' = ```
@@ -1107,6 +1144,7 @@ table 'CSCI Measures'
 			    IF(kpi_ < 0, "▼ " & format_, "▲ " & format_) & UNICHAR(160) & UNICHAR(160)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: d7b1cce1-d953-4174-9386-32fd87973c6c
 
 	measure 'FA% L4 PP CSCI' = ```
@@ -1120,6 +1158,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 2105964e-b6f9-44f7-a4e3-409344f02f41
 
 	measure 'FA% L4 YoY CSCI' = ```
@@ -1136,25 +1175,30 @@ table 'CSCI Measures'
 			    IF(kpi_ < 0, "▼ " & format_, "▲ " & format_) & UNICHAR(160) & UNICHAR(160)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 92b8766c-e04c-4f71-a116-2f70bf8e602e
 
 	measure 'FA% Lag1 PY_CSCI' = CALCULATE([FA%_PY],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1))
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 71f35dcf-9e8a-482d-9eae-2e272c0cca1a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% Lag4 PY_CSCI' = CALCULATE([FA%_PY],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4))
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 3a1003ae-01d2-4838-96e3-fa18e8c05a02
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA% MoM CSCI L1' = CALCULATE([FA% MoM CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1)) & UNICHAR(160) & UNICHAR(160)
 		formatString: percentage
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: b4e89b4c-a2a9-4c5d-8dfc-8328c9673c63
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure 'FA% MoM CSCI L4' = CALCULATE([FA% MoM CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4)) & UNICHAR(160) & UNICHAR(160)
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 357bde84-b400-4a0d-9074-e5a75dee0d9c
 
 	measure 'SSSO: Shrinkage PP' =
@@ -1165,6 +1209,7 @@ table 'CSCI Measures'
 			VAR Result = Calculate([SSSO Shrinkage],filter_)
 			RETURN
 			Result
+		displayFolder: SSSO Shrinkage
 		lineageTag: c0939e9e-622d-45b2-815c-1192a7ac0d51
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1180,6 +1225,7 @@ table 'CSCI Measures'
 			
 			```
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Switch Measures
 		lineageTag: bc081bb5-0f7f-41b3-b911-d0b85925cfa7
 
 	measure 'FA Target L1 Diff%_CSCI' = ```
@@ -1191,7 +1237,7 @@ table 'CSCI Measures'
 			Return 
 			Result_
 			```
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 0d1a61cd-aeee-462b-b848-998d20aaea70
 
 	measure 'FA Target L4 Diff%_CSCI' = ```
@@ -1203,7 +1249,7 @@ table 'CSCI Measures'
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 2514ba60-18ae-4d3e-b40c-cab90c39d035
 
 	measure Switch_Plan_OI_CSCI =
@@ -1218,6 +1264,7 @@ table 'CSCI Measures'
 			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_APN_Base],
 			    "ABP Variance", [ABP Variance_APN_Base]
 			)
+		displayFolder: Switch Measures
 		lineageTag: 47c989ef-2df8-40fe-b73f-b2ca77b1b0a0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1231,6 +1278,7 @@ table 'CSCI Measures'
 			)
 			
 			```
+		displayFolder: Switch Measures
 		lineageTag: dd0afeb6-f201-4686-b0e5-5b1651f57142
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1244,6 +1292,7 @@ table 'CSCI Measures'
 			VAR Result = [Bias L1 CSCI] - Net_PM
 			RETURN
 			Result
+		displayFolder: Bias CSCI
 		lineageTag: b1058365-6d5b-4b5f-b4f4-9131c99b5050
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1257,17 +1306,19 @@ table 'CSCI Measures'
 			VAR Result = [Bias L4 CSCI] - Net_PM
 			RETURN
 			Result
+		displayFolder: Bias CSCI
 		lineageTag: 25c4e31e-92f8-4192-9a61-711422f9241d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA Target L1 Diff raw' = [FA% L1] - [FA Target CSCI]
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: f154e014-6414-4593-b313-09fdc38bf4b2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA Target L4 Diff raw' = [FA% L4] - [FA Target CSCI]
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 4ae34144-6679-483c-b310-7afae1950428
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1284,6 +1335,7 @@ table 'CSCI Measures'
 			    kpi_
 			
 			```
+		displayFolder: Bias CSCI
 		lineageTag: d2a198e5-5b9f-4b51-9cee-98299a6ab1f9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1300,6 +1352,7 @@ table 'CSCI Measures'
 			    kpi_
 			
 			```
+		displayFolder: Bias CSCI
 		lineageTag: f463982c-4452-478b-a2f2-4cf959eba23c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1314,6 +1367,7 @@ table 'CSCI Measures'
 			
 			RETURN
 			    result
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: d808f1f5-5740-4fc9-b9e2-f9b99aff7868
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1328,6 +1382,7 @@ table 'CSCI Measures'
 			
 			RETURN
 			    result
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 47365e73-df3b-49ce-b8e0-697fa4de554e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1343,6 +1398,7 @@ table 'CSCI Measures'
 			
 			RETURN
 			Result
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 55417097-0c31-4f13-b824-042001f24b58
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1358,13 +1414,14 @@ table 'CSCI Measures'
 			
 			RETURN
 			Result
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 1d2df64b-744c-4c45-9190-ceb53a9492c5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'FA Target CSCI' = .60
 		formatString: 0%;-0%;0%
-		displayFolder: Target Calcs
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 03af2058-caa9-49d3-93a6-3c86876438b6
 
 	measure 'Service Level MoM' =
@@ -1377,23 +1434,24 @@ table 'CSCI Measures'
 			VAR Result =[Service Level %] - Net_PM
 			RETURN
 			Result
+		displayFolder: Service Level CSCI
 		lineageTag: 40b194ac-36d7-4e23-acaf-473fd6872d26
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Target CSCI' = .10
 		formatString: 0%;-0%;0%
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: 6577c901-ca17-45aa-9dfa-178b4f8aedff
 
 	measure 'Bias Target Diff%_CSCI L1' = [Bias L1 CSCI] - [Bias Target CSCI]
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: a6149d6e-d42a-4d95-844c-6bc80f8f7d03
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Bias Target Diff%_CSCI L4' = [Bias L4 CSCI] - [Bias Target CSCI]
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: c169caae-52e0-4f9d-82b8-9e02e67b3f3b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1407,7 +1465,7 @@ table 'CSCI Measures'
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: b46a3e6e-9bc9-40eb-bf9c-9d959080c8e6
 
 	measure 'Bias Target Final_CSCI L4' = ```
@@ -1419,7 +1477,7 @@ table 'CSCI Measures'
 			Return 
 			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
-		displayFolder: Target Calcs
+		displayFolder: Bias CSCI
 		lineageTag: 1806dcf1-5cad-4924-b950-b7fa6abda24d
 
 	measure Switch_Plan_Sales_CSCI =
@@ -1431,6 +1489,7 @@ table 'CSCI Measures'
 			"Bias% Lag 1",.10,
 			"Bias% Lag 4",.10
 			)
+		displayFolder: Switch Measures
 		lineageTag: febe2eb3-8fda-465c-983f-e235d9d50474
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1447,6 +1506,7 @@ table 'CSCI Measures'
 			RETURN
 			[Bias % CSCI] - Result_
 			```
+		displayFolder: Bias CSCI
 		lineageTag: 68859928-47a2-459e-9bf4-55e99454b0a3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1463,6 +1523,7 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Bias CSCI
 		lineageTag: 00308dc1-3e10-4352-b6d6-b70db598c545
 
 	measure 'FA% LYTD CSCI' = ```
@@ -1521,6 +1582,7 @@ table 'CSCI Measures'
 			    IF(_FACC < 0, 0, _FACC)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: f63df1fe-ca21-46a3-8139-b86b5d054065
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1537,6 +1599,7 @@ table 'CSCI Measures'
 			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
 			    )
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: d150111d-c004-43be-880c-eed0fef88477
 
 	measure Actual_LYTD = ```
@@ -1549,6 +1612,7 @@ table 'CSCI Measures'
 			Result
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: a95eea53-1f17-47e0-8851-5fc44c2b0af4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1562,6 +1626,7 @@ table 'CSCI Measures'
 			return
 			Result
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: ce80f197-70f6-4d4d-9432-3dd976328286
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1575,6 +1640,7 @@ table 'CSCI Measures'
 			return
 			Result
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 4543f424-d152-43de-99ee-d17557444fd0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1589,6 +1655,7 @@ table 'CSCI Measures'
 			Result
 			
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 5d841dfb-6a6b-4a23-a468-cbc3edf33445
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1603,6 +1670,7 @@ table 'CSCI Measures'
 			Calculate([Actual],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 3baf1b92-e60a-4ef8-99a3-7fdf5e4fdb96
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1617,6 +1685,7 @@ table 'CSCI Measures'
 			Calculate([Fcst],filter_)
 			
 			```
+		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 76a63ba5-c7c1-4e3e-803c-877c5bb66f7a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1631,6 +1700,7 @@ table 'CSCI Measures'
 			Calculate([Cut_Qty_Base],filter_)
 			
 			```
+		displayFolder: Service Level CSCI
 		lineageTag: 6208996b-93f3-4b65-8ade-c491df295584
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1643,9 +1713,179 @@ table 'CSCI Measures'
 			
 			RETURN
 			Calculate([Order_Qty_base],filter_)
+		displayFolder: Service Level CSCI
 		lineageTag: 881378b1-daaf-4dd8-a739-697ce06da0eb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Bias%_CSCI_Color_KPI = ```
+			
+			/*
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			// Current KPI value (raw % bias)
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%_raw CSCI],
+			        "YTD", [Bias_YTD CSCI],
+			        "vs YoY", [Bias YoY % Raw CSCI],
+			        "vs Plan", [Bias Target Diff%_CSCI],
+			        BLANK()
+			    )
+			
+			// Previous period's KPI value
+			VAR prev_kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", CALCULATE([Bias MoM%_raw CSCI], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        "vs YoY", CALCULATE([Bias YoY % Raw CSCI], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        "vs Plan", CALCULATE([Bias Target Diff%_CSCI], Dim_Date[YearPeriodSeq] = MAX(Dim_Date[YearPeriodSeq]) - 1),
+			        BLANK()
+			    )
+			
+			// Is bias within acceptable range of -5% to +5%
+			VAR isAcceptable = NOT ISBLANK(kpi_value) && ABS(kpi_value) <= 0.05
+			
+			// Is bias improving (getting closer to 0 compared to previous)
+			VAR isImproving = 
+			    NOT isAcceptable &&
+			    NOT ISBLANK(kpi_value) &&
+			    NOT ISBLANK(prev_kpi_value) &&
+			    ABS(kpi_value) < ABS(prev_kpi_value)
+			
+			RETURN
+			    IF(
+			        _sel = "YTD", "#000000",  // black for YTD
+			        IF(
+			            ISBLANK(kpi_value), "#000000",  // black for blank
+			            IF(
+			                isAcceptable || isImproving,
+			                "#1A9641",  // green for acceptable or improving
+			                "#D7191C"   // red for bad + not improving
+			            )
+			        )
+			    )
+			 */
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			VAR BiasValue = [Bias % CSCI] 
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Bias MoM%_raw CSCI],
+			        "LYTD", [Bias % LYTD CSCI],
+			        "vs YoY", [Bias YoY % Raw CSCI],
+			        "vs Plan", [Bias Target Diff%_CSCI],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  
+			        IF(
+			            ABS(BiasValue) <= 0.10,     // between -10% and +10%
+			            "#001489",                  // green
+			            "#D7191C"                   // red
+			        )
+			    )
+			    )
+			
+			```
+		displayFolder: Bias CSCI
+		lineageTag: f2b8f3f4-e505-4b48-a764-7e39bb5a500b
+
+	measure FA_CSCI_Color_KPI =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [FA% MoM CSCI],
+			        "LYTD", [FA% LYTD CSCI],
+			        "vs YoY", [FA% YoY CSCI],
+			        "vs Plan", [FA Target Diff%_CSCI],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- red for ▼ down
+			            "#001489"   -- green for ▲ up
+			        )
+			    )
+			)
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 08b4d419-e8ed-4c8f-8365-592fa1b186ed
+
+	measure Service_Level_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Service Level MoM%],
+			        "LYTD", [Service Level LYTD],
+			        "vs YoY", [Service Level YoY%], 
+			        "vs Plan", [Service Target Diff%_CSCI],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- Red for ▼ down
+			            "#001489"   -- Green for ▲ up
+			        )
+			    )
+			)
+			```
+		displayFolder: Service Level CSCI
+		lineageTag: e51617ce-50c7-4a89-b373-f73facdad32a
+
+	measure SSSO_Shrinkage_Color_KPI = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [SSSO: Shrinkage MoM%],
+			        "LYTD", [SSSO: Shrinkage LYTD],
+			        "vs YoY", [SSSO: Shrinkage YoY%], 
+			        "vs Plan", [SSSO: Shrinkage_APN],
+			        "vs Flex", [SSSO: Shrinkage_F66],
+			        BLANK()
+			    )
+			
+			RETURN
+			    IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- Green for ▼ down
+			            "#D7191C"   -- Red for ▲ up
+			        )
+			    )
+			```
+		displayFolder: SSSO Shrinkage
+		lineageTag: 0c69d007-f132-45dd-bc15-643621f42127
 
 	column Measures
 		dataType: string

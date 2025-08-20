@@ -13,6 +13,7 @@ table Working_Capital_Parameter
 			    "DIO", [DIO]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 50ac4fbb-5a38-4b02-b020-717f8830e131
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -29,6 +30,7 @@ table Working_Capital_Parameter
 			    "DIO", [DIO MoM]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 1b65f20a-6809-4282-9878-80be821042b0
 
 	measure 'Switch Working Capital PY' = ```
@@ -43,6 +45,7 @@ table Working_Capital_Parameter
 			    "DIO", [DIO PY]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: f8d29d06-6357-4b60-ad0e-3ae8a85575eb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
