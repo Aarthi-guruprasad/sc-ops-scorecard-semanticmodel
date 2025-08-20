@@ -11,6 +11,7 @@ table Par_Compare
 
 	partition Par_Compare = m
 		mode: import
+		queryGroup: Parameters/Misc
 		source =
 				let
 				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckwuKU3MUYrViVbySSwuUYhMTSwC8wJyEvPADLec1AoFM20zpdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Dim_Compare = _t]),

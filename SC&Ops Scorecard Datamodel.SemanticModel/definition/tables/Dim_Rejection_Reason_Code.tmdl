@@ -39,6 +39,7 @@ table Dim_Rejection_Reason_Code
 
 	partition Dim_Rejection_Reason_Code = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = SharePoint.Files("https://perrigo.sharepoint.com/sites/O365GRP_SCOperationsPowerBIProject/", [ApiVersion = 15]),

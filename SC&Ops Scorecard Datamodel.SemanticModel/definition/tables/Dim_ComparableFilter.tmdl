@@ -54,6 +54,7 @@ table Dim_ComparableFilter
 
 	partition Dim_ComparableFilter = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = Dim_Date,

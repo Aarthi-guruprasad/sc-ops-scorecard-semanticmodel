@@ -35,6 +35,7 @@ table Bridge_Site_Area
 
 	partition Bridge_Site_Area = m
 		mode: import
+		queryGroup: Bridge/Mapping
 		source =
 				let
 				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Site_Area_Mapping.xlsx"), null, true),

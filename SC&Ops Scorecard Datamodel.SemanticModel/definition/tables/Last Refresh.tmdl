@@ -12,6 +12,7 @@ table 'Last Refresh'
 
 	partition 'Last Refresh' = m
 		mode: import
+		queryGroup: Parameters/Misc
 		source =
 				let
 				    Source = #table(type table[Date Last Refreshed=datetime], {{DateTime.LocalNow()}})

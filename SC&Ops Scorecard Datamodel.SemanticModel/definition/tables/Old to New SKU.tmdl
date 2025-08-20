@@ -19,6 +19,7 @@ table 'Old to New SKU'
 
 	partition 'Old to New SKU' = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

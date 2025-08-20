@@ -24,6 +24,7 @@ table 'Dim_Closing Dates'
 
 	partition 'Dim_Closing Dates' = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

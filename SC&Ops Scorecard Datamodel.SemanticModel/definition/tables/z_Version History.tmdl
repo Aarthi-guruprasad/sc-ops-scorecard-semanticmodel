@@ -57,6 +57,7 @@ table 'z_Version History'
 
 	partition 'z_Version History' = m
 		mode: import
+		queryGroup: Parameters/Misc
 		source =
 				let
 				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Help&Information%20Document%20V1.0.xlsx"), null, true),

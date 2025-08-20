@@ -25,6 +25,7 @@ table Bridge_CSCA_CSCI
 
 	partition Bridge_CSCA_CSCI = m
 		mode: import
+		queryGroup: Bridge/Mapping
 		source =
 				let
 				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcg52dlSK1QEzPMGM0LzEnJz85MSS1BSl2FgA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Area = _t]),

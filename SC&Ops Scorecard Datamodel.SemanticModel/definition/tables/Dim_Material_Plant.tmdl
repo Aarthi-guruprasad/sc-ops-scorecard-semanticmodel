@@ -326,6 +326,7 @@ table Dim_Material_Plant
 
 	partition Dim_Material_Plant = m
 		mode: import
+		queryGroup: Dim
 		source = ```
 				let 
 				

@@ -25,6 +25,7 @@ table Dim_Value_Stream_Grant
 
 	partition Dim_Value_Stream_Grant = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    VS = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Inventory%20Reporting", "Inventory Master Data", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Inventory Master Data'[Mat/Plant],#(lf)    'Inventory Master Data'[Value Stream]#(lf))#(lf)ORDER BY #(lf)    'Inventory Master Data'[Mat/Plant] ASC,#(lf)    'Inventory Master Data'[Value Stream] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),

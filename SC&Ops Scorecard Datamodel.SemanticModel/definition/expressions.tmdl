@@ -13,10 +13,11 @@ expression CurrentFiscalPeriod =
 		in
 		    #"Calculated Maximum"
 	lineageTag: 1677018c-cbff-43ad-b6d1-98e450ccef5c
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Number
+	annotation PBI_ResultType = Exception
 
 expression FirstFiscalPeriod =
 		let
@@ -25,10 +26,11 @@ expression FirstFiscalPeriod =
 		in
 		    #"Calculated FirstFiscalPeriod"
 	lineageTag: 246bf2eb-226c-4e24-9d82-cf3717e425ef
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Number
+	annotation PBI_ResultType = Exception
 
 expression CurrentFiscalPeriod_Num =
 		let
@@ -39,10 +41,11 @@ expression CurrentFiscalPeriod_Num =
 		in
 		    #"Calculated Maximum"
 	lineageTag: 435a3265-ca3c-4236-b9f6-5625ddad16b2
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Number
+	annotation PBI_ResultType = Exception
 
 expression Parameter_LastClosedMonth =
 		let
@@ -52,10 +55,11 @@ expression Parameter_LastClosedMonth =
 		in
 		    #"Latest Validated Closing Period"
 	lineageTag: 455da94d-be85-45a7-8cc1-9d98007f056f
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Number
+	annotation PBI_ResultType = Exception
 
 expression DF_MasterData_Global =
 		let
@@ -66,10 +70,11 @@ expression DF_MasterData_Global =
 		in
 		    #"81297381-aefd-4bd3-a63f-0efa1e9400bd"
 	lineageTag: a8a9ba37-8609-45e7-bf65-a535f06d1a1d
+	queryGroup: Dim
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
 expression Other_Date_ModelRefreshed =
 		let
@@ -80,6 +85,7 @@ expression Other_Date_ModelRefreshed =
 		in
 		    #"Renamed Columns"
 	lineageTag: cae3cb06-aa9a-436d-b036-5cee741558f3
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 
@@ -106,6 +112,7 @@ expression Dim_Date_Sequence_P_YearPeriod = ```
 		    #"Renamed Columns"
 		```
 	lineageTag: 17016562-e1e2-44c1-aeb8-f8fbd54e17d6
+	queryGroup: Parameters/Misc
 
 	annotation PBI_NavigationStepName = Navigation
 

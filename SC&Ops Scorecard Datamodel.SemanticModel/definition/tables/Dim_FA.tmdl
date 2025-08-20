@@ -115,6 +115,7 @@ table Dim_FA
 
 	partition Dim_FA = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

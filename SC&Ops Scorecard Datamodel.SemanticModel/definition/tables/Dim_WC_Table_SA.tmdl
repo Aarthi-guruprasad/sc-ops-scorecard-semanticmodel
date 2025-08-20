@@ -35,6 +35,7 @@ table Dim_WC_Table_SA
 
 	partition Dim_WC_Table_SA = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("jZlNTxsxEIb/SpReQfLM2FnvMWxaUjXASuEjFeLcQ7mV/6/a67AQlJl3Lk6W95E9Xx47y/Pzcr0baHlRP+aRgoTF5WL3uF++XEwEQ0IgESGRILGCRAeJDIneJkKOMZQ/j7uujYur139vH9z9J46cHDs5cXLRySUnt/Jx4dSP/XCe+uLF2+t5LPqw5MNWLoyyb7beN1vwxIPINxn7MJ9p7FuUXRllX0bZl1HufFjvMU3ERfmWFE91JAot7Wkx/v1z8u1rJyko+VHxo9GPJj+68qPZj/ZulJyzbrtjj7nZziMRV6Q+vCMRIwkjHUYyRFqjsBHCCGMEx6XvbWQILXK3v+eRKE1EeWgEYSJDokdE62E6cR0CIHah5c8kgKWFAJbuQsuvTtxCSwvBNrGHc+xh5h7gKg8jWuVpAw0Zf10vdpcT9Hg/j1S2QYXKwwfEHkg8UPRACUM348+9TX2rwt12Him2DXTXNtDTcIzy3TCP1IWGDDMiGFkhhDxIh5EMkVbhNkII4QBnYRwXblVuIgQTwOSYBYaOBXskOC6Czc14low9yrBeOMNi4NxDpMdp7KG5gotBcDFIO+ZtBDotuLwFl5QQtCVSzdHhcDgZ37Ve1zgYGhuaGFo0tGRohg/T/V/TsqEZvovh+7T/NM3wXQzfxfBdDN/F8F0M38XwPRq+R8P3aNRENOISjbhE3b+Et2HCZ1XCB1HCOzXhbZhw808E+2BibC5jcxmeD4lhq0yMnWZ4PiSGrTIxiMtmZNKKtmpa0RZNbVZV0zZl1bRNWTWtaKumbbyiqY2laoadavOommGn2jzGsd2sNE1br2hq46ya1iDq25k6Z/1dXnOsv3iZ+sEn7PyrxenGvD7WiV5X5c7sgq480OCBNh7ouwf64YBW2Ltya3VBOAStQm2mHNVrpQTqmWSdH8b5GPXzMU2FYhlV/59RRe0F/st/", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Workcenter = _t, Facility = _t, #"Gen Area" = _t, #"Plant - Area" = _t]),
