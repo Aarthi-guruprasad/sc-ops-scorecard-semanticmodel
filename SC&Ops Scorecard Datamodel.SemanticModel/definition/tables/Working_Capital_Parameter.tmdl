@@ -100,8 +100,8 @@ table Working_Capital_Parameter
 				    ("Net Inventory", NAMEOF('Measure'[Net Inventory]), 1, "Net Inventory"),
 				    ("Inflated Inventory", NAMEOF('Measure'[Inflated Inventory]), 2, "Inflated Inventory"),
 				    ("Expired Inventory", NAMEOF('Measure'[Expired Inventory]), 3, "Expired Inventory"),
-				    ("DSO", NAMEOF('CSCI Measures'[DSO]), 4, "DSO"),
-				    ("DPO", NAMEOF('CSCI Measures'[DPO]), 5, "DPO"),
+				    ("DSO", NAMEOF('Measure'[DSO]), 4, "DSO"),
+				    ("DPO", NAMEOF('Measure'[DPO]), 5, "DPO"),
 				    ("DIO", NAMEOF('Measure'[DIO]), 6, "DIO")
 				}
 

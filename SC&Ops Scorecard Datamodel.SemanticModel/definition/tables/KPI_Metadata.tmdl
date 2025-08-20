@@ -323,8 +323,11 @@ table KPI_Metadata
 			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
 			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
 			
+			
+			        "DSO_vsPlan", [DSO_APN],
 			        "DSO_vsPP", [DSO MoM%],
 			        "DSO_vsYoY", [DSO YoY%],
+			
 			        BLANK()
 			    )
 			
@@ -397,6 +400,12 @@ table KPI_Metadata
 			        "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
 			        "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
 			        "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			
+			        "SSSO_Shrinkage_vsPlan", [SSSO: Shrinkage_APN],
+			        "SSSO_Shrinkage_vsLYTD", [SSSO: Shrinkage LYTD],
+			        "SSSO_Shrinkage_vsPP", [SSSO: Shrinkage MoM%],
+			        "SSSO_Shrinkage_vsYoY", [SSSO: Shrinkage YoY%],
+			        "SSSO_Shrinkage_vsFlex", [SSSO: Shrinkage_F66],
 			        BLANK()
 			        )
 			
@@ -510,6 +519,7 @@ table KPI_Metadata
 			VAR _value =
 			    SWITCH (
 			        _kpiID,
+			        "DPO_vsPlan", [DPO_APN],
 			        "DPO_vsPP", [DPO MoM%],
 			        "DPO_vsYoY", [DPO YoY%],
 			        BLANK()
@@ -811,14 +821,26 @@ table KPI_Metadata
 			        "Bias_Lag4_CSCI_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
 			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
 			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
+			
 			        "Service_Top_11_vsPlan", [Service Top 11 Target Diff%],
 			        "Service_Top_11_vsYoY", [Service Top 11 YoY%],
 			        "Service_Top_11_vsLYTD", [Service Top 11 LYTD],
 			        "Service_Top_11_vsPP", [Service Top 11 MoM%],
 			        "Case_fill_rate_vsPlan", [CFR Target Diff%],
+			
 			        "Case_fill_rate_vsPP", [CFR MoM%],
 			        "Case_fill_rate_vsYoY", [CFR YoY%],
 			        "Case_fill_rate_vsLYTD", [CFR LYTD],
+			
+			        "Service_Level_Gap_vsPlan", [Service Target Diff%],
+			        "Service_Level_Gap_vsPP", [Service Rate% MoM%],
+			        "Service_Level_Gap_vsYoY", [Service Rate YoY%],
+			        "Service_Level_Gap_vsLYTD", [Service Rate LYTD],
+			
+			        "Service_Level_Total_vsPlan", [Service Target Diff%_CSCI],
+			        "Service_Level_Total_vsPP", [Service Level MoM%],
+			        "Service_Level_Total_vsYoY", [Service Level YoY%],
+			        "Service_Level_Total_vsLYTD", [Service Level LYTD],
 			        BLANK()
 			    )
 			
@@ -988,6 +1010,12 @@ table KPI_Metadata
 			        "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
 			        "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
 			        "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			
+			        "SSSO_Shrinkage_vsPlan", [SSSO: Shrinkage_APN],
+			        "SSSO_Shrinkage_vsLYTD", [SSSO: Shrinkage LYTD],
+			        "SSSO_Shrinkage_vsPP", [SSSO: Shrinkage MoM%],
+			        "SSSO_Shrinkage_vsYoY", [SSSO: Shrinkage YoY%],
+			        "SSSO_Shrinkage_vsFlex", [SSSO: Shrinkage_F66],
 			
 			        "Net_Sales_vsPlan", [Net Sales_APN],
 			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
@@ -1251,11 +1279,11 @@ table KPI_Metadata
 				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsYoY", "vs YoY","CSCA","GoodIfNeg","GoodIfNeg"},
 				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsFlex", "vs Flex","CSCA","GoodIfNeg","GoodIfNeg"},
 				
-				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsPlan", "vs Plan","CSCI","GoodIfNeg","GoodIfNeg"},
-				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsLYTD", "LYTD","CSCI","GoodIfNeg","GoodIfNeg"},
-				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsPP", "vs PP","CSCI","GoodIfNeg","GoodIfNeg"},
-				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsYoY", "vs YoY","CSCI","GoodIfNeg","GoodIfNeg"},
-				        {"Inventory", "SSSO: Conversions", "SSSO_Conversions_vsFlex", "vs Flex","CSCI","GoodIfNeg","GoodIfNeg"},
+				        {"Inventory", "SSSO: Shrinkage", "SSSO_Shrinkage_vsPlan", "vs Plan","CSCI","GoodIfNeg","GoodIfNeg"},
+				        {"Inventory", "SSSO: Shrinkage", "SSSO_Shrinkage_vsLYTD", "LYTD","CSCI","GoodIfNeg","GoodIfNeg"},
+				        {"Inventory", "SSSO: Shrinkage", "SSSO_Shrinkage_vsPP", "vs PP","CSCI","GoodIfNeg","GoodIfNeg"},
+				        {"Inventory", "SSSO: Shrinkage", "SSSO_Shrinkage_vsYoY", "vs YoY","CSCI","GoodIfNeg","GoodIfNeg"},
+				        {"Inventory", "SSSO: Shrinkage", "SSSO_Shrinkage_vsFlex", "vs Flex","CSCI","GoodIfNeg","GoodIfNeg"},
 				
 				        {"Inventory", "SSSO: Salvage & Obs", "SSSO_Salvage_Obsolescence_vsPlan", "vs Plan","CSCA","GoodIfNeg","GoodIfNeg"},
 				        {"Inventory", "SSSO: Salvage & Obs", "SSSO_Salvage_Obsolescence_vsLYTD", "LYTD","CSCA","GoodIfNeg","GoodIfNeg"},
