@@ -1074,6 +1074,21 @@ table KPI_Metadata
 			    )
 		lineageTag: 3c43eba9-48bb-4ce1-9c55-2f528ebaecca
 
+	measure 'Green Count (Sales Growth)' = ```
+			
+			CALCULATE (
+			    COUNTROWS ( KPI_Metadata ),
+			    FILTER (
+			        KPI_Metadata,
+			        [KPI Status Numeric] = "🟢"
+			            && NOT ISBLANK ( [KPI Status Numeric] )
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: ed8ace2f-d3df-4fb2-a07c-2402c9e0075b
+
 	column Metrics
 		lineageTag: fb6eb0f0-7794-44a9-b2f4-eebff3e474bc
 		summarizeBy: none
