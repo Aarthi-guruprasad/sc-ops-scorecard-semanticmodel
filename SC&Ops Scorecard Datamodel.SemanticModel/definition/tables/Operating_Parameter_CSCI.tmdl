@@ -20,6 +20,7 @@ table Operating_Parameter_CSCI
 			    "DPO", [DPO] 
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: ef4fd3eb-2c4b-43f8-8c84-f35cecd542ca
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}

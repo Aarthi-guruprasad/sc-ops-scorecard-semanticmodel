@@ -12,6 +12,7 @@ table Operations_Parameter
 			    "Critical or Major Observations", [Critical or Major Observations]
 			
 			)
+		displayFolder: Switch Measures
 		lineageTag: 7c088386-c8e5-4af3-a3bc-641661e9489e
 
 		formatStringDefinition =
@@ -36,6 +37,7 @@ table Operations_Parameter
 			    "RFT%", [RFT MoM%],
 			    "Critical or Major Observations", [Critical or Major Observations] - [Critical or Major Observations PP]
 			)
+		displayFolder: Switch Measures
 		lineageTag: 8263421b-d318-4cc2-a712-92a5629c31e4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
