@@ -20,6 +20,7 @@ table Dim_Expiration_Buckets
 
 	partition Dim_Expiration_Buckets = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

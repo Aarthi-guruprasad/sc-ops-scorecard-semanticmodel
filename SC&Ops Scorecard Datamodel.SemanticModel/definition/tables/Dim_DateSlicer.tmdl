@@ -210,6 +210,7 @@ table Dim_DateSlicer
 
 	partition Dim_DateSlicer = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = Dim_Date

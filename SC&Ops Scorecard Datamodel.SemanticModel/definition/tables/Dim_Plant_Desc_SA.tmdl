@@ -35,6 +35,7 @@ table Dim_Plant_Desc_SA
 
 	partition Dim_Plant_Desc_SA = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjQwNlDSUQrw9VSK1QFyDY0gXA8o1xTM9YuEcM0NwFx/ZwjXxBDMDQuBciF6/YF6YwE=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Plant = _t, Desc = _t]),

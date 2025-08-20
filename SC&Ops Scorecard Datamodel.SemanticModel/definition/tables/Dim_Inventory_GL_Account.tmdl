@@ -101,6 +101,7 @@ table Dim_Inventory_GL_Account
 
 	partition Dim_Inventory_GL_Account = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),
@@ -111,5 +112,7 @@ table Dim_Inventory_GL_Account
 				in
 				    Dim_Inventory_GL_Account_
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
 

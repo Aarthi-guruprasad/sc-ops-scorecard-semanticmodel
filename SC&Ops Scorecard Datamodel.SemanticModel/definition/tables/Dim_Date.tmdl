@@ -191,6 +191,7 @@ table Dim_Date
 
 	partition Dim_Date = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = DF_MasterData_Global,

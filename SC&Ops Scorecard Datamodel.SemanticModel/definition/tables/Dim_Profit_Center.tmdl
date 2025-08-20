@@ -107,6 +107,7 @@ table Dim_Profit_Center
 
 	partition Dim_Profit_Center = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

@@ -35,6 +35,7 @@ table 'Value Stream Mapping'
 
 	partition 'Value Stream Mapping' = m
 		mode: import
+		queryGroup: Bridge/Mapping
 		source =
 				let
 				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Value%20Stream%20Mapping.xlsx"), null, true),

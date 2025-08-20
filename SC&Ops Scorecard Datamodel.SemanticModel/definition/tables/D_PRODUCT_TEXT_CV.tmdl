@@ -501,6 +501,7 @@ table D_PRODUCT_TEXT_CV
 
 	partition D_PRODUCT_TEXT_CV = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),

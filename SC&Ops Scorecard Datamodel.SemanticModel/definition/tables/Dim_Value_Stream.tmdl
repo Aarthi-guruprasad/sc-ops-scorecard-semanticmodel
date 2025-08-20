@@ -105,8 +105,17 @@ table Dim_Value_Stream
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Upstream Source'
+		dataType: string
+		lineageTag: 56028261-e686-497f-b75a-627907fb024f
+		summarizeBy: none
+		sourceColumn: Upstream Source
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Value_Stream = m
 		mode: import
+		queryGroup: Dim
 		source =
 				let
 				    Source = PowerPlatform.Dataflows(null),
