@@ -13,6 +13,7 @@ table Sales_Parameter_CSCI
 			    "Service Level%",[Service Level %]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 68538ff8-7bf6-4e5b-98bf-cb808550a1c3
 
 	measure 'Switch Sales_Parameter MoM_CSCI' = ```
@@ -27,6 +28,7 @@ table Sales_Parameter_CSCI
 			    "Service Level%",[Service Level MoM]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: e0f9a080-1b91-483f-82f4-ceda13830006
 
 	column Sales_Parameter_CSCI

@@ -16,6 +16,7 @@ table Sales_Parameter
 			    "Service Top 11", [Service Top 11]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: cb8476cd-a0f6-4ca9-bb57-ff97d8d1397a
 
 		formatStringDefinition =
@@ -45,6 +46,7 @@ table Sales_Parameter
 			    "Service Top 11", [Service Top 11] - [Service Top 11 PP]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 090501f1-05c2-4cbf-8d45-4733ef03cc8c
 
 		formatStringDefinition =

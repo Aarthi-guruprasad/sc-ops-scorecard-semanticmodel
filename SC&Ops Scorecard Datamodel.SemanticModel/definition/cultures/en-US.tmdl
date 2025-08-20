@@ -28615,7 +28615,7 @@ cultureInfo en-US
 			    "metric_selector.forecast_accuracy_lag": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Forecast_Accuracy_Lag"
 			        }
 			      },
@@ -28744,7 +28744,7 @@ cultureInfo en-US
 			    "metric_selector.service_rate": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service_rate"
 			        }
 			      },
@@ -28873,7 +28873,7 @@ cultureInfo en-US
 			    "metric_selector.bias_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Bias Switch"
 			        }
 			      },
@@ -28995,7 +28995,7 @@ cultureInfo en-US
 			    "metric_selector.oee": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "OEE"
 			        }
 			      },
@@ -29011,7 +29011,7 @@ cultureInfo en-US
 			    "metric_selector.net_inventory": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_Inventory"
 			        }
 			      },
@@ -29140,7 +29140,7 @@ cultureInfo en-US
 			    "metric_selector.gross_inventory": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross_Inventory"
 			        }
 			      },
@@ -29269,7 +29269,7 @@ cultureInfo en-US
 			    "metric_selector.inflated_inventory": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Inflated_Inventory"
 			        }
 			      },
@@ -29398,7 +29398,7 @@ cultureInfo en-US
 			    "metric_selector.expired_inventory": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Expired_Inventory"
 			        }
 			      },
@@ -29527,7 +29527,7 @@ cultureInfo en-US
 			    "metric_selector.dio_": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DIO_"
 			        }
 			      },
@@ -29543,7 +29543,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_Salvageobs": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Salvage&Obs"
 			        }
 			      },
@@ -29559,7 +29559,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_obs_linked": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Obs_Linked"
 			        }
 			      },
@@ -30204,7 +30204,7 @@ cultureInfo en-US
 			    "metric_selector.forecast_accuracy_lag_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Forecast_Accuracy_Lag_Color"
 			        }
 			      },
@@ -30345,7 +30345,7 @@ cultureInfo en-US
 			    "metric_selector.service_rate_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service rate_Color"
 			        }
 			      },
@@ -30431,7 +30431,7 @@ cultureInfo en-US
 			    "metric_selector.bias_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Bias_Color"
 			        }
 			      },
@@ -30560,7 +30560,7 @@ cultureInfo en-US
 			    "metric_selector.OEE_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "OEE_Color"
 			        }
 			      },
@@ -30689,7 +30689,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_SalvageObs_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Salvage&Obs_Color"
 			        }
 			      },
@@ -30705,7 +30705,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_obs_linked_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Obs_Linked_Color"
 			        }
 			      },
@@ -30788,7 +30788,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_scrap_off_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Scrap_off_Color"
 			        }
 			      },
@@ -30923,7 +30923,7 @@ cultureInfo en-US
 			    "metric_selector.expired_inventory_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Expired_Inventory_Color"
 			        }
 			      },
@@ -31058,7 +31058,7 @@ cultureInfo en-US
 			    "metric_selector.net_inventory_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_Inventory_Color"
 			        }
 			      },
@@ -31193,7 +31193,7 @@ cultureInfo en-US
 			    "metric_selector.gross_inventory_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross_Inventory_Color"
 			        }
 			      },
@@ -31328,7 +31328,7 @@ cultureInfo en-US
 			    "metric_selector.inflated_inventory_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Inflated_Inventory_Color"
 			        }
 			      },
@@ -31463,7 +31463,7 @@ cultureInfo en-US
 			    "metric_selector.DIO_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DIO_Color"
 			        }
 			      },
@@ -31592,7 +31592,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_scrap_off": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Scrap_Off_"
 			        }
 			      },
@@ -36604,7 +36604,7 @@ cultureInfo en-US
 			    "metric_selector.total_logistics_on_net_sales_actual__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total Logistics on Net Sales Actual _Color"
 			        }
 			      },
@@ -36620,7 +36620,7 @@ cultureInfo en-US
 			    "metric_selector.total_logistics_on_net_sales": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total_Logistics_on_Net_Sales"
 			        }
 			      },
@@ -41036,7 +41036,7 @@ cultureInfo en-US
 			    "metric_selector.SA__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SA _Color"
 			        }
 			      },
@@ -41112,7 +41112,7 @@ cultureInfo en-US
 			    "metric_selector.sa": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SA"
 			        }
 			      },
@@ -41128,7 +41128,7 @@ cultureInfo en-US
 			    "metric_selector.reference_lbl_title": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Reference_lbl_title"
 			        }
 			      },
@@ -41713,7 +41713,7 @@ cultureInfo en-US
 			    "metric_selector.total_distribution_on_COGS": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total_Distribution_on_COGS"
 			        }
 			      },
@@ -41848,7 +41848,7 @@ cultureInfo en-US
 			    "metric_selector.total_distribution_on_COGS_actual__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total Distribution on COGS Actual _Color"
 			        }
 			      },
@@ -51879,7 +51879,7 @@ cultureInfo en-US
 			    "metric_selector.net_sales_actual": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_Sales_Actual"
 			        }
 			      },
@@ -51988,7 +51988,7 @@ cultureInfo en-US
 			    "metric_selector.net_sales_actual_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_Sales_Actual_Color"
 			        }
 			      },
@@ -60448,7 +60448,7 @@ cultureInfo en-US
 			    "metric_selector.DSO_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DSO_Color"
 			        }
 			      },
@@ -60577,7 +60577,7 @@ cultureInfo en-US
 			    "metric_selector.dso_": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DSO_"
 			        }
 			      },
@@ -60593,7 +60593,7 @@ cultureInfo en-US
 			    "metric_selector.DPO_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DPO_Color"
 			        }
 			      },
@@ -60722,7 +60722,7 @@ cultureInfo en-US
 			    "metric_selector.dpo_": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DPO_"
 			        }
 			      },
@@ -61002,7 +61002,7 @@ cultureInfo en-US
 			    "CSCI_measure.dso": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "CSCI Measures",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DSO"
 			        }
 			      },
@@ -61018,7 +61018,7 @@ cultureInfo en-US
 			    "CSCI_measure.dpo": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "CSCI Measures",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DPO"
 			        }
 			      },
@@ -63093,7 +63093,7 @@ cultureInfo en-US
 			    "metric_selector.COGS_actual_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "COGS_Actual_Color"
 			        }
 			      },
@@ -63228,7 +63228,7 @@ cultureInfo en-US
 			    "metric_selector.COGS_actual": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "COGS_Actual"
 			        }
 			      },
@@ -65665,7 +65665,7 @@ cultureInfo en-US
 			    "metric_selector.customer_fine_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Customer Fine Switch"
 			        }
 			      },
@@ -65793,7 +65793,7 @@ cultureInfo en-US
 			    "metric_selector.cust_Fine_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Cust Fine_Color"
 			        }
 			      },
@@ -65809,7 +65809,7 @@ cultureInfo en-US
 			    "metric_selector.CFR_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CFR_switch"
 			        }
 			      },
@@ -65938,7 +65938,7 @@ cultureInfo en-US
 			    "metric_selector.CFR__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CFR _Color"
 			        }
 			      },
@@ -71107,7 +71107,7 @@ cultureInfo en-US
 			    "metric_selector.bias_CSCA_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Bias_CSCA_Color_KPI"
 			        }
 			      },
@@ -71148,7 +71148,7 @@ cultureInfo en-US
 			    "metric_selector.bias_CSCI_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "CSCI Measures",
 			          "ConceptualProperty": "Bias%_CSCI_Color_KPI"
 			        }
 			      },
@@ -71184,7 +71184,7 @@ cultureInfo en-US
 			    "metric_selector.COGS_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "COGS_Color_KPI"
 			        }
 			      },
@@ -71219,7 +71219,7 @@ cultureInfo en-US
 			    "metric_selector.cust_Fine_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Cust Fine_Color_KPI"
 			        }
 			      },
@@ -71235,7 +71235,7 @@ cultureInfo en-US
 			    "metric_selector.DIO_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DIO_Color_KPI"
 			        }
 			      },
@@ -71270,7 +71270,7 @@ cultureInfo en-US
 			    "metric_selector.DPO_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DPO_Color_KPI"
 			        }
 			      },
@@ -71305,7 +71305,7 @@ cultureInfo en-US
 			    "metric_selector.DSO_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DSO_Color_KPI"
 			        }
 			      },
@@ -71340,7 +71340,7 @@ cultureInfo en-US
 			    "metric_selector.expired_inventory_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Expired_Inventory_Color_KPI"
 			        }
 			      },
@@ -71381,7 +71381,7 @@ cultureInfo en-US
 			    "metric_selector.FA_CSCA_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "FA_CSCA_Color_KPI"
 			        }
 			      },
@@ -71422,7 +71422,7 @@ cultureInfo en-US
 			    "metric_selector.FA_CSCI_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "CSCI Measures",
 			          "ConceptualProperty": "FA_CSCI_Color_KPI"
 			        }
 			      },
@@ -71463,7 +71463,7 @@ cultureInfo en-US
 			    "metric_selector.gross_inventory__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross Inventory _Color_KPI"
 			        }
 			      },
@@ -71529,7 +71529,7 @@ cultureInfo en-US
 			    "metric_selector.inflated_inventory__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Inflated Inventory _Color_KPI"
 			        }
 			      },
@@ -71545,7 +71545,7 @@ cultureInfo en-US
 			    "metric_selector.net_inventory__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net Inventory _Color_KPI"
 			        }
 			      },
@@ -71561,7 +71561,7 @@ cultureInfo en-US
 			    "metric_selector.net_sales_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_Sales_Color_KPI"
 			        }
 			      },
@@ -71622,7 +71622,7 @@ cultureInfo en-US
 			    "metric_selector.OEE_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "OEE_Color_KPI"
 			        }
 			      },
@@ -71657,7 +71657,7 @@ cultureInfo en-US
 			    "metric_selector.SA__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SA _Color_KPI"
 			        }
 			      },
@@ -71673,7 +71673,7 @@ cultureInfo en-US
 			    "metric_selector.service_rate_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service rate_Color_KPI"
 			        }
 			      },
@@ -71759,7 +71759,7 @@ cultureInfo en-US
 			    "metric_selector.service_level_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "CSCI Measures",
 			          "ConceptualProperty": "Service_Level_Color_KPI"
 			        }
 			      },
@@ -71900,7 +71900,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_obs_linked_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Obs_Linked_Color_KPI"
 			        }
 			      },
@@ -71923,7 +71923,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_SalvageObs_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Salvage&Obs_Color_KPI"
 			        }
 			      },
@@ -71939,7 +71939,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_scrap_off_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "SSSO_Scrap_off_Color_KPI"
 			        }
 			      },
@@ -72062,7 +72062,7 @@ cultureInfo en-US
 			    "metric_selector.SSSO_shrinkage_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "CSCI Measures",
 			          "ConceptualProperty": "SSSO_Shrinkage_Color_KPI"
 			        }
 			      },
@@ -72103,7 +72103,7 @@ cultureInfo en-US
 			    "metric_selector.total_distribution_on_COGS_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total Distribution on COGS_Color_KPI"
 			        }
 			      },
@@ -72219,7 +72219,7 @@ cultureInfo en-US
 			    "metric_selector.total_logistics_on_net_Sales_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Total Logistics on Net Sales_Color"
 			        }
 			      },
@@ -73224,7 +73224,7 @@ cultureInfo en-US
 			    "metric_selector.CFR__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CFR _Color_KPI"
 			        }
 			      },
@@ -76523,72 +76523,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "measure.measure1": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "Measure",
-			          "ConceptualProperty": "Measure"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "measure": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "degree": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "quota": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "extent": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.491
-			          }
-			        },
-			        {
-			          "portion": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        },
-			        {
-			          "ration": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.476
-			          }
-			        }
-			      ]
-			    },
 			    "measure.net_POV_actual_YoY": {
 			      "Definition": {
 			        "Binding": {
@@ -79208,7 +79142,7 @@ cultureInfo en-US
 			    "metric_selector.operating_income_actual": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Operating_Income_Actual"
 			        }
 			      },
@@ -79297,7 +79231,7 @@ cultureInfo en-US
 			    "metric_selector.operating_income_color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Operating_Income_Color_KPI"
 			        }
 			      },
@@ -79338,7 +79272,7 @@ cultureInfo en-US
 			    "metric_selector.net_POV": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net_POV"
 			        }
 			      },
@@ -79367,7 +79301,7 @@ cultureInfo en-US
 			    "metric_selector.net_POV_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net POV_Color_KPI"
 			        }
 			      },
@@ -79607,7 +79541,7 @@ cultureInfo en-US
 			    "metric_selector.net_POV_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Net POV_Color"
 			        }
 			      },
@@ -79745,7 +79679,7 @@ cultureInfo en-US
 			    "metric_selector.operating_income_color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Operating_Income_Color"
 			        }
 			      },
@@ -82121,7 +82055,7 @@ cultureInfo en-US
 			    "metric_selector.gross_PPV": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross_PPV"
 			        }
 			      },
@@ -82200,7 +82134,7 @@ cultureInfo en-US
 			    "metric_selector.gross_PPV_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross PPV_Color_KPI"
 			        }
 			      },
@@ -82266,7 +82200,7 @@ cultureInfo en-US
 			    "metric_selector.gross_PPV_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Gross PPV_Color"
 			        }
 			      },
@@ -90224,7 +90158,7 @@ cultureInfo en-US
 			    "metric_selector.deviations__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Deviations _Color"
 			        }
 			      },
@@ -90300,7 +90234,7 @@ cultureInfo en-US
 			    "metric_selector.deviations__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Deviations _Color_KPI"
 			        }
 			      },
@@ -90316,7 +90250,7 @@ cultureInfo en-US
 			    "metric_selector.CAPA__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CAPA _Color"
 			        }
 			      },
@@ -90392,7 +90326,7 @@ cultureInfo en-US
 			    "metric_selector.CAPA__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CAPA _Color_KPI"
 			        }
 			      },
@@ -90408,7 +90342,7 @@ cultureInfo en-US
 			    "metric_selector.RFT__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "RFT _Color_KPI"
 			        }
 			      },
@@ -90424,7 +90358,7 @@ cultureInfo en-US
 			    "metric_selector.RFT__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "RFT _Color"
 			        }
 			      },
@@ -90500,7 +90434,7 @@ cultureInfo en-US
 			    "metric_selector.CAPA_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "CAPA Switch"
 			        }
 			      },
@@ -90622,7 +90556,7 @@ cultureInfo en-US
 			    "metric_selector.RFT_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "RFT Switch"
 			        }
 			      },
@@ -90744,7 +90678,7 @@ cultureInfo en-US
 			    "metric_selector.deviations_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Deviations Switch"
 			        }
 			      },
@@ -90866,7 +90800,7 @@ cultureInfo en-US
 			    "metric_selector.critical_or_major_observations_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Critical or Major Observations Switch"
 			        }
 			      },
@@ -91012,7 +90946,7 @@ cultureInfo en-US
 			    "metric_selector.critical_or_major_observations__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Critical or Major Observations _Color"
 			        }
 			      },
@@ -91146,7 +91080,7 @@ cultureInfo en-US
 			    "metric_selector.critical_or_major_observations__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Critical or Major Observations _Color_KPI"
 			        }
 			      },
@@ -94972,7 +94906,7 @@ cultureInfo en-US
 			    "metric_selector.ABP_variance_switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "ABP Variance Switch"
 			        }
 			      },
@@ -95100,7 +95034,7 @@ cultureInfo en-US
 			    "metric_selector.ABP_variance__color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "ABP Variance _Color"
 			        }
 			      },
@@ -95176,7 +95110,7 @@ cultureInfo en-US
 			    "metric_selector.ABP_variance__Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "ABP Variance _Color_KPI"
 			        }
 			      },
@@ -96608,7 +96542,7 @@ cultureInfo en-US
 			    "fact_DSO_DPO_ABP.DPO_new": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Fact_DSO_DPO_ABP",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DPO New"
 			        }
 			      },
@@ -96624,7 +96558,7 @@ cultureInfo en-US
 			    "fact_DSO_DPO_ABP.DSO_new": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "Fact_DSO_DPO_ABP",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "DSO New"
 			        }
 			      },
@@ -100154,7 +100088,7 @@ cultureInfo en-US
 			    "metric_selector.service_top_11_Color": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service Top 11_Color"
 			        }
 			      },
@@ -100270,7 +100204,7 @@ cultureInfo en-US
 			    "metric_selector.service_top_11_Color_KPI": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service Top 11_Color_KPI"
 			        }
 			      },
@@ -100386,7 +100320,7 @@ cultureInfo en-US
 			    "metric_selector.service_top_11_Switch": {
 			      "Definition": {
 			        "Binding": {
-			          "ConceptualEntity": "MetricSelector",
+			          "ConceptualEntity": "Measure",
 			          "ConceptualProperty": "Service Top 11_Switch"
 			        }
 			      },

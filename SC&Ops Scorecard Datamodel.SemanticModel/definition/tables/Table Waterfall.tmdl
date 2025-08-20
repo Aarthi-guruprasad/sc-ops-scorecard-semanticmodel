@@ -20,6 +20,7 @@ table 'Table Waterfall'
 			    
 			)
 			```
+		displayFolder: Waterfall
 		lineageTag: 8a0f3e0c-74e8-44bb-9abe-0669c316af5b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -43,6 +44,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: a6b64f1e-4353-4bd7-8187-2378f33cf394
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -76,6 +78,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: 2019f546-92ea-4959-b446-d80e195e9641
 
 	measure 'Gross Inventory MoM' =
@@ -87,6 +90,7 @@ table 'Table Waterfall'
 			VAR Result = [Gross Inventory] - Net_PM
 			RETURN
 			Result
+		displayFolder: Gross Inventory
 		lineageTag: 0c1aebcc-68e9-49bc-a3d4-80f9bf238743
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -120,6 +124,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: 75662311-8816-4395-8767-f9ec17766f1a
 
 	measure 'Waterfall Net Sales' = ```
@@ -141,6 +146,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 2ad8c5dc-d45c-4006-ae4f-e01d2ece850d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -157,6 +163,7 @@ table 'Table Waterfall'
 			    "DIO", [Waterfall DIO]
 			)
 			```
+		displayFolder: Waterfall
 		lineageTag: 60ae7e5d-6542-4e2c-b6df-4fab0360ae6e
 
 	measure 'Net Inventory MoM' =
@@ -205,6 +212,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: 74fffe4a-5460-4891-8c6b-a5eff712228c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -241,6 +249,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: b89935cd-cca6-40c0-8e0a-10e163ae952a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -278,6 +287,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: 746b6db9-64f6-4cd4-bbd6-d2bf0ecc81ea
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -311,6 +321,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: b5262f86-628c-4092-9083-eb3c77a1a060
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -377,6 +388,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: ec17c740-0812-4156-ae21-567de9cb3c15
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -411,6 +423,7 @@ table 'Table Waterfall'
 			Result
 			```
 		formatString: " #,##0.00 %"
+		displayFolder: Waterfall
 		lineageTag: 3e923688-c688-4806-975f-f0237643077a
 
 		annotation PBI_FormatHint = {"isCustom":true}
@@ -444,6 +457,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: 4541d672-b42f-45da-b460-021905710ee1
 
 		formatStringDefinition =
@@ -488,6 +502,7 @@ table 'Table Waterfall'
 			Result
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Waterfall
 		lineageTag: 155fb600-516a-458c-aad0-67ebf1acf9ca
 
 	measure 'Waterfall % Logistics to NS' = ```
@@ -510,6 +525,7 @@ table 'Table Waterfall'
 			 )
 			```
 		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Waterfall
 		lineageTag: 089223db-3fba-4142-add3-2ad5c1a72961
 
 	measure 'Waterfall Logistics' = ```
@@ -531,6 +547,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 8e2cfbad-c624-471d-b6ac-fac2a60a9d51
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -554,6 +571,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: ad579456-974c-401c-b543-aa6a260567d1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -577,6 +595,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 818d22ab-c69e-44ee-82ab-0dde4dc470d6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -600,6 +619,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 4a311e02-eaf9-4cbf-9c29-c8fc6f3a62c9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -623,6 +643,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 98078e24-c139-4286-9d8f-0859a7b92c1a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -646,6 +667,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 85bcc6a9-9acd-4254-8d2d-e03ef794a0bb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -669,6 +691,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 9c2dec72-cb82-4b86-9a16-cda703ea529a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -692,6 +715,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 37babe35-b317-4266-9e14-51938aa34353
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -715,6 +739,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: 7a98ac91-dc93-4b30-8e41-c7144a6a67b0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -738,6 +763,7 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: abe4c571-3aad-487b-bdf7-fa8bb85ef611
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -761,11 +787,13 @@ table 'Table Waterfall'
 			    
 			 )
 			```
+		displayFolder: Waterfall
 		lineageTag: ca152829-1a3f-46d0-a8e3-72920e51dc10
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Waterfall Sales Par_dynamic' = CALCULATE([Waterfall Sales Parameter])
+		displayFolder: Waterfall
 		lineageTag: 5f03fbe6-5072-4020-8c63-29b69c7b6588
 
 		formatStringDefinition =
@@ -810,6 +838,7 @@ table 'Table Waterfall'
 			RETURN
 			Result
 			```
+		displayFolder: Waterfall
 		lineageTag: c060323a-b4a8-4f46-b8d3-b91af407ab96
 
 		annotation PBI_FormatHint = {"isCustom":true}

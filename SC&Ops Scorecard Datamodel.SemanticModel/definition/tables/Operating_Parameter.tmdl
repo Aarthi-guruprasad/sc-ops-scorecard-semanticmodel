@@ -20,6 +20,7 @@ table Operating_Parameter
 			    
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 58d5b460-c36e-4ce9-84f0-f8ed057a9f47
 
 		formatStringDefinition =
@@ -58,6 +59,7 @@ table Operating_Parameter
 			    
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 4730243e-b8ef-41ac-8622-48d9aa02a08d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -80,6 +82,7 @@ table Operating_Parameter
 			    "ABP Variance", [ABP Variance_APN_Base]
 			)
 			```
+		displayFolder: Switch Measures
 		lineageTag: 0f95efc8-f2e5-4133-8263-b14939831ff7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}

@@ -1,24 +1,6 @@
 table Fact_DSO_DPO_ABP
 	lineageTag: 42c2f978-eeb8-42e5-954a-e7ac149924bd
 
-	measure 'DPO New' =
-			
-			Var num = SUM(Fact_DSO_DPO_ABP[DPO_Num])
-			VAR den = SUM(Fact_DSO_DPO_ABP[DPO_Den])
-			RETURN
-			DIVIDE(num,den,0)
-		formatString: 0
-		lineageTag: 824d6143-a542-4575-88cd-1dbd7c4690b8
-
-	measure 'DSO New' =
-			
-			Var num = SUM(Fact_DSO_DPO_ABP[DSO_Num])
-			VAR den = SUM(Fact_DSO_DPO_ABP[DSO_Den])
-			RETURN
-			DIVIDE(num,den,0)
-		formatString: 0
-		lineageTag: 2f9d81b8-2e56-4338-b692-5274c0324ead
-
 	column 'Profit Center'
 		dataType: string
 		lineageTag: 2e11ab81-820d-4529-907f-19f6221b5c4d
