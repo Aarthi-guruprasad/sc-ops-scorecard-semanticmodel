@@ -1076,6 +1076,7 @@ table KPI_Metadata
 
 	measure 'Green Count (Sales Growth)' = ```
 			
+			VAR _count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1085,12 +1086,19 @@ table KPI_Metadata
 			    )
 			)
 			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129137) & " " & _count
+			)
+			
 			```
-		formatString: 0
 		lineageTag: ed8ace2f-d3df-4fb2-a07c-2402c9e0075b
 
 	measure 'Green Count (Operations)' = ```
 			
+			VAR _Count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1100,12 +1108,20 @@ table KPI_Metadata
 			    )
 			)
 			
+			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129137) & " " & _count
+			)
+			
 			```
-		formatString: 0
 		lineageTag: c770db70-a3f4-4a59-aa32-dbf9a4b0a9dc
 
 	measure 'Green Count (WorkingCapital)' = ```
 			
+			VAR _count =
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1115,12 +1131,19 @@ table KPI_Metadata
 			    )
 			)
 			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129137) & " " & _count
+			)
+			
 			```
-		formatString: 0
 		lineageTag: a79d755f-2784-4353-b14c-5cd45db88aa7
 
 	measure 'Green Count (Operating Income)' = ```
 			
+			VAR _count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1130,11 +1153,19 @@ table KPI_Metadata
 			    )
 			)
 			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129137) & " " & _count
+			)
+			
 			```
-		formatString: 0
 		lineageTag: ab9d3eda-6179-42a6-97fb-ba2ae2245175
 
-	measure 'Red Count (sales)' =
+	measure 'Red Count (sales)' = ```
+			
+			VAR _count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1143,10 +1174,20 @@ table KPI_Metadata
 			            && NOT ISBLANK ( [KPI Status Icon (Sales Growth)] )
 			    )
 			)
-		formatString: 0
+			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129139) & " " & _count
+			)
+			
+			```
 		lineageTag: 80335bb2-d024-4786-b7e9-1d147cd8d6f9
 
-	measure 'Red Count (Operations)' =
+	measure 'Red Count (Operations)' = ```
+			
+			VAR _count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1155,10 +1196,21 @@ table KPI_Metadata
 			            && NOT ISBLANK ( [KPI Status Icon (Operations&Quality)] )
 			    )
 			)
-		formatString: 0
+			
+			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129139) & " " & _count
+			)
+			
+			```
 		lineageTag: 8318f1df-7922-42a0-8dac-9cac44b1bd27
 
-	measure 'Red Count (WorkingCapital)' =
+	measure 'Red Count (WorkingCapital)' = ```
+			
+			VAR _count =
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1167,10 +1219,20 @@ table KPI_Metadata
 			            && NOT ISBLANK ( [KPI Status Icon (Working Capital)] )
 			    )
 			)
-		formatString: 0
+			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129139) & " " & _count
+			)
+			
+			```
 		lineageTag: cd0d3cb3-507c-49f8-aa9e-ebb1f1f831b7
 
-	measure 'Red Count (OperatingIncome)' =
+	measure 'Red Count (OperatingIncome)' = ```
+			
+			VAR _count = 
 			CALCULATE (
 			    COUNTROWS ( KPI_Metadata ),
 			    FILTER (
@@ -1179,8 +1241,29 @@ table KPI_Metadata
 			            && NOT ISBLANK ( [KPI Status Icon (Operating Income)] )
 			    )
 			)
-		formatString: 0
+			
+			
+			RETURN
+			IF (
+			    _count = 0,
+			    "0",
+			    UNICHAR(129139) & " " & _count
+			)
+			
+			```
 		lineageTag: 65acde62-977b-40d7-af69-48fafeaa7ce0
+
+	measure 'Total KPI Count' =
+			
+			CALCULATE (
+			    COUNTROWS ( KPI_Metadata ),
+			    FILTER (
+			        KPI_Metadata,
+			        NOT ISBLANK ( [KPI Status Numeric] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
 	column Metrics
 		lineageTag: fb6eb0f0-7794-44a9-b2f4-eebff3e474bc
