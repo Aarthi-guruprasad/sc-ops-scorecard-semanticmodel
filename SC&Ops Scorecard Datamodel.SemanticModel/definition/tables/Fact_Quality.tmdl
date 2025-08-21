@@ -243,6 +243,26 @@ table Fact_Quality
 
 		annotation SummarizationSetBy = Automatic
 
+	column Critical_Major_Obs_Quarter =
+			
+			IF (
+			    Fact_Quality[Period_Num] IN {"03", "06", "09", "12"},
+			    Fact_Quality[Critical_Major_Obs],
+			    BLANK()
+			)
+		formatString: 0
+		lineageTag: 258c5502-2f12-4399-b0dd-ad014e25d924
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Critical_Major_Obs = Fact_Quality[External Audits: Critical Findings] + Fact_Quality[External Audits: Major Findings]
+		formatString: 0
+		lineageTag: 1523bb16-ab00-43f5-a089-0f56ae28bcb8
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Quality = m
 		mode: import
 		queryGroup: Fact

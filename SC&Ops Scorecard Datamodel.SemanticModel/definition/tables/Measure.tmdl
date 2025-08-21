@@ -5749,7 +5749,7 @@ table Measure
 		displayFolder: RFT
 		lineageTag: d8d8affd-ba71-4c0a-a12c-866cfd0e0b64
 
-	measure 'Critical or Major Observations' = (SUM(Fact_Quality[External Audits: Critical Findings]) + SUM(Fact_Quality[External Audits: Major Findings]))/3
+	measure 'Critical or Major Observations' = SUM(Fact_Quality[Critical_Major_Obs_Quarter])
 		formatString: 0
 		displayFolder: Critical or Major Obs
 		lineageTag: d966a903-becc-4282-bc01-81b7a1fb8785
