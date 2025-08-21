@@ -8456,7 +8456,7 @@ table Measure
 			        "vs PP", [Total Distribution on COGS Actual MoM%],
 			        "LYTD", [Total Distribution on COGS LYTD],
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
-			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        "vs Plan", [Total Distribution on COGS_APN],
 			        BLANK()
 			    )
 			
@@ -8480,7 +8480,7 @@ table Measure
 			        "vs PP", [Total Distribution on COGS Actual MoM%],
 			        "LYTD", [Total Distribution on COGS LYTD],
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
-			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        "vs Plan", [Total Distribution on COGS_APN],
 			        BLANK()
 			    )
 			
