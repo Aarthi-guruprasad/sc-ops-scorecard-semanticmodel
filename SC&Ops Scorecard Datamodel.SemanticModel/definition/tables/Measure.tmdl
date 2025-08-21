@@ -9849,10 +9849,54 @@ table Measure
 			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
 			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
 			
+			        "Service_Level_Gap_vsPlan", [Service Target Diff%],
+			        "Service_Level_Gap_vsPP", [Service Rate% MoM%],
+			        "Service_Level_Gap_vsYoY", [Service Rate YoY%],
+			        "Service_Level_Gap_vsLYTD", [Service Rate LYTD],
+			
 			        "Service_Top_11_vsPlan", [Service Top 11 Target Diff%],
 			        "Service_Top_11_vsYoY", [Service Top 11 YoY%],
 			        "Service_Top_11_vsLYTD", [Service Top 11 LYTD],
 			        "Service_Top_11_vsPP", [Service Top 11 MoM%],
+			
+			        "Service_Level_Total_vsPlan", [Service Target Diff%_CSCI],
+			        "Service_Level_Total_vsPP", [Service Level MoM%],
+			        "Service_Level_Total_vsYoY", [Service Level YoY%],
+			        "Service_Level_Total_vsLYTD", [Service Level LYTD],
+			
+			        "Case_fill_rate_vsPlan", [CFR Target Diff%],
+			        "Case_fill_rate_vsPP", [CFR MoM%],
+			        "Case_fill_rate_vsYoY", [CFR YoY%],
+			        "Case_fill_rate_vsLYTD", [CFR LYTD],
+			
+			        "OEE_vsPlan", [OEE Target diff%],
+			        "OEE_vsPP", [OEE% MoM%],
+			        "OEE_vsYoY", [OEE% YoY%],
+			        "OEE_vsLYTD", [OEE LYTD],
+			
+			        "Schedule_Attainment_vsPlan", [Schedule Attn Target Diff%],
+			        "Schedule_Attainment_vsPP", [SA MoM%],
+			        "Schedule_Attainment_vsYoY", [SA YoY%],
+			        "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
+			
+			        "On_Time_Deviation_vsPlan", [On Time Closure of Deviations Target Diff%],
+			        "On_Time_Deviation_vsYoY", [On Time Closure of Deviations YoY%],
+			        "On_Time_Deviation_vsLYTD", [On Time Closure of Deviations LYTD],
+			        "On_Time_Deviation_vsPP", [On Time Closure of Deviations MoM%],
+			
+			        "CAPA_Completion_vsPlan", [CAPA Completion Rate Target Diff%],
+			        "CAPA_Completion_vsPP", [CAPA Completion Rate MoM%],
+			        "CAPA_Completion_vsYoY", [CAPA Completion Rate YoY%],
+			        "CAPA_Completion_vsLYTD", [CAPA Closed LYTD],
+			
+			        "Right_First_Time_vsPlan", [RFT Target Diff%],
+			        "Right_First_Time_vsPP", [RFT MoM%],
+			        "Right_First_Time_vsYoY", [RFT YoY%],
+			        "Right_First_Time_vsLYTD", [RFT LYTD],
+			
+			        "Critical/Major_vsPP", [Critical or Major Observations MoM%],
+			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
+			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
 			
 			        "Net_Inventory_vsPlan", [Net Inventory_APN],
 			        "Net_Inventory_vsFlex", [Net Inventory_AFX],
@@ -9879,6 +9923,14 @@ table Measure
 			        "DIO_vsFlex", [DIO_AFX],
 			        "DIO_vsYoY", [DIO YoY%],
 			
+			        "DPO_vsPlan",[DPO_APN],
+			        "DPO_vsPP", [DPO MoM%],
+			        "DPO_vsYoY", [DPO YoY%],
+			
+			        "DSO_vsPlan",[DSO_APN],
+			        "DSO_vsPP", [DSO MoM%],
+			        "DSO_vsYoY", [DSO YoY%],
+			
 			        "SSSO_Conversions_vsPlan", [SSSO: Obsolescenes linked to Conversions_APN],
 			        "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
 			        "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
@@ -9896,15 +9948,13 @@ table Measure
 			        "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
 			        "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
 			        "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			
+			        "SSSO_Shrinkage_vsPlan", [SSSO: Shrinkage_APN],
+			        "SSSO_Shrinkage_vsLYTD", [SSSO: Shrinkage LYTD],
+			        "SSSO_Shrinkage_vsPP", [SSSO: Shrinkage MoM%],
+			        "SSSO_Shrinkage_vsYoY", [SSSO: Shrinkage YoY%],
+			        "SSSO_Shrinkage_vsFlex", [SSSO: Shrinkage_F66],
 			        
-			        "DPO_vsPP", [DPO MoM%],
-			        "DPO_vsYoY", [DPO YoY%],
-			
-			        "OEE_vsPlan", [OEE Target diff%],
-			        "OEE_vsPP", [OEE% MoM%],
-			        "OEE_vsYoY", [OEE% YoY%],
-			        "OEE_vsLYTD", [OEE LYTD],
-			
 			        "COGS_vsPlan", [COGS_APN],
 			        "COGS_vsPP", [COGS Actual MoM%],
 			        "COGS_vsYoY", [COGS Actual YoY%],
@@ -9920,57 +9970,15 @@ table Measure
 			        "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
 			        "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
 			
-			        "Schedule_Attainment_vsPlan", [Schedule Attn Target Diff%],
-			        "Schedule_Attainment_vsPP", [SA MoM%],
-			        "Schedule_Attainment_vsYoY", [SA YoY%],
-			        "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
-			
-			        "On_Time_Deviation_vsPlan", [On Time Closure of Deviations Target Diff%],
-			        "On_Time_Deviation_vsYoY", [On Time Closure of Deviations YoY%],
-			        "On_Time_Deviation_vsLYTD", [On Time Closure of Deviations LYTD],
-			        "On_Time_Deviation_vsPP", [On Time Closure of Deviations MoM%],
-			
-			        "CAPA_Completion_vsPlan", [CAPA Completion Rate Target Diff%],
-			        "CAPA_Completion_vsPP", [CAPA Completion Rate MoM%],
-			        "CAPA_Completion_vsYoY", [CAPA Completion Rate YoY%],
-			        "CAPA_Completion_vsLYTD", [CAPA Closed LYTD],
-			
-			        "Right_First_Time_vsPlan", [RFT Target Diff%],
-			        "Right_First_Time_vsPP", [RFT MoM%],
-			        "Right_First_Time_vsYoY", [RFT YoY%],
-			        "Right_First_Time_vsLYTD", [RFT LYTD],
-			
-			        "Critical/Major_vsPP", [Critical or Major Observations MoM%],
-			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
-			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
-			
 			        "Net_Sales_vsPlan", [Net Sales_APN],
 			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
 			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
 			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
 			
-			        "DSO_vsPP", [DSO MoM%],
-			        "DSO_vsYoY", [DSO YoY%],
-			
-			        "Service_Level_Gap_vsPlan", [Service Target Diff%],
-			        "Service_Level_Gap_vsPP", [Service Rate% MoM%],
-			        "Service_Level_Gap_vsYoY", [Service Rate YoY%],
-			        "Service_Level_Gap_vsLYTD", [Service Rate LYTD],
-			
-			        "Service_Level_Total_vsPlan", [Service Target Diff%_CSCI],
-			        "Service_Level_Total_vsPP", [Service Level MoM%],
-			        "Service_Level_Total_vsYoY", [Service Level YoY%],
-			        "Service_Level_Total_vsLYTD", [Service Level LYTD],
-			
 			        "Customer_Fines_vsPlan", [Cust Fine Target Diff%],
 			        "Customer_Fines_vsPP", [Cust Fine MoM%],
 			        "Customer_Fines_vsYoY", [Cust fine YoY%],
 			        "Customer_Fines_vsLYTD", [Cust Fine LYTD],
-			
-			        "Case_fill_rate_vsPlan", [CFR Target Diff%],
-			        "Case_fill_rate_vsPP", [CFR MoM%],
-			        "Case_fill_rate_vsYoY", [CFR YoY%],
-			        "Case_fill_rate_vsLYTD", [CFR LYTD],
 			
 			        "ABP_Variances_vsPlan", [ABP Variance_APN],
 			        "ABP_Variances_vsPP", [ABP Variance MoM%],
