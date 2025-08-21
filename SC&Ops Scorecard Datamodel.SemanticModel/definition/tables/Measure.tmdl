@@ -1511,7 +1511,7 @@ table Measure
 			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
 			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
 			VAR Net_PM = Calculate([Total Logistics on Net Sales Actual],filter_)
-			VAR Result = DIVIDE(([Total Logistics on Net Sales Actual] - Net_PM),Net_PM)
+			VAR Result = ([Total Logistics on Net Sales Actual] - Net_PM)
 			RETURN
 			Result
 		displayFolder: Logistic vs Net Sales
@@ -1541,9 +1541,11 @@ table Measure
 		displayFolder: Logistic vs Net Sales
 		lineageTag: d5a31556-8130-42f6-ab18-5cec6c2b09d1
 
-	measure 'Total Logistics on Net Sales Actual YoY%' = DIVIDE(([Total Logistics on Net Sales Actual] - [Total Logistics on Net Sales Actual PY]),[Total Logistics on Net Sales Actual PY])
+	measure 'Total Logistics on Net Sales Actual YoY%' = ([Total Logistics on Net Sales Actual] - [Total Logistics on Net Sales Actual PY])
 		displayFolder: Logistic vs Net Sales
 		lineageTag: 0b1fbe3f-6411-4bee-b41c-2c42fb5ccaf1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Total Logistics on Net Sales Actual YoY_Final' =
 			VAR kpi_ =  [Total Logistics on Net Sales Actual YoY%]
@@ -2263,11 +2265,13 @@ table Measure
 			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
 			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
 			VAR Net_PM = Calculate([Total Distribution on COGS Actual],filter_)
-			VAR Result = DIVIDE(([Total Distribution on COGS Actual] - Net_PM),Net_PM)
+			VAR Result = ([Total Distribution on COGS Actual] - Net_PM)
 			RETURN
 			Result
 		displayFolder: Distribution on COGS
 		lineageTag: f6164a6e-06c1-4955-83d5-08abb011d1e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Total Distribution on COGS Actual MoM_Final' = ```
 			VAR kpi_ =  [Total Distribution on COGS Actual MoM%]
@@ -2291,9 +2295,11 @@ table Measure
 		displayFolder: Distribution on COGS
 		lineageTag: b3e849b6-697a-45f6-9fa0-3beb717c91d6
 
-	measure 'Total Distribution on COGS Actual YoY%' = DIVIDE(([Total Distribution on COGS Actual] - [Total Distribution on COGS Actual PY]),[Total Distribution on COGS Actual PY])
+	measure 'Total Distribution on COGS Actual YoY%' = ([Total Distribution on COGS Actual] - [Total Distribution on COGS Actual PY])
 		displayFolder: Distribution on COGS
 		lineageTag: c09fcb89-9bdd-4a8b-b91f-2686a2899661
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Total Distribution on COGS Actual YoY_Final' =
 			
@@ -3223,9 +3229,11 @@ table Measure
 	measure 'Total Logistics on Net Sales_APN' =
 			VAR Plan = [TOTAL LOGISTICS ON NET SALES_APN_Base]
 			Return
-			DIVIDE([TOTAL LOGISTICS ON NET SALES Actual] - Plan,Plan)
+			[TOTAL LOGISTICS ON NET SALES Actual] - Plan
 		displayFolder: Logistic vs Net Sales
 		lineageTag: 6f110007-c1f5-4959-b021-e638515216df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Distribution Plan' = SUM( Fact_Logistics[Distribution Plan] )
 		formatString: #,0.0
@@ -3255,9 +3263,11 @@ table Measure
 	measure 'Total Distribution on COGS_APN' =
 			VAR Plan = [TOTAL DISTRIBUTION ON COGS_APN_Base]
 			Return
-			DIVIDE([TOTAL DISTRIBUTION ON COGS Actual] - Plan,Plan)
+			[TOTAL DISTRIBUTION ON COGS Actual] - Plan
 		displayFolder: Distribution on COGS
 		lineageTag: 17d4541b-ecef-4574-80e1-af6f34948ead
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Variances Act' = SUM(Fact_Logistics[Variances Act])
 		formatString: 0.0
