@@ -310,17 +310,13 @@ table 'CSCI Measures'
 			var _Fcst = [Fcst L1]
 			Var _Bias = 
 			DIVIDE(
-			    _Fcst-_act,
-			    _act,
-			    1
-			)
+			    _Fcst-_act, _act,
+			    1)
 			
 			RETURN
 			
 			IF(
-			    _Bias>1,
-			    1,
-			    _Bias
+			    _Bias>1,  1, _Bias
 			)
 			
 			```
@@ -1886,6 +1882,178 @@ table 'CSCI Measures'
 			```
 		displayFolder: SSSO Shrinkage
 		lineageTag: 0c69d007-f132-45dd-bc15-643621f42127
+
+	measure Fcst_L1_PY = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Fcst L1],filter_)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 31a0738e-86f4-4db7-bba6-05706bc5a058
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Fcst_L4_PY = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Fcst L4],filter_)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 951873d1-99a3-4a5e-a677-67ea74af8916
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Fcst_L1_LYTD = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Fcst_L1_PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 1e42c506-31eb-44a2-8661-b823e7b744b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Fcst_L4_LYTD = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Fcst_L4_PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 318ee52a-894d-4a0e-b6fa-3a1996fd23f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias % L1 LYTD CSCI' = ```
+			
+			VAR _act = [Actual_LYTD]
+			
+			VAR _fcst = [Fcst_L1_LYTD]
+			VAR _bias = 
+			    DIVIDE((_fcst - _act), _act, 1)
+			
+			VAR Result_ = IF(_bias > 1, 1, _bias)
+			RETURN
+			[Bias L1 CSCI] - Result_
+			```
+		displayFolder: Bias CSCI
+		lineageTag: c3a6036d-0330-4e87-80b5-f7e2be1ee1ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias % L4 LYTD CSCI' = ```
+			
+			VAR _act = [Actual_LYTD]
+			
+			VAR _fcst = [Fcst_L4_LYTD]
+			VAR _bias = 
+			    DIVIDE((_fcst - _act), _act, 1)
+			
+			VAR Result_ = IF(_bias > 1, 1, _bias)
+			RETURN
+			[Bias L4 CSCI] - Result_
+			```
+		displayFolder: Bias CSCI
+		lineageTag: f0d76427-4b74-4e70-b8d9-98414bd6f57d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% L1 LYTD CSCI' = ```
+			
+			VAR _act = [Actual]
+			
+			VAR _absdiff =
+			    IF(
+			        SELECTEDVALUE(CG_PeriodSelection[Period]) = "YTD",
+			        SUMX(
+			            ADDCOLUMNS(
+			                SUMMARIZECOLUMNS(
+			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new],
+			                    Dim_Date[P_YearPeriod]
+			                ),
+			                "@Abs", ABS([Actual_LYTD] - [Fcst_L1_LYTD])
+			            ),
+			            [@Abs]
+			        ),
+			        SUMX(
+			            ADDCOLUMNS(
+			                SUMMARIZECOLUMNS(
+			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new]
+			                ),
+			                "@Abs", ABS([Actual_LYTD] - [Fcst_L1_LYTD])
+			            ),
+			            [@Abs]
+			        )
+			    )
+			
+			VAR _FACC =
+			    DIVIDE(_act - _absdiff, _act, 0)
+			
+			RETURN
+			    IF(_FACC < 0, 0, _FACC)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 507deb65-7d8e-483d-89f7-6623e74a84ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% L4 LYTD CSCI' = ```
+			
+			VAR _act = [Actual]
+			
+			VAR _absdiff =
+			    IF(
+			        SELECTEDVALUE(CG_PeriodSelection[Period]) = "YTD",
+			        SUMX(
+			            ADDCOLUMNS(
+			                SUMMARIZECOLUMNS(
+			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new],
+			                    Dim_Date[P_YearPeriod]
+			                ),
+			                "@Abs", ABS([Actual_LYTD] - [Fcst_L4_LYTD])
+			            ),
+			            [@Abs]
+			        ),
+			        SUMX(
+			            ADDCOLUMNS(
+			                SUMMARIZECOLUMNS(
+			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new]
+			                ),
+			                "@Abs", ABS([Actual_LYTD] - [Fcst_L4_LYTD])
+			            ),
+			            [@Abs]
+			        )
+			    )
+			
+			VAR _FACC =
+			    DIVIDE(_act - _absdiff, _act, 0)
+			
+			RETURN
+			    IF(_FACC < 0, 0, _FACC)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: e19b472a-84ba-44b6-a2c7-96f1765f7ee7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Measures
 		dataType: string
