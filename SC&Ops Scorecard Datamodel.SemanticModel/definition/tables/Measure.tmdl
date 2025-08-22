@@ -8853,7 +8853,7 @@ table Measure
 			    SWITCH (
 			        _kpiID,
 			        "FA_Lag1_vsPlan", [FA Target L1 Diff raw],
-			        "FA_Lag1_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag1_vsLYTD", [FA% L1 LYTD CSCI],
 			        "FA_Lag1_vsYoY", [FA% YoY L1 raw CSCI],
 			        "FA_Lag1_vsPP", [FA% MoM L1 raw CSCI],
 			
@@ -8866,27 +8866,29 @@ table Measure
 			        "FA_Lag4_CSCA_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
 			        "FA_Lag4_CSCA_vsYoY", [FA% Lag4 YoY%],
 			        "FA_Lag4_CSCA_vsPP", [FA% Lag4 MoM%],
+			
 			        "FA_Lag4_CSCI_vsPlan", [FA Target L4 Diff raw],
-			        "FA_Lag4_CSCI_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag4_CSCI_vsLYTD", [FA% L4 LYTD CSCI],
 			        "FA_Lag4_CSCI_vsYoY", [FA% YoY L4 raw CSCI],
-			        "FA_Lag4_CSCI_vsPP", [FA% MoM CSCI L4],
+			        "FA_Lag4_CSCI_vsPP", [FA% MoM L4 raw CSCI],
 			
 			        "Bias_Lag1_vsPlan", [Bias Target Diff%_CSCI L1],
-			        "Bias_Lag1_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="1")),
+			        "Bias_Lag1_vsLYTD", [Bias % L1 LYTD CSCI],
 			        "Bias_Lag1_vsYoY", [Bias YoY % L1 Raw CSCI],
 			        "Bias_Lag1_vsPP", [Bias MoM%_raw L1 CSCI],
 			        
 			        "Bias_Lag2_vsPlan", [Bias Lag2 Target Diff%],
 			        "Bias_Lag2_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
 			        "Bias_Lag2_vsYoY", [Bias Lag2 YoY%],
-			        "Bias_Lag2_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "Bias_Lag2_vsPP", [Bias Lag2 MoM%],
 			
 			        "Bias_Lag4_CSCA_vsPlan", [Bias Lag4 Target Diff%],
 			        "Bias_Lag4_CSCA_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
 			        "Bias_Lag4_CSCA_vsYoY", [Bias Lag4 YoY%],
-			        "Bias_Lag4_CSCA_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCA_vsPP", [Bias Lag4 MoM%],
+			
 			        "Bias_Lag4_CSCI_vsPlan", [Bias Target Diff%_CSCI L4],
-			        "Bias_Lag4_CSCI_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCI_vsLYTD", [Bias % L4 LYTD CSCI],
 			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
 			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
 			
@@ -9776,9 +9778,11 @@ table Measure
 			        "DIO_vsFlex", [DIO_AFX],
 			        "DIO_vsYoY", [DIO YoY%],
 			
+			        "DPO_vsPlan",[DPO_APN],
 			        "DPO_vsPP", [DPO MoM%],
 			        "DPO_vsYoY", [DPO YoY%],
 			
+			        "DSO_vsPlan",[DSO_APN],
 			        "DSO_vsPP", [DSO MoM%],
 			        "DSO_vsYoY", [DSO YoY%],
 			
@@ -9812,7 +9816,7 @@ table Measure
 			    SWITCH (
 			        _kpiID,
 			        "FA_Lag1_vsPlan", [FA Target L1 Diff raw],
-			        "FA_Lag1_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag1_vsLYTD", [FA% L1 LYTD CSCI],
 			        "FA_Lag1_vsYoY", [FA% YoY L1 raw CSCI],
 			        "FA_Lag1_vsPP", [FA% MoM L1 raw CSCI],
 			
@@ -9825,27 +9829,29 @@ table Measure
 			        "FA_Lag4_CSCA_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
 			        "FA_Lag4_CSCA_vsYoY", [FA% Lag4 YoY%],
 			        "FA_Lag4_CSCA_vsPP", [FA% Lag4 MoM%],
+			
 			        "FA_Lag4_CSCI_vsPlan", [FA Target L4 Diff raw],
-			        "FA_Lag4_CSCI_vsLYTD", [FA% LYTD CSCI],
+			        "FA_Lag4_CSCI_vsLYTD", [FA% L4 LYTD CSCI],
 			        "FA_Lag4_CSCI_vsYoY", [FA% YoY L4 raw CSCI],
-			        "FA_Lag4_CSCI_vsPP", [FA% MoM CSCI L4],
+			        "FA_Lag4_CSCI_vsPP", [FA% MoM L4 raw CSCI],
 			
 			        "Bias_Lag1_vsPlan", [Bias Target Diff%_CSCI L1],
-			        "Bias_Lag1_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="1")),
+			        "Bias_Lag1_vsLYTD", [Bias % L1 LYTD CSCI],
 			        "Bias_Lag1_vsYoY", [Bias YoY % L1 Raw CSCI],
 			        "Bias_Lag1_vsPP", [Bias MoM%_raw L1 CSCI],
 			        
 			        "Bias_Lag2_vsPlan", [Bias Lag2 Target Diff%],
 			        "Bias_Lag2_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
 			        "Bias_Lag2_vsYoY", [Bias Lag2 YoY%],
-			        "Bias_Lag2_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "Bias_Lag2_vsPP", [Bias Lag2 MoM%],
 			
 			        "Bias_Lag4_CSCA_vsPlan", [Bias Lag4 Target Diff%],
 			        "Bias_Lag4_CSCA_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
 			        "Bias_Lag4_CSCA_vsYoY", [Bias Lag4 YoY%],
-			        "Bias_Lag4_CSCA_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCA_vsPP", [Bias Lag4 MoM%],
+			
 			        "Bias_Lag4_CSCI_vsPlan", [Bias Target Diff%_CSCI L4],
-			        "Bias_Lag4_CSCI_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCI_vsLYTD", [Bias % L4 LYTD CSCI],
 			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
 			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
 			
