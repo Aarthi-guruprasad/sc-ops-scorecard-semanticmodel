@@ -241,7 +241,7 @@
           "z": 1000.00
         },
         {
-          "config": "{\"name\":\"503224ce03172885814b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":704,\"y\":128,\"z\":4000,\"width\":224,\"height\":160,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Measure.Critical or Major Observations PY\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"Measure\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Critical or Major Observations PY\"},\"Name\":\"Measure.Critical or Major Observations PY\",\"NativeReferenceName\":\"Critical or Major Observations PY\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Critical or Major Observations PY\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "config": "{\"name\":\"503224ce03172885814b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":704,\"y\":128,\"z\":4000,\"width\":224,\"height\":160,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Measure.DIO\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"m\",\"Entity\":\"Measure\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"DIO\"},\"Name\":\"Measure.DIO\",\"NativeReferenceName\":\"DIO\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"DIO\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
           "height": 160.00,
           "width": 224.00,
