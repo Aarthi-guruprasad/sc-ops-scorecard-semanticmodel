@@ -52,9 +52,9 @@ table CG_PeriodSelection
 			// </svg>"
 			var PositiveIcon=UNICHAR(129137) 
 			VAR NegativeIcon=UNICHAR(129139)
-			VAR per = [Red Count (Last Closed)]
+			VAR per = [Total Red Count]
 			// var _sign=IF(per >=0 ,"+","")
-			RETURN IF([Red Count (Last Closed)]>0, NegativeIcon & " " & [Red Count (Last Closed)], BLANK())
+			RETURN IF([Total Red Count]>0, NegativeIcon & " " & [Total Red Count], BLANK())
 			```
 		lineageTag: 6c09a6db-18f5-47b3-a0ab-8d253e8b02ef
 
@@ -69,9 +69,9 @@ table CG_PeriodSelection
 			// "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3,17l5.79-5.79a1,1,0,0,1,1.42,0l2.58,2.58a1,1,0,0,0,1.42,0L21,7' style='fill: none; stroke: green; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;' /><polyline points='17 7 21 7 21 11' style='fill: none; stroke: green; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;' /></svg>"
 			var PositiveIcon=UNICHAR(129137) 
 			VAR NegativeIcon=UNICHAR(9660)
-			VAR per = [Green Count (Visible)]
+			VAR per = [Total Green Count]
 			// var _sign=IF(per >=0 ,"+","")
-			RETURN IF([Green Count (Visible)]>0,  PositiveIcon & " " & [Green Count (Visible)], BLANK())
+			RETURN IF([Total Green Count]>0,  PositiveIcon & " " & [Total Green Count], BLANK())
 			
 			```
 		lineageTag: de349d72-f512-442e-b420-248bf751887a
