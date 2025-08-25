@@ -9564,13 +9564,13 @@ table Measure
 			        "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
 			        "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
 			        "SSSO_Conversions_vsYoY", [SSSO: Obs linked to Conv YoY%],
-			        "SSSO_Conversions_vsFlex", [SSSO: Obs linked to conv F66_Final],
+			        "SSSO_Conversions_vsFlex", [SSSO: Obsolescenes linked to Conversions_F66],
 			
 			        "SSSO_Salvage_Obsolescence_vsPlan", [SSSO: Salvage & Obsolescence_APN],
 			        "SSSO_Salvage_Obsolescence_vsLYTD", [SSSO: Salvage LYTD],
 			        "SSSO_Salvage_Obsolescence_vsPP", [SSSO: Salvage & obs MoM%],
 			        "SSSO_Salvage_Obsolescence_vsYoY", [SSSO: Salvage YoY%],
-			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obs F66_Final],
+			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obsolescence_F66],
 			
 			        "SSSO_Scrap_vsPlan", [SSSO: Scrap-Off_APN],
 			        "SSSO_Scrap_vsLYTD", [SSSO: Scrap-off LYTD],
@@ -9943,13 +9943,13 @@ table Measure
 			        "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
 			        "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
 			        "SSSO_Conversions_vsYoY", [SSSO: Obs linked to Conv YoY%],
-			        "SSSO_Conversions_vsFlex", [SSSO: Obs linked to conv F66_Final],
+			        "SSSO_Conversions_vsFlex", [SSSO: Obsolescenes linked to Conversions_F66],
 			
 			        "SSSO_Salvage_Obsolescence_vsPlan", [SSSO: Salvage & Obsolescence_APN],
 			        "SSSO_Salvage_Obsolescence_vsLYTD", [SSSO: Salvage LYTD],
 			        "SSSO_Salvage_Obsolescence_vsPP", [SSSO: Salvage & obs MoM%],
 			        "SSSO_Salvage_Obsolescence_vsYoY", [SSSO: Salvage YoY%],
-			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obs F66_Final],
+			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obsolescence_F66],
 			
 			        "SSSO_Scrap_vsPlan", [SSSO: Scrap-Off_APN],
 			        "SSSO_Scrap_vsLYTD", [SSSO: Scrap-off LYTD],
