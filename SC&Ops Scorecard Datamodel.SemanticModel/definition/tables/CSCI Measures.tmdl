@@ -135,41 +135,40 @@ table 'CSCI Measures'
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 015c46d8-4ff0-41bb-9324-56ae146d0cfa
 
-	measure 'FA% L1' = ```
+	measure 'FA% L1' =
 			
 			
-			var _act = [Actual]
-			var _absDiffTable = 
-			    FILTER(
-			        ADDCOLUMNS(
+			VAR _act = [Actual]
+			
+			VAR _absdiff =
+			    IF(
+			        SELECTEDVALUE(CG_PeriodSelection[Period]) = "YTD",
+			        SUMX(
 			            ADDCOLUMNS(
 			                SUMMARIZECOLUMNS(
-			                  //  'Dim_Date'[P_Period],
+			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new],
+			                    Dim_Date[P_YearPeriod]
+			                ),
+			                "@Abs", ABS([Actual] - [Fcst L1])
+			            ),
+			            [@Abs]
+			        ),
+			        SUMX(
+			            ADDCOLUMNS(
+			                SUMMARIZECOLUMNS(
 			                    D_PRODUCT_TEXT_CV[Global Product Number (short)_new]
 			                ),
-			                "@Fcst",[Fcst L1],
-			                "@Act",[Actual]
+			                "@Abs", ABS([Actual] - [Fcst L1])
 			            ),
-			        "@Abs",abs([@Act]-[@Fcst])
-			        ),
-			    NOT ( ISBLANK( [@Abs] ) )
+			            [@Abs]
+			        )
 			    )
-			var _absdiff =
-			SUMX(
-			    _absDiffTable,
-			    [@Abs]
-			)
-			var _FACC = 
-			DIVIDE(
-			    _act-_absdiff,
-			    _act,
-			    0
-			)
 			
-			return
+			VAR _FACC =
+			    DIVIDE(_act - _absdiff, _act, 0)
 			
-			IF( _FACC<0,0,_FACC)
-			```
+			RETURN
+			    IF(_FACC < 0, 0, _FACC)
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: d317b434-6974-4468-bfcc-eef2cfae02bb
@@ -215,11 +214,7 @@ table 'CSCI Measures'
 
 	measure 'FA% MoM CSCI' = ```
 			
-			VAR alldate_ = ALL(Dim_Date)
-			VAR YearPeriodSeq_ = VALUE(MAX(Dim_Date[YearPeriodSeq]))
-			VAR prevPeriodFilter = FILTER(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ - 1)
-			VAR prevFA = CALCULATE([FA%], prevPeriodFilter)
-			VAR kpi_ = [FA%] - prevFA
+			VAR kpi_ = [FA% MoM CSCI_raw]
 			VAR perc_ = ABS(kpi_)
 			VAR Format_ = FORMAT(perc_, "0.0%")
 			RETURN
@@ -2052,6 +2047,38 @@ table 'CSCI Measures'
 			```
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: e19b472a-84ba-44b6-a2c7-96f1765f7ee7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% YoY CSCI_raw' =
+			
+			VAR allDates = ALL(Dim_Date)
+			VAR currentSeq = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR prevYearFilter = FILTER(allDates, Dim_Date[YearPeriodSeq] = currentSeq - 12)
+			VAR currentFA = [FA%]
+			VAR prevYearFA = CALCULATE(currentFA, prevYearFilter)
+			VAR _result = currentFA - prevYearFA
+			RETURN
+			_result
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 2c43ebae-1a02-4e1c-a813-7278a86c9b9d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% MoM CSCI_raw' = ```
+			
+			VAR alldate_ = ALL(Dim_Date)
+			VAR YearPeriodSeq_ = VALUE(MAX(Dim_Date[YearPeriodSeq]))
+			VAR prevPeriodFilter = FILTER(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ - 1)
+			VAR prevFA = CALCULATE([FA%], prevPeriodFilter)
+			VAR _result = [FA%] - prevFA
+			
+			RETURN
+			_result
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 7beb0b81-f890-4714-bbd6-c73a28ed105e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
