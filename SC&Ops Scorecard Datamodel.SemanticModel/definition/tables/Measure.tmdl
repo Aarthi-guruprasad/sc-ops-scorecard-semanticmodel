@@ -10158,6 +10158,9 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
+	measure TEST = "test"
+		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
+
 	column Measures
 		dataType: string
 		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f
