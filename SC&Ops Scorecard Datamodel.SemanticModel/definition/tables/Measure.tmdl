@@ -8913,26 +8913,23 @@ table Measure
 			        "Service_Level_Total_vsLYTD", [Service Level LYTD],
 			        BLANK()
 			    )
-			
 			RETURN
 			    SWITCH (
 			        TRUE(),
 			        ISBLANK ( _value ), BLANK(),
 			
-			        // ✅ Bias Lag2 & Lag4 CSCA (-3 to +3 = green)
+			        // ✅ Bias Lag2 & Lag4 CSCA (-3% to +3% = green, else red)
 			        _kpiID IN { "Bias_Lag2_vsPlan", "Bias_Lag2_vsLYTD", "Bias_Lag2_vsYoY", "Bias_Lag2_vsPP",
-			                    "Bias_Lag4_CSCA_vsPlan", "Bias_Lag4_CSCA_vsLYTD", "Bias_Lag4_CSCA_vsYoY", "Bias_Lag4_CSCA_vsPP" }
-			            && _value >= -0.03 && _value <= 0.03, "🟢",
+			                    "Bias_Lag4_CSCA_vsPlan", "Bias_Lag4_CSCA_vsLYTD", "Bias_Lag4_CSCA_vsYoY", "Bias_Lag4_CSCA_vsPP" },
+			            IF ( _value >= -0.03 && _value <= 0.03, "🟢", "🔴" ),
 			
-			         // ✅ Bias Lag1 & Bias Lag4 CSCI (-10 to +10 = green)
+			        // ✅ Bias Lag1 & Lag4 CSCI (-10% to +10% = green, else red)
 			        _kpiID IN { "Bias_Lag1_vsPlan", "Bias_Lag1_vsLYTD", "Bias_Lag1_vsYoY", "Bias_Lag1_vsPP",
-			                    "Bias_Lag4_CSCI_vsPlan", "Bias_Lag4_CSCI_vsLYTD", "Bias_Lag4_CSCI_vsYoY", "Bias_Lag4_CSCI_vsPP" }
-			            && _value >= -0.10 && _value <= 0.10, "🟢",
+			                    "Bias_Lag4_CSCI_vsPlan", "Bias_Lag4_CSCI_vsLYTD", "Bias_Lag4_CSCI_vsYoY", "Bias_Lag4_CSCI_vsPP" },
+			            IF ( _value >= -0.10 && _value <= 0.10, "🟢", "🔴" ),
 			
-			        // Normal GoodIfNeg logic
+			        // ✅ Other KPIs → normal rules
 			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
-			
-			        // Default logic
 			        IF ( _value < 0, "🔴", "🟢" )
 			    )
 			```
@@ -9009,16 +9006,21 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: ed8ace2f-d3df-4fb2-a07c-2402c9e0075b
 
-	measure 'Green Count (Visible)' = ```
+	measure 'Total Green Count' = ```
 			
-			CALCULATE (
-			    COUNTROWS ( KPI_Metadata ),
-			    FILTER (
-			        KPI_Metadata,
-			        [KPI Status Numeric] = 1
-			            && NOT ISBLANK ( [KPI Status Numeric] )
+			VAR _cnt =
+			    CALCULATE (
+			        COUNTROWS ( KPI_Metadata ),
+			        FILTER (
+			            KPI_Metadata,
+			            ( [KPI Status Icon (Sales Growth)] = "🟢"
+			            || [KPI Status Icon (Operations&Quality)] = "🟢"
+			            || [KPI Status Icon (Working Capital)] = "🟢"
+			            || [KPI Status Icon (Operating Income)] = "🟢" )
+			        )
 			    )
-			)
+			RETURN
+			COALESCE ( _cnt, 0 )
 			
 			```
 		formatString: 0
@@ -10022,16 +10024,21 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: be19d0b0-cf51-4fac-94ab-03e50a49644e
 
-	measure 'Red Count (Last Closed)' = ```
+	measure 'Total Red Count' = ```
 			
-			CALCULATE (
-			    COUNTROWS ( KPI_Metadata ),
-			    FILTER (
-			        KPI_Metadata,
-			        [KPI Status Numeric] = 0
-			            && NOT ISBLANK ( [KPI Status Numeric] )
+			VAR _cnt =
+			    CALCULATE (
+			        COUNTROWS ( KPI_Metadata ),
+			        FILTER (
+			            KPI_Metadata,
+			            ( [KPI Status Icon (Sales Growth)] = "🔴"
+			            || [KPI Status Icon (Operations&Quality)] = "🔴"
+			            || [KPI Status Icon (Working Capital)] = "🔴"
+			            || [KPI Status Icon (Operating Income)] = "🔴" )
+			        )
 			    )
-			)
+			RETURN
+			COALESCE ( _cnt, 0 )
 			
 			```
 		formatString: 0
