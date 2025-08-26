@@ -10181,7 +10181,6 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
-
 	measure Bias_Lower_Limit = ```
 			
 			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
@@ -10226,8 +10225,12 @@ table Measure
 	measure 'Total Logistics on Net Sales_AFX' =
 			
 			VAR Flex = [Total Logistics on Net Sales_AFX_Base]
-			Return
+			RETURN
+			IF (
+			    ISBLANK ( Flex ),
+			    BLANK (),
 			[TOTAL LOGISTICS ON NET SALES Actual] - Flex
+			)
 		displayFolder: Logistic vs Net Sales
 		lineageTag: 2cb2b527-bb12-47e9-a52f-2514f0a04a68
 
@@ -10282,10 +10285,16 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Total Distribution on COGS_AFX' =
+	measure 'Total Distribution on COGS_AFX' = ```
 			VAR Plan = [Total Distribution on COGS_AFX_Base]
-			Return
-			[TOTAL DISTRIBUTION ON COGS Actual] - Plan
+			RETURN
+			IF (
+			    ISBLANK ( Plan ),
+			    BLANK (),
+			    [TOTAL DISTRIBUTION ON COGS Actual] - Plan
+			)
+			
+			```
 		displayFolder: Distribution on COGS
 		lineageTag: daa046ba-bdb0-4c5a-bbae-a0e81128c970
 
@@ -10339,7 +10348,6 @@ table Measure
 
 	measure TEST = "test"
 		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
-
 
 	column Measures
 		dataType: string
