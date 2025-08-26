@@ -10181,6 +10181,7 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
+
 	measure Bias_Lower_Limit = ```
 			
 			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
@@ -10335,6 +10336,10 @@ table Measure
 			)
 		displayFolder: Net Sales
 		lineageTag: 2a2be204-6ced-4c69-9a9f-2f742ad498dd
+
+	measure TEST = "test"
+		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
+
 
 	column Measures
 		dataType: string
