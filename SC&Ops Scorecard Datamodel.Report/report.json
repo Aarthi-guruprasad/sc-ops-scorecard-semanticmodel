@@ -39,12 +39,21 @@
           "z": 0.00
         },
         {
-          "config": "{\"name\":\"b84e89da9774a81ea526\",\"layouts\":[{\"id\":0,\"position\":{\"x\":704,\"y\":112,\"z\":1000,\"width\":528,\"height\":352}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Date.P_YearMonth\"},{\"queryRef\":\"Measure.Top 11 Retailers Service Rate > 90% \"},{\"queryRef\":\"Measure.Service Top 11 LYTD\"},{\"queryRef\":\"Measure.Service Top 11 YTD\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measure\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"P_YearMonth\"},\"Name\":\"Dim_Date.P_YearMonth\",\"NativeReferenceName\":\"P_YearMonth\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11\"},\"Name\":\"Measure.Top 11 Retailers Service Rate > 90% \",\"NativeReferenceName\":\"Service Top 11\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11 LYTD Base\"},\"Name\":\"Measure.Service Top 11 LYTD\",\"NativeReferenceName\":\"Service Top 11 LYTD Base\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11 YTD\"},\"Name\":\"Measure.Service Top 11 YTD\",\"NativeReferenceName\":\"Service Top 11 YTD\"}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "config": "{\"name\":\"b19f68ca796620c5a332\",\"layouts\":[{\"id\":0,\"position\":{\"x\":634.7012286117301,\"y\":95.45638530572194,\"z\":1001,\"width\":559.3409244230022,\"height\":231.10493284543207,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"multiRowCard\",\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
-          "height": 352.00,
-          "width": 528.00,
-          "x": 704.00,
-          "y": 112.00,
+          "height": 231.10,
+          "width": 559.34,
+          "x": 634.70,
+          "y": 95.46,
+          "z": 1001.00
+        },
+        {
+          "config": "{\"name\":\"b84e89da9774a81ea526\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":95.15500374280478,\"z\":1000,\"width\":528.6389096822488,\"height\":351.0162360290132}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Date.P_YearMonth\"},{\"queryRef\":\"Measure.Top 11 Retailers Service Rate > 90% \"},{\"queryRef\":\"Measure.Service Top 11 LYTD\"},{\"queryRef\":\"Measure.Service Top 11 YTD\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Date\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measure\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"P_YearMonth\"},\"Name\":\"Dim_Date.P_YearMonth\",\"NativeReferenceName\":\"P_YearMonth\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11\"},\"Name\":\"Measure.Top 11 Retailers Service Rate > 90% \",\"NativeReferenceName\":\"Service Top 11\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11 LYTD Base\"},\"Name\":\"Measure.Service Top 11 LYTD\",\"NativeReferenceName\":\"Service Top 11 LYTD Base\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11 YTD\"},\"Name\":\"Measure.Service Top 11 YTD\",\"NativeReferenceName\":\"Service Top 11 YTD\"}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 351.02,
+          "width": 528.64,
+          "x": 0.00,
+          "y": 95.16,
           "z": 1000.00
         }
       ],

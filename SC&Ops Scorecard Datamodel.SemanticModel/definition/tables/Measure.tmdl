@@ -4243,7 +4243,10 @@ table Measure
 			    VALUES( Operating_Parameter[Operating_Parameter] ),
 			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_AFX_Base],
 			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_AFX_Base],
-			    "SSSO: Scrap-Off", [SSSO: Scrap-off F66_Base]
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off F66_Base],
+			    "COGS", [COGS_AFX_Base],
+			    "Distribution to COGS", [Total Distribution on COGS_AFX_Base],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_AFX_Base]
 			)
 			
 			```
@@ -7486,6 +7489,7 @@ table Measure
 			      "LYTD",               [COGS Actual LYTD_Final],
 			      "vs YoY",               [COGS Actual YoY_Final],
 			      "vs Plan", [COGS_APN_Final],
+			      "vs Flex",[COGS_AFX_Final],
 			      BLANK()
 			    )
 			
@@ -7507,6 +7511,7 @@ table Measure
 			        "LYTD", [COGS Actual LYTD],
 			        "vs YoY", [COGS Actual YoY%], 
 			        "vs Plan", [COGS_APN],
+			        "vs Flex",[COGS_AFX],
 			        BLANK()
 			    )
 			
@@ -7535,6 +7540,7 @@ table Measure
 			        "LYTD", [COGS Actual LYTD],
 			        "vs YoY", [COGS Actual YoY%], 
 			        "vs Plan", [COGS_APN],
+			        "vs Flex",[COGS_AFX],
 			        BLANK()
 			    )
 			
@@ -8030,7 +8036,7 @@ table Measure
 			      "LYTD",               [Net Sales Actual LYTD_Final],
 			      "vs YoY",               [Net Sales Actual YoY_Final],
 			      "vs Plan", [Net Sales_APN_Final],
-			      "vs Flex", BLANK(),
+			      "vs Flex", [Net Sales_AFX_Final],
 			      BLANK()
 			    )
 			
@@ -8052,6 +8058,7 @@ table Measure
 			        "LYTD", [Net Sales Actual LYTD],
 			        "vs YoY", [Net Sales Actual YoY%], 
 			        "vs Plan", [Net Sales_APN],
+			        "vs Flex",[Net Sales_AFX],
 			        BLANK()
 			    )
 			
@@ -8076,6 +8083,7 @@ table Measure
 			        "LYTD", [Net Sales Actual LYTD],
 			        "vs YoY", [Net Sales Actual YoY%], 
 			        "vs Plan", [Net Sales_APN],
+			        "vs Flex",[Net Sales_AFX],
 			        BLANK()
 			    )
 			
@@ -8457,6 +8465,7 @@ table Measure
 			        "LYTD", [Total Distribution on COGS LYTD],
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
 			        "vs Plan", [Total Distribution on COGS_APN],
+			        "vs Flex",[Total Distribution on COGS_AFX],
 			        BLANK()
 			    )
 			
@@ -8481,6 +8490,7 @@ table Measure
 			        "LYTD", [Total Distribution on COGS LYTD],
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
 			        "vs Plan", [Total Distribution on COGS_APN],
+			        "vs Flex",[Total Distribution on COGS_AFX],
 			        BLANK()
 			    )
 			
@@ -8508,6 +8518,7 @@ table Measure
 			        "LYTD", [Total Logistics on Net Sales LYTD],
 			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
 			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        "vs Flex",[Total Logistics on Net Sales_AFX],
 			        BLANK()
 			    )
 			
@@ -8532,6 +8543,7 @@ table Measure
 			        "LYTD", [Total Logistics on Net Sales LYTD],
 			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
 			        "vs Plan", [Total Logistics on Net Sales_APN],
+			        "vs Flex",[Total Logistics on Net Sales_AFX],
 			        BLANK()
 			    )
 			
@@ -8558,6 +8570,7 @@ table Measure
 			      "LYTD",               [Total Distribution on COGS LYTD_Final],
 			      "vs YoY",               [Total Distribution on COGS Actual YoY_Final],
 			      "vs Plan", [Total Distribution on COGS_APN_Final],
+			      "vs Flex",[Total Distribution on COGS_AFX_Final],
 			      BLANK()
 			    )
 			
@@ -8578,6 +8591,7 @@ table Measure
 			      "LYTD",               [Total Logistics on Net Sales LYTD_Final],
 			      "vs YoY",               [Total Logistics on Net Sales Actual YoY_Final],
 			      "vs Plan", [Total Logistics on Net Sales_APN_Final],
+			      "vs Flex",[Total Logistics on Net Sales_AFX_Final],
 			      BLANK()
 			    )
 			
@@ -9542,7 +9556,7 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: a0e28e0b-6a78-4739-84d7-105252889ce3
 
-	measure 'KPI Status Icon (Operating Income)' =
+	measure 'KPI Status Icon (Operating Income)' = ```
 			
 			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
 			
@@ -9588,22 +9602,26 @@ table Measure
 			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
 			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
 			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
+			        "Net_Sales_vsFlex", [Net Sales_AFX],
 			
 			        "COGS_vsPlan", [COGS_APN],
 			        "COGS_vsPP", [COGS Actual MoM%],
 			        "COGS_vsYoY", [COGS Actual YoY%],
 			        "COGS_vsLYTD", [COGS Actual LYTD],
+			        "COGS_vsFlex", [COGS_AFX],
 			
 			        "Log_to_Sales_vsPlan", [Total Logistics on Net Sales_APN],
 			        "Log_to_Sales_vsPP", [Total Logistics on Net Sales Actual MoM%],
 			        "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
 			        "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
+			        "Log_to_Sales_vsFlex", [Total Logistics on Net Sales_AFX],
 			
 			        "Dist_to_COGS_vsPlan", [Total Distribution on COGS_APN],
 			        "Dist_to_COGS_vsPP", [Total Distribution on COGS Actual MoM%],
 			        "Dist_to_COGS_vsYoY", [Total Distribution on COGS Actual YoY%],
 			        "Dist_to_COGS_vsLYTD", [Total Distribution on COGS LYTD],
-			
+			        "Dist_to_COGS_vsFlex", [Total Distribution on COGS_AFX],
+			    
 			        "Net_POV_vsPlan", [Net POV_APN],
 			        "Net_POV_vsPP", [Net POV Actual MoM%],
 			        "Net_POV_vsYoY", [Net POV Actual YoY%],
@@ -9639,6 +9657,7 @@ table Measure
 			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
 			        IF ( _value < 0, "🔴", "🟢" )
 			    )
+			```
 		displayFolder: Landing Page Measures
 		lineageTag: 3c43eba9-48bb-4ce1-9c55-2f528ebaecca
 
@@ -9967,21 +9986,25 @@ table Measure
 			        "COGS_vsPP", [COGS Actual MoM%],
 			        "COGS_vsYoY", [COGS Actual YoY%],
 			        "COGS_vsLYTD", [COGS Actual LYTD],
+			        "COGS_vsFlex", [COGS_AFX],
 			
 			        "Dist_to_COGS_vsPlan", [Total Distribution on COGS_APN],
 			        "Dist_to_COGS_vsPP", [Total Distribution on COGS Actual MoM%],
 			        "Dist_to_COGS_vsYoY", [Total Distribution on COGS Actual YoY%],
 			        "Dist_to_COGS_vsLYTD", [Total Distribution on COGS LYTD],
+			        "Dist_to_COGS_vsFlex", [Total Distribution on COGS_AFX],
 			
 			        "Log_to_Sales_vsPlan", [Total Logistics on Net Sales_APN],
 			        "Log_to_Sales_vsPP", [Total Logistics on Net Sales Actual MoM%],
 			        "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
 			        "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
+			        "Log_to_Sales_vsFlex", [Total Logistics on Net Sales_AFX],
 			
 			        "Net_Sales_vsPlan", [Net Sales_APN],
 			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
 			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
 			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
+			        "Net_Sales_vsFlex",[Net Sales_AFX],
 			
 			        "Customer_Fines_vsPlan", [Cust Fine Target Diff%],
 			        "Customer_Fines_vsPP", [Cust Fine MoM%],
@@ -10157,6 +10180,161 @@ table Measure
 		formatString: 0
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
+
+	measure Bias_Lower_Limit = ```
+			
+			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
+			RETURN
+			IF(
+			    _sel IN {"Bias% Lag 2", "Bias% Lag 4"},
+			    -0.03,  // -3%
+			    BLANK()
+			)
+			
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
+		lineageTag: 3981de2e-8c08-4e63-b101-66258f77b719
+
+	measure 'Distribution Flex' = SUM( Fact_Logistics[Distribution Flex66] )
+		displayFolder: Logistic
+		lineageTag: 1248c906-b81e-461b-9899-37800edbc845
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics Flex' = sum(Fact_Logistics[Amount Total Logistics Flex66])
+		displayFolder: Logistic
+		lineageTag: e550db7c-bbb2-4e55-856c-bb802aba5849
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales Flex' = ```
+			sum(Fact_Logistics[Net Sales F66]) 
+			```
+		displayFolder: Net Sales
+		lineageTag: 5bed801e-bef6-4d42-8094-4cf35cf7334b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_AFX_Base' = DIVIDE([Total Logistics Flex], [Net Sales Flex])
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 55344051-1e55-43fe-bd2d-e1ce38a53290
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_AFX' =
+			
+			VAR Flex = [Total Logistics on Net Sales_AFX_Base]
+			Return
+			[TOTAL LOGISTICS ON NET SALES Actual] - Flex
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 2cb2b527-bb12-47e9-a52f-2514f0a04a68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_AFX_Final' =
+			VAR kpi_ = [Total Logistics on Net Sales_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 7594275d-1117-4305-9f8b-4d2ee12dd99a
+
+	measure COGS_AFX_Base = SUM(Fact_Logistics[COGS Flex66])
+		displayFolder: COGS
+		lineageTag: 965d74ab-7e01-43c7-8899-a3f589d27a8c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_AFX =
+			VAR Plan = [COGS_AFX_Base]
+			Return
+			DIVIDE([COGS Actual] - Plan,Plan)
+		displayFolder: COGS
+		lineageTag: d4a7a6c3-c977-47a7-8203-fe1bf9bc9aee
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_AFX_Final =
+			VAR kpi_ = [COGS_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: COGS
+		lineageTag: 5789399e-2002-4508-9d26-23dc70cb2fd8
+
+	measure 'Total Distribution on COGS_AFX_Base' = DIVIDE([Distribution Flex], [COGS_AFX_Base])
+		displayFolder: Distribution on COGS
+		lineageTag: a259d370-27ed-428d-9ab5-5f0f0bfc5db6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_AFX' =
+			VAR Plan = [Total Distribution on COGS_AFX_Base]
+			Return
+			[TOTAL DISTRIBUTION ON COGS Actual] - Plan
+		displayFolder: Distribution on COGS
+		lineageTag: daa046ba-bdb0-4c5a-bbae-a0e81128c970
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_AFX_Final' =
+			
+			VAR kpi_ = [Total Distribution on COGS_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_  & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: Distribution on COGS
+		lineageTag: 3f04eaa3-1c6e-4eff-85cf-848250446209
+
+	measure 'Net Sales_AFX_Base' = SUM(Fact_Logistics[Net Sales F66])
+		displayFolder: Net Sales
+		lineageTag: bad30eb6-8446-42b0-803b-d52f3044608a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_AFX' =
+			
+			VAR Plan = [Net Sales_AFX_Base]
+			Return
+			DIVIDE([Net Sales Actual] - Plan,Plan)
+		displayFolder: Net Sales
+		lineageTag: 106593ee-8698-4b4b-be54-a651093ce5d4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_AFX_Final' =
+			
+			VAR kpi_ = [Net Sales_AFX]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: Net Sales
+		lineageTag: 2a2be204-6ced-4c69-9a9f-2f742ad498dd
 
 	column Measures
 		dataType: string
