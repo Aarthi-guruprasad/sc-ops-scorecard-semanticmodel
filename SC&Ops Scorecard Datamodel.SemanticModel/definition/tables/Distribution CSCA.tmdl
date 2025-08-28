@@ -16,12 +16,10 @@ table 'Distribution CSCA'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Cost/CWT LTL' = Sum('Distribution CSCA'[Cost / CWT LTL])
-		formatString: 0
+	measure 'Cost/CWT LTL' = SELECTEDVALUE ('Distribution CSCA'[Cost / CWT LTL] )
 		lineageTag: f1bfbcfc-d528-42ce-be83-de4a109d3c5b
 
-	measure 'Cost/CWT TL' = SUM('Distribution CSCA'[Cost / CWT TL])
-		formatString: 0
+	measure 'Cost/CWT TL' = SELECTEDVALUE('Distribution CSCA'[Cost / CWT TL])
 		lineageTag: bd2f0aae-ac07-48bd-89eb-3dadd6ed33c8
 
 	measure 'Customer Service (inclusive of Gap Orders)' = sum('Distribution CSCA'[Customer Service (inclusive of Gap Orders) * CSCA Total])
@@ -34,12 +32,10 @@ table 'Distribution CSCA'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Delivery of ABP Spend-Distribution' = SUM('Distribution CSCA'[Delivery of ABP Spend - Distribution])
-		formatString: 0
+	measure 'Delivery of ABP Spend-Distribution' = SELECTEDVALUE('Distribution CSCA'[Delivery of ABP Spend - Distribution])
 		lineageTag: 7fe4d97f-b833-4bbf-8366-088345c852b5
 
-	measure 'Delivery of ABP Spend-Transportation' = SUM('Distribution CSCA'[Delivery of ABP Spend - Transportation])
-		formatString: 0
+	measure 'Delivery of ABP Spend-Transportation' = SELECTEDVALUE('Distribution CSCA'[Delivery of ABP Spend - Transportation])
 		lineageTag: 7c10c19d-3c5e-48ce-999d-471b8012427a
 
 	measure 'Distribution Labor Staff%' = SUM('Distribution CSCA'[Distribution Labor Staff %])
@@ -52,7 +48,7 @@ table 'Distribution CSCA'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'GOOD Catch% Closure Rate' = SUM('Distribution CSCA'[Glint Survey Results - Identify 2 or 3 Key Areas of Improvement / Response Rate from May 2025 Survey ])
+	measure 'GOOD Catch% Closure Rate' = SUM('Distribution CSCA'[GOOD Catch % Closure Rate])
 		formatString: 0
 		lineageTag: 930476bb-1d25-4200-84b3-58f22197b7c5
 
@@ -69,6 +65,8 @@ table 'Distribution CSCA'
 		formatString: 0
 		lineageTag: 480d98be-fa40-40f0-ba9d-4b454d61f06c
 
+		annotation PBI_FormatHint = {"isDecimal":true}
+
 	measure 'SIF & pSIF Focus' = SUM('Distribution CSCA'[SIF & pSIF Focus at our Sites - Action Closure Rate on Time])
 		lineageTag: 163ec71b-9eed-41d6-a42f-027ce14aac28
 
@@ -82,6 +80,90 @@ table 'Distribution CSCA'
 	measure 'Voluntary Turnover(No Retirement)' = SUM('Distribution CSCA'[Voluntary Turnover (No Retirement)])
 		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: c091a964-bb39-416b-b474-e1ac9984eb1e
+
+	measure Cost_CWT_LTL_Num = ```
+			
+			MAXX (
+			    VALUES ( 'Distribution CSCA'[Month] ),
+			    VAR rawVal = MAX ( 'Distribution CSCA'[Cost / CWT LTL] )
+			    VAR cleaned =
+			        SUBSTITUTE (
+			            SUBSTITUTE ( SUBSTITUTE ( rawVal, "$", "" ), "M", "" ),
+			            "/ CWT", ""
+			        )
+			    RETURN IF ( ISNUMBER ( VALUE ( cleaned ) ), VALUE ( cleaned ) )
+			)
+			
+			```
+		lineageTag: 55c79340-825f-4703-9e83-9194fec84ecc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cost_CWT_TL_Num = ```
+			
+			MAXX (
+			    VALUES ( 'Distribution CSCA'[Month] ),
+			    VAR rawVal = MAX ( 'Distribution CSCA'[Cost / CWT TL] )
+			    VAR cleaned =
+			        SUBSTITUTE (
+			            SUBSTITUTE (
+			                SUBSTITUTE ( rawVal, "$", "" ),
+			                "/ CWT", ""
+			            ),
+			            " ", ""
+			        )
+			    RETURN
+			        IF ( ISNUMBER ( VALUE ( cleaned ) ), VALUE ( cleaned ) )
+			)
+			
+			```
+		lineageTag: b925eb25-74d8-403b-80b8-7c1dcb495007
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ABP_Spend_Transportation_Num = ```
+			
+			MAXX (
+			    VALUES ( 'Distribution CSCA'[Month] ),
+			    VAR rawVal = MAX ( 'Distribution CSCA'[Delivery of ABP Spend - Transportation] )
+			    VAR cleaned =
+			        SUBSTITUTE (
+			            SUBSTITUTE (
+			                SUBSTITUTE ( rawVal, "$", "" ),
+			                "M", ""
+			            ),
+			            " ", ""
+			        )
+			    RETURN
+			        IF ( ISNUMBER ( VALUE ( cleaned ) ), VALUE ( cleaned ) )
+			)
+			
+			```
+		lineageTag: 0fdeed16-4d48-4649-90b1-48e519dce144
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ABP_Spend_Distribution_Num = ```
+			
+			MAXX (
+			    VALUES ( 'Distribution CSCA'[Month] ),
+			    VAR rawVal = MAX ( 'Distribution CSCA'[Delivery of ABP Spend - Distribution] )
+			    VAR cleaned =
+			        SUBSTITUTE (
+			            SUBSTITUTE (
+			                SUBSTITUTE ( rawVal, "$", "" ),
+			                "M", ""
+			            ),
+			            " ", ""
+			        )
+			    RETURN
+			        IF ( ISNUMBER ( VALUE ( cleaned ) ), VALUE ( cleaned ) )
+			)
+			
+			```
+		lineageTag: a9c1c198-dbfe-4d81-861b-cce7cf410efa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Month
 		dataType: string
@@ -200,12 +282,16 @@ table 'Distribution CSCA'
 		annotation SummarizationSetBy = Automatic
 
 	column 'Picks / Hour'
-		dataType: string
+		dataType: double
 		lineageTag: 3c3d826a-69d1-4607-9f45-a5beb1f878b1
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Picks / Hour
 
+		changedProperty = DataType
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column 'Cost / CWT LTL'
 		dataType: string
@@ -295,7 +381,7 @@ table 'Distribution CSCA'
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\Nikhil Aggarwal\Downloads\2025CSCA Scorecard.xlsx"), null, false),
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/2025CSCA%20Scorecard.xlsx")),
 				    Distribution_sheet = Source{[Item="Distribution",Kind="Sheet"]}[Data],
 				    #"Removed Top Rows" = Table.Skip(Distribution_sheet, 3),
 				    #"Removed Bottom Rows" = Table.RemoveLastN(#"Removed Top Rows", 21),

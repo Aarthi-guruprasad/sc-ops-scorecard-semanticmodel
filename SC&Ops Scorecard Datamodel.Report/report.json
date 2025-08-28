@@ -1,5 +1,5 @@
 {
-  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":2,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}",
+  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":3,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}",
   "layoutOptimization": 0,
   "publicCustomVisuals": [
     "SimpleWaterfall"
@@ -96,6 +96,15 @@
           "z": 0.00
         },
         {
+          "config": "{\"name\":\"fbba43e7079243a953d2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":307,\"y\":527,\"width\":973,\"height\":150,\"z\":3001,\"tabOrder\":3001}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Distribution CSCA.Picks/Hour\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Picks/Hour\"},\"Name\":\"Distribution CSCA.Picks/Hour\",\"NativeReferenceName\":\"Picks/Hour\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 150.00,
+          "width": 973.00,
+          "x": 307.00,
+          "y": 527.00,
+          "z": 3001.00
+        },
+        {
           "config": "{\"name\":\"fede7990b92a4b1900d3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":80,\"y\":624,\"z\":2000,\"width\":176,\"height\":96,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"CG_PeriodSelection.Period\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CG_PeriodSelection\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Period\"},\"Name\":\"CG_PeriodSelection.Period\",\"NativeReferenceName\":\"Period\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CG_PeriodSelection\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Period\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'PTD'\"}}]]}}}]}}}}]}}}",
           "filters": "[]",
           "height": 96.00,
@@ -103,6 +112,45 @@
           "x": 80.00,
           "y": 624.00,
           "z": 2000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{\"relationships\":[{\"source\":\"ff825b27b0200e428782\",\"target\":\"a33818c53000ce70b030\",\"type\":3}]}",
+      "displayName": "Page 4",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "7683f79262908c48443a",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"8c5dc862b0b0cd02b113\",\"layouts\":[{\"id\":0,\"position\":{\"x\":750.2419894345891,\"y\":0,\"z\":0,\"width\":279.68719001591734,\"height\":279.68719001591734,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Distribution CSCA.Cost/CWT LTL\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Cost/CWT LTL\"},\"Name\":\"Distribution CSCA.Cost/CWT LTL\",\"NativeReferenceName\":\"Cost/CWT LTL\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 279.69,
+          "width": 279.69,
+          "x": 750.24,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"a33818c53000ce70b030\",\"layouts\":[{\"id\":0,\"position\":{\"x\":471.76943630184957,\"y\":384.64084671457107,\"z\":2,\"width\":762.9064307764144,\"height\":280.5115567200187,\"tabOrder\":2}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Distribution CSCA.Month\",\"active\":true}],\"Y\":[{\"queryRef\":\"Distribution CSCA.Cost_CWT_LTL_Num\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Month\"},\"Name\":\"Distribution CSCA.Month\",\"NativeReferenceName\":\"Month\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Cost_CWT_LTL_Num\"},\"Name\":\"Distribution CSCA.Cost_CWT_LTL_Num\",\"NativeReferenceName\":\"Cost_CWT_LTL_Num\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[{\"name\":\"111a650054bd12701a05\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Distribution CSCA\"}},\"Property\":\"Month\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Month\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'2024'\"}}],[{\"Literal\":{\"Value\":\"'Target'\"}}],[{\"Literal\":{\"Value\":\"'YTD'\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 280.51,
+          "width": 762.91,
+          "x": 471.77,
+          "y": 384.64,
+          "z": 2.00
+        },
+        {
+          "config": "{\"name\":\"ff825b27b0200e428782\",\"layouts\":[{\"id\":0,\"position\":{\"x\":150,\"y\":85.5,\"width\":300,\"height\":300,\"z\":1,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Distribution CSCA.Period\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Period\"},\"Name\":\"Distribution CSCA.Period\",\"NativeReferenceName\":\"Period\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Distribution CSCA\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Period\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'P6 2025'\"}}]]}}}]}}}}]}}}",
+          "filters": "[]",
+          "height": 300.00,
+          "width": 300.00,
+          "x": 150.00,
+          "y": 85.50,
+          "z": 1.00
         }
       ],
       "width": 1280.00
