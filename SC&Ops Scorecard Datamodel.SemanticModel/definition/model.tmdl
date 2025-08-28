@@ -24,11 +24,16 @@ queryGroup Dim
 
 	annotation PBI_QueryGroupOrder = 3
 
-annotation PBI_QueryOrder = ["Dim_WC_Table_SA","DF_MasterData_Global","Other_Date_ModelRefreshed","Dim_Closing Dates","Dim_Inventory_GL_Account","Dim_Profit_Center","Measure","Dim_FA","Dim_Date","Dim_Brand","Dim_Business_Area","FirstFiscalPeriod","CurrentFiscalPeriod","Dim_Material_Plant","Fact_CFIN_Inventory","CurrentFiscalPeriod_Num","Parameter_LastClosedMonth","Fact_Group_Reporting","Fact_SSSO","Dim_Expiration_Buckets","Fact_BW_Inventory","Fact_OEE","Fact_OEE_Baseline","Dim_Area","Dim_Locations","Dim_Sites","Dim_Value_Stream","Value Stream Mapping","Fact_Forecast_Accuracy","Fact_Service","Last Refresh","z_Abbrevations","z_Glossary","z_Version History","Bridge_CSCA_CSCI","Dim_Value_Stream_Grant","D_PMI_PRODUCT_CV","Dim_DateSlicer","Fact_Logistics","Fact_Schedule","Dim_Plant_Desc_SA","Fact_IBP_Sales_CSCI","D_PRODUCT_TEXT_CV","CSCI Measures","Dim_ComparableFilter","Fact_SALESORDER_PBI_Full","Dim_Rejection_Reason_Code","Fact_IBP_CSCI_Temp_Fix","Fact_BS","Dim_Date_Sequence_P_YearPeriod","Other_Last Closed Month","z_Contact","Fact_Customer_Fines","Fact_CFR","Par_Compare","Fact_COPA_Global","Old to New SKU","External_Toggle","Fact_Quality","Site_OEE","Site_Quality","Bridge_Site","Fact_DSO_DPO_ABP","Dim_Profit_Center_FA","Bridge_Site_Area"]
+/// Errors in queries that were loaded on 28-08-2025 15:04:07.
+queryGroup 'Query Errors - 28-08-2025 15:04:07'
+
+	annotation PBI_QueryGroupOrder = 4
+
+annotation PBI_QueryOrder = ["Dim_WC_Table_SA","DF_MasterData_Global","Other_Date_ModelRefreshed","Dim_Closing Dates","Dim_Inventory_GL_Account","Dim_Profit_Center","Measure","Dim_FA","Dim_Date","Dim_Brand","Dim_Business_Area","FirstFiscalPeriod","CurrentFiscalPeriod","Dim_Material_Plant","Fact_CFIN_Inventory","CurrentFiscalPeriod_Num","Parameter_LastClosedMonth","Fact_Group_Reporting","Fact_SSSO","Dim_Expiration_Buckets","Fact_BW_Inventory","Fact_OEE","Fact_OEE_Baseline","Dim_Area","Dim_Locations","Dim_Sites","Dim_Value_Stream","Value Stream Mapping","Fact_Forecast_Accuracy","Fact_Service","Last Refresh","z_Abbrevations","z_Glossary","z_Version History","Bridge_CSCA_CSCI","Dim_Value_Stream_Grant","D_PMI_PRODUCT_CV","Dim_DateSlicer","Fact_Logistics","Fact_Schedule","Dim_Plant_Desc_SA","Fact_IBP_Sales_CSCI","D_PRODUCT_TEXT_CV","CSCI Measures","Dim_ComparableFilter","Fact_SALESORDER_PBI_Full","Dim_Rejection_Reason_Code","Fact_IBP_CSCI_Temp_Fix","Fact_BS","Dim_Date_Sequence_P_YearPeriod","Other_Last Closed Month","z_Contact","Fact_Customer_Fines","Fact_CFR","Par_Compare","Fact_COPA_Global","Old to New SKU","External_Toggle","Fact_Quality","Site_OEE","Site_Quality","Bridge_Site","Fact_DSO_DPO_ABP","Dim_Profit_Center_FA","Bridge_Site_Area","Distribution CSCA"]
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBIDesktopVersion = 2.146.1026.0 (25.08)+fb98ab832373de81dccd5c01cd96306a48477556
+annotation PBIDesktopVersion = 2.146.1133.0 (25.08)+c8010d55d1db76eda03c968b03481610e96a1ef7
 
 annotation PBI_ProTooling = ["CalcGroup","DevMode"]
 
@@ -106,6 +111,7 @@ ref table Dim_Profit_Center_FA
 ref table Fact_OEE_Baseline
 ref table Bridge_Site_Area
 ref table KPI_Metadata
+ref table 'Distribution CSCA'
 
 ref cultureInfo en-US
 
