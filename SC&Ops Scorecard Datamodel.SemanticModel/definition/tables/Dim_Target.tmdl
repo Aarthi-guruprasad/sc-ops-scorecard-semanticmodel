@@ -1,0 +1,108 @@
+table Dim_Target
+	lineageTag: 3945f5ab-aaeb-4693-bfe9-712651f85ebd
+
+	column KPI_Name
+		dataType: string
+		lineageTag: a1a6d491-3684-4084-9ffd-25b5e4cceae9
+		summarizeBy: none
+		sourceColumn: KPI_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plan/Flex
+		dataType: string
+		lineageTag: 05c93f6c-f6e7-47f9-b187-8ad1d414d973
+		summarizeBy: none
+		sourceColumn: Plan/Flex
+
+		annotation SummarizationSetBy = Automatic
+
+	column Frequency
+		dataType: string
+		lineageTag: 32f666ff-9b8f-4bf9-b221-5d2da99cc78a
+		summarizeBy: none
+		sourceColumn: Frequency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period/Year
+		dataType: int64
+		formatString: 0
+		lineageTag: f2507c69-9cd0-4906-9d8c-152efdd7a62a
+		summarizeBy: sum
+		sourceColumn: Period/Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value Stream'
+		dataType: string
+		lineageTag: 1b3eab5f-c2a2-450e-97ab-ecce9546cb90
+		summarizeBy: none
+		sourceColumn: Value Stream
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site name'
+		dataType: string
+		lineageTag: abe13599-aa70-4a99-871b-c32f0aafa2eb
+		summarizeBy: none
+		sourceColumn: Site name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cluster
+		dataType: string
+		lineageTag: 3723dcb1-2d79-4983-b081-2675106731b8
+		summarizeBy: none
+		sourceColumn: Cluster
+
+		annotation SummarizationSetBy = Automatic
+
+	column Area
+		dataType: string
+		lineageTag: 15b9d501-815f-4790-bce0-d2575cb4b2cb
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompositeKey
+		dataType: string
+		lineageTag: ffc64b73-4d77-468d-9563-200d4d536c0e
+		summarizeBy: none
+		sourceColumn: CompositeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target
+		dataType: int64
+		formatString: 0
+		lineageTag: 06017a92-1acd-446a-9526-6cdf314b225d
+		summarizeBy: sum
+		sourceColumn: Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period
+		dataType: string
+		lineageTag: 5570dc5b-7c69-49ee-80cf-5b42ca2f3a04
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Target = m
+		mode: import
+		queryGroup: Parameters/Misc
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Target.xlsx"), null, true),
+				    Dim_Target_Split_Table = Source{[Item="Dim_Target_Split",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Dim_Target_Split_Table,{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Value Stream", type text}, {"Site name", type text}, {"Cluster", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
