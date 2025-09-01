@@ -10518,6 +10518,44 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Switch_Plan_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
+			    "Net Sales", [Net Sales_switch_target],
+			    "COGS", [COGS_switch_target],
+			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income_switch_target],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		displayFolder: Switch Measures
+		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+=======
 	measure 'ASTM -Rate' = sum(Fact_Safety[ASTM - Rate])
 		formatString: 0
 		displayFolder: ASTM Rate
@@ -11210,7 +11248,6 @@ table Measure
 			)
 			```
 		displayFolder: pSIF SIFs Focus
-		lineageTag: ad3cec8f-2079-4a80-b66c-1ac81635d53e
 
 	column Measures
 		dataType: string
