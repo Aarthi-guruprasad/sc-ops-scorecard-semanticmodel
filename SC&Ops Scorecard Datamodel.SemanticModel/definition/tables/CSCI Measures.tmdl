@@ -2082,6 +2082,18 @@ table 'CSCI Measures'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'SSSO: Shrinkage_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Shrinkage APN_Base],
+			    2, [SSSO: Shrinkage F66_Base]
+			)
+			```
+		formatString: 0.0
+		displayFolder: SSSO Shrinkage
+		lineageTag: d9bab2f1-4015-459d-91a0-5b16a64a3886
+
 	column Measures
 		dataType: string
 		lineageTag: de87435d-c35b-41f4-9f44-035aafb6672f
