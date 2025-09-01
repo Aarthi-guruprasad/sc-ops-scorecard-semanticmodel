@@ -9708,6 +9708,27 @@ table Measure
 			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
 			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
 			
+			        "ASTM_Incidents_vsPlan",BLANK(),
+			        "ASTM_Incidents_vsPP",[ASTM Incidents MoM%],
+			        "ASTM_Incidents_vsYoY",[ASTM Incidents YoY%],
+			        "ASTM_Incidents_vsLYTD",[ASTM Incidents LYTD],
+			
+			        "ASTM_Rate_vsPlan",BLANK(),
+			        "ASTM_Rate_vsPP",[ASTM Rate MoM%],
+			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
+			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
+			
+			        "Good_Rate_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
+			        "Good_Rate_Closure_vsPP",[Good Catch Closure Rate MoM%],
+			        "Good_Rate_Closure_vsYoY",[Good Catch Closure Rate YoY%],
+			        "Good_Rate_Closure_vsLYTD",BLANK(),
+			
+			        "pSIF_Closure_vsPlan",[pSIF SIFs Focus Target Diff%],
+			        "pSIF_Closure_vsPP",[pSIF SIFs Focus MoM%],
+			        "pSIF_Closure_vsYoY",[pSIF SIFs Focus YoY%],
+			        "pSIF_Closure_vsLYTD",BLANK(),
+			
+			
 			
 			        BLANK()
 			    )
@@ -10031,6 +10052,26 @@ table Measure
 			        "Operating_Income_vsYoY", [Operating Income Actual YoY%],
 			        "Operating_Income_vsLYTD", [Operating Income Actual LYTD],
 			
+			        "ASTM_Incidents_vsPlan",BLANK(),
+			        "ASTM_Incidents_vsPP",[ASTM Incidents MoM%],
+			        "ASTM_Incidents_vsYoY",[ASTM Incidents YoY%],
+			        "ASTM_Incidents_vsLYTD",[ASTM Incidents LYTD],
+			
+			        "ASTM_Rate_vsPlan",BLANK(),
+			        "ASTM_Rate_vsPP",[ASTM Rate MoM%],
+			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
+			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
+			
+			        "Good_Rate_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
+			        "Good_Rate_Closure_vsPP",[Good Catch Closure Rate MoM%],
+			        "Good_Rate_Closure_vsYoY",[Good Catch Closure Rate YoY%],
+			        "Good_Rate_Closure_vsLYTD",BLANK(),
+			
+			        "pSIF_Closure_vsPlan",[pSIF SIFs Focus Target Diff%],
+			        "pSIF_Closure_vsPP",[pSIF SIFs Focus MoM%],
+			        "pSIF_Closure_vsYoY",[pSIF SIFs Focus YoY%],
+			        "pSIF_Closure_vsLYTD",BLANK(),
+			
 			        BLANK()
 			    )
 			
@@ -10348,6 +10389,700 @@ table Measure
 
 	measure TEST = "test"
 		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
+
+	measure 'ASTM -Rate' = sum(Fact_Safety[ASTM - Rate])
+		formatString: 0
+		displayFolder: ASTM Rate
+		lineageTag: cb287e95-3500-451f-8895-25c3ac6e4f3b
+
+	measure 'ASTM Incidents' = SUM(Fact_Safety[ASTM-Incidents])
+		formatString: 0
+		displayFolder: ASTM Incidents
+		lineageTag: 734b9a80-ed96-465d-a56d-3bbb7720715f
+
+	measure 'pSIF SIFs Focus' = AVERAGE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 32739a93-d65c-46ca-b1f9-a41d7daef7c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GOOD Catch Closure Rate' = AVERAGE(Fact_Safety[GOOD Catch Closure Rate ])
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 95652b04-3bcb-4d5f-838d-ff8d1f7bc765
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([ASTM -Rate],filter_)
+			RETURN
+			Result
+		formatString: 0
+		displayFolder: ASTM Rate
+		lineageTag: b43901b3-e4b7-47c1-a67c-e9fcb66bfaa0
+
+	measure 'ASTM Incidents PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([ASTM Incidents],filter_)
+			RETURN
+			Result
+		formatString: 0
+		displayFolder: ASTM Incidents
+		lineageTag: 76375e9f-83e4-447a-9b93-8952bd164f16
+
+	measure 'ASTM Rate PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([ASTM -Rate],filter_)
+			
+			```
+		formatString: 0
+		displayFolder: ASTM Rate
+		lineageTag: 9a0ccbb6-bd1d-4473-b102-1d7b1819802d
+
+	measure 'ASTM Incidents PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([ASTM Incidents],filter_)
+			
+			```
+		formatString: 0
+		displayFolder: ASTM Incidents
+		lineageTag: 86f8c552-91ee-42b7-a911-805c9dc945a8
+
+	measure 'ASTM Rate MoM%' =
+			
+			DIVIDE(([ASTM -Rate] - [ASTM Rate PP]),[ASTM Rate PP])
+		displayFolder: ASTM Rate
+		lineageTag: 985c8672-f686-4606-89af-390ad91b42ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents MoM%' =
+			
+			DIVIDE(([ASTM Incidents] - [ASTM Incidents PP]),[ASTM Incidents PP])
+		displayFolder: ASTM Incidents
+		lineageTag: fd0bb756-27c0-4d8b-9ffc-f23153765741
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate YoY%' =
+			
+			DIVIDE(([ASTM -Rate] - [ASTM Rate PY]),[ASTM Rate PY])
+		displayFolder: ASTM Rate
+		lineageTag: 76281a1e-4140-4648-beb8-3d44532f81f5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents YoY%' =
+			
+			DIVIDE(([ASTM Incidents] - [ASTM Incidents PY]),[ASTM Incidents PY])
+		displayFolder: ASTM Incidents
+		lineageTag: 0543768d-d72e-4e33-9413-9852ecb8c4db
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ASTM Rate PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([ASTM -Rate] - Result,Result)
+			```
+		displayFolder: ASTM Rate
+		lineageTag: 0e1573dc-5d82-457c-9186-13be1f11a51f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ASTM Incidents PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([ASTM Incidents] - Result,Result)
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: 247e980a-76c1-47db-a7d8-a4e1b3e0b8ae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate MoM_Final' = ```
+			
+			VAR kpi_ = [ASTM Rate MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Rate
+		lineageTag: eabeb83a-9c94-4383-a422-1d9535661069
+
+	measure 'ASTM Incidents MoM_Final' = ```
+			
+			VAR kpi_ = [ASTM Incidents MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: d6bd3445-6cb2-48d6-ab08-53658181c967
+
+	measure 'ASTM Rate YoY_Final' = ```
+			
+			VAR kpi_ = [ASTM Rate YoY%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Rate
+		lineageTag: 4bc23885-9709-4936-9a31-c97a55e79b09
+
+	measure 'ASTM Incidents YoY_Final' = ```
+			
+			VAR kpi_ = [ASTM Incidents YoY%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: e2f57795-127a-4351-ab7a-6cf04f103d16
+
+	measure 'ASTM Rate LYTD_Final' = ```
+			
+			VAR kpi_ = [ASTM Rate LYTD]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Rate
+		lineageTag: 469ff97a-c935-43dd-aa76-72085b669a22
+
+	measure 'ASTM Incidents LYTD_Final' = ```
+			
+			VAR kpi_ = [ASTM Incidents LYTD]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: b48d8ce9-339a-47d3-9db3-5e4aa94c8dd3
+
+	measure 'ASTM Rate YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [ASTM -Rate]
+			    )
+		formatString: 0
+		displayFolder: ASTM Rate
+		lineageTag: f063abd2-65e9-4c90-b77b-a151aeaaac21
+
+	measure 'ASTM Incidents YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [ASTM Incidents]
+			    )
+		formatString: 0
+		displayFolder: ASTM Incidents
+		lineageTag: 33b9d47d-15e1-4037-ba30-45fd5173e89d
+
+	measure 'ASTM Rate Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [ASTM Rate MoM_Final],
+			      "LYTD", [ASTM Rate LYTD_Final],
+			      "vs YoY", [ASTM Rate YoY_Final],
+			      "vs Plan", "--",
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: ASTM Rate
+		lineageTag: 79e49ce6-788b-4dcc-99c2-54f7ad6fa671
+
+	measure 'ASTM Incidents Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [ASTM Incidents MoM_Final],
+			      "LYTD", [ASTM Incidents LYTD_Final],
+			      "vs YoY", [ASTM Incidents YoY_Final],
+			      "vs Plan", "--",
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: 84b74531-90c5-444c-8322-d302c84c1b5a
+
+	measure 'ASTM Rate_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ASTM Rate MoM%],
+			        "LYTD", [ASTM Rate LYTD],
+			        "vs YoY", [ASTM Rate YTD],
+			        "vs Plan","--",
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: ASTM Rate
+		lineageTag: 35eba65f-be61-444a-9993-7453d9b69d60
+
+	measure 'ASTM Incidents_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ASTM Incidents MoM%],
+			        "LYTD", [ASTM Incidents LYTD],
+			        "vs YoY", [ASTM Incidents YTD],
+			        "vs Plan","--",
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: ASTM Incidents
+		lineageTag: d0a53cc7-3313-422b-9255-d3de7be8a966
+
+	measure 'ASTM Rate_Color_KPI' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ASTM Rate MoM%],
+			        "LYTD", [ASTM Rate LYTD],
+			        "vs YoY", [ASTM Rate YoY%],
+			        "vs Plan", "--",
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+		displayFolder: ASTM Rate
+		lineageTag: 078f8d5a-8f90-4ced-b378-dccfbb20f6cc
+
+	measure 'ASTM Incidents_Color_KPI' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [ASTM Incidents MoM%],
+			        "LYTD", [ASTM Incidents LYTD],
+			        "vs YoY", [ASTM Incidents YoY%],
+			        "vs Plan", "--",
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
+			        IF(
+			            kpi_value < 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+		displayFolder: ASTM Incidents
+		lineageTag: 382a6a27-540c-4b14-863c-d858e200acd6
+
+	measure 'Good Catch Closure Rate PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([GOOD Catch Closure Rate],filter_)
+			RETURN
+			Result
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 78f57a1f-cc0f-4167-9d57-7e9f340f7d97
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([pSIF SIFs Focus],filter_)
+			RETURN
+			Result
+		displayFolder: pSIF SIFs Focus
+		lineageTag: a01cbc42-d0d2-407b-b9c1-8b3db9f488de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Good Catch Closure Rate],filter_)
+			
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 1f217f95-4f60-4d43-b91b-9d472f9c9e01
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([pSIF SIFs Focus],filter_)
+			
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 1137988e-3082-4e30-8d19-25b49e86b7bd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate MoM%' =
+			
+			VAR Result =  [Good Catch Closure Rate] - [Good Catch Closure Rate PP]
+			RETURN
+			Result
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 908ac8fc-2cda-41e6-98ca-aea5de897d76
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus MoM%' =
+			
+			VAR Result =  [pSIF SIFs Focus] - [pSIF SIFs Focus PP]
+			RETURN
+			Result
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 6b297c39-39d0-4243-81b3-44576f76b448
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate YoY%' =
+			
+			IF(ISBLANK([Good Catch Closure Rate PY]), BLANK(),[Good Catch Closure Rate] - [Good Catch Closure Rate PY])
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 8846a2a6-c9f5-4f92-a80b-cbdf9bb5e592
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus YoY%' =
+			
+			IF(ISBLANK([pSIF SIFs Focus PY]), BLANK(),[pSIF SIFs Focus] - [pSIF SIFs Focus PY])
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 67cdae8e-6a9b-4755-9f42-e32de7425e31
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate MoM_Final' = ```
+			
+			VAR kpi_ = [Good Catch Closure Rate MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 32b8b005-8c40-4976-b8cb-baa493cee773
+
+	measure 'pSIF SIFs Focus MoM_Final' = ```
+			
+			VAR kpi_ = [pSIF SIFs Focus MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 83d341ab-2d27-480f-b4f9-f33de98ed3ca
+
+	measure 'pSIF SIFs Focus YoY_Final' = ```
+			
+			VAR kpi_ = [pSIF SIFs Focus YoY%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 16150f7d-2341-4365-8418-0f83461d2a2a
+
+	measure 'Good Catch Closure Plan' = AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %])
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 1e248639-e2d7-420b-b338-901af65a1206
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus Plan' = AVERAGE(Fact_Safety[Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+		displayFolder: pSIF SIFs Focus
+		lineageTag: ac7f594f-63ea-4aae-847a-8ad356478892
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate Target Diff%' = [GOOD Catch Closure Rate] - [Good Catch Closure Plan]
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 2b6c5d4e-7ab3-4bc4-a002-43f4f4c1dcce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Focus Target Diff%' = [pSIF SIFs Focus] - [pSIF SIFs Focus Plan]
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 970817dd-a4ca-4394-b3ab-008c6f41bf46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Rate Target Final' = ```
+			
+			VAR kpi_ =  [Good Catch Closure Rate Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: ed1a90ea-4267-469f-b702-a8825661a124
+
+	measure 'pSIF SIFs Focus Target Final' = ```
+			
+			VAR kpi_ =  [pSIF SIFs Focus Target Diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 72957c12-418c-406a-9167-3ac658e2b0c8
+
+	measure 'Good Catch Closure Rate Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Good Catch Closure Rate MoM_Final],
+			      "LYTD", BLANK(),
+			      "vs YoY", [Good Catch Closure Rate YoY_Final],
+			      "vs Plan", [Good Catch Closure Rate Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 402af690-e9d2-406e-9bc3-5059e17a4c82
+
+	measure 'Good Catch Closure Rate YoY_Final' = ```
+			
+			VAR kpi_ = [Good Catch Closure Rate YoY%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 54f152cc-9723-46cb-918e-aa54cc3a6952
+
+	measure 'pSIF SIFs Focus Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [pSIF SIFs Focus MoM_Final],
+			      "LYTD", BLANK(),
+			      "vs YoY", [pSIF SIFs Focus YoY_Final],
+			      "vs Plan", [pSIF SIFs Focus Target Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: b23dfdcf-615a-449b-9369-f63f9253b0bf
+
+	measure 'Good Catch Closure Rate_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Good Catch Closure Rate MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [Good Catch Closure Rate YoY%],
+			        "vs Plan", [Good Catch Closure Rate Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 5f493a0e-7088-47bd-a95e-62b3a7cf0835
+
+	measure 'Good Catch Closure Rate_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Good Catch Closure Rate MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [Good Catch Closure Rate YoY%],
+			        "vs Plan", [Good Catch Closure Rate Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 87af3950-c37c-4254-b1fc-f6d6ebde35ff
+
+	measure 'pSIF SIFs Focus_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [pSIF SIFs Focus MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [pSIF SIFs Focus YoY%],
+			        "vs Plan", [pSIF SIFs Focus Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▲ up
+			            "#D7191C"  -- red for ▼ down
+			        )
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 4916905c-ec1d-4cf5-9f9d-a1a9fdb8e953
+
+	measure 'pSIF SIFs Focus_Color_KPI' = ```
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [pSIF SIFs Focus MoM%],
+			        "LYTD", BLANK(),
+			        "vs YoY", [pSIF SIFs Focus YoY%],
+			        "vs Plan", [pSIF SIFs Focus Target Diff%],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489", 
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▼ down
+			        )
+			)
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: ad3cec8f-2079-4a80-b66c-1ac81635d53e
 
 	column Measures
 		dataType: string

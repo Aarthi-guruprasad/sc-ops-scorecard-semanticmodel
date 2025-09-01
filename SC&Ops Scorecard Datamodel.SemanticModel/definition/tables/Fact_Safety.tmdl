@@ -1,0 +1,156 @@
+table Fact_Safety
+	lineageTag: 485146ba-0176-4589-9691-38a3d043c362
+
+	column 'Date/ Period (Fiscal Period)'
+		dataType: string
+		lineageTag: a681668b-220c-470f-a007-d94c1f2d8566
+		summarizeBy: none
+		sourceColumn: Date/ Period (Fiscal Period)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'profit center'
+		dataType: string
+		lineageTag: 96b16c77-4d98-442a-a987-80ed1b9a30bd
+		summarizeBy: none
+		sourceColumn: profit center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site name/Site UUID/Location UUID'
+		dataType: string
+		lineageTag: 2d689961-3440-485a-ab6e-a924e21eacf1
+		summarizeBy: none
+		sourceColumn: Site name/Site UUID/Location UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ASTM - Rate'
+		dataType: string
+		lineageTag: 5a99f7d6-9565-4dbe-a0ba-8df25115321a
+		summarizeBy: none
+		sourceColumn: ASTM - Rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target - ASTM - Rate '
+		dataType: string
+		lineageTag: 1cbd989c-a5a9-4f92-a545-30953142bc40
+		summarizeBy: none
+		sourceColumn: "Target - ASTM - Rate "
+
+		annotation SummarizationSetBy = Automatic
+
+	column ASTM-Incidents
+		dataType: string
+		lineageTag: 2fb74e0f-b71a-496a-9c73-8c86d57b11de
+		summarizeBy: none
+		sourceColumn: ASTM-Incidents
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Target - ASTM - Incidents'
+		dataType: string
+		lineageTag: b3b8f8cd-8d01-46b2-b689-6399851df28c
+		summarizeBy: none
+		sourceColumn: Target - ASTM - Incidents
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'pSIF SIFs Focus at our Sites - Action Past Due Closure Rate'
+		dataType: double
+		lineageTag: c42cb448-a692-461d-aef0-0702d7130112
+		summarizeBy: sum
+		sourceColumn: pSIF SIFs Focus at our Sites - Action Past Due Closure Rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate'
+		dataType: double
+		lineageTag: bdcdd0ca-cefd-4df4-b914-39cb5a9a471a
+		summarizeBy: sum
+		sourceColumn: Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'GOOD Catch Closure Rate '
+		dataType: double
+		lineageTag: 0a15bf51-7427-4a18-8dd2-7e07c1f7161d
+		summarizeBy: sum
+		sourceColumn: "GOOD Catch Closure Rate "
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Target - GOOD Catch Closure Rate %'
+		dataType: double
+		lineageTag: 104413ef-cb0d-4164-9277-81b7e14e4018
+		summarizeBy: sum
+		sourceColumn: Target - GOOD Catch Closure Rate %
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Period
+		dataType: int64
+		formatString: 0
+		lineageTag: b884b335-3930-4684-815c-cef94c225497
+		summarizeBy: sum
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f0a6eb4-5453-4789-b6f3-5438242b67ed
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearPeriod
+		dataType: string
+		lineageTag: 4341f01c-a2fc-41ae-852f-f83495f0ba76
+		summarizeBy: none
+		sourceColumn: YearPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Closing Date' = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Safety[YearPeriod])
+		formatString: General Date
+		lineageTag: 62ac9f59-b650-4d10-b4ec-5abbe545c086
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Safety = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Safety_of_people.xlsx")),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers","-","",Replacer.ReplaceValue,{"pSIF SIFs Focus at our Sites - Action Past Due Closure Rate"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}, {"GOOD Catch Closure Rate ", Percentage.Type}, {"Target - GOOD Catch Closure Rate %", Percentage.Type}, {"Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "Date/ Period (Fiscal Period)", "Date/ Period (Fiscal Period) - Copy"),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Duplicated Column", "Date/ Period (Fiscal Period) - Copy", Splitter.SplitTextByDelimiter(" ", QuoteStyle.Csv), {"Date/ Period (Fiscal Period) - Copy.1", "Date/ Period (Fiscal Period) - Copy.2"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"Date/ Period (Fiscal Period) - Copy.1", type text}, {"Date/ Period (Fiscal Period) - Copy.2", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"Date/ Period (Fiscal Period) - Copy.2", "Year"}, {"Date/ Period (Fiscal Period) - Copy.1", "Period"}}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Renamed Columns","P","",Replacer.ReplaceText,{"Period"}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Value1",{{"Period", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each [Year] * 100 + [Period])
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
