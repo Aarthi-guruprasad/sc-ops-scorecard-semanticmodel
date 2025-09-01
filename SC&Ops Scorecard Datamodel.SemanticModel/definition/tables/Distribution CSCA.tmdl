@@ -381,7 +381,7 @@ table 'Distribution CSCA'
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/2025CSCA%20Scorecard.xlsx")),
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CSCAPSLT-OverallGeneral/Shared%20Documents/Master%20Plans/2025CSCA%20Scorecard.xlsx")),
 				    Distribution_sheet = Source{[Item="Distribution",Kind="Sheet"]}[Data],
 				    #"Removed Top Rows" = Table.Skip(Distribution_sheet, 3),
 				    #"Removed Bottom Rows" = Table.RemoveLastN(#"Removed Top Rows", 21),

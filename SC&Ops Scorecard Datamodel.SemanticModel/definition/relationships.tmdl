@@ -227,10 +227,6 @@ relationship 2fe85a4c-9541-bedb-1f3e-26d0c62926d0
 	fromColumn: Fact_COPA_Global.Date
 	toColumn: Dim_Date.Date
 
-relationship e737b9fc-deae-d50a-4115-3acc6d8b63fc
-	fromColumn: Fact_Customer_Fines.'Global Product Number'
-	toColumn: Dim_Value_Stream.'Global Product Number'
-
 relationship 161de9ff-9e85-be7a-498a-02fab48d7c8d
 	fromColumn: Fact_Quality.'Closing Date'
 	toColumn: Dim_Date.Date
@@ -267,11 +263,11 @@ relationship 61b27430-eb57-f4de-a832-efae3ee287a7
 	fromColumn: Fact_Quality.Site
 	toColumn: Bridge_Site_Area.'Site Hierarchy'
 
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
-
 relationship dc28170a-3708-d48d-e043-79b361c58726
 	fromColumn: KPI_Metadata.Comparison
 	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
 

@@ -57,18 +57,6 @@ table Fact_Customer_Fines
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column 'Global Product Number' = LOOKUPVALUE(D_PRODUCT_TEXT_CV[Global Product Number],D_PRODUCT_TEXT_CV[Material Number Adj(PMI)],Fact_Customer_Fines[Perrigo Material #])
-		lineageTag: 69432ec8-2cc2-4c96-9be3-17ee5ce0a9de
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Profit Center' = LOOKUPVALUE(Dim_Material_Plant[Global Profit Center],Dim_Material_Plant[Material Number(PMI)],Fact_Customer_Fines[Perrigo Material #])
-		lineageTag: 69810bb6-1371-4000-8a67-25c33304402e
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column ComplianceName
 		dataType: string
 		lineageTag: 11914df7-d8a8-479a-a16d-fb759c1255e4

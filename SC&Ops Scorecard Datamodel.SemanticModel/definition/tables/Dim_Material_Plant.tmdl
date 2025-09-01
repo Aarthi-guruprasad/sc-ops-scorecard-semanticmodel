@@ -336,11 +336,12 @@ table Dim_Material_Plant
 				
 				    #"6be69aed-34b8-48ca-b19a-fa25bf7b6393" = #"6a770a37-4162-475d-9a46-a2317c8085c4"{[dataflowId="6be69aed-34b8-48ca-b19a-fa25bf7b6393"]}[Data], 
 				
-				    #"Dim Material Plant1" = #"6be69aed-34b8-48ca-b19a-fa25bf7b6393"{[entity="Dim Material Plant"]}[Data] 
+				    #"Dim Material Plant1" = #"6be69aed-34b8-48ca-b19a-fa25bf7b6393"{[entity="Dim Material Plant"]}[Data],
+				    #"Removed Duplicates" = Table.Distinct(#"Dim Material Plant1", {"Plant_Material Key"}) 
 				
 				in 
 				
-				    #"Dim Material Plant1"
+				    #"Removed Duplicates"
 				```
 
 	annotation PBI_NavigationStepName = Navigation
