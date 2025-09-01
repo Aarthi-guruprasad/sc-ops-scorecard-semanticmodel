@@ -29,17 +29,7 @@
       "height": 720.00,
       "name": "2f39dbab90bec72bc7a0",
       "ordinal": 4,
-      "visualContainers": [
-        {
-          "config": "{\"name\":\"d756e429da82dd66d1a0\",\"layouts\":[{\"id\":0,\"position\":{\"x\":208,\"y\":96,\"z\":0,\"width\":736,\"height\":560,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Target.KPI_Name\"},{\"queryRef\":\"Dim_Target.Area\"},{\"queryRef\":\"Dim_Target.Value Stream\"},{\"queryRef\":\"Dim_Target.Period/Year\"},{\"queryRef\":\"Dim_Target.Frequency\"},{\"queryRef\":\"Dim_Target.Plan/Flex\"},{\"queryRef\":\"Dim_Target.Target\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Target\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"KPI_Name\"},\"Name\":\"Dim_Target.KPI_Name\",\"NativeReferenceName\":\"KPI_Name\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Target.Area\",\"NativeReferenceName\":\"Area\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Period/Year\"},\"Name\":\"Dim_Target.Period/Year\",\"NativeReferenceName\":\"Period/Year\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Frequency\"},\"Name\":\"Dim_Target.Frequency\",\"NativeReferenceName\":\"Frequency\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Plan/Flex\"},\"Name\":\"Dim_Target.Plan/Flex\",\"NativeReferenceName\":\"Plan/Flex\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Value Stream\"},\"Name\":\"Dim_Target.Value Stream\",\"NativeReferenceName\":\"Value Stream\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Target\"},\"Name\":\"Dim_Target.Target\",\"NativeReferenceName\":\"Target\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"columnWidth\":[{\"properties\":{\"value\":{\"expr\":{\"Literal\":{\"Value\":\"199.61176470588236D\"}}}},\"selector\":{\"metadata\":\"Dim_Target.KPI_Name\"}}]}}}",
-          "filters": "[]",
-          "height": 560.00,
-          "width": 736.00,
-          "x": 208.00,
-          "y": 96.00,
-          "z": 0.00
-        }
-      ],
+      "visualContainers": [],
       "width": 1280.00
     },
     {
