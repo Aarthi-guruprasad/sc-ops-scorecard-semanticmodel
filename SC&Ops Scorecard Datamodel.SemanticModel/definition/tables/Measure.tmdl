@@ -10555,7 +10555,7 @@ table Measure
 				    "Gross PPV","#,0",
 				    "ABP Variance","#,0"
 				)
-=======
+
 	measure 'ASTM -Rate' = sum(Fact_Safety[ASTM - Rate])
 		formatString: 0
 		displayFolder: ASTM Rate
