@@ -118,3 +118,19 @@ expression Dim_Date_Sequence_P_YearPeriod = ```
 
 	annotation PBI_ResultType = Table
 
+expression Dim_Profit_Center_Dummy =
+		let
+		    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Profit_Center_Dummy.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Changed Type" = Table.TransformColumnTypes(Sheet1_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}, {"Column6", type text}, {"Column7", type text}, {"Column8", type text}, {"Column9", type text}, {"Column10", type text}, {"Column11", type text}, {"Column12", type text}, {"Column13", type text}}),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Profit Center", type text}, {"Level 3", type text}, {"Level 6", type text}, {"Level 7", type text}, {"Level 8", type text}, {"Level 9", type text}, {"Level 10", type text}, {"FP&A Segment", type text}, {"Level 5 (Custom new)", type text}, {"Area", type text}, {"ProfitCenter Level ID // Descr", type text}, {"FP&A Cluster", type text}, {"FP&A Country", type text}})
+		in
+		    #"Changed Type1"
+	lineageTag: 2a05780c-a0e1-4682-b2c6-445d017a7bb2
+	queryGroup: Parameters/Misc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
