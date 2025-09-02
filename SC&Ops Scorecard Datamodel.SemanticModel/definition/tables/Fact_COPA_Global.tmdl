@@ -97,18 +97,50 @@ table Fact_COPA_Global
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column 'Operating Income Flex'
+		dataType: string
+		lineageTag: 5466e8d9-eb42-4d73-9072-196e66b169b4
+		summarizeBy: none
+		sourceColumn: Operating Income Flex
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Net PPV Flex'
+		dataType: string
+		lineageTag: 839d048a-bc13-49c7-b807-b1f414510554
+		summarizeBy: none
+		sourceColumn: Net PPV Flex
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Net POV Flex'
+		dataType: string
+		lineageTag: 3af6662a-48c9-4b61-9da1-b0ae92ffb8ca
+		summarizeBy: none
+		sourceColumn: Net POV Flex
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Gross PPV Flex'
+		dataType: string
+		lineageTag: 99526349-ba2d-4dc3-b694-b595eb1c44e0
+		summarizeBy: none
+		sourceColumn: Gross PPV Flex
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_COPA_Global = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_COPA_Global = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CFin%20Global%20PROD%20Reporting", "Global - Finance", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_COPA_Global[Operating Income Actual] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""))#(lf)MEASURE Fact_COPA_Global[Operating Income Plan] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""PLAN""))#(lf)MEASURE Fact_COPA_Global[Net PPV Actual] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net PPV Plan] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net POV Actual] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Net POV Plan] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Gross PPV Actual] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)MEASURE Fact_COPA_Global[Gross PPV Plan] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_PC[Profit Center],#(lf)    Dim_Date[Date],#(lf)    ""Operating Income Actual"", [Operating Income Actual],#(lf)    ""Operating Income Plan"", [Operating Income Plan],#(lf)    ""Net PPV Actual"", [Net PPV Actual],#(lf)    ""Net PPV Plan"", [Net PPV Plan],#(lf)    ""Net POV Actual"", [Net POV Actual],#(lf)    ""Net POV Plan"", [Net POV Plan],#(lf)    ""Gross PPV Actual"", [Gross PPV Actual],#(lf)    ""Gross PPV Plan"", [Gross PPV Plan]#(lf))#(lf)ORDER BY #(lf)    Dim_PC[Profit Center] ASC,#(lf)    Dim_Date[Date] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_COPA_Global,{{"Dim_PC[Profit Center]", "Profit Center"}, {"Dim_Date[Date]", "Date"}, {"[Operating Income Actual]", "Operating Income Actual"}, {"[Operating Income Plan]", "Operating Income Plan"}, {"[Net PPV Actual]", "Net PPV Actual"}, {"[Net PPV Plan]", "Net PPV Plan"}, {"[Net POV Actual]", "Net POV Actual"}, {"[Net POV Plan]", "Net POV Plan"}, {"[Gross PPV Actual]", "Gross PPV Actual"}, {"[Gross PPV Plan]", "Gross PPV Plan"}}),
+				    Fact_COPA_Global = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CFin%20Global%20PROD%20Reporting", "Global - Finance", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_COPA_Global[Operating Income Actual] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""))#(lf)#(lf)#(lf)MEASURE Fact_COPA_Global[Operating Income Plan] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""PLAN""))#(lf)#(lf)MEASURE Fact_COPA_Global[Operating Income Flex] = CALCULATE([OI GC], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""), #(lf)keepfilters(Dim_Scenario[Version]=""RF 6+6""))#(lf)#(lf)#(lf)MEASURE Fact_COPA_Global[Net PPV Actual] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Net PPV Plan] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)#(lf)MEASURE Fact_COPA_Global[Net PPV Flex] = CALCULATE([Sum amount Net PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""RF 6+6""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Net POV Actual] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Net POV Plan] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Net POV Flex] = CALCULATE([Sum amount Net Production Variances], #(lf)keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""RF 6+6""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Gross PPV Actual] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""ACTUAL""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Gross PPV Plan] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""PLAN""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)MEASURE Fact_COPA_Global[Gross PPV Flex] = CALCULATE([Sum amount Gross PPV], keepfilters(Dim_ReportCurrency[To-currency] =""USD""),#(lf)keepfilters(Dim_Scenario[Version]=""RF 6+6""),#(lf)keepfilters(Dim_Version[Type]=""GC""))#(lf)#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_PC[Profit Center],#(lf)    Dim_Date[Date],#(lf)    ""Operating Income Actual"", [Operating Income Actual],#(lf)    ""Operating Income Plan"", [Operating Income Plan],#(lf)    ""Operating Income Flex"", [Operating Income Flex],#(lf)    ""Net PPV Actual"", [Net PPV Actual],#(lf)    ""Net PPV Plan"", [Net PPV Plan],#(lf)    ""Net PPV Flex"", [Net PPV Flex],#(lf)    ""Net POV Actual"", [Net POV Actual],#(lf)    ""Net POV Plan"", [Net POV Plan],#(lf)    ""Net POV Flex"", [Net POV Flex],#(lf)    ""Gross PPV Actual"", [Gross PPV Actual],#(lf)    ""Gross PPV Plan"", [Gross PPV Plan],#(lf)    ""Gross PPV Flex"", [Gross PPV Flex]#(lf))#(lf)ORDER BY #(lf)    Dim_PC[Profit Center] ASC,#(lf)    Dim_Date[Date] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_COPA_Global,{{"Dim_PC[Profit Center]", "Profit Center"}, {"Dim_Date[Date]", "Date"}, {"[Operating Income Actual]", "Operating Income Actual"}, {"[Operating Income Plan]", "Operating Income Plan"}, {"[Net PPV Actual]", "Net PPV Actual"}, {"[Net PPV Plan]", "Net PPV Plan"}, {"[Net POV Actual]", "Net POV Actual"}, {"[Net POV Plan]", "Net POV Plan"}, {"[Gross PPV Actual]", "Gross PPV Actual"}, {"[Gross PPV Plan]", "Gross PPV Plan"}, {"[Operating Income Flex]", "Operating Income Flex"}, {"[Net PPV Flex]", "Net PPV Flex"}, {"[Net POV Flex]", "Net POV Flex"}, {"[Gross PPV Flex]", "Gross PPV Flex"}}),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Operating Income Actual", type number}, {"Operating Income Plan", type number}, {"Net PPV Actual", type number}, {"Net PPV Plan", type number}, {"Net POV Actual", type number}, {"Net POV Plan", type number}, {"Gross PPV Actual", type number}, {"Gross PPV Plan", type number}})
 				in
 				    #"Changed Type"
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
