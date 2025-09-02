@@ -1,4 +1,4 @@
-table Dim_Target
+table Fact_Target
 	lineageTag: 3945f5ab-aaeb-4693-bfe9-712651f85ebd
 
 	column KPI_Name
@@ -91,9 +91,30 @@ table Dim_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Dim_Target = m
+	column 'Profit Center Dummy Key'
+		dataType: string
+		lineageTag: 304d00a0-5aab-4dfb-bd31-44d0273d6707
+		summarizeBy: none
+		sourceColumn: Profit Center Dummy Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month = CONCATENATE(Fact_Target[Period/Year],RIGHT(Fact_Target[Period],2))
+		lineageTag: 76ba9644-4c98-4315-86d6-7596a9cd48ab
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Closing Date' = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Target[Year-Month])
+		formatString: General Date
+		lineageTag: b180789c-18fe-467e-8bf4-034d65bb4288
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Target = m
 		mode: import
-		queryGroup: Parameters/Misc
+		queryGroup: Fact
 		source =
 				let
 				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Target.xlsx"), null, true),

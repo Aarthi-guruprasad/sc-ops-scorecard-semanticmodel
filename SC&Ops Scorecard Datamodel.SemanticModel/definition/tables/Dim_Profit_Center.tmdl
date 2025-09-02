@@ -114,9 +114,12 @@ table Dim_Profit_Center
 				    Workspaces = Source{[Id="Workspaces"]}[Data],
 				    #"c5da013e-9820-4ab4-8ee2-106ba3a7da75" = Workspaces{[workspaceId="c5da013e-9820-4ab4-8ee2-106ba3a7da75"]}[Data],
 				    #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e" = #"c5da013e-9820-4ab4-8ee2-106ba3a7da75"{[dataflowId="4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"]}[Data],
-				    Dim_Profit_Center_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_Profit_Center",version=""]}[Data]
+				    Dim_Profit_Center_ = #"4ff0907e-cfd0-436d-a858-2c7d2af7cd6e"{[entity="Dim_Profit_Center",version=""]}[Data],
+				    #"Appended Query" = Table.Combine({Dim_Profit_Center_, Dim_Profit_Center_Dummy})
 				in
-				    Dim_Profit_Center_
+				    #"Appended Query"
 
 	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
 

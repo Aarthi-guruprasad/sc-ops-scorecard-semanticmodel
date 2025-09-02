@@ -1,5 +1,5 @@
 {
-  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
+  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":5,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
   "layoutOptimization": 0,
   "publicCustomVisuals": [
     "SimpleWaterfall"
@@ -273,6 +273,27 @@
           "x": 464.00,
           "y": 128.00,
           "z": 3000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Page 6",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "bf9a7afd07be32d4cc6c",
+      "ordinal": 5,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"4287569ca9af193b3f6e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":144,\"y\":224.00000000000003,\"z\":0,\"width\":432,\"height\":448.00000000000006,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\"},{\"queryRef\":\"Dim_Profit_Center.FP&A Cluster\"},{\"queryRef\":\"Fact_Target.Target\"},{\"queryRef\":\"Fact_Target.KPI_Name\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"Fact_Target\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FP&A Cluster\"},\"Name\":\"Dim_Profit_Center.FP&A Cluster\",\"NativeReferenceName\":\"FP&A Cluster\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Target\"},\"Name\":\"Fact_Target.Target\",\"NativeReferenceName\":\"Target\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"KPI_Name\"},\"Name\":\"Fact_Target.KPI_Name\",\"NativeReferenceName\":\"KPI_Name\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 448.00,
+          "width": 432.00,
+          "x": 144.00,
+          "y": 224.00,
+          "z": 0.00
         }
       ],
       "width": 1280.00
