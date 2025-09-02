@@ -26,76 +26,80 @@ table Fact_Safety
 		annotation SummarizationSetBy = Automatic
 
 	column 'ASTM - Rate'
-		dataType: string
+		dataType: double
 		lineageTag: 5a99f7d6-9565-4dbe-a0ba-8df25115321a
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: ASTM - Rate
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column 'Target - ASTM - Rate '
-		dataType: string
+		dataType: double
 		lineageTag: 1cbd989c-a5a9-4f92-a545-30953142bc40
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: "Target - ASTM - Rate "
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column ASTM-Incidents
-		dataType: string
+		dataType: double
 		lineageTag: 2fb74e0f-b71a-496a-9c73-8c86d57b11de
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: ASTM-Incidents
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column 'Target - ASTM - Incidents'
-		dataType: string
+		dataType: double
 		lineageTag: b3b8f8cd-8d01-46b2-b689-6399851df28c
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Target - ASTM - Incidents
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column 'pSIF SIFs Focus at our Sites - Action Past Due Closure Rate'
 		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: c42cb448-a692-461d-aef0-0702d7130112
 		summarizeBy: sum
 		sourceColumn: pSIF SIFs Focus at our Sites - Action Past Due Closure Rate
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column 'Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate'
 		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: bdcdd0ca-cefd-4df4-b914-39cb5a9a471a
 		summarizeBy: sum
 		sourceColumn: Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column 'GOOD Catch Closure Rate '
 		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: 0a15bf51-7427-4a18-8dd2-7e07c1f7161d
 		summarizeBy: sum
 		sourceColumn: "GOOD Catch Closure Rate "
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column 'Target - GOOD Catch Closure Rate %'
 		dataType: double
+		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: 104413ef-cb0d-4164-9277-81b7e14e4018
 		summarizeBy: sum
 		sourceColumn: Target - GOOD Catch Closure Rate %
 
 		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Period
 		dataType: int64
@@ -139,7 +143,7 @@ table Fact_Safety
 				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
 				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
 				    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers","-","",Replacer.ReplaceValue,{"pSIF SIFs Focus at our Sites - Action Past Due Closure Rate"}),
-				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}, {"GOOD Catch Closure Rate ", Percentage.Type}, {"Target - GOOD Catch Closure Rate %", Percentage.Type}, {"Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}, {"GOOD Catch Closure Rate ", Percentage.Type}, {"Target - GOOD Catch Closure Rate %", Percentage.Type}, {"Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate", Percentage.Type}, {"ASTM - Rate", type number}, {"Target - ASTM - Rate ", type number}, {"ASTM-Incidents", type number}, {"Target - ASTM - Incidents", type number}}),
 				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "Date/ Period (Fiscal Period)", "Date/ Period (Fiscal Period) - Copy"),
 				    #"Split Column by Delimiter" = Table.SplitColumn(#"Duplicated Column", "Date/ Period (Fiscal Period) - Copy", Splitter.SplitTextByDelimiter(" ", QuoteStyle.Csv), {"Date/ Period (Fiscal Period) - Copy.1", "Date/ Period (Fiscal Period) - Copy.2"}),
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"Date/ Period (Fiscal Period) - Copy.1", type text}, {"Date/ Period (Fiscal Period) - Copy.2", Int64.Type}}),
