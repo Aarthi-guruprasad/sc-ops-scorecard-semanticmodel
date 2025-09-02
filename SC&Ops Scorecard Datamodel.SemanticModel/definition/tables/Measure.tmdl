@@ -10222,9 +10222,6 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
-	measure TEST = "test"
-		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
-
 	measure Bias_Lower_Limit = ```
 			
 			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
@@ -10390,193 +10387,28 @@ table Measure
 		displayFolder: Net Sales
 		lineageTag: 2a2be204-6ced-4c69-9a9f-2f742ad498dd
 
-	measure 'SSSO: Obso Conv_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Obso Conv_APN_Base],
-			    2, [SSSO: Obso Conv_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Obs linked to Conv
-		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Salvage & Obs_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Salvage & Obs_APN_Base],
-			    2, [SSSO: Salvage & Obs_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Salvage & Obs
-		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Scrap-off_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Scrap-off APN_Base],
-			    2, [SSSO: Scrap-off F66_Base]
-			)
-			```
-		displayFolder: SSSO Scrap-Off
-		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure COGS_switch_target = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [COGS_APN_Base],
-			    2, [COGS_AFX_Base]
-			)
-			```
-		displayFolder: COGS
-		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics on Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics on Net Sales_APN_Base],
-			    2, [Total Logistics on Net Sales_AFX_Base]
-			)
-			```
-		displayFolder: Logistic vs Net Sales
-		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics Plan],
-			    2, [Total Logistics Flex]
-			)
-			```
-		displayFolder: Logistic
-		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Distribution on COGS_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Distribution on COGS_APN_Base],
-			    2, [Total Distribution on COGS_AFX_Base]
-			)
-			```
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: Distribution on COGS
-		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
-
-	measure 'Gross PPV_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Gross PPV APN_base]
-			)
-			
-			```
-		displayFolder: Gross PPV
-		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Net Sales_APN_Base],
-			    2, [Net Sales_AFX_Base]
-			)
-			```
-		formatString: 0.0
-		displayFolder: Net Sales
-		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
-
-	measure 'Operating Income_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Operating Income APN_Base]
-			
-			)
-			```
-		displayFolder: Operating Income
-		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure Switch_Plan_Flex_OI = ```
-			SWITCH(
-			    VALUES( Operating_Parameter[Operating_Parameter] ),
-			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
-			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
-			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
-			    "Net Sales", [Net Sales_switch_target],
-			    "COGS", [COGS_switch_target],
-			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
-			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
-			    "Customer Fines", [Customer Fines Target],
-			    "Operating Income", [Operating Income_switch_target],
-			    "Gross PPV", [Gross PPV APN_base],
-			    "Net POV", [Net POV APN_base],
-			    "ABP Variance", [ABP Variance_APN_Base]
-			)
-			
-			```
-		displayFolder: Switch Measures
-		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
-
-		formatStringDefinition =
-				SWITCH(
-				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
-				    "SSSO: Salvage & Obs", "#,0",
-				    "SSSO: Scrap-Off", "#,0",
-				    "COGS", "#,0",
-				    "Distribution to COGS", "0.0%",
-				    "Operating Income", "#,0",
-				    "Net POV", "#,0",
-				    "SSSO: Obs linked to Conv","#,0",
-				    "Net Sales", "#,0",
-				    "% Logistics vs Net Sales", "0.0%",
-				    "Customer Fines", "#,0",
-				    "Gross PPV","#,0",
-				    "ABP Variance","#,0"
-				)
+	measure TEST = "test"
+		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
 
 	measure 'ASTM -Rate' = sum(Fact_Safety[ASTM - Rate])
-		formatString: 0
+		formatString: 0.00
 		displayFolder: ASTM Rate
 		lineageTag: cb287e95-3500-451f-8895-25c3ac6e4f3b
 
 	measure 'ASTM Incidents' = SUM(Fact_Safety[ASTM-Incidents])
-		formatString: 0
+		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 734b9a80-ed96-465d-a56d-3bbb7720715f
 
 	measure 'pSIF SIFs Focus' = AVERAGE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: pSIF SIFs Focus
 		lineageTag: 32739a93-d65c-46ca-b1f9-a41d7daef7c4
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure 'GOOD Catch Closure Rate' = AVERAGE(Fact_Safety[GOOD Catch Closure Rate ])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: GOOD Catch Closure Rate
 		lineageTag: 95652b04-3bcb-4d5f-838d-ff8d1f7bc765
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ASTM Rate PP' =
 			
@@ -10837,14 +10669,14 @@ table Measure
 			        _sel,
 			        "vs PP", [ASTM Rate MoM%],
 			        "LYTD", [ASTM Rate LYTD],
-			        "vs YoY", [ASTM Rate YTD],
+			        "vs YoY", [ASTM Rate YoY%],
 			        "vs Plan","--",
 			        BLANK()
 			    )
 			
 			RETURN
 			        IF(
-			            kpi_value < 0,
+			            kpi_value > 0,
 			            "#1A9641",  -- green for ▲ up
 			            "#D7191C"  -- red for ▼ down
 			        )
@@ -10860,14 +10692,14 @@ table Measure
 			        _sel,
 			        "vs PP", [ASTM Incidents MoM%],
 			        "LYTD", [ASTM Incidents LYTD],
-			        "vs YoY", [ASTM Incidents YTD],
+			        "vs YoY", [ASTM Incidents YoY%],
 			        "vs Plan","--",
 			        BLANK()
 			    )
 			
 			RETURN
 			        IF(
-			            kpi_value < 0,
+			            kpi_value > 0,
 			            "#1A9641",  -- green for ▲ up
 			            "#D7191C"  -- red for ▼ down
 			        )
@@ -10892,7 +10724,7 @@ table Measure
 			IF(
 			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
 			        IF(
-			            kpi_value < 0,
+			            kpi_value > 0,
 			            "#001489",  -- blue by default
 			            "#D7191C"  -- red for ▼ down
 			        )
@@ -10918,7 +10750,7 @@ table Measure
 			IF(
 			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
 			        IF(
-			            kpi_value < 0,
+			            kpi_value > 0,
 			            "#001489",  -- blue by default
 			            "#D7191C"  -- red for ▼ down
 			        )
@@ -11248,6 +11080,173 @@ table Measure
 			)
 			```
 		displayFolder: pSIF SIFs Focus
+		lineageTag: aff6b7fc-7709-4d45-92e8-b16aaa302526
+
+	measure 'SSSO: Obso Conv_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Obso Conv_APN_Base],
+			    2, [SSSO: Obso Conv_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Salvage & Obs_APN_Base],
+			    2, [SSSO: Salvage & Obs_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Scrap-off APN_Base],
+			    2, [SSSO: Scrap-off F66_Base]
+			)
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_switch_target = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [COGS_APN_Base],
+			    2, [COGS_AFX_Base]
+			)
+			```
+		displayFolder: COGS
+		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics on Net Sales_APN_Base],
+			    2, [Total Logistics on Net Sales_AFX_Base]
+			)
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics Plan],
+			    2, [Total Logistics Flex]
+			)
+			```
+		displayFolder: Logistic
+		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Distribution on COGS_APN_Base],
+			    2, [Total Distribution on COGS_AFX_Base]
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
+		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
+
+	measure 'Gross PPV_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Gross PPV APN_base]
+			)
+			
+			```
+		displayFolder: Gross PPV
+		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Net Sales_APN_Base],
+			    2, [Net Sales_AFX_Base]
+			)
+			```
+		formatString: 0.0
+		displayFolder: Net Sales
+		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
+
+	measure 'Operating Income_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Operating Income APN_Base]
+			
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
+			    "Net Sales", [Net Sales_switch_target],
+			    "COGS", [COGS_switch_target],
+			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income_switch_target],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		displayFolder: Switch Measures
+		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
 
 	column Measures
 		dataType: string
