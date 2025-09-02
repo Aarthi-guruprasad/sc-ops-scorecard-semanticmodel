@@ -283,3 +283,11 @@ relationship d03dd813-6c74-3ab6-7ae3-fb45b222e37c
 	fromColumn: Fact_Target.'Closing Date'
 	toColumn: Dim_Date.Date
 
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
+

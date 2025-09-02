@@ -1364,7 +1364,11 @@ table Measure
 			            "On Time Closure of Deviations%",[On Time Closure of Deviations PY],
 			            "CAPA Completion Rate%",[CAPA Completion Rate PY],
 			            "RFT%", [RFT% PY],
-			            "Critical or Major Observations", [Critical or Major Observations PY]
+			            "Critical or Major Observations", [Critical or Major Observations PY],
+			            "ASTM Rate",[ASTM Rate PY],
+			    "ASTM Incidents",[ASTM Incidents PY],
+			    "Good Catch Closure Rate%",[Good Catch Closure Rate PY],
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus PY]
 			            )
 			
 			```
@@ -1379,7 +1383,11 @@ table Measure
 			            "On Time Closure of Deviations%",[On Time Closure of Deviations YTD],
 			            "CAPA Completion Rate%",[CAPA Completion Rate YTD],
 			            "RFT%", [RFT YTD],
-			            "Critical or Major Observations", [Critical or Major Observations YTD]
+			            "Critical or Major Observations", [Critical or Major Observations YTD],
+			            "ASTM Rate",[ASTM Rate YTD],
+			            "ASTM Incidents",[ASTM Incidents YTD],
+			            "Good Catch Closure Rate%",[Good Catch Closure Rate YTD],
+			            "pSIF SIF Focus Action%",[pSIF SIFs Focus YTD]
 			            )
 			
 			```
@@ -1395,6 +1403,10 @@ table Measure
 				    "Critical or Major Observations", "#,0",
 				    "OEE%", "0.0%",
 				    "Schedule Attainment%", "0.0%",
+				    "ASTM Rate","#,00",
+				    "ASTM Incidents","#,00",
+				    "Good Catch Closure Rate%","0.0%",
+				    "pSIF SIF Focus Action%","0.0%",
 				    "#,0"  --fallback
 				)
 
@@ -4192,11 +4204,15 @@ table Measure
 			    "Schedule Attainment%", [Schedule Attn Target],
 			    "On Time Closure of Deviations%",[Deviations Plan],
 			    "CAPA Completion Rate%",[CAPA Plan],
-			    "RFT%", [RFT Plan]
+			    "RFT%", [RFT Plan],
+			    "ASTM Rate",[ASTM Rate Plan],
+			    "ASTM Incidents",[ASTM Incidents Plan],
+			    "Good Catch Closure Rate%",[Good Catch Closure Plan],
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan]
 			)
 			
 			```
-		formatString: 0.0%;-0.0%;0.0%
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Switch Measures
 		lineageTag: 46ad6b7c-6671-4187-b08a-d072791c8fce
 
@@ -9708,12 +9724,12 @@ table Measure
 			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
 			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
 			
-			        "ASTM_Incidents_vsPlan",BLANK(),
+			        "ASTM_Incidents_vsPlan",[ASTM Incidents_APN],
 			        "ASTM_Incidents_vsPP",[ASTM Incidents MoM%],
 			        "ASTM_Incidents_vsYoY",[ASTM Incidents YoY%],
 			        "ASTM_Incidents_vsLYTD",[ASTM Incidents LYTD],
 			
-			        "ASTM_Rate_vsPlan",BLANK(),
+			        "ASTM_Rate_vsPlan",[ASTM Rate_APN],
 			        "ASTM_Rate_vsPP",[ASTM Rate MoM%],
 			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
 			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
@@ -10052,12 +10068,12 @@ table Measure
 			        "Operating_Income_vsYoY", [Operating Income Actual YoY%],
 			        "Operating_Income_vsLYTD", [Operating Income Actual LYTD],
 			
-			        "ASTM_Incidents_vsPlan",BLANK(),
+			        "ASTM_Incidents_vsPlan",[ASTM Incidents_APN],
 			        "ASTM_Incidents_vsPP",[ASTM Incidents MoM%],
 			        "ASTM_Incidents_vsYoY",[ASTM Incidents YoY%],
 			        "ASTM_Incidents_vsLYTD",[ASTM Incidents LYTD],
 			
-			        "ASTM_Rate_vsPlan",BLANK(),
+			        "ASTM_Rate_vsPlan",[ASTM Rate_APN],
 			        "ASTM_Rate_vsPP",[ASTM Rate MoM%],
 			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
 			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
@@ -10556,22 +10572,175 @@ table Measure
 				    "ABP Variance","#,0"
 				)
 
-	measure 'ASTM -Rate' = sum(Fact_Safety[ASTM - Rate])
+	measure 'ASTM -Rate' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            SUM(Fact_Safety[ASTM - Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            SUM(Fact_Safety[ASTM - Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		formatString: 0.00
 		displayFolder: ASTM Rate
 		lineageTag: cb287e95-3500-451f-8895-25c3ac6e4f3b
 
-	measure 'ASTM Incidents' = SUM(Fact_Safety[ASTM-Incidents])
+	measure 'ASTM Incidents' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            SUM(Fact_Safety[ASTM-Incidents]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            SUM(Fact_Safety[ASTM-Incidents]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 734b9a80-ed96-465d-a56d-3bbb7720715f
 
-	measure 'pSIF SIFs Focus' = AVERAGE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+	measure 'pSIF SIFs Focus' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: pSIF SIFs Focus
 		lineageTag: 32739a93-d65c-46ca-b1f9-a41d7daef7c4
 
-	measure 'GOOD Catch Closure Rate' = AVERAGE(Fact_Safety[GOOD Catch Closure Rate ])
+	measure 'GOOD Catch Closure Rate' = ```
+			
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[GOOD Catch Closure Rate ]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[GOOD Catch Closure Rate ]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: GOOD Catch Closure Rate
 		lineageTag: 95652b04-3bcb-4d5f-838d-ff8d1f7bc765
@@ -10596,7 +10765,7 @@ table Measure
 			VAR Result = Calculate([ASTM Incidents],filter_)
 			RETURN
 			Result
-		formatString: 0
+		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 76375e9f-83e4-447a-9b93-8952bd164f16
 
@@ -10624,7 +10793,7 @@ table Measure
 			Calculate([ASTM Incidents],filter_)
 			
 			```
-		formatString: 0
+		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 86f8c552-91ee-42b7-a911-805c9dc945a8
 
@@ -10639,10 +10808,9 @@ table Measure
 	measure 'ASTM Incidents MoM%' =
 			
 			DIVIDE(([ASTM Incidents] - [ASTM Incidents PP]),[ASTM Incidents PP])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: ASTM Incidents
 		lineageTag: fd0bb756-27c0-4d8b-9ffc-f23153765741
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ASTM Rate YoY%' =
 			
@@ -10655,10 +10823,9 @@ table Measure
 	measure 'ASTM Incidents YoY%' =
 			
 			DIVIDE(([ASTM Incidents] - [ASTM Incidents PY]),[ASTM Incidents PY])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: ASTM Incidents
 		lineageTag: 0543768d-d72e-4e33-9413-9852ecb8c4db
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ASTM Rate LYTD' = ```
 			
@@ -10786,7 +10953,7 @@ table Measure
 			        ),
 			        [ASTM Incidents]
 			    )
-		formatString: 0
+		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 33b9d47d-15e1-4037-ba30-45fd5173e89d
 
@@ -10799,7 +10966,7 @@ table Measure
 			      "vs PP", [ASTM Rate MoM_Final],
 			      "LYTD", [ASTM Rate LYTD_Final],
 			      "vs YoY", [ASTM Rate YoY_Final],
-			      "vs Plan", "--",
+			      "vs Plan", [ASTM Rate_APN_Final],
 			      BLANK()
 			    )
 			
@@ -10817,7 +10984,7 @@ table Measure
 			      "vs PP", [ASTM Incidents MoM_Final],
 			      "LYTD", [ASTM Incidents LYTD_Final],
 			      "vs YoY", [ASTM Incidents YoY_Final],
-			      "vs Plan", "--",
+			      "vs Plan", [ASTM Incidents_APN_Final],
 			      BLANK()
 			    )
 			
@@ -10836,15 +11003,15 @@ table Measure
 			        "vs PP", [ASTM Rate MoM%],
 			        "LYTD", [ASTM Rate LYTD],
 			        "vs YoY", [ASTM Rate YoY%],
-			        "vs Plan","--",
+			        "vs Plan",[ASTM Rate_APN],
 			        BLANK()
 			    )
 			
 			RETURN
 			        IF(
-			            kpi_value > 0,
-			            "#1A9641",  -- green for ▲ up
-			            "#D7191C"  -- red for ▼ down
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"  -- red for ▲ up
 			        )
 		displayFolder: ASTM Rate
 		lineageTag: 35eba65f-be61-444a-9993-7453d9b69d60
@@ -10859,15 +11026,15 @@ table Measure
 			        "vs PP", [ASTM Incidents MoM%],
 			        "LYTD", [ASTM Incidents LYTD],
 			        "vs YoY", [ASTM Incidents YoY%],
-			        "vs Plan","--",
+			        "vs Plan",[ASTM Incidents_APN],
 			        BLANK()
 			    )
 			
 			RETURN
 			        IF(
-			            kpi_value > 0,
-			            "#1A9641",  -- green for ▲ up
-			            "#D7191C"  -- red for ▼ down
+			            kpi_value < 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"  -- red for ▲ up
 			        )
 		displayFolder: ASTM Incidents
 		lineageTag: d0a53cc7-3313-422b-9255-d3de7be8a966
@@ -10882,17 +11049,17 @@ table Measure
 			        "vs PP", [ASTM Rate MoM%],
 			        "LYTD", [ASTM Rate LYTD],
 			        "vs YoY", [ASTM Rate YoY%],
-			        "vs Plan", "--",
+			        "vs Plan", [ASTM Rate_APN],
 			        BLANK()
 			    )
 			
 			RETURN
 			IF(
-			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
+			        ISBLANK(kpi_value), "#001489",
 			        IF(
-			            kpi_value > 0,
+			            kpi_value < 0,
 			            "#001489",  -- blue by default
-			            "#D7191C"  -- red for ▼ down
+			            "#D7191C"  -- red for ▲ up
 			        )
 			)
 		displayFolder: ASTM Rate
@@ -10908,17 +11075,17 @@ table Measure
 			        "vs PP", [ASTM Incidents MoM%],
 			        "LYTD", [ASTM Incidents LYTD],
 			        "vs YoY", [ASTM Incidents YoY%],
-			        "vs Plan", "--",
+			        "vs Plan", [ASTM Incidents_APN],
 			        BLANK()
 			    )
 			
 			RETURN
 			IF(
-			        OR(ISBLANK(kpi_value),kpi_value = "--"), "#001489",
+			        (ISBLANK(kpi_value)), "#001489",
 			        IF(
-			            kpi_value > 0,
+			            kpi_value < 0,
 			            "#001489",  -- blue by default
-			            "#D7191C"  -- red for ▼ down
+			            "#D7191C"  -- red for ▲ up
 			        )
 			)
 		displayFolder: ASTM Incidents
@@ -11052,13 +11219,89 @@ table Measure
 		displayFolder: pSIF SIFs Focus
 		lineageTag: 16150f7d-2341-4365-8418-0f83461d2a2a
 
-	measure 'Good Catch Closure Plan' = AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %])
+	measure 'Good Catch Closure Plan' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		displayFolder: GOOD Catch Closure Rate
 		lineageTag: 1e248639-e2d7-420b-b338-901af65a1206
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'pSIF SIFs Focus Plan' = AVERAGE(Fact_Safety[Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+	measure 'pSIF SIFs Focus Plan' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            AVERAGE(Fact_Safety[Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			           AVERAGE(Fact_Safety[Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
 		displayFolder: pSIF SIFs Focus
 		lineageTag: ac7f594f-63ea-4aae-847a-8ad356478892
 
@@ -11247,6 +11490,317 @@ table Measure
 			```
 		displayFolder: pSIF SIFs Focus
 		lineageTag: aff6b7fc-7709-4d45-92e8-b16aaa302526
+
+	measure 'SSSO: Obso Conv_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Obso Conv_APN_Base],
+			    2, [SSSO: Obso Conv_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Salvage & Obs_APN_Base],
+			    2, [SSSO: Salvage & Obs_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Scrap-off APN_Base],
+			    2, [SSSO: Scrap-off F66_Base]
+			)
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_switch_target = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [COGS_APN_Base],
+			    2, [COGS_AFX_Base]
+			)
+			```
+		displayFolder: COGS
+		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics on Net Sales_APN_Base],
+			    2, [Total Logistics on Net Sales_AFX_Base]
+			)
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics Plan],
+			    2, [Total Logistics Flex]
+			)
+			```
+		displayFolder: Logistic
+		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Distribution on COGS_APN_Base],
+			    2, [Total Distribution on COGS_AFX_Base]
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
+		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
+
+	measure 'Gross PPV_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Gross PPV APN_base]
+			)
+			
+			```
+		displayFolder: Gross PPV
+		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Net Sales_APN_Base],
+			    2, [Net Sales_AFX_Base]
+			)
+			```
+		formatString: 0.0
+		displayFolder: Net Sales
+		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
+
+	measure 'Operating Income_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Operating Income APN_Base]
+			
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
+			    "Net Sales", [Net Sales_switch_target],
+			    "COGS", [COGS_switch_target],
+			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income_switch_target],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		displayFolder: Switch Measures
+		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
+	measure 'ASTM Incidents Plan' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            SUM(Fact_Safety[Target - ASTM - Incidents]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            SUM(Fact_Safety[Target - ASTM - Incidents]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+			
+			```
+		formatString: 0.00
+		displayFolder: ASTM Incidents
+		lineageTag: 3126d70e-9af5-4268-b6fe-a11a2f31f751
+
+	measure 'ASTM Rate Plan' =
+			
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA",
+			        CALCULATE(
+			            SUM(Fact_Safety[Target - ASTM - Rate ]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "Logistics",
+			                    "Vermont (PVT)",
+			                    "Michigan-Allegan (PMI)",
+			                    "Wisconsin (PWI)",
+			                    "Ohio (POH)",
+			                    "Michigan-Grand Rapids (POC)",
+			                    "New York (PNY)",
+			                    "Michigan-Holland (PMH)"
+			                }
+			            )
+			        ),
+			    _area = "CSCI",
+			        CALCULATE(
+			            SUM(Fact_Safety[Target - ASTM - Rate ]),
+			            KEEPFILTERS(
+			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
+			                    "UK-Braunton (PUK)",
+			                    "Germany-Herrenberg",
+			                    "France-Plelo",
+			                    "France-Laboratoire de la Mer",
+			                    "Belgium-Medgenix"
+			                }
+			            )
+			        ),
+			    BLANK()   -- default if Area not selected
+			)
+		displayFolder: ASTM Rate
+		lineageTag: 96e6866a-3111-4aa7-a225-d9d82f87bfb8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate_APN' =
+			
+			VAR Plan = [ASTM Rate Plan]
+			Return
+			DIVIDE([ASTM -Rate] - Plan,Plan)
+		displayFolder: ASTM Rate
+		lineageTag: 244fd1f7-6635-4f64-a23b-a4cd1f028eb0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents_APN' =
+			
+			VAR Plan = [ASTM Incidents Plan]
+			Return
+			DIVIDE([ASTM Incidents] - Plan,Plan)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ASTM Incidents
+		lineageTag: 2b96b80c-bb39-481c-8821-6789c32c0187
+
+	measure 'ASTM Rate_APN_Final' =
+			
+			VAR kpi_ = [ASTM Rate_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: ASTM Rate
+		lineageTag: 9cf09c2c-ec84-4fba-9947-dd1ccc48e6d1
+
+	measure 'ASTM Incidents_APN_Final' =
+			
+			VAR kpi_ = [ASTM Incidents_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: ASTM Incidents
+		lineageTag: 53af6d8c-e35d-49d3-bc69-5d3b5edba1b2
+
+	measure 'Good Catch Closure Rate YTD' = TOTALYTD([GOOD Catch Closure Rate],Dim_Date[Date])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 276a6559-645f-43b0-977b-472a7b6daf01
+
+	measure 'pSIF SIFs Focus YTD' = TOTALYTD([pSIF SIFs Focus],Dim_Date[Date])
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: pSIF SIFs Focus
+		lineageTag: eb48d3b3-f8c8-4a88-9d4c-16f0429ba44a
 
 	column Measures
 		dataType: string
