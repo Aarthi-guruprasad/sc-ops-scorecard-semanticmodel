@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 20607.506270832608,
-        "y": 14.787825762475642
+        "x": 7805.8917760284885,
+        "y": 0
       },
       "nodes": [
         {
@@ -392,8 +392,8 @@
         },
         {
           "location": {
-            "x": 8028.0046347139451,
-            "y": 384.69866858712942
+            "x": 7996.743175857544,
+            "y": 128.92309612566294
           },
           "nodeIndex": "Bridge_CSCA_CSCI",
           "nodeLineageTag": "bea2d168-2b0e-4846-8581-8c512fc77c71",
@@ -903,8 +903,8 @@
         },
         {
           "location": {
-            "x": 21413.733537035761,
-            "y": 306.173128121887
+            "x": 21003.733537035761,
+            "y": 766.173128121887
           },
           "nodeIndex": "Bridge_Site_Area",
           "nodeLineageTag": "615edd19-fcd9-4df5-8ea2-d23578a8438c",
@@ -978,7 +978,7 @@
         }
       ],
       "name": "All tables",
-      "zoomValue": 49.590342827053796,
+      "zoomValue": 35.18709747529109,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
