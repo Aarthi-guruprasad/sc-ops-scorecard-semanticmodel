@@ -488,9 +488,9 @@ table 'CSCI Measures'
 			VAR kpi_value =
 			    SWITCH(
 			        _sel,
-			        "vs PP", [FA% MoM CSCI],
+			        "vs PP", [FA% MoM CSCI_raw],
 			        "LYTD", [FA% LYTD CSCI],
-			        "vs YoY", [FA% YoY CSCI],
+			        "vs YoY", [FA% YoY CSCI_raw],
 			        "vs Plan", [FA Target Diff%_CSCI],
 			        BLANK()
 			    )
@@ -1796,9 +1796,9 @@ table 'CSCI Measures'
 			VAR kpi_value =
 			    SWITCH(
 			        _sel,
-			        "vs PP", [FA% MoM CSCI],
+			        "vs PP", [FA% MoM CSCI_raw],
 			        "LYTD", [FA% LYTD CSCI],
-			        "vs YoY", [FA% YoY CSCI],
+			        "vs YoY", [FA% YoY CSCI_raw],
 			        "vs Plan", [FA Target Diff%_CSCI],
 			        BLANK()
 			    )
