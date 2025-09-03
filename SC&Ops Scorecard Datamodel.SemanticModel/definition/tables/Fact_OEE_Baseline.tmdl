@@ -17,50 +17,41 @@ table Fact_OEE_Baseline
 
 		annotation SummarizationSetBy = Automatic
 
-	column Baseline
-		dataType: double
-		lineageTag: 156912b3-f3e5-405d-9126-6f537d77a624
-		summarizeBy: sum
-		sourceColumn: Baseline
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column 'Quarterly Target'
-		dataType: double
-		lineageTag: 4c5a7584-466f-4b0e-ab35-2ebe788b8f60
-		summarizeBy: sum
-		sourceColumn: Quarterly Target
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column Date
-		dataType: dateTime
-		formatString: Long Date
-		lineageTag: 40eed2fe-f2aa-49f5-86cd-df16a7e84320
+	column 'Location Name'
+		dataType: string
+		lineageTag: 67089e9c-fa6d-4294-bfcb-f82874056d53
 		summarizeBy: none
-		sourceColumn: Date
+		sourceColumn: Location Name
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation UnderlyingDateTimeDataType = Date
+	column 'Focus Lines'
+		dataType: string
+		lineageTag: f82be4e0-3801-46bc-a2c2-6332a65b6a81
+		summarizeBy: none
+		sourceColumn: Focus Lines
+
+		annotation SummarizationSetBy = Automatic
+
+	column '_OEE Baseline'
+		dataType: double
+		lineageTag: 83fe03bd-b1ae-473c-95ba-640e31eb39bd
+		summarizeBy: sum
+		sourceColumn: _OEE Baseline
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition Fact_OEE_Baseline = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_OEE = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Redzone", "Redzone Engineering Dataset", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Fact Baselines'[Site Name],#(lf)    'Fact Baselines'[Location UUID],#(lf)    'Dim Dates'[Year],#(lf)    'Dim Dates'[Month],#(lf)    KEEPFILTERS( FILTER( ALL( 'Fact Baselines'[Focus Lines] ), SEARCH( ""Y"", 'Fact Baselines'[Focus Lines], 1, 0 ) >= 1 )),#(lf)    ""Baseline"", [Baseline],#(lf)    ""Quarterly Target"", [Quarterly Target]#(lf))#(lf)ORDER BY #(lf)    'Fact Baselines'[Site Name] ASC,#(lf)    'Fact Baselines'[Location UUID] ASC,#(lf)    'Dim Dates'[Year] ASC,#(lf)    'Dim Dates'[Month] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_OEE,{{"Fact Baselines[Site Name]", "Site Name"}, {"Fact Baselines[Location UUID]", "Location UUID"}, {"[Baseline]", "Baseline"}, {"[Quarterly Target]", "Quarterly Target"}}),
-				    #"Filtered Rows" = Table.SelectRows(#"Renamed Columns", each ([#"Dim Dates[Month]"] <> null)),
-				    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "Date", each #date([#"Dim Dates[Year]"],[#"Dim Dates[Month]"],1)),
-				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Date", type date}}),
-				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Dim Dates[Year]", "Dim Dates[Month]"})
+				    Fact_OEE = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Redzone", "Redzone Engineering Dataset", [Query="/* START QUERY BUILDER */#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Fact Baselines'[Site Name],#(lf)    'Fact Baselines'[Location Name],#(lf)    'Fact Baselines'[Location UUID],#(lf)    'Fact Baselines'[Focus Lines],#(lf)    'Fact Baselines'[_OEE Baseline]#(lf))#(lf)ORDER BY #(lf)    'Fact Baselines'[Site Name] ASC,#(lf)    'Fact Baselines'[Location Name] ASC,#(lf)    'Fact Baselines'[Location UUID] ASC,#(lf)    'Fact Baselines'[Focus Lines] ASC,#(lf)    'Fact Baselines'[_OEE Baseline] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_OEE,{{"Fact Baselines[Site Name]", "Site Name"}, {"Fact Baselines[Location Name]", "Location Name"}, {"Fact Baselines[Location UUID]", "Location UUID"}, {"Fact Baselines[Focus Lines]", "Focus Lines"}, {"Fact Baselines[_OEE Baseline]", "_OEE Baseline"}})
 				in
-				    #"Removed Columns"
+				    #"Renamed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 
