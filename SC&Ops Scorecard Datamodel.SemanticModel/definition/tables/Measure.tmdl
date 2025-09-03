@@ -9734,10 +9734,10 @@ table Measure
 			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
 			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
 			
-			        "Good_Rate_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
-			        "Good_Rate_Closure_vsPP",[Good Catch Closure Rate MoM%],
-			        "Good_Rate_Closure_vsYoY",[Good Catch Closure Rate YoY%],
-			        "Good_Rate_Closure_vsLYTD",BLANK(),
+			        "Good_Catch_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
+			        "Good_Catch_Closure_vsPP",[Good Catch Closure Rate MoM%],
+			        "Good_Catch_Closure_vsYoY",[Good Catch Closure Rate YoY%],
+			        "Good_Catch_Closure_vsLYTD",BLANK(),
 			
 			        "pSIF_Closure_vsPlan",[pSIF SIFs Focus Target Diff%],
 			        "pSIF_Closure_vsPP",[pSIF SIFs Focus MoM%],
@@ -10078,10 +10078,10 @@ table Measure
 			        "ASTM_Rate_vsYoY",[ASTM Rate YoY%],
 			        "ASTM_Rate_vsLYTD",[ASTM Rate LYTD],
 			
-			        "Good_Rate_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
-			        "Good_Rate_Closure_vsPP",[Good Catch Closure Rate MoM%],
-			        "Good_Rate_Closure_vsYoY",[Good Catch Closure Rate YoY%],
-			        "Good_Rate_Closure_vsLYTD",BLANK(),
+			        "Good_Catch_Closure_vsPlan",[Good Catch Closure Rate Target Diff%],
+			        "Good_Catch_Closure_vsPP",[Good Catch Closure Rate MoM%],
+			        "Good_Catch_Closure_vsYoY",[Good Catch Closure Rate YoY%],
+			        "Good_Catch_Closure_vsLYTD",BLANK(),
 			
 			        "pSIF_Closure_vsPlan",[pSIF SIFs Focus Target Diff%],
 			        "pSIF_Closure_vsPP",[pSIF SIFs Focus MoM%],
