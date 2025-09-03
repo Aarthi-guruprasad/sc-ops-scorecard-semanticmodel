@@ -134,6 +134,14 @@ table Fact_Safety
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Site Group'
+		dataType: string
+		lineageTag: 8f0e0392-bf84-4784-9229-b0577142c809
+		summarizeBy: none
+		sourceColumn: Site Group
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Safety = m
 		mode: import
 		queryGroup: Fact
@@ -150,9 +158,10 @@ table Fact_Safety
 				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"Date/ Period (Fiscal Period) - Copy.2", "Year"}, {"Date/ Period (Fiscal Period) - Copy.1", "Period"}}),
 				    #"Replaced Value1" = Table.ReplaceValue(#"Renamed Columns","P","",Replacer.ReplaceText,{"Period"}),
 				    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Value1",{{"Period", Int64.Type}}),
-				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each [Year] * 100 + [Period])
+				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each [Year] * 100 + [Period]),
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Site Group", each if [#"Site name/Site UUID/Location UUID"] = "Michigan-Allegan (PMI)" then "MI OTC" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Holland (PMH)" then "MI OTC" else if [#"Site name/Site UUID/Location UUID"] = "New York (PNY)" then "NY OTC" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Grand Rapids (POC)" then "Oral Care" else if [#"Site name/Site UUID/Location UUID"] = "Vermont (PVT)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Ohio (POH)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Wisconsin (PWI)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Belgium-Medgenix" then "DACH" else if [#"Site name/Site UUID/Location UUID"] = "France-Laboratoire de la Mer" then "France" else if [#"Site name/Site UUID/Location UUID"] = "France-Plelo" then "France" else if [#"Site name/Site UUID/Location UUID"] = "Germany-Herrenberg" then "DACH" else if [#"Site name/Site UUID/Location UUID"] = "UK-Braunton (PUK)" then "PUK" else [#"Site name/Site UUID/Location UUID"])
 				in
-				    #"Added Custom"
+				    #"Added Conditional Column"
 
 	annotation PBI_NavigationStepName = Navigation
 
