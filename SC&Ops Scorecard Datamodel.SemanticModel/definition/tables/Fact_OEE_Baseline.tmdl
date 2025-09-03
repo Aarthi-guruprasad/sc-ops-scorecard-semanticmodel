@@ -9,6 +9,14 @@ table Fact_OEE_Baseline
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Location UUID'
+		dataType: string
+		lineageTag: df789c4e-c180-4755-929b-f58ebd313fde
+		summarizeBy: none
+		sourceColumn: Location UUID
+
+		annotation SummarizationSetBy = Automatic
+
 	column Baseline
 		dataType: double
 		lineageTag: 156912b3-f3e5-405d-9126-6f537d77a624
@@ -39,14 +47,6 @@ table Fact_OEE_Baseline
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
-
-	column 'Location UUID'
-		dataType: string
-		lineageTag: df789c4e-c180-4755-929b-f58ebd313fde
-		summarizeBy: none
-		sourceColumn: Location UUID
-
-		annotation SummarizationSetBy = Automatic
 
 	partition Fact_OEE_Baseline = m
 		mode: import
