@@ -1879,8 +1879,88 @@
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
       "tablesLocked": false
+    },
+    {
+      "ordinal": 7,
+      "scrollPosition": {
+        "x": 44,
+        "y": 57
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 247,
+            "y": 204
+          },
+          "nodeIndex": "Site_OEE",
+          "nodeLineageTag": "6f435b49-21bc-41fd-aab4-7e1dff8d223f",
+          "size": {
+            "height": 179,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 820,
+            "y": 513
+          },
+          "nodeIndex": "Fact_OEE_Baseline",
+          "nodeLineageTag": "1432526c-5efa-4289-af1e-a33e06ebc7c6",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 758,
+            "y": 153
+          },
+          "nodeIndex": "Fact_OEE",
+          "nodeLineageTag": "3f61f95a-6eac-4c6a-8470-152a91e76f37",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 266,
+            "y": 482
+          },
+          "nodeIndex": "Dim_Date",
+          "nodeLineageTag": "65a1632f-33aa-4443-9884-310ff6ee41d6",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1033,
+            "y": 196
+          },
+          "nodeIndex": "Dim_Locations",
+          "nodeLineageTag": "aabbe84a-a398-4d88-9446-c821f0ed3c6e",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 4
+        }
+      ],
+      "name": "Layout 7",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
     }
   ],
-  "selectedDiagram": "All tables",
+  "selectedDiagram": "Layout 7",
   "defaultDiagram": "All tables"
 }

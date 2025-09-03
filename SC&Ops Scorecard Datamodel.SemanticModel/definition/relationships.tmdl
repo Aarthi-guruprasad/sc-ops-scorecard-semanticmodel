@@ -243,12 +243,6 @@ relationship 405fc067-f674-2007-df26-85e05599643d
 	fromColumn: Fact_Forecast_Accuracy.'Profit Center Key'
 	toColumn: Dim_Profit_Center_FA.'Profit Center Key'
 
-relationship 28f02660-38f3-cd79-71fb-0819fb22a69a
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: Fact_OEE_Baseline.'Location UUID'
-	toColumn: Dim_Locations.'Location UUID'
-
 relationship 34fe806d-4db2-88ce-4271-f3f6cbafaf7e
 	crossFilteringBehavior: bothDirections
 	fromCardinality: one
@@ -263,6 +257,14 @@ relationship 61b27430-eb57-f4de-a832-efae3ee287a7
 	fromColumn: Fact_Quality.Site
 	toColumn: Bridge_Site_Area.'Site Hierarchy'
 
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
+
 relationship bffd6f11-bef1-72bf-3cea-ddcdd04eb2f5
 	fromColumn: Fact_Safety.'Closing Date'
 	toColumn: Dim_Date.Date
@@ -275,17 +277,17 @@ relationship d03dd813-6c74-3ab6-7ae3-fb45b222e37c
 	fromColumn: Fact_Target.'Closing Date'
 	toColumn: Dim_Date.Date
 
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
-
 relationship 68da15c5-e4c3-acc0-4c37-b10067f0428e
 	crossFilteringBehavior: bothDirections
 	toCardinality: many
 	fromColumn: Fact_Safety.'Site Group'
 	toColumn: Bridge_Site_Area.'Site Group'
+
+relationship a7fa2939-6118-6db1-4e82-a926098b1beb
+	fromColumn: Fact_OEE_Baseline.'Location UUID'
+	toColumn: Dim_Locations.'Location UUID'
+
+relationship 5e1e12d2-9a7c-8113-6f00-3a17b6dc9cea
+	fromColumn: Fact_OEE_Baseline.Date
+	toColumn: Dim_Date.Date
 
