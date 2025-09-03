@@ -74,6 +74,14 @@ table Dim_Locations
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Focus Lines'
+		dataType: string
+		lineageTag: 2adee382-2795-447a-a215-dcaa0393bf96
+		summarizeBy: none
+		sourceColumn: Focus Lines
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Locations = m
 		mode: import
 		queryGroup: Dim
@@ -85,9 +93,12 @@ table Dim_Locations
 				    #"f4665093-da49-4ee7-81e6-a4c4d63c0af5" = #"e4fac527-27c5-4962-adf1-31f1d752bb56"{[dataflowId="f4665093-da49-4ee7-81e6-a4c4d63c0af5"]}[Data],
 				    #"Dim Locations_" = #"f4665093-da49-4ee7-81e6-a4c4d63c0af5"{[entity="Dim Locations",version=""]}[Data],
 				    #"Trimmed Text" = Table.TransformColumns(#"Dim Locations_",{{"Site Name", Text.Trim, type text}}),
-				    #"Added Conditional Column" = Table.AddColumn(#"Trimmed Text", "Site Group", each if [Site Name] = "PMH" then "MI OTC" else if [Site Name] = "PMI ALC" then "MI OTC" else if [Site Name] = "PMI Plant 5" then "MI OTC" else if [Site Name] = "PMI Tablet Manufacturing" then "MI OTC" else if [Site Name] = "PNY" then "NY OTC" else if [Site Name] = "POC" then "Oral Care" else if [Site Name] = "PVT" then "Nutrition Infant Formula" else if [Site Name] = "PWI" then "Nutrition Infant Formula" else if [Site Name] = "POH" then "Nutrition Infant Formula" else if [Site Name] = "Plant 7" then "MI OTC" else [Site Name])
+				    #"Added Conditional Column" = Table.AddColumn(#"Trimmed Text", "Site Group", each if [Site Name] = "PMH" then "MI OTC" else if [Site Name] = "PMI ALC" then "MI OTC" else if [Site Name] = "PMI Plant 5" then "MI OTC" else if [Site Name] = "PMI Tablet Manufacturing" then "MI OTC" else if [Site Name] = "PNY" then "NY OTC" else if [Site Name] = "POC" then "Oral Care" else if [Site Name] = "PVT" then "Nutrition Infant Formula" else if [Site Name] = "PWI" then "Nutrition Infant Formula" else if [Site Name] = "POH" then "Nutrition Infant Formula" else if [Site Name] = "Plant 7" then "MI OTC" else [Site Name]),
+				    #"Merged Queries" = Table.NestedJoin(#"Added Conditional Column", {"Location UUID"}, Fact_OEE_Baseline, {"Location UUID"}, "Fact_OEE_Baseline", JoinKind.LeftOuter),
+				    #"Expanded Fact_OEE_Baseline" = Table.ExpandTableColumn(#"Merged Queries", "Fact_OEE_Baseline", {"Focus Lines"}, {"Fact_OEE_Baseline.Focus Lines"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Fact_OEE_Baseline",{{"Fact_OEE_Baseline.Focus Lines", "Focus Lines"}})
 				in
-				    #"Added Conditional Column"
+				    #"Renamed Columns"
 
 	annotation PBI_ResultType = Table
 
