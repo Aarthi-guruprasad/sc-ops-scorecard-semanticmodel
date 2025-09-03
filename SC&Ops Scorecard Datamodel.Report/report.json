@@ -296,22 +296,22 @@
       "ordinal": 5,
       "visualContainers": [
         {
-          "config": "{\"name\":\"91460abc50af808f9e1a\",\"layouts\":[{\"id\":0,\"position\":{\"x\":58.796683578765006,\"y\":139.89555748050984,\"z\":0,\"width\":681.2305407746566,\"height\":478.48335602029454}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Rows\":[{\"queryRef\":\"Dim_Locations.Site Name\",\"active\":true},{\"queryRef\":\"Dim_Locations.Location Name\",\"active\":true},{\"queryRef\":\"Dim_Date.P_QuarterNumber\",\"active\":true},{\"queryRef\":\"Dim_Locations.Area Name\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d1\",\"Entity\":\"Dim_Locations\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"Dim_Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d1\"}},\"Property\":\"Location Name\"},\"Name\":\"Dim_Locations.Location Name\",\"NativeReferenceName\":\"Location Name\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"P_QuarterNumber\"},\"Name\":\"Dim_Date.P_QuarterNumber\",\"NativeReferenceName\":\"P_QuarterNumber\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d1\"}},\"Property\":\"Area Name\"},\"Name\":\"Dim_Locations.Area Name\",\"NativeReferenceName\":\"Area Name1\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d1\"}},\"Property\":\"Site Name\"},\"Name\":\"Dim_Locations.Site Name\",\"NativeReferenceName\":\"Site Name\"}]},\"expansionStates\":[{\"roles\":[\"Rows\"],\"levels\":[{\"queryRefs\":[\"Dim_Locations.Site Name\"],\"isCollapsed\":true,\"identityKeys\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Dim_Locations\"}},\"Property\":\"Site Name\"}}],\"isPinned\":true},{\"queryRefs\":[\"Dim_Locations.Location Name\"],\"isCollapsed\":true,\"identityKeys\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Dim_Locations\"}},\"Property\":\"Location Name\"}}],\"isPinned\":true},{\"queryRefs\":[\"Dim_Date.P_QuarterNumber\"],\"isCollapsed\":true,\"identityKeys\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Dim_Date\"}},\"Property\":\"P_QuarterNumber\"}}],\"isPinned\":true},{\"queryRefs\":[\"Dim_Locations.Area Name\"],\"isCollapsed\":true,\"isPinned\":true}],\"root\":{\"identityValues\":null,\"children\":[{\"identityValues\":[{\"Literal\":{\"Value\":\"'Plant 7'\"}}],\"isToggled\":true,\"children\":[{\"identityValues\":[{\"Literal\":{\"Value\":\"'403'\"}}],\"isToggled\":true}]}]}}],\"drillFilterOtherVisuals\":true}}",
+          "config": "{\"name\":\"1fa8c39560a893c5a946\",\"layouts\":[{\"id\":0,\"position\":{\"x\":150,\"y\":140,\"width\":300,\"height\":300,\"z\":1002,\"tabOrder\":2}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"CSCI Measures.FA Target CSCI\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CSCI Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"},\"Name\":\"CSCI Measures.FA Target CSCI\",\"NativeReferenceName\":\"FA Target CSCI\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"}}}]},\"queryFieldParametersByRole\":{\"Values\":[{\"index\":0,\"length\":1,\"expr\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target\"}}}]},\"columnProperties\":{\"CSCI Measures.FA Target CSCI\":{\"displayName\":\"FA Target CSCI\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
-          "height": 478.48,
-          "width": 681.23,
-          "x": 58.80,
-          "y": 139.90,
-          "z": 0.00
+          "height": 300.00,
+          "width": 300.00,
+          "x": 150.00,
+          "y": 140.00,
+          "z": 1002.00
         },
         {
-          "config": "{\"name\":\"ff8b1bde4b335da18f51\",\"layouts\":[{\"id\":0,\"position\":{\"x\":979.2689023635688,\"y\":139.89555748050984,\"z\":1000,\"width\":166.25269149857692,\"height\":176.39005073629502}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Date.P_QuarterNumber\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"P_QuarterNumber\"},\"Name\":\"Dim_Date.P_QuarterNumber\",\"NativeReferenceName\":\"P_QuarterNumber\"}]},\"drillFilterOtherVisuals\":true}}",
+          "config": "{\"name\":\"460fdc4d4197e9e77ca7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":750,\"y\":316,\"width\":530,\"height\":302,\"z\":1001,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Par_Target.Par_Target\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target\"},\"Name\":\"Par_Target.Par_Target\",\"NativeReferenceName\":\"Par_Target\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target Fields\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}]]}}}]}}}}]},\"cachedFilterDisplayItems\":[{\"id\":{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target Fields\"}},\"Right\":{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}}}},\"displayName\":\"FA Target CSCI\"}]}}",
           "filters": "[]",
-          "height": 176.39,
-          "width": 166.25,
-          "x": 979.27,
-          "y": 139.90,
-          "z": 1000.00
+          "height": 302.00,
+          "width": 530.00,
+          "x": 750.00,
+          "y": 316.00,
+          "z": 1001.00
         }
       ],
       "width": 1280.00

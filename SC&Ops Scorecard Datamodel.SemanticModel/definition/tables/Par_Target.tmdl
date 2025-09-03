@@ -1,0 +1,85 @@
+table Par_Target
+	lineageTag: 94b70881-b89c-418b-ac90-10c2c0fe9c41
+
+	column Par_Target
+		lineageTag: c37a39ce-06a9-414d-ac4b-5e7680c5d8e5
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Par_Target Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Par_Target Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Par_Target Fields'
+		isHidden
+		lineageTag: c37c3d30-7c81-43eb-9e7f-c3308dc37150
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Par_Target Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Par_Target Order'
+		isHidden
+		formatString: 0
+		lineageTag: 831e8371-eb91-4d70-b1b9-577acee20986
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Par_Target = calculated
+		mode: import
+		source = ```
+				{
+				    
+				    ("FA Target CSCI", NAMEOF('CSCI Measures'[FA Target CSCI]), 0),
+				    ("FA% Lag2 Target", NAMEOF('Measure'[FA% Lag2 Target]), 1),
+				    ("FA% Lag4 Target", NAMEOF('Measure'[FA% Lag4 Target]), 2),
+				    ("Bias Target CSCI", NAMEOF('CSCI Measures'[Bias Target CSCI]), 3),
+				    ("Bias Target", NAMEOF('Measure'[Bias Target]), 4),
+				    ("Service Target CSCI", NAMEOF('CSCI Measures'[Service Target CSCI]), 5),
+				    ("Service Target", NAMEOF('Measure'[Service Target]), 6),
+				    ("Service Top 11 Target", NAMEOF('Measure'[Service Top 11 Target]), 7),
+				    ("OEE Target", NAMEOF('Measure'[OEE Target]), 8),
+				    ("Schedule Attn Target", NAMEOF('Measure'[Schedule Attn Target]), 9),
+				    ("SSSO: Shrinkage APN_Base", NAMEOF('CSCI Measures'[SSSO: Shrinkage APN_Base]), 10),
+				    ("SSSO: Obso Conv_APN_Base", NAMEOF('Measure'[SSSO: Obso Conv_APN_Base]), 11),
+				    ("SSSO: Salvage & Obs_APN_Base", NAMEOF('Measure'[SSSO: Salvage & Obs_APN_Base]), 12),
+				    ("SSSO: Scrap-off APN_Base", NAMEOF('Measure'[SSSO: Scrap-off APN_Base]), 13),
+				    ("ABP Variance_APN", NAMEOF('Measure'[ABP Variance_APN]), 14),
+				    ("COGS_APN_Base", NAMEOF('Measure'[COGS_APN_Base]), 15),
+				    ("Total Distribution on COGS_APN_Base", NAMEOF('Measure'[Total Distribution on COGS_APN_Base]), 16),
+				    ("DIO_APN_Base", NAMEOF('Measure'[DIO_APN_Base]), 17),
+				    ("DPO_APN_Base", NAMEOF('Measure'[DPO_APN_Base]), 18),
+				    ("DSO_APN_Base", NAMEOF('Measure'[DSO_APN_Base]), 19),
+				    ("Gross Inventory_APN_Base", NAMEOF('Measure'[Gross Inventory_APN_Base]), 20),
+				    ("Gross PPV APN_base", NAMEOF('Measure'[Gross PPV APN_base]), 21),
+				    ("Net Inventory_APN_Base", NAMEOF('Measure'[Net Inventory_APN_Base]), 22),
+				    ("Net POV APN_base", NAMEOF('Measure'[Net POV APN_base]), 23),
+				    ("Net Sales_APN_Base", NAMEOF('Measure'[Net Sales_APN_Base]), 24),
+				    ("Total Logistics on Net Sales_APN_Base", NAMEOF('Measure'[Total Logistics on Net Sales_APN_Base]), 25),
+				    ("Operating Income APN_Base", NAMEOF('Measure'[Operating Income APN_Base]), 26),
+				    ("ASTM Incidents Plan", NAMEOF('Measure'[ASTM Incidents Plan]), 27),
+				    ("ASTM Rate Plan", NAMEOF('Measure'[ASTM Rate Plan]), 28),
+				    ("pSIF SIFs Focus Plan", NAMEOF('Measure'[pSIF SIFs Focus Plan]), 29),
+				    ("Good Catch Closure Plan", NAMEOF('Measure'[Good Catch Closure Plan]), 30),
+				    ("Deviations Plan", NAMEOF('Measure'[Deviations Plan]), 31),
+				    ("CAPA Plan", NAMEOF('Measure'[CAPA Plan]), 32),
+				    ("RFT Plan", NAMEOF('Measure'[RFT Plan]), 33),
+				    ("CFR Target", NAMEOF('Measure'[CFR Target]), 34),
+				    ("Customer Fines Target", NAMEOF('Measure'[Customer Fines Target]), 35)
+				    
+				}
+				```
+
+	annotation PBI_Id = c3ef4e00f15a452f88ef8c7da9e3f9c5
+
