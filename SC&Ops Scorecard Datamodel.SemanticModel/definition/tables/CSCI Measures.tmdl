@@ -2094,6 +2094,11 @@ table 'CSCI Measures'
 		displayFolder: SSSO Shrinkage
 		lineageTag: d9bab2f1-4015-459d-91a0-5b16a64a3886
 
+	measure 'Service Target CSCI' = 0.9
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Service Level CSCI
+		lineageTag: 097a8a33-d1f2-4be0-ac1e-fbe79c397192
+
 	column Measures
 		dataType: string
 		lineageTag: de87435d-c35b-41f4-9f44-035aafb6672f
