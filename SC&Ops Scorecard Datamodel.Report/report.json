@@ -296,22 +296,22 @@
       "ordinal": 5,
       "visualContainers": [
         {
-          "config": "{\"name\":\"1fa8c39560a893c5a946\",\"layouts\":[{\"id\":0,\"position\":{\"x\":150,\"y\":140,\"width\":300,\"height\":300,\"z\":1002,\"tabOrder\":2}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"CSCI Measures.FA Target CSCI\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CSCI Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"},\"Name\":\"CSCI Measures.FA Target CSCI\",\"NativeReferenceName\":\"FA Target CSCI\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"}}}]},\"queryFieldParametersByRole\":{\"Values\":[{\"index\":0,\"length\":1,\"expr\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target\"}}}]},\"columnProperties\":{\"CSCI Measures.FA Target CSCI\":{\"displayName\":\"FA Target CSCI\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "config": "{\"name\":\"1fa8c39560a893c5a946\",\"layouts\":[{\"id\":0,\"position\":{\"x\":150,\"y\":140,\"width\":300,\"height\":300,\"z\":1000,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"CSCI Measures.FA Target CSCI\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"c\",\"Entity\":\"CSCI Measures\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"},\"Name\":\"CSCI Measures.FA Target CSCI\",\"NativeReferenceName\":\"FA Target CSCI\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI\"}}}]},\"queryFieldParametersByRole\":{\"Values\":[{\"index\":0,\"length\":1,\"expr\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target\"}}}]},\"columnProperties\":{\"CSCI Measures.FA Target CSCI\":{\"displayName\":\"FA Target CSCI\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
           "height": 300.00,
           "width": 300.00,
           "x": 150.00,
           "y": 140.00,
-          "z": 1002.00
+          "z": 1000.00
         },
         {
-          "config": "{\"name\":\"460fdc4d4197e9e77ca7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":750,\"y\":316,\"width\":530,\"height\":302,\"z\":1001,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Par_Target.Par_Target\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target\"},\"Name\":\"Par_Target.Par_Target\",\"NativeReferenceName\":\"Par_Target\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target Fields\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}]]}}}]}}}}]},\"cachedFilterDisplayItems\":[{\"id\":{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target Fields\"}},\"Right\":{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}}}},\"displayName\":\"FA Target CSCI\"}]}}",
+          "config": "{\"name\":\"460fdc4d4197e9e77ca7\",\"layouts\":[{\"id\":0,\"position\":{\"x\":750,\"y\":316,\"width\":530,\"height\":302,\"z\":0,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Par_Target.Par_Target\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target\"},\"Name\":\"Par_Target.Par_Target\",\"NativeReferenceName\":\"Par_Target\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"p\",\"Entity\":\"Par_Target\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"p\"}},\"Property\":\"Par_Target Fields\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}]]}}}]}}}}]},\"cachedFilterDisplayItems\":[{\"id\":{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Par_Target\"}},\"Property\":\"Par_Target Fields\"}},\"Right\":{\"Literal\":{\"Value\":\"'''CSCI Measures''[FA Target CSCI]'\"}}}}},\"displayName\":\"FA Target CSCI\"}]}}",
           "filters": "[]",
           "height": 302.00,
           "width": 530.00,
           "x": 750.00,
           "y": 316.00,
-          "z": 1001.00
+          "z": 0.00
         }
       ],
       "width": 1280.00
