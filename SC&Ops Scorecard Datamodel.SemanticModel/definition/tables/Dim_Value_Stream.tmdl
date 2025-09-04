@@ -49,14 +49,6 @@ table Dim_Value_Stream
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Super Value Stream'
-		dataType: string
-		lineageTag: 1c89f055-b493-4180-aa89-058a8bddb4b9
-		summarizeBy: none
-		sourceColumn: Super Value Stream
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Value Stream_Jamie' = COALESCE(LOOKUPVALUE('Value Stream Mapping'[Jamie Recommended Name],'Value Stream Mapping'[Value Stream],Dim_Value_Stream[Value Stream Description]),Dim_Value_Stream[Value Stream Description])
 		lineageTag: 61b2141c-22d0-40c1-9e85-36ebd31db070
 		summarizeBy: none
@@ -105,14 +97,6 @@ table Dim_Value_Stream
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Upstream Source'
-		dataType: string
-		lineageTag: 56028261-e686-497f-b75a-627907fb024f
-		summarizeBy: none
-		sourceColumn: Upstream Source
-
-		annotation SummarizationSetBy = Automatic
-
 	partition Dim_Value_Stream = m
 		mode: import
 		queryGroup: Dim
@@ -123,7 +107,7 @@ table Dim_Value_Stream
 				    #"d7d0b53b-e57b-4b17-8774-98af6cfbc263" = Workspaces{[workspaceId="d7d0b53b-e57b-4b17-8774-98af6cfbc263"]}[Data],
 				    #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e" = #"d7d0b53b-e57b-4b17-8774-98af6cfbc263"{[dataflowId="1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"]}[Data],
 				    D_PRODUCT_TEXT_CV_ = #"1489e0d6-ec9a-4e4b-b23a-e623e7c13a8e"{[entity="D_PRODUCT_TEXT_CV",version=""]}[Data],
-				    #"Removed Columns" = Table.RemoveColumns(D_PRODUCT_TEXT_CV_,{"Brand/Cost Center", "Customer Label", "Customer Label Description", "Sales Summary ID - GROES", "CNK Number", "Graphic License", "Label Code", "Label Code 1", "Product Hierarchy(BCS)", "Product Hierarchy(PMI)", "Shared Capacity Description", "Shared Capacity Value", "Base Unit of Measure", "Case UPC Number", "Client", "Customer Material Info Number", "Customer Part Description", "Customer Part Number", "Delivering Plant", "GlPrdHier L1 - Global Category Description", "GlPrdHier L2 - Local Category Description", "GlPrdHier L3 - Brand Description", "GlPrdHier L4 - Segment Description", "GlPrdHier L5 - Sub Segment Description", "Distribution-Chain-Specific Material Status", "Each UPC Number", "FDA Code", "Marketing Authorization Number(MAN)", "Material Pricing Group", "Minor", "Minor Description", "Minor Sub", "Minor Sub Description", "NBE Code", "NDC Code", "Pallet Pattern", "Global Product Hierarchy (GlPrdHier)", "GlPrdHier L1 - Global Category", "GlPrdHier L2 - Local Category - Long", "GlPrdHier L3 - Brand - Long", "GlPrdHier L4 - Segment - Long", "GlPrdHier L5 - Sub Segment - Long", "Sales Summary ID - ZPCATNO", "Size Code", "Volume Unit", "Volume", "X - Plant Material status", "Packaging Option", "Packaging Option Text", "Product ID", "Product Category Value", "Product Category Value Text", "Category Planner", "DESC", "Sales BoM Indicator", "Volume Multiplier", "GlPrdHier L6 - PDT Group Description", "GlPrdHier L6 - PDT Group - Short", "Sales Unit", "GlPrdHier L2 - Local Category - Short", "GlPrdHier L3 - Brand - Short", "GlPrdHier L4 - Segment - Short", "GlPrdHier L5 - Sub Segment - Short", "5 Digit", "Formula", "Formula Description", "EAN/UPC", "Material Description (Short Text)", "Material Determination EDI Number", "Material Group", "Material Number Adj(BCS)", "Material Number Adj(Other)", "Material Number(BCS)", "Material Number(Other)", "PMI Old Material Number", "Old Material Number 1", "Old Material Number", "Old Material Type"}),
+				    #"Removed Columns" = Table.RemoveColumns(D_PRODUCT_TEXT_CV_,{"Brand/Cost Center", "Customer Label", "Customer Label Description", "Sales Summary ID - GROES", "CNK Number", "Graphic License", "Label Code", "Label Code 1", "Product Hierarchy(BCS)", "Product Hierarchy(PMI)", "Shared Capacity Description", "Shared Capacity Value", "Base Unit of Measure", "Case UPC Number", "Client", "Customer Material Info Number", "Customer Part Description", "Customer Part Number", "Delivering Plant", "GlPrdHier L1 - Global Category Description", "GlPrdHier L2 - Local Category Description", "GlPrdHier L3 - Brand Description", "GlPrdHier L4 - Segment Description", "GlPrdHier L5 - Sub Segment Description", "Distribution-Chain-Specific Material Status", "Each UPC Number", "FDA Code", "Marketing Authorization Number(MAN)", "Material Pricing Group", "Minor", "Minor Description", "Minor Sub", "Minor Sub Description", "NBE Code", "NDC Code", "Pallet Pattern", "Global Product Hierarchy (GlPrdHier)", "GlPrdHier L1 - Global Category", "GlPrdHier L2 - Local Category - Long", "GlPrdHier L3 - Brand - Long", "GlPrdHier L4 - Segment - Long", "GlPrdHier L5 - Sub Segment - Long", "Sales Summary ID - ZPCATNO", "Size Code", "Volume Unit", "Volume", "X - Plant Material status", "Packaging Option", "Packaging Option Text", "Product ID", "Product Category Value", "Product Category Value Text", "Category Planner", "DESC", "Sales BoM Indicator", "Volume Multiplier", "GlPrdHier L6 - PDT Group Description", "GlPrdHier L6 - PDT Group - Short", "Sales Unit", "GlPrdHier L2 - Local Category - Short", "GlPrdHier L3 - Brand - Short", "GlPrdHier L4 - Segment - Short", "GlPrdHier L5 - Sub Segment - Short", "5 Digit", "Formula", "Formula Description", "EAN/UPC", "Material Description (Short Text)", "Material Determination EDI Number", "Material Group", "Material Number Adj(BCS)", "Material Number Adj(Other)", "Material Number(BCS)", "Material Number(Other)", "PMI Old Material Number", "Old Material Number 1", "Old Material Number", "Old Material Type", "Upstream Source", "Upstream Source Text", "Super Value Stream"}),
 				    #"Filtered Rows" = Table.SelectRows(#"Removed Columns", each true),
 				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows")
 				in
