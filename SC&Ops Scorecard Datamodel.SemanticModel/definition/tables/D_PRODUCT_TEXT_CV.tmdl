@@ -518,9 +518,10 @@ table D_PRODUCT_TEXT_CV
 				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Global Product Number (short)"}, #"Old to New SKU", {"Old MDG code"}, "Old to New SKU", JoinKind.LeftOuter),
 				    #"Expanded Old to New SKU" = Table.ExpandTableColumn(#"Merged Queries", "Old to New SKU", {"New MDG code"}, {"New MDG code"}),
 				    #"Added Conditional Column" = Table.AddColumn(#"Expanded Old to New SKU", "Global Product No.(short)", each if [New MDG code] = null then [#"Global Product Number (short)"] else [New MDG code]),
-				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column",{{"Global Product No.(short)", "Global Product Number (short)_new"}})
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column",{{"Global Product No.(short)", "Global Product Number (short)_new"}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Renamed Columns")
 				in
-				    #"Renamed Columns"
+				    #"Removed Duplicates"
 
 	annotation PBI_NavigationStepName = Navigation
 
