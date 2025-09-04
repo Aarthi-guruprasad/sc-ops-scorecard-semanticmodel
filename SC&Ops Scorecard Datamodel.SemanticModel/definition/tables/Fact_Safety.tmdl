@@ -142,6 +142,14 @@ table Fact_Safety
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Site Name'
+		dataType: string
+		lineageTag: 6cbf9a27-545d-4a17-bf25-7dcb729e6f0d
+		summarizeBy: none
+		sourceColumn: Site Name
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Safety = m
 		mode: import
 		queryGroup: Fact
@@ -159,9 +167,10 @@ table Fact_Safety
 				    #"Replaced Value1" = Table.ReplaceValue(#"Renamed Columns","P","",Replacer.ReplaceText,{"Period"}),
 				    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Value1",{{"Period", Int64.Type}}),
 				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each [Year] * 100 + [Period]),
-				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Site Group", each if [#"Site name/Site UUID/Location UUID"] = "Michigan-Allegan (PMI)" then "MI OTC" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Holland (PMH)" then "MI OTC" else if [#"Site name/Site UUID/Location UUID"] = "New York (PNY)" then "NY OTC" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Grand Rapids (POC)" then "Oral Care" else if [#"Site name/Site UUID/Location UUID"] = "Vermont (PVT)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Ohio (POH)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Wisconsin (PWI)" then "Nutrition" else if [#"Site name/Site UUID/Location UUID"] = "Belgium-Medgenix" then "DACH" else if [#"Site name/Site UUID/Location UUID"] = "France-Laboratoire de la Mer" then "France" else if [#"Site name/Site UUID/Location UUID"] = "France-Plelo" then "France" else if [#"Site name/Site UUID/Location UUID"] = "Germany-Herrenberg" then "DACH" else if [#"Site name/Site UUID/Location UUID"] = "UK-Braunton (PUK)" then "PUK" else [#"Site name/Site UUID/Location UUID"])
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Site Name", each if [#"Site name/Site UUID/Location UUID"] = "Michigan-Allegan (PMI)" then "PMI" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Holland (PMH)" then "PMH" else if [#"Site name/Site UUID/Location UUID"] = "New York (PNY)" then "PNY" else if [#"Site name/Site UUID/Location UUID"] = "Michigan-Grand Rapids (POC)" then "POC" else if [#"Site name/Site UUID/Location UUID"] = "Vermont (PVT)" then "PVR" else if [#"Site name/Site UUID/Location UUID"] = "Ohio (POH)" then "POH" else if [#"Site name/Site UUID/Location UUID"] = "Wisconsin (PWI)" then "PWI" else if [#"Site name/Site UUID/Location UUID"] = "Belgium-Medgenix" then "MGX" else if [#"Site name/Site UUID/Location UUID"] = "France-Laboratoire de la Mer" then "LDM" else if [#"Site name/Site UUID/Location UUID"] = "Germany-Herrenberg" then "HER" else if [#"Site name/Site UUID/Location UUID"] = "UK-Braunton (PUK)" then "PUK" else [#"Site name/Site UUID/Location UUID"]),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Site Group", each if [Site Name] = "PMI" then "MI OTC" else if [Site Name] = "PMH" then "MI OTC" else if [Site Name] = "PNY" then " NY OTC" else if [Site Name] = "POC" then "Oral Care" else if [Site Name] = "PVT" then "Nutrition" else if [Site Name] = "POH" then "Nutrition" else if [Site Name] = "PWI" then "Nutrition" else if [Site Name] = "MGX" then "PMED" else if [Site Name] = "LDM" then "PLAB/France Saint-Malo" else if [Site Name] = "HER" then "PHER" else [Site Name])
 				in
-				    #"Added Conditional Column"
+				    #"Added Conditional Column1"
 
 	annotation PBI_NavigationStepName = Navigation
 

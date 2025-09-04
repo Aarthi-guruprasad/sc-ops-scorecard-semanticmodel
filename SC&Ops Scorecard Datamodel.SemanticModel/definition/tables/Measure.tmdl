@@ -10386,49 +10386,28 @@ table Measure
 
 	measure 'ASTM -Rate' = ```
 			
-			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
 			RETURN
-			SWITCH(
-			    TRUE(),
-			    _area = "CSCA",
-			        CALCULATE(
-			            SUM(Fact_Safety[ASTM - Rate]),
-			            KEEPFILTERS(
-			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
-			                    "Logistics",
-			                    "Vermont (PVT)",
-			                    "Michigan-Allegan (PMI)",
-			                    "Wisconsin (PWI)",
-			                    "Ohio (POH)",
-			                    "Michigan-Grand Rapids (POC)",
-			                    "New York (PNY)",
-			                    "Michigan-Holland (PMH)"
-			                }
-			            )
-			        ),
-			    _area = "CSCI",
-			        CALCULATE(
-			            SUM(Fact_Safety[ASTM - Rate]),
-			            KEEPFILTERS(
-			                Fact_Safety[Site name/Site UUID/Location UUID] IN {
-			                    "UK-Braunton (PUK)",
-			                    "Germany-Herrenberg",
-			                    "France-Plelo",
-			                    "France-Laboratoire de la Mer",
-			                    "Belgium-Medgenix"
-			                }
-			            )
-			        ),
-			    BLANK()   -- default if Area not selected
+			IF(
+			    _area = "CSCA" || _area = "CSCI",
+			    SELECTEDVALUE(Fact_Safety[ASTM - Rate])
 			)
 			
 			```
-		formatString: 0.00
 		displayFolder: ASTM Rate
 		lineageTag: cb287e95-3500-451f-8895-25c3ac6e4f3b
 
-	measure 'ASTM Incidents' = ```
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents' =
 			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    _area = "CSCA" || _area = "CSCI",
+			    SELECTEDVALUE(Fact_Safety[ASTM-Incidents])
+			)
+			/*
 			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
 			RETURN
 			SWITCH(
@@ -10462,16 +10441,22 @@ table Measure
 			                }
 			            )
 			        ),
-			    BLANK()   -- default if Area not selected
+			    SUM(Fact_Safety[ASTM-Incidents])   -- default if Area not selected
 			)
-			
-			```
+			*/
 		formatString: 0.00
 		displayFolder: ASTM Incidents
 		lineageTag: 734b9a80-ed96-465d-a56d-3bbb7720715f
 
-	measure 'pSIF SIFs Focus' = ```
+	measure 'pSIF SIFs Focus' =
 			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    _area = "CSCA" || _area = "CSCI",
+			    SELECTEDVALUE(Fact_Safety[pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+			)
+			/*
 			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
 			RETURN
 			SWITCH(
@@ -10507,15 +10492,20 @@ table Measure
 			        ),
 			    BLANK()   -- default if Area not selected
 			)
-			
-			```
+			*/
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: pSIF SIFs Focus
 		lineageTag: 32739a93-d65c-46ca-b1f9-a41d7daef7c4
 
-	measure 'GOOD Catch Closure Rate' = ```
+	measure 'GOOD Catch Closure Rate' =
 			
-			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    _area = "CSCA" || _area = "CSCI",
+			    SELECTEDVALUE(Fact_Safety[GOOD Catch Closure Rate ])
+			)
+			/*
 			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
 			RETURN
 			SWITCH(
@@ -10551,8 +10541,7 @@ table Measure
 			        ),
 			    BLANK()   -- default if Area not selected
 			)
-			
-			```
+			*/
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: GOOD Catch Closure Rate
 		lineageTag: 95652b04-3bcb-4d5f-838d-ff8d1f7bc765
@@ -11031,8 +11020,15 @@ table Measure
 		displayFolder: pSIF SIFs Focus
 		lineageTag: 16150f7d-2341-4365-8418-0f83461d2a2a
 
-	measure 'Good Catch Closure Plan' = ```
+	measure 'Good Catch Closure Plan' =
 			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    _area = "CSCA" || _area = "CSCI",
+			    SELECTEDVALUE(Fact_Safety[Target - GOOD Catch Closure Rate %])
+			)
+			/*
 			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
 			RETURN
 			SWITCH(
@@ -11068,8 +11064,7 @@ table Measure
 			        ),
 			    BLANK()   -- default if Area not selected
 			)
-			
-			```
+			*/
 		displayFolder: GOOD Catch Closure Rate
 		lineageTag: 1e248639-e2d7-420b-b338-901af65a1206
 
