@@ -11764,7 +11764,7 @@ table Measure
 		displayFolder: OEE FOCUS LINES
 		lineageTag: 0da0daea-8c80-42bc-9762-41b9e81e1a93
 
-	measure 'FA% Lag4 Target' = 0.07
+	measure 'FA% Lag4 Target' = 0.7
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 931c2e10-f6f1-4891-b46f-48e65a9d66a6
