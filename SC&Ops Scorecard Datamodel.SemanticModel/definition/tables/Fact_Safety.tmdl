@@ -150,6 +150,18 @@ table Fact_Safety
 
 		annotation SummarizationSetBy = Automatic
 
+	column CSCA_flag = IF(Fact_Safety[Site Group] = "CSCA","Yes","No")
+		lineageTag: 05ceb588-d8c3-4946-972a-76ba039c4b3f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column CSCI_flag = IF(Fact_Safety[Site Group] = "CSCI","Yes","No")
+		lineageTag: 960a3626-9efc-4b5b-8ed2-dd0d6a071780
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Safety = m
 		mode: import
 		queryGroup: Fact
