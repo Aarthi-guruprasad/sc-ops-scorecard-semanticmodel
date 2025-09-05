@@ -257,6 +257,14 @@ relationship 61b27430-eb57-f4de-a832-efae3ee287a7
 	fromColumn: Fact_Quality.Site
 	toColumn: Bridge_Site_Area.'Site Hierarchy'
 
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
+
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
 relationship bffd6f11-bef1-72bf-3cea-ddcdd04eb2f5
 	fromColumn: Fact_Safety.'Closing Date'
 	toColumn: Dim_Date.Date
@@ -268,14 +276,6 @@ relationship 52e7afb8-86b0-effe-c5df-a468f5517197
 relationship d03dd813-6c74-3ab6-7ae3-fb45b222e37c
 	fromColumn: Fact_Target.'Closing Date'
 	toColumn: Dim_Date.Date
-
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
 
 relationship a7fa2939-6118-6db1-4e82-a926098b1beb
 	fromColumn: Fact_OEE_Baseline.'Location UUID'

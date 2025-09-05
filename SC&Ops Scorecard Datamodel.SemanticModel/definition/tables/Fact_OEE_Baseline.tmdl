@@ -9,14 +9,6 @@ table Fact_OEE_Baseline
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Location UUID'
-		dataType: string
-		lineageTag: df789c4e-c180-4755-929b-f58ebd313fde
-		summarizeBy: none
-		sourceColumn: Location UUID
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Location Name'
 		dataType: string
 		lineageTag: 67089e9c-fa6d-4294-bfcb-f82874056d53
@@ -42,6 +34,14 @@ table Fact_OEE_Baseline
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Location UUID'
+		dataType: string
+		lineageTag: df789c4e-c180-4755-929b-f58ebd313fde
+		summarizeBy: none
+		sourceColumn: Location UUID
+
+		annotation SummarizationSetBy = Automatic
 
 	partition Fact_OEE_Baseline = m
 		mode: import
