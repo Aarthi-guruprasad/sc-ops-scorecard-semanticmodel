@@ -112,14 +112,23 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
+	column Unit
+		dataType: string
+		lineageTag: b6490ce4-0a51-403e-b081-0d09f59ade5e
+		summarizeBy: none
+		sourceColumn: Unit
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Target = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Target.xlsx"), null, true),
-				    Dim_Target_Split_Table = Source{[Item="Dim_Target_Split",Kind="Table"]}[Data],
-				    #"Changed Type" = Table.TransformColumnTypes(Dim_Target_Split_Table,{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Value Stream", type text}, {"Site name", type text}, {"Cluster", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}})
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Target_Powerapps.xlsx"), null, true),
+				    Data_Split_Sheet = Source{[Item="Data_Split",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Data_Split_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Value Stream", type text}, {"Site name", type text}, {"Cluster", type text}, {"Profit Center Dummy Key", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}, {"Unit", type text}})
 				in
 				    #"Changed Type"
 
