@@ -11769,6 +11769,130 @@ table Measure
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 931c2e10-f6f1-4891-b46f-48e65a9d66a6
 
+	measure 'Cust Fine Validation' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _area = "CSCA", CALCULATE( SUM(Fact_Customer_Fines[Split Amount]) ),
+			    _area = "CSCI", BLANK(),
+			    SUM(Fact_Customer_Fines[Split Amount])   -- default if Area not selected
+			)
+			
+			```
+		displayFolder: Customer Fines
+		lineageTag: b2748f6b-c6b1-432e-afe1-10ba2ce7d4b1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OTCD Validation' = ```
+			
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    NOT ISBLANK(_area),
+			    CALCULATE(
+			        DIVIDE(
+			            SUM(Fact_Quality[Deviation: Total Closed on Time in Period]),
+			            SUM(Fact_Quality[Deviation: Total Closed in Period])
+			        ),
+			        KEEPFILTERS( FILTER( Bridge_Site_Area, Bridge_Site_Area[Area] = _area ) )
+			    ),
+			    DIVIDE(
+			        SUM(Fact_Quality[Deviation: Total Closed on Time in Period]),
+			        SUM(Fact_Quality[Deviation: Total Closed in Period])
+			    )
+			)
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: On Time Closure of Deviations
+		lineageTag: 45f16e4c-e388-4644-8984-e80fb94a3d9c
+
+	measure 'CAPA Validation' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			VAR kpi_ =
+			    IF(
+			        NOT ISBLANK(_area),
+			        CALCULATE(
+			            DIVIDE(
+			                SUM(Fact_Quality[CAPA: Total Closed on Time in Period]),
+			                SUM(Fact_Quality[CAPA: Total Closed In Period])
+			            ),
+			            KEEPFILTERS( FILTER( Bridge_Site_Area, Bridge_Site_Area[Area] = _area ) )
+			        ),
+			        DIVIDE(
+			            SUM(Fact_Quality[CAPA: Total Closed on Time in Period]),
+			            SUM(Fact_Quality[CAPA: Total Closed In Period])
+			        )
+			    )
+			RETURN
+			IF(ISBLANK(kpi_), BLANK(), kpi_)
+			
+			// VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			// RETURN
+			// IF(
+			//     NOT ISBLANK(_area),
+			//     CALCULATE(
+			//         DIVIDE([CAPA Closed on Time],[CAPA Closed]),
+			//         KEEPFILTERS( FILTER( Bridge_Site_Area, Bridge_Site_Area[Area] = _area ) )
+			//     ),
+			//     DIVIDE([CAPA Closed on Time],[CAPA Closed])
+			// )
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: CAPA Completion Rate
+		lineageTag: 5c598059-4405-406e-bd02-34f6ced844ad
+
+	measure 'Critical/Major Obs Validation' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])
+			RETURN
+			IF(
+			    NOT ISBLANK(_area),
+			    CALCULATE(
+			        SUM(Fact_Quality[Critical_Major_Obs_Quarter]),
+			        KEEPFILTERS( FILTER( Bridge_Site_Area, Bridge_Site_Area[Area] = _area ) )
+			    ),
+			    SUM(Fact_Quality[Critical_Major_Obs_Quarter])
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Critical or Major Obs
+		lineageTag: d193df14-5324-4660-8f12-1ad7850d7836
+
+	measure 'RFT% Validation' = ```
+			
+			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- CSCA / CSCI / blank
+			VAR kpi_ =
+			    IF(
+			        NOT ISBLANK(_area),
+			        CALCULATE(
+			            DIVIDE(
+			                SUM(Fact_Quality[RFT: Total # of Batches with Deviations]),
+			                SUM(Fact_Quality[RFT: Total # of Finished Goods Batches])
+			            ),
+			            KEEPFILTERS( FILTER( Bridge_Site_Area, Bridge_Site_Area[Area] = _area ) )
+			        ),
+			        DIVIDE(
+			            SUM(Fact_Quality[RFT: Total # of Batches with Deviations]),
+			            SUM(Fact_Quality[RFT: Total # of Finished Goods Batches])
+			        )
+			    )
+			RETURN
+			IF(ISBLANK(kpi_), BLANK(), 1 - kpi_)
+			
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: RFT
+		lineageTag: bbb18c50-b472-4522-8626-5bcfaf761aae
+
 	column Measures
 		dataType: string
 		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f
