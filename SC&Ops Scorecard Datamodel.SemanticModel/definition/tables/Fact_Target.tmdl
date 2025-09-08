@@ -34,14 +34,6 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Value Stream'
-		dataType: string
-		lineageTag: 1b3eab5f-c2a2-450e-97ab-ecce9546cb90
-		summarizeBy: none
-		sourceColumn: Value Stream
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Site name'
 		dataType: string
 		lineageTag: abe13599-aa70-4a99-871b-c32f0aafa2eb
@@ -83,22 +75,6 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column Period
-		dataType: string
-		lineageTag: 5570dc5b-7c69-49ee-80cf-5b42ca2f3a04
-		summarizeBy: none
-		sourceColumn: Period
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Profit Center Dummy Key'
-		dataType: string
-		lineageTag: 304d00a0-5aab-4dfb-bd31-44d0273d6707
-		summarizeBy: none
-		sourceColumn: Profit Center Dummy Key
-
-		annotation SummarizationSetBy = Automatic
-
 	column Year-Month = CONCATENATE(Fact_Target[Period/Year],RIGHT(Fact_Target[Period],2))
 		lineageTag: 76ba9644-4c98-4315-86d6-7596a9cd48ab
 		summarizeBy: none
@@ -112,9 +88,25 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Profit Center Dummy Key'
+		dataType: string
+		lineageTag: 449637b8-c296-4b81-a489-218738ef0489
+		summarizeBy: none
+		sourceColumn: Profit Center Dummy Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period
+		dataType: string
+		lineageTag: cc856004-5c0b-4a87-8887-72d0b64ac8df
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
 	column Unit
 		dataType: string
-		lineageTag: b6490ce4-0a51-403e-b081-0d09f59ade5e
+		lineageTag: a382c9cc-7eeb-4332-9faa-269d8607ea5c
 		summarizeBy: none
 		sourceColumn: Unit
 
@@ -125,10 +117,9 @@ table Fact_Target
 		queryGroup: Fact
 		source =
 				let
-				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Dim_Target_Powerapps.xlsx"), null, true),
-				    Data_Split_Sheet = Source{[Item="Data_Split",Kind="Sheet"]}[Data],
-				    #"Promoted Headers" = Table.PromoteHeaders(Data_Split_Sheet, [PromoteAllScalars=true]),
-				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Value Stream", type text}, {"Site name", type text}, {"Cluster", type text}, {"Profit Center Dummy Key", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}, {"Unit", type text}})
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Fact_Target.xlsx"), null, true),
+				    Target_Split_Table = Source{[Item="Target_Split",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Target_Split_Table,{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Site name", type text}, {"Cluster", type text}, {"Profit Center Dummy Key", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}, {"Unit", type text}})
 				in
 				    #"Changed Type"
 

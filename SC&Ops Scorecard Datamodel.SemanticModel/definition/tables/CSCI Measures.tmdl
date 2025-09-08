@@ -2094,10 +2094,51 @@ table 'CSCI Measures'
 		displayFolder: SSSO Shrinkage
 		lineageTag: d9bab2f1-4015-459d-91a0-5b16a64a3886
 
-	measure 'Service Target CSCI' = 0.9
+	measure 'Service Target CSCI' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Service Level (%)"))
+			RETURN
+			DIVIDE(tar,100)
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Service Level CSCI
 		lineageTag: 097a8a33-d1f2-4be0-ac1e-fbe79c397192
+
+	measure 'Bias Target CSCI L1' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Bias Lag1 (%)"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCI
+		lineageTag: 305ef968-c6e3-443c-9538-07cccc0bd210
+
+	measure 'Bias Target CSCI L4' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Bias Lag4 (%)"),KEEPFILTERS(Fact_Target[Area] = "CSCI"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCI
+		lineageTag: d483e527-3e75-419e-a567-65f1910a218c
+
+	measure 'FA Target CSCI L1' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Forecast Accuracy Lag1 (%)"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: b68b0fc4-8065-4c3b-93b2-97cca95f4ede
+
+	measure 'FA Target CSCI L4' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Forecast Accuracy Lag4 (%)"),
+			            KEEPFILTERS(Fact_Target[Area] = "CSCI"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 5b47b5a0-54c4-43c5-89f9-4f24ac37e2a1
 
 	column Measures
 		dataType: string

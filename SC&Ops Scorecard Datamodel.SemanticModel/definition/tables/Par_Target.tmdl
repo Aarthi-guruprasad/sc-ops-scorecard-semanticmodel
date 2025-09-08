@@ -41,11 +41,14 @@ table Par_Target
 		source = ```
 				{
 				    
-				    ("FA% CSCI Plan", NAMEOF('CSCI Measures'[FA Target CSCI]), 0),
+				    ("FA% Lag1 CSCI Plan", NAMEOF('CSCI Measures'[FA Target CSCI L1]), 0),
+				    ("FA% Lag4 CSCI Plan", NAMEOF('CSCI Measures'[FA Target CSCI L4]), 0),
 				    ("FA% Lag2 CSCA Plan", NAMEOF('Measure'[FA% Lag2 Target]), 1),
 				    ("FA% Lag4 CSCA Plan", NAMEOF('Measure'[FA% Lag4 Target]), 2),
-				    ("Bias% CSCI Plan", NAMEOF('CSCI Measures'[Bias Target CSCI]), 3),
-				    ("Bias% CSCA Plan", NAMEOF('Measure'[Bias Target]), 4),
+				    ("Bias% Lag1 CSCI Plan", NAMEOF('CSCI Measures'[Bias Target CSCI L1]), 3),
+				    ("Bias% Lag4 CSCI Plan", NAMEOF('CSCI Measures'[Bias Target CSCI L4]), 3),
+				    ("Bias% Lag2 CSCA Plan", NAMEOF('Measure'[Bias Target CSCA L2]), 4),
+				    ("Bias% Lag4 CSCA Plan", NAMEOF('Measure'[Bias Target CSCA L4]), 4),
 				    ("Service CSCI Plan", NAMEOF('CSCI Measures'[Service Target CSCI]), 5),
 				    ("Service CSCA Plan", NAMEOF('Measure'[Service Target]), 6),
 				    ("Service Top 11 Plan", NAMEOF('Measure'[Service Top 11 Target]), 7),
