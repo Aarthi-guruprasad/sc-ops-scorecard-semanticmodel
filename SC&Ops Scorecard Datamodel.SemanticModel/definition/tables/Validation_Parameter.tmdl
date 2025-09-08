@@ -65,10 +65,10 @@ table Validation_Parameter
 				    ("Schedule Attainment", NAMEOF('Measure'[Schedule Attn]), 22),
 				    ("CFR", NAMEOF('Measure'[CFR]), 23),
 				    ("Service Top 11", NAMEOF('Measure'[Service Top 11]), 24),
-				    ("On Time Closure of Deviations%", NAMEOF('Measure'[On Time Closure of Deviations%]), 25),
-				    ("CAPA Completion Rate%", NAMEOF('Measure'[CAPA Completion Rate]), 26),
-				    ("Right First Time%", NAMEOF('Measure'[RFT%]), 27),
-				    ("Critical/Major Observations", NAMEOF('Measure'[Critical or Major Observations]), 28),
+				    ("On Time Closure of Deviations%", NAMEOF('Measure'[OTCD Validation]), 25),
+				    ("CAPA Completion Rate%", NAMEOF('Measure'[CAPA Validation]), 26),
+				    ("Right First Time%", NAMEOF('Measure'[RFT% Validation]), 27),
+				    ("Critical/Major Observations", NAMEOF('Measure'[Critical/Major Obs Validation]), 28),
 				    ("Net Sales", NAMEOF('Measure'[Net Sales Actual]), 29),
 				    ("COGS", NAMEOF('Measure'[COGS Actual]), 30),
 				    ("% Logistics Cost vs Net Sales", NAMEOF('Measure'[Total Logistics on Net Sales Actual]), 31),
@@ -76,7 +76,7 @@ table Validation_Parameter
 				    ("Net PPV", NAMEOF('Measure'[Gross PPV Actual]), 33),
 				    ("Net POV", NAMEOF('Measure'[Net POV Actual]), 34),
 				    ("Operating Income", NAMEOF('Measure'[Operating Income Actual]), 35),
-				    ("Customer Fines", NAMEOF('Measure'[Customer Fines]), 36),
+				    ("Customer Fines", NAMEOF('Measure'[Cust Fine Validation]), 36),
 				    ("ABP Variance", NAMEOF('Measure'[ABP Variance]), 37)
 				}
 
