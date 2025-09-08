@@ -1,5 +1,5 @@
 {
-  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":4,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]}}",
+  "config": "{\"version\":\"5.66\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"type\":2,\"version\":{\"visual\":\"1.8.99\",\"report\":\"2.0.99\",\"page\":\"1.3.99\"}}},\"activeSectionIndex\":5,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"filterPaneHiddenInEditMode\":false},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
   "filters": "[]",
   "layoutOptimization": 0,
   "pods": [
@@ -292,6 +292,36 @@
           "x": 464.00,
           "y": 128.00,
           "z": 3000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Page 6",
+      "displayOption": 1,
+      "filters": "[{\"name\":\"8e23906896258de1671d\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Dim_Profit_Center\"}},\"Property\":\"Area\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'CSCA'\"}}],[{\"Literal\":{\"Value\":\"'CSCI'\"}}]]}}}]},\"type\":\"Categorical\",\"howCreated\":1,\"objects\":{}}]",
+      "height": 720.00,
+      "name": "b42f5a0bf6078f040968",
+      "ordinal": 5,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"5fab93bd590115b5576c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":64,\"z\":1,\"width\":304,\"height\":112,\"tabOrder\":1}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
+          "filters": "[]",
+          "height": 112.00,
+          "width": 304.00,
+          "x": 16.00,
+          "y": 64.00,
+          "z": 1.00
+        },
+        {
+          "config": "{\"name\":\"7d37c18fdabca890ba99\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":191.99999999999997,\"z\":0,\"width\":1072,\"height\":288,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\"},{\"queryRef\":\"Dim_Profit_Center.FP&A Cluster\"},{\"queryRef\":\"Measure.CFR Target\"},{\"queryRef\":\"CSCI Measures.Service Target CSCI\"},{\"queryRef\":\"Measure.Service Target\"},{\"queryRef\":\"Measure.Service Top 11 Target\"},{\"queryRef\":\"Measure.Schedule Attn Target\"},{\"queryRef\":\"CSCI Measures.Bias Target CSCI L1\"},{\"queryRef\":\"CSCI Measures.Bias Target CSCI L4\"},{\"queryRef\":\"CSCI Measures.FA Target CSCI L1\"},{\"queryRef\":\"CSCI Measures.FA Target CSCI L4\"},{\"queryRef\":\"Measure.Bias Target CSCA L2\"},{\"queryRef\":\"Measure.Bias Target CSCA L4\"},{\"queryRef\":\"Measure.FA% Lag2 Target\"},{\"queryRef\":\"Measure.FA% Lag4 Target\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0},{\"Name\":\"m\",\"Entity\":\"Measure\",\"Type\":0},{\"Name\":\"c\",\"Entity\":\"CSCI Measures\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FP&A Cluster\"},\"Name\":\"Dim_Profit_Center.FP&A Cluster\",\"NativeReferenceName\":\"FP&A Cluster\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"CFR Target\"},\"Name\":\"Measure.CFR Target\",\"NativeReferenceName\":\"CFR Target\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Service Target CSCI\"},\"Name\":\"CSCI Measures.Service Target CSCI\",\"NativeReferenceName\":\"Service Target CSCI\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Target\"},\"Name\":\"Measure.Service Target\",\"NativeReferenceName\":\"Service Target\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Service Top 11 Target\"},\"Name\":\"Measure.Service Top 11 Target\",\"NativeReferenceName\":\"Service Top 11 Target\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Schedule Attn Target\"},\"Name\":\"Measure.Schedule Attn Target\",\"NativeReferenceName\":\"Schedule Attn Target\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Bias Target CSCI L1\"},\"Name\":\"CSCI Measures.Bias Target CSCI L1\",\"NativeReferenceName\":\"Bias Target CSCI L1\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"Bias Target CSCI L4\"},\"Name\":\"CSCI Measures.Bias Target CSCI L4\",\"NativeReferenceName\":\"Bias Target CSCI L4\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI L1\"},\"Name\":\"CSCI Measures.FA Target CSCI L1\",\"NativeReferenceName\":\"FA Target CSCI L1\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"FA Target CSCI L4\"},\"Name\":\"CSCI Measures.FA Target CSCI L4\",\"NativeReferenceName\":\"FA Target CSCI L4\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Bias Target CSCA L2\"},\"Name\":\"Measure.Bias Target CSCA L2\",\"NativeReferenceName\":\"Bias Target CSCA L2\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"Bias Target CSCA L4\"},\"Name\":\"Measure.Bias Target CSCA L4\",\"NativeReferenceName\":\"Bias Target CSCA L4\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"FA% Lag2 Target\"},\"Name\":\"Measure.FA% Lag2 Target\",\"NativeReferenceName\":\"FA% Lag2 Target\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"m\"}},\"Property\":\"FA% Lag4 Target\"},\"Name\":\"Measure.FA% Lag4 Target\",\"NativeReferenceName\":\"FA% Lag4 Target\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 288.00,
+          "width": 1072.00,
+          "x": 16.00,
+          "y": 192.00,
+          "z": 0.00
         }
       ],
       "width": 1280.00

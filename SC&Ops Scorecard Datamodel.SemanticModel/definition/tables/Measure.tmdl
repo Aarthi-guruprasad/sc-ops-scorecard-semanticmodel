@@ -1426,7 +1426,11 @@ table Measure
 		displayFolder: Service Rate CSCA
 		lineageTag: 8bb8bb93-720a-41b4-a0da-1def644a2b08
 
-	measure 'Service Target' = 0.9
+	measure 'Service Target' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Service (Incl gap orders) (%)"))
+			RETURN
+			DIVIDE(tar,100)
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Service Rate CSCA
 		lineageTag: 627b20f4-253d-4e32-8a1d-173e007622d9
@@ -3497,7 +3501,11 @@ table Measure
 		displayFolder: CFR
 		lineageTag: 6cf517c7-1ebc-4631-84ed-dc9ad0bda325
 
-	measure 'CFR Target' = 0.94
+	measure 'CFR Target' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Case Fill Rate (%)"))
+			RETURN
+			DIVIDE(tar,100)
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: CFR
 		lineageTag: 8bbb56f3-5ed0-49de-973d-a77b571c748e
@@ -3597,19 +3605,11 @@ table Measure
 		displayFolder: CFR
 		lineageTag: 848a9169-1ce4-443f-9f9e-cb5a55d25b96
 
-	measure 'Schedule Attn Target' = ```
+	measure 'Schedule Attn Target' =
 			
-			
-			
-			VAR _siteGroup = SELECTEDVALUE('Bridge_Site'[Site Group])  
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Schedule Attainment (%)"))
 			RETURN
-			SWITCH(
-			    TRUE(),
-			    _siteGroup IN { "MI OTC", "Oral Care" }, 0.92,
-			    _siteGroup IN { "NY OTC", "Nutrition" }, 0.90,
-			    0.92  -- default 
-			)
-			```
+			DIVIDE(tar,100)
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Schedule Attainment
 		lineageTag: e957bc12-a25a-4558-b37a-9fa5c668af90
@@ -4793,7 +4793,11 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'FA% Lag2 Target' = 0.62
+	measure 'FA% Lag2 Target' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Forecast Accuracy Lag2 (%)"))
+			RETURN
+			DIVIDE(tar,100)
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 8ab6b503-9f0c-4913-87d5-cd2929fbe7c6
@@ -6270,7 +6274,11 @@ table Measure
 		displayFolder: Service Top 11
 		lineageTag: c4b5297e-c302-421e-aa4d-38b721858be6
 
-	measure 'Service Top 11 Target' = 7
+	measure 'Service Top 11 Target' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Service Top 11 (#)"))
+			RETURN
+			tar
 		formatString: 0
 		displayFolder: Service Top 11
 		lineageTag: 7d53f875-05d8-45b8-9300-c26825166515
@@ -11764,7 +11772,12 @@ table Measure
 		displayFolder: OEE FOCUS LINES
 		lineageTag: 0da0daea-8c80-42bc-9762-41b9e81e1a93
 
-	measure 'FA% Lag4 Target' = 0.7
+	measure 'FA% Lag4 Target' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Forecast Accuracy Lag4 (%)"),
+			                KEEPFILTERS(Fact_Target[Area] = "CSCA"))
+			RETURN
+			DIVIDE(tar,100)
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 931c2e10-f6f1-4891-b46f-48e65a9d66a6
@@ -11892,6 +11905,25 @@ table Measure
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: RFT
 		lineageTag: bbb18c50-b472-4522-8626-5bcfaf761aae
+
+	measure 'Bias Target CSCA L2' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Bias Lag2 (%)"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
+		lineageTag: 1aa03611-558b-42a1-97d1-df5227df1f77
+
+	measure 'Bias Target CSCA L4' =
+			
+			Var tar = CALCULATE(MAX(Fact_Target[Target]),KEEPFILTERS(Fact_Target[KPI_Name] = "Bias Lag4 (%)"),
+			            KEEPFILTERS(Fact_Target[Area] = "CSCA"))
+			RETURN
+			DIVIDE(tar,100)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Bias CSCA
+		lineageTag: 704b57b2-6ed6-413c-aad6-976401d3069c
 
 	column Measures
 		dataType: string
