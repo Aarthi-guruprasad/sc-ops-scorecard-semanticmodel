@@ -1435,7 +1435,7 @@ table Measure
 		displayFolder: Service Rate CSCA
 		lineageTag: 627b20f4-253d-4e32-8a1d-173e007622d9
 
-	measure 'Service Target Diff%' = [Service Rate%] - 0.9
+	measure 'Service Target Diff%' = [Service Rate%] - [Service Target]
 		displayFolder: Service Rate CSCA
 		lineageTag: 6192f793-2d2b-4dc6-a7de-5f4792807a39
 
@@ -2871,12 +2871,14 @@ table Measure
 		displayFolder: DIO
 		lineageTag: 84156bc6-800c-4d2d-98eb-a622c97edbf3
 
-	measure 'Bias Target' = 0.03
-		formatString: 0%;-0%;0%
+	measure 'Bias Target' =
+			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),2,[Bias Target CSCA L2],
+			                4,[Bias Target CSCA L4])
+		formatString: 0
 		displayFolder: Bias CSCA
 		lineageTag: 9b70de51-c52b-40ec-b49f-fa4d3d19c7a5
 
-	measure 'Bias Target Diff%' = [Bias%] - 0.03
+	measure 'Bias Target Diff%' = [Bias%] - [Bias Target]
 		displayFolder: Bias CSCA
 		lineageTag: 31b95f59-f1f2-4e9e-8ad3-b700a5ec0a67
 
@@ -2894,7 +2896,7 @@ table Measure
 		displayFolder: Bias CSCA
 		lineageTag: 6f405e16-c864-4672-abad-4618e66d8990
 
-	measure 'FA% Target Diff%' = [FA% CSCA] - 0.7
+	measure 'FA% Target Diff%' = [FA% CSCA] - [FA% Target]
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f8c238b7-9903-49f5-8b93-b1fee299a466
 
@@ -2912,7 +2914,9 @@ table Measure
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: a97a81a8-42c9-4673-8b3b-8e973fd3df0e
 
-	measure 'FA% Target' = 0.7
+	measure 'FA% Target' =
+			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),2,[FA% Lag2 Target],
+			                4,[FA% Lag4 Target])
 		formatString: 0%;-0%;0%
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f9f909fa-4805-4fff-9fa6-ae40907d873d
@@ -3510,7 +3514,7 @@ table Measure
 		displayFolder: CFR
 		lineageTag: 8bbb56f3-5ed0-49de-973d-a77b571c748e
 
-	measure 'CFR Target Diff%' = [CFR] - 0.94
+	measure 'CFR Target Diff%' = [CFR] - [CFR Target]
 		displayFolder: CFR
 		lineageTag: ec953ac8-eea9-46b4-a964-7e1d07b91b8d
 
@@ -3614,7 +3618,7 @@ table Measure
 		displayFolder: Schedule Attainment
 		lineageTag: e957bc12-a25a-4558-b37a-9fa5c668af90
 
-	measure 'Schedule Attn Target Diff%' = [Schedule Attn] - 0.92
+	measure 'Schedule Attn Target Diff%' = [Schedule Attn] - [Schedule Attn Target]
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Schedule Attainment
 		lineageTag: 368e7ee8-4894-41bd-bc41-9ca1726622c8
@@ -4781,13 +4785,13 @@ table Measure
 		displayFolder: Operating Income
 		lineageTag: 410ed7a6-5a45-4fea-a9f3-988336757311
 
-	measure 'FA% Lag 2 Target Diff%' = [FA% Lag2] - 0.62
+	measure 'FA% Lag 2 Target Diff%' = [FA% Lag2] - [FA% Lag2 Target]
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: a5cd57a3-8215-44d5-a39d-27910edd6dcf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'FA% Lag 4 Target Diff%' = [FA% Lag4] - 0.7
+	measure 'FA% Lag 4 Target Diff%' = [FA% Lag4] - [FA% Lag4 Target]
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 24005a5d-c869-4b31-ade1-d0d9bdb2f15b
 

@@ -456,7 +456,7 @@ table 'CSCI Measures'
 			        "vs PP", [Bias MoM%_raw CSCI],
 			        "LYTD", [Bias % LYTD CSCI],
 			        "vs YoY", [Bias YoY % Raw CSCI],
-			        "vs Plan", [Bias Target Diff%_CSCI],
+			        "vs Plan",[Bias Target Diff%_CSCI],
 			        BLANK()
 			    )
 			
@@ -1410,7 +1410,9 @@ table 'CSCI Measures'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'FA Target CSCI' = .60
+	measure 'FA Target CSCI' =
+			SWITCH(SELECTEDVALUE(Fact_IBP_Sales_CSCI[Lag]),1,[FA Target CSCI L1],
+			                4,[FA Target CSCI L4])
 		formatString: 0%;-0%;0%
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 03af2058-caa9-49d3-93a6-3c86876438b6
@@ -1430,18 +1432,20 @@ table 'CSCI Measures'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Bias Target CSCI' = .10
+	measure 'Bias Target CSCI' =
+			SWITCH(SELECTEDVALUE(Fact_IBP_Sales_CSCI[Lag]),1,[Bias Target CSCI L1],
+			                4,[Bias Target CSCI L4])
 		formatString: 0%;-0%;0%
 		displayFolder: Bias CSCI
 		lineageTag: 6577c901-ca17-45aa-9dfa-178b4f8aedff
 
-	measure 'Bias Target Diff%_CSCI L1' = [Bias L1 CSCI] - [Bias Target CSCI]
+	measure 'Bias Target Diff%_CSCI L1' = [Bias L1 CSCI] - [Bias Target CSCI L1]
 		displayFolder: Bias CSCI
 		lineageTag: a6149d6e-d42a-4d95-844c-6bc80f8f7d03
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Bias Target Diff%_CSCI L4' = [Bias L4 CSCI] - [Bias Target CSCI]
+	measure 'Bias Target Diff%_CSCI L4' = [Bias L4 CSCI] - [Bias Target CSCI L4]
 		displayFolder: Bias CSCI
 		lineageTag: c169caae-52e0-4f9d-82b8-9e02e67b3f3b
 
