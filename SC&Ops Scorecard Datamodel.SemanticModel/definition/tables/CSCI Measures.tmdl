@@ -895,7 +895,7 @@ table 'CSCI Measures'
 			        "vs PP", [Service Level MoM%],
 			        "LYTD", [Service Level LYTD],
 			        "vs YoY", [Service Level YoY%], 
-			        "vs Plan", [Service Target],
+			        "vs Plan", [Service Target Diff%_CSCI],
 			        BLANK()
 			    )
 			
@@ -952,7 +952,7 @@ table 'CSCI Measures'
 		displayFolder: Bias CSCI
 		lineageTag: d7bc5c3f-e893-4ad0-9b20-f8547daadf10
 
-	measure 'Service Target Diff%_CSCI' = [Service Level %] - 0.9
+	measure 'Service Target Diff%_CSCI' = [Service Level %] - [Service Target CSCI]
 		displayFolder: Service Level CSCI
 		lineageTag: 64f53c1e-4bc5-4570-822a-6f07ca503a65
 
