@@ -2872,8 +2872,8 @@ table Measure
 		lineageTag: 84156bc6-800c-4d2d-98eb-a622c97edbf3
 
 	measure 'Bias Target' =
-			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),2,[Bias Target CSCA L2],
-			                4,[Bias Target CSCA L4])
+			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[Bias Target CSCA L2],
+			                "4",[Bias Target CSCA L4])
 		formatString: 0
 		displayFolder: Bias CSCA
 		lineageTag: 9b70de51-c52b-40ec-b49f-fa4d3d19c7a5
