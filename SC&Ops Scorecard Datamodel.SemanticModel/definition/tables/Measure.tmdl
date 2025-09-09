@@ -2915,8 +2915,8 @@ table Measure
 		lineageTag: a97a81a8-42c9-4673-8b3b-8e973fd3df0e
 
 	measure 'FA% Target' =
-			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),2,[FA% Lag2 Target],
-			                4,[FA% Lag4 Target])
+			SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag2 Target],
+			                "4",[FA% Lag4 Target])
 		formatString: 0%;-0%;0%
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f9f909fa-4805-4fff-9fa6-ae40907d873d
