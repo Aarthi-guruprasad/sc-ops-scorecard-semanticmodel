@@ -75,16 +75,11 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column Year-Month = CONCATENATE(Fact_Target[Period/Year],RIGHT(Fact_Target[Period],2))
-		lineageTag: 76ba9644-4c98-4315-86d6-7596a9cd48ab
+	column Period
+		dataType: string
+		lineageTag: cc856004-5c0b-4a87-8887-72d0b64ac8df
 		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Closing Date' = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Target[Year-Month])
-		formatString: General Date
-		lineageTag: b180789c-18fe-467e-8bf4-034d65bb4288
-		summarizeBy: none
+		sourceColumn: Period
 
 		annotation SummarizationSetBy = Automatic
 
@@ -96,11 +91,16 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column Period
-		dataType: string
-		lineageTag: cc856004-5c0b-4a87-8887-72d0b64ac8df
+	column Year-Month = CONCATENATE(Fact_Target[Period/Year],RIGHT(Fact_Target[Period],2))
+		lineageTag: 76ba9644-4c98-4315-86d6-7596a9cd48ab
 		summarizeBy: none
-		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Closing Date' = LOOKUPVALUE('Dim_Closing Dates'[P_Closing Period Date],'Dim_Closing Dates'[P_YearMonth],Fact_Target[Year-Month])
+		formatString: General Date
+		lineageTag: b180789c-18fe-467e-8bf4-034d65bb4288
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

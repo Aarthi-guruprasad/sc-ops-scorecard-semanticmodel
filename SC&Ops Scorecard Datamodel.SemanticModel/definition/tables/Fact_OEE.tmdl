@@ -94,13 +94,24 @@ table Fact_OEE
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column 'Refresh DateTime'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 12a351e6-e2fd-42e5-942d-181572558600
+		summarizeBy: none
+		sourceColumn: Refresh DateTime
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_OEE = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_OEE = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Redzone", "Redzone Engineering Dataset", [Query="EVALUATE#(lf)#(lf)SUMMARIZECOLUMNS(#(lf)#(lf)    'Fact Shift Run Segments'[Location UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Site UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Area UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Date],#(lf)#(lf) #(lf)#(lf)    ""Up Seconds"", [Up Seconds],#(lf)#(lf)    ""Down Seconds"", [Down Seconds],#(lf)#(lf)    ""Out Count"", [Out Count],#(lf)#(lf)    ""In Count"", [In Count],#(lf)#(lf)    ""Run Theoretical Quantity"", [Run Theoretical Quantity],#(lf)#(lf)    ""Total Elapsed Time"", [Total Elapsed Time]#(lf)#(lf))#(lf)#(lf)ORDER BY#(lf)#(lf)    'Fact Shift Run Segments'[Location UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Site UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Area UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Date] ASC", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_OEE,{{"Fact Shift Run Segments[Location UUID]", "Location UUID"}, {"Fact Shift Run Segments[Site UUID]", "Site UUID"}, {"Fact Shift Run Segments[Area UUID]", "Area UUID"}, {"Fact Shift Run Segments[Date]", "Date"}, {"[Up Seconds]", "Up Seconds"}, {"[Down Seconds]", "Down Seconds"}, {"[Out Count]", "Out Count"}, {"[In Count]", "In Count"}, {"[Run Theoretical Quantity]", "Run Theoretical Quantity"}, {"[Total Elapsed Time]", "Total Elapsed Time"}}),
+				    Fact_OEE = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Redzone", "Redzone Engineering Dataset", [Query="EVALUATE#(lf)#(lf)SUMMARIZECOLUMNS(#(lf)#(lf)    'Fact Shift Run Segments'[Location UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Site UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Area UUID],#(lf)#(lf)    'Fact Shift Run Segments'[Date],#(lf)#(lf) #(lf)#(lf)    ""Up Seconds"", [Up Seconds],#(lf)#(lf)    ""Down Seconds"", [Down Seconds],#(lf)#(lf)    ""Out Count"", [Out Count],#(lf)#(lf)    ""In Count"", [In Count],#(lf)#(lf)    ""Run Theoretical Quantity"", [Run Theoretical Quantity],#(lf)#(lf)    ""Total Elapsed Time"", [Total Elapsed Time],#(lf)""Refresh DateTime"", MAX('Data Refreshed'[Refresh DateTime])#(lf))#(lf)#(lf)ORDER BY#(lf)#(lf)    'Fact Shift Run Segments'[Location UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Site UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Area UUID] ASC,#(lf)#(lf)    'Fact Shift Run Segments'[Date] ASC", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_OEE,{{"Fact Shift Run Segments[Location UUID]", "Location UUID"}, {"Fact Shift Run Segments[Site UUID]", "Site UUID"}, {"Fact Shift Run Segments[Area UUID]", "Area UUID"}, {"Fact Shift Run Segments[Date]", "Date"}, {"[Up Seconds]", "Up Seconds"}, {"[Down Seconds]", "Down Seconds"}, {"[Out Count]", "Out Count"}, {"[In Count]", "In Count"}, {"[Run Theoretical Quantity]", "Run Theoretical Quantity"}, {"[Total Elapsed Time]", "Total Elapsed Time"}, {"[Refresh DateTime]", "Refresh DateTime"}}),
 				    #"Reordered Columns" = Table.ReorderColumns(#"Renamed Columns",{"Date", "Location UUID", "Site UUID", "Area UUID", "Up Seconds", "Down Seconds", "Out Count", "In Count", "Run Theoretical Quantity", "Total Elapsed Time"})
 				in
 				    #"Reordered Columns"

@@ -81,13 +81,22 @@ table Fact_CFR
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Last Refreshed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 91e19cfe-ada8-484b-8c5f-3f2e21505ef8
+		summarizeBy: none
+		sourceColumn: Last Refreshed
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_CFR = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_CFR = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Case Fill Rate", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)    MEASURE 'Service Case Fill Rate'[Total Delivery Qty] = #(lf)        SUM('Service Case Fill Rate'[Delivery Qty])#(lf) #(lf)    MEASURE 'Service Case Fill Rate'[Total Order Qty] = #(lf)        SUM('Service Case Fill Rate'[Order Qty])#(lf) #(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Service Case Fill Rate'[Date],#(lf)    'Service Case Fill Rate'[WE Date],#(lf)    'Service Case Fill Rate'[Material Key],#(lf)    'Service Case Fill Rate'[Plant Key],#(lf)    'Service Case Fill Rate'[Customer Hierarchy],#(lf)    ""Total Delivery Qty"", [Total Delivery Qty],#(lf)    ""Total Order Qty"", [Total Order Qty]#(lf))#(lf)ORDER BY #(lf)    'Service Case Fill Rate'[Date] ASC,#(lf)    'Service Case Fill Rate'[WE Date] ASC,#(lf)    'Service Case Fill Rate'[Material Key] ASC,#(lf)    'Service Case Fill Rate'[Plant Key] ASC,#(lf)    'Service Case Fill Rate'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_CFR,{{"Service Case Fill Rate[Date]", "Date"}, {"Service Case Fill Rate[WE Date]", "WE Date"}, {"Service Case Fill Rate[Material Key]", "Material Key"}, {"Service Case Fill Rate[Plant Key]", "Plant Key"}, {"[Total Delivery Qty]", "Total Delivery Qty"}, {"[Total Order Qty]", "Total Order Qty"}, {"Service Case Fill Rate[Customer Hierarchy]", "Customer Hierarchy"}})
+				    Fact_CFR = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Case Fill Rate", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)    MEASURE 'Service Case Fill Rate'[Total Delivery Qty] = #(lf)        SUM('Service Case Fill Rate'[Delivery Qty])#(lf) #(lf)    MEASURE 'Service Case Fill Rate'[Total Order Qty] = #(lf)        SUM('Service Case Fill Rate'[Order Qty])#(lf)    #(lf)    MEASURE'Service Case Fill Rate'[Last Refreshed] = #(lf)    #(tab)MAX ('Last Refresh Date'[Last Refresh] )#(lf)#(lf) #(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Service Case Fill Rate'[Date],#(lf)    'Service Case Fill Rate'[WE Date],#(lf)    'Service Case Fill Rate'[Material Key],#(lf)    'Service Case Fill Rate'[Plant Key],#(lf)    'Service Case Fill Rate'[Customer Hierarchy],#(lf)    ""Total Delivery Qty"", [Total Delivery Qty],#(lf)    ""Total Order Qty"", [Total Order Qty],#(lf)    ""Last Refreshed"", [Last Refreshed]#(lf))#(lf)ORDER BY #(lf)    'Service Case Fill Rate'[Date] ASC,#(lf)    'Service Case Fill Rate'[WE Date] ASC,#(lf)    'Service Case Fill Rate'[Material Key] ASC,#(lf)    'Service Case Fill Rate'[Plant Key] ASC,#(lf)    'Service Case Fill Rate'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_CFR,{{"Service Case Fill Rate[Date]", "Date"}, {"Service Case Fill Rate[WE Date]", "WE Date"}, {"Service Case Fill Rate[Material Key]", "Material Key"}, {"Service Case Fill Rate[Plant Key]", "Plant Key"}, {"[Total Delivery Qty]", "Total Delivery Qty"}, {"[Total Order Qty]", "Total Order Qty"}, {"Service Case Fill Rate[Customer Hierarchy]", "Customer Hierarchy"}, {"[Last Refreshed]", "Last Refreshed"}})
 				in
 				    #"Renamed Columns"
 

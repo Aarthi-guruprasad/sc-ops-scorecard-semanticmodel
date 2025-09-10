@@ -300,27 +300,27 @@
       "config": "{}",
       "displayName": "Page 6",
       "displayOption": 1,
-      "filters": "[{\"name\":\"8e23906896258de1671d\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Dim_Profit_Center\"}},\"Property\":\"Area\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'CSCA'\"}}],[{\"Literal\":{\"Value\":\"'CSCI'\"}}]]}}}]},\"type\":\"Categorical\",\"howCreated\":1,\"objects\":{}}]",
+      "filters": "[]",
       "height": 720.00,
       "name": "b42f5a0bf6078f040968",
       "ordinal": 5,
       "visualContainers": [
         {
-          "config": "{\"name\":\"5fab93bd590115b5576c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":64,\"z\":1000,\"width\":304,\"height\":112,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
+          "config": "{\"name\":\"5fab93bd590115b5576c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":6.750155989720952e-14,\"y\":65.10430409267381,\"z\":1000,\"width\":304,\"height\":112,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
           "filters": "[]",
           "height": 112.00,
           "width": 304.00,
-          "x": 16.00,
-          "y": 64.00,
+          "x": 0.00,
+          "y": 65.10,
           "z": 1000.00
         },
         {
-          "config": "{\"name\":\"7d37c18fdabca890ba99\",\"layouts\":[{\"id\":0,\"position\":{\"x\":16,\"y\":191.99999999999997,\"z\":0,\"width\":1072,\"height\":288,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\"},{\"queryRef\":\"Dim_Profit_Center.FP&A Cluster\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FP&A Cluster\"},\"Name\":\"Dim_Profit_Center.FP&A Cluster\",\"NativeReferenceName\":\"FP&A Cluster\"}]},\"drillFilterOtherVisuals\":true}}",
+          "config": "{\"name\":\"7d37c18fdabca890ba99\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0.32319609454787823,\"y\":192.90185820361054,\"z\":0,\"width\":599.877456474632,\"height\":287.6963311664051,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_Profit_Center.Area\"},{\"queryRef\":\"Dim_Profit_Center.FP&A Cluster\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"Dim_Profit_Center\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Area\"},\"Name\":\"Dim_Profit_Center.Area\",\"NativeReferenceName\":\"Area\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FP&A Cluster\"},\"Name\":\"Dim_Profit_Center.FP&A Cluster\",\"NativeReferenceName\":\"FP&A Cluster\"}]},\"drillFilterOtherVisuals\":true}}",
           "filters": "[]",
-          "height": 288.00,
-          "width": 1072.00,
-          "x": 16.00,
-          "y": 192.00,
+          "height": 287.70,
+          "width": 599.88,
+          "x": 0.32,
+          "y": 192.90,
           "z": 0.00
         }
       ],
