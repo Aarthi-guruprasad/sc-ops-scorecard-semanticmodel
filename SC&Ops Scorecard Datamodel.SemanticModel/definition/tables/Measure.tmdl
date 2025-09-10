@@ -2526,10 +2526,9 @@ table Measure
 		lineageTag: 13f4ceed-7b2c-4721-aaee-65f9cbfad71a
 
 	measure 'SSSO: Scrap-off APN_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "25"))
+		formatString: #,0.0
 		displayFolder: SSSO Scrap-Off
 		lineageTag: c6bc5888-52a9-46b0-aff9-98de4d5c2701
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO Obs_F66' = CALCULATE(SUM(Fact_SSSO[SSSO_AFX]),KEEPFILTERS(Fact_SSSO[Functional Area] = "26"))
 		displayFolder: SSSO Obs linked to Conv
@@ -2820,7 +2819,7 @@ table Measure
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[Sum Amount CFIN Base_APN])
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: Net Inventory
 		lineageTag: 0d105d9e-a36a-4628-a7fb-8bddb0fa9c2c
 
@@ -2937,10 +2936,9 @@ table Measure
 			VAR Plan = [SSSO: Scrap-off APN_Base] + [SSSO Obs_APN] + [SSSO Salvage_APN]
 			Return
 			Plan
+		formatString: #,0.0
 		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 4a4d94d0-443e-4361-8ee4-263d08ffd0ff
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'SSSO: Salvage & Obs_APN_Base' =
 			
@@ -2948,13 +2946,12 @@ table Measure
 			
 			RETURN
 			Plan
+		formatString: #,0.0
 		displayFolder: SSSO Salvage & Obs
 		lineageTag: 3123962c-f633-44ad-8d28-5c9edc3ed778
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure 'Gross Inventory_APN_Base' = SUM(Fact_CFIN_Inventory[CFIN Amount Excl Inventory Reserves_APN])
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: Gross Inventory
 		lineageTag: 923789d1-04ab-4bf1-81cf-7a23a989ff04
 
@@ -3181,7 +3178,7 @@ table Measure
 		lineageTag: c8f6ad87-2541-4e46-9b36-3c1e8929f88e
 
 	measure 'Net Sales_APN_Base' = SUM(Fact_Logistics[Net Sales Plan])
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: Net Sales
 		lineageTag: 9f154c40-d040-4652-ab9a-8c71ec47430a
 
@@ -3201,7 +3198,7 @@ table Measure
 		lineageTag: 9ab22e72-1632-49da-b30e-478950c77f2c
 
 	measure COGS_APN_Base = SUM(Fact_Logistics[COGS Plan])
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: COGS
 		lineageTag: cea78f18-8adc-4a21-a812-c9505f437c7b
 
@@ -4445,10 +4442,9 @@ table Measure
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net POV APN_base' = SUM(Fact_COPA_Global[Net POV Plan])
+		formatString: #,0.0
 		displayFolder: Net POV
 		lineageTag: a8d2f4f1-4fe1-4a22-9389-4a5e89bb3b36
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net POV LYTD' = ```
 			VAR Table_ = 
@@ -4588,10 +4584,9 @@ table Measure
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross PPV APN_base' = SUM(Fact_COPA_Global[Net PPV Plan])
+		formatString: #,0.0
 		displayFolder: Gross PPV
 		lineageTag: de280fd9-4fea-47b7-b6ff-33357cfa4d25
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross PPV LYTD' = ```
 			VAR Table_ = 
@@ -4731,10 +4726,9 @@ table Measure
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Operating Income APN_Base' = SUM(Fact_COPA_Global[Operating Income Plan])
+		formatString: #,0.0
 		displayFolder: Operating Income
 		lineageTag: a79a8550-10e9-4694-8105-e243ddfd9e3b
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Operating Income LYTD' = ```
 			VAR Table_ = 
@@ -5920,7 +5914,7 @@ table Measure
 		lineageTag: f3a47495-0f92-47a2-82e6-13df475dc8bb
 
 	measure 'ABP Variance_APN_Base' = SUM(Fact_DSO_DPO_ABP[ABP_Variance_Plan])*1000
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: ABP Variance
 		lineageTag: 01de310b-7071-4630-8ec8-f4eb287ab435
 
@@ -11981,6 +11975,28 @@ table Measure
 		lineageTag: aa9b5a4d-47eb-49fd-a5c0-c7c492c62aba
 
 		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'ASTM Incidents Plan_Target' = SUM(Fact_Safety[Target - ASTM - Incidents])
+		displayFolder: ASTM Incidents
+		lineageTag: 2256bea5-2842-4b33-8c1e-f77b9da42d1d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate Plan_Target' = SUM(Fact_Safety[Target - ASTM - Rate ])
+		displayFolder: ASTM Rate
+		lineageTag: 0e9edd96-da69-4b6d-b919-303970e09a00
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Plan_Target' = AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 795b235d-a918-4eb1-a9a8-6007f7300c62
+
+	measure 'pSIF SIFs Focus Plan_Target' = AVERAGE(Fact_Safety[Target - pSIF SIFs Focus at our Sites - Action Past Due Closure Rate])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: pSIF SIFs Focus
+		lineageTag: ec66cb95-e0c1-4f6a-bd0a-70d7b3a8491b
 
 	column Measures
 		dataType: string

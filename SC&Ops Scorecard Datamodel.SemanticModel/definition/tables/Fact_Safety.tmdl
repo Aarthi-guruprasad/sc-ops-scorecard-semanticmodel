@@ -1,6 +1,15 @@
 table Fact_Safety
 	lineageTag: 485146ba-0176-4589-9691-38a3d043c362
 
+	measure Map_Safety_Target =
+			
+			Var area = SELECTEDVALUE(Dim_Profit_Center[Area])
+			var site_area = SELECTEDVALUE(Fact_Safety[Area])
+			RETURN
+			IF(DISTINCTCOUNT(Dim_Profit_Center[Area]) > 1 , 1,
+			    IF(area = site_area,1,0))
+		lineageTag: a3a919e8-a210-42d9-b176-af4d65fcfaa7
+
 	column 'Date/ Period (Fiscal Period)'
 		dataType: string
 		lineageTag: a681668b-220c-470f-a007-d94c1f2d8566
@@ -158,6 +167,29 @@ table Fact_Safety
 
 	column CSCI_flag = IF(Fact_Safety[Site Group] = "CSCI","Yes","No")
 		lineageTag: 960a3626-9efc-4b5b-8ed2-dd0d6a071780
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Area =
+			SWITCH(Fact_Safety[Site name/Site UUID/Location UUID],
+			                    "CSCA", "CSCA",
+			                    "Logistics", "CSCA",
+			                    "Vermont (PVT)","CSCA",
+			                    "Michigan-Allegan (PMI)","CSCA",
+			                    "Wisconsin (PWI)","CSCA",
+			                    "Ohio (POH)","CSCA",
+			                    "Michigan-Grand Rapids (POC)","CSCA",
+			                    "New York (PNY)","CSCA",
+			                    "Michigan-Holland (PMH)","CSCA",
+			                    "CSCI", "CSCI",
+			                    "UK-Braunton (PUK)", "CSCI",
+			                    "Germany-Herrenberg", "CSCI",
+			                    "France-Plelo", "CSCI",
+			                    "France-Laboratoire de la Mer", "CSCI",
+			                    "Belgium-Medgenix", "CSCI"
+			)
+		lineageTag: 56300e14-3703-44af-8e95-3ff15db56a1d
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
