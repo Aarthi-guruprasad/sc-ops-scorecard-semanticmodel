@@ -64,13 +64,22 @@ table Fact_Group_Reporting
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column 'Last Refreshed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e0881151-11bd-4e74-be90-0c03ea37deb5
+		summarizeBy: none
+		sourceColumn: Last Refreshed
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Group_Reporting = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_Group_Reporting = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "BW - Inventory - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_GroupReporting[Total COGS GR] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""ACT01"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_APN] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""APN"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_F66] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""F66"")#(lf))#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[Date],#(lf)    Fact_GroupReporting[Profit Center],#(lf)    Fact_GroupReporting[Account Number],#(lf)    Fact_GroupReporting[Category],#(lf)    ""Total COGS GR"", [Total COGS GR],#(lf)    ""Total COGS GR_APN"", [Total COGS GR_APN],#(lf)    ""Total COGS GR_F66"", [Total COGS GR_F66]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[Date] ASC,#(lf)    Fact_GroupReporting[Profit Center] ASC,#(lf)    Fact_GroupReporting[Account Number] ASC,#(lf)    Fact_GroupReporting[Category] ASC#(lf)/* END QUERY BUILDER */#(lf)", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_Group_Reporting,{{"Dim_Date[Date]", "Date"}, {"Fact_GroupReporting[Profit Center]", "Profit Center"}, {"Fact_GroupReporting[Account Number]", "Account Number"}, {"Fact_GroupReporting[Category]", "Category"}, {"[Total COGS GR]", "Total COGS GR"}, {"[Total COGS GR_APN]", "Total COGS GR_APN"}, {"[Total COGS GR_F66]", "Total COGS GR_F66"}})
+				    Fact_Group_Reporting = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "BW - Inventory - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_GroupReporting[Total COGS GR] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""ACT01"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_APN] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""APN"")#(lf))#(lf)#(lf)MEASURE Fact_GroupReporting[Total COGS GR_F66] = #(lf)CALCULATE(#(lf)    [Sum Amount GR Base],#(lf)    Dim_FA[Level 7] = ""Total Cost of Sales"",#(lf)    KEEPFILTERS(Dim_ReportCurrency[To-currency] = ""USD""),#(lf)    KEEPFILTERS(Dim_ComparableFilter[Exhange Rate] = ""F66"")#(lf))#(lf)#(lf)-- New measure for refresh date#(lf)MEASURE Fact_GroupReporting[Last Refreshed] =#(lf)MAX ( 'Other_Date_ModelRefreshed'[Date] )#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[Date],#(lf)    Fact_GroupReporting[Profit Center],#(lf)    Fact_GroupReporting[Account Number],#(lf)    Fact_GroupReporting[Category],#(lf)    ""Total COGS GR"", [Total COGS GR],#(lf)    ""Total COGS GR_APN"", [Total COGS GR_APN],#(lf)    ""Total COGS GR_F66"", [Total COGS GR_F66],#(lf)    ""Last Refreshed"", [Last Refreshed]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[Date] ASC,#(lf)    Fact_GroupReporting[Profit Center] ASC,#(lf)    Fact_GroupReporting[Account Number] ASC,#(lf)    Fact_GroupReporting[Category] ASC#(lf)/* END QUERY BUILDER */#(lf)", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Group_Reporting,{{"Dim_Date[Date]", "Date"}, {"Fact_GroupReporting[Profit Center]", "Profit Center"}, {"Fact_GroupReporting[Account Number]", "Account Number"}, {"Fact_GroupReporting[Category]", "Category"}, {"[Total COGS GR]", "Total COGS GR"}, {"[Total COGS GR_APN]", "Total COGS GR_APN"}, {"[Total COGS GR_F66]", "Total COGS GR_F66"}, {"[Last Refreshed]", "Last Refreshed"}})
 				in
 				    #"Renamed Columns"
 

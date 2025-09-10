@@ -11929,6 +11929,59 @@ table Measure
 		displayFolder: Bias CSCA
 		lineageTag: 704b57b2-6ed6-413c-aad6-976401d3069c
 
+	measure 'LR FA CSCA' =
+			
+			MAX(Fact_Forecast_Accuracy[Last Refreshed])
+		formatString: dd-mm-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: d8e14423-3d26-4883-aa4d-a7c5223f3b3a
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'LR GR' = ```
+			
+			MAX ( 'Fact_Group_Reporting'[Last Refreshed] )
+			
+			```
+		formatString: dd-mm-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: 4ba192a6-9af1-48c5-a573-f85ae7877740
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'LR OEE' = ```
+			
+			MAX ( 'Fact_OEE'[Refresh DateTime] )
+			
+			```
+		formatString: dd-mm-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: 0188ad69-0511-463b-8831-8ba95af04bdc
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'LR Cust Fines' = ```
+			
+			MAX ( 'Fact_Customer_Fines'[Last Refreshed])
+			
+			```
+		formatString: dd-mm-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: c6e21fab-82d7-48b2-99b1-60fd622142a3
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'LR CFR' = ```
+			
+			MAX ( 'Fact_CFR'[Last Refreshed])
+			
+			```
+		formatString: dd-mm-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: aa9b5a4d-47eb-49fd-a5c0-c7c492c62aba
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
 	column Measures
 		dataType: string
 		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f

@@ -65,13 +65,22 @@ table Fact_Customer_Fines
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Last Refreshed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5d7666c8-0e60-45df-97f9-4177832f5d82
+		summarizeBy: none
+		sourceColumn: Last Refreshed
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Customer_Fines = m
 		mode: import
 		queryGroup: Fact
 		source =
 				let
-				    Fact_Customer_Fines = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Analytics%20Team%20Sandbox", "Compliance Fine Management new split", [Query="/* START QUERY BUILDER */#(lf)#(lf)DEFINE#(lf)#(lf)MEASURE 'Split Total Compliance'[Total SplitAmount] = SUM('Split Total Compliance'[SplitAmount])#(lf)#(lf)#(lf)EVALUATE#(lf)#(lf)SUMMARIZECOLUMNS(#(lf)#(lf)    'Split Total Compliance'[DocumentDate],#(lf)#(lf)    'Split Total Compliance'[ReportDate],#(lf)#(lf)    'Split Total Compliance'[Perrigo Material #],#(lf)#(lf)    'Split Total Compliance'[Business Unit],#(lf)#(lf)    'Split Total Compliance'[ComplianceName],#(lf)#(lf)    'Split Total Compliance'[ChargeType],#(lf)#(lf)    ""SplitAmount"", [Total SplitAmount]#(lf)#(lf))#(lf)#(lf)ORDER BY #(lf)#(lf)    'Split Total Compliance'[DocumentDate] ASC,#(lf)#(lf)    'Split Total Compliance'[ReportDate] ASC,#(lf)#(lf)    'Split Total Compliance'[Perrigo Material #] ASC,#(lf)#(lf)    'Split Total Compliance'[Business Unit] ASC,#(lf)#(lf)    'Split Total Compliance'[ComplianceName] ASC,#(lf)#(lf)    'Split Total Compliance'[ChargeType] ASC#(lf)#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_Customer_Fines,{{"Split Total Compliance[DocumentDate]", "Document Date"}, {"Split Total Compliance[ReportDate]", "Report Date"}, {"Split Total Compliance[Perrigo Material #]", "Perrigo Material #"}, {"Split Total Compliance[Business Unit]", "Business Unit"}, {"Split Total Compliance[ChargeType]", "Charge Type"}, {"[SplitAmount]", "Split Amount"}, {"Split Total Compliance[ComplianceName]", "ComplianceName"}}),
+				    Fact_Customer_Fines = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Analytics%20Team%20Sandbox", "Compliance Fine Management new split", [Query="/* START QUERY BUILDER */#(lf)#(lf)DEFINE#(lf)    MEASURE 'Split Total Compliance'[Total SplitAmount] =#(lf)        SUM ( 'Split Total Compliance'[SplitAmount] )#(lf)#(lf)    MEASURE 'Split Total Compliance'[Last Refreshed] =#(lf)        MAX ( 'Date Last Refreshed'[Date Last Refreshed] )#(lf)#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Split Total Compliance'[DocumentDate],#(lf)    'Split Total Compliance'[ReportDate],#(lf)    'Split Total Compliance'[Perrigo Material #],#(lf)    'Split Total Compliance'[Business Unit],#(lf)    'Split Total Compliance'[ComplianceName],#(lf)    'Split Total Compliance'[ChargeType],#(lf)#(lf)    ""SplitAmount"", [Total SplitAmount],#(lf)    ""Last Refreshed"", [Last Refreshed]#(lf))#(lf)ORDER BY #(lf)    'Split Total Compliance'[DocumentDate] ASC,#(lf)    'Split Total Compliance'[ReportDate] ASC,#(lf)    'Split Total Compliance'[Perrigo Material #] ASC,#(lf)    'Split Total Compliance'[Business Unit] ASC,#(lf)    'Split Total Compliance'[ComplianceName] ASC,#(lf)    'Split Total Compliance'[ChargeType] ASC#(lf)#(lf)/* END QUERY BUILDER */#(lf)", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Fact_Customer_Fines,{{"Split Total Compliance[DocumentDate]", "Document Date"}, {"Split Total Compliance[ReportDate]", "Report Date"}, {"Split Total Compliance[Perrigo Material #]", "Perrigo Material #"}, {"Split Total Compliance[Business Unit]", "Business Unit"}, {"Split Total Compliance[ChargeType]", "Charge Type"}, {"[SplitAmount]", "Split Amount"}, {"Split Total Compliance[ComplianceName]", "ComplianceName"}, {"[Last Refreshed]", "Last Refreshed"}}),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Document Date", type date}, {"Report Date", type date}})
 				in
 				    #"Changed Type"
