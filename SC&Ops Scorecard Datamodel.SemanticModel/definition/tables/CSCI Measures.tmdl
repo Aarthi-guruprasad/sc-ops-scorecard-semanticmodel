@@ -971,7 +971,7 @@ table 'CSCI Measures'
 		lineageTag: 17f532af-2aa6-4e9b-b6c5-0a31cb4cceae
 
 	measure 'SSSO: Shrinkage APN_Base' = CALCULATE(SUM(Fact_SSSO[SSSO_APN]),KEEPFILTERS(Fact_SSSO[Functional Area] = "24"))
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: SSSO Shrinkage
 		lineageTag: 66afb7a1-acaf-496d-a5d6-13f4849c3f96
 

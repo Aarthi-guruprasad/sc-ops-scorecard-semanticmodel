@@ -1,6 +1,16 @@
 table Bridge_Site_Area
 	lineageTag: 615edd19-fcd9-4df5-8ea2-d23578a8438c
 
+	measure 'Map Area_Target' =
+			
+			Var area = SELECTEDVALUE(Dim_Profit_Center[Area])
+			var site_area = SELECTEDVALUE(Bridge_Site_Area[Area])
+			RETURN
+			IF(DISTINCTCOUNT(Dim_Profit_Center[Area]) > 1 , 1,
+			    IF(area = site_area,1,0))
+		formatString: 0
+		lineageTag: 554cc4d9-b874-40e4-8a76-6c49729235bc
+
 	column 'Site Hierarchy'
 		dataType: string
 		lineageTag: 104572d7-bafb-4798-bbae-e63933dbaecc
