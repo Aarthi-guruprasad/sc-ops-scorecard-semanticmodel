@@ -257,14 +257,6 @@ relationship 61b27430-eb57-f4de-a832-efae3ee287a7
 	fromColumn: Fact_Quality.Site
 	toColumn: Bridge_Site_Area.'Site Hierarchy'
 
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
-
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
 relationship bffd6f11-bef1-72bf-3cea-ddcdd04eb2f5
 	fromColumn: Fact_Safety.'Closing Date'
 	toColumn: Dim_Date.Date
@@ -272,6 +264,14 @@ relationship bffd6f11-bef1-72bf-3cea-ddcdd04eb2f5
 relationship d03dd813-6c74-3ab6-7ae3-fb45b222e37c
 	fromColumn: Fact_Target.'Closing Date'
 	toColumn: Dim_Date.Date
+
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
 
 relationship a7fa2939-6118-6db1-4e82-a926098b1beb
 	fromColumn: Fact_OEE_Baseline.'Location UUID'
@@ -284,4 +284,12 @@ relationship ad2b3894-3704-fd7d-5237-c548fc2e3f05
 relationship a0019538-d3d3-75aa-4ded-ebf9093222e8
 	fromColumn: Fact_Target.'Profit Center Dummy Key'
 	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship 8b862a2d-e9ab-d6d1-cd97-e2a17abe3ffb
+	fromColumn: Fact_PWS.'P_Closing Period Date'
+	toColumn: Dim_Date.Date
+
+relationship c86cc03b-02fb-f709-0763-47db458d69fa
+	fromColumn: Fact_PWS.'Site Name'
+	toColumn: Bridge_Site_Area.'Site Hierarchy'
 

@@ -1,0 +1,118 @@
+table Fact_PWS
+	lineageTag: eaadd6cc-342e-4c97-8072-55d2514c79ac
+
+	column Period
+		dataType: string
+		lineageTag: e87d9cc7-e9d7-4995-91b5-0e03c4b1d4ce
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Site Name'
+		dataType: string
+		lineageTag: 0b7ff76d-6e52-454f-bd93-26bca7238b5b
+		summarizeBy: none
+		sourceColumn: Site Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Actual
+		dataType: int64
+		formatString: 0
+		lineageTag: d27721fc-a870-49e6-801f-358da2b8dea9
+		summarizeBy: sum
+		sourceColumn: Actual
+
+		annotation SummarizationSetBy = Automatic
+
+	column Plan
+		dataType: int64
+		formatString: 0
+		lineageTag: f7b6e082-9d2c-46b9-bcfc-972ae3a60918
+		summarizeBy: sum
+		sourceColumn: Plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodNum
+		dataType: int64
+		formatString: 0
+		lineageTag: 54eed82c-48a1-4851-be53-deb9f4c4b04f
+		summarizeBy: sum
+		sourceColumn: PeriodNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearPeriod
+		dataType: string
+		lineageTag: ca4a7304-7e03-4dde-b7ae-e47e4b4fe4a6
+		summarizeBy: none
+		sourceColumn: YearPeriod
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'P_Closing Period Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1612a143-2317-48a1-8c89-d914d736320d
+		summarizeBy: none
+		sourceColumn: P_Closing Period Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Area
+		dataType: string
+		lineageTag: 55e7fce4-2ca9-4108-911f-70fb82463f03
+		summarizeBy: none
+		sourceColumn: Area
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_PWS = m
+		mode: import
+		queryGroup: Fact
+		source = ```
+				let
+				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/GlobalOperationsAndSC/Shared%20Documents/Supply%20Chain%20and%20Operations%20KPIs/PWS%20Savings%20Tracker/Global%20PWS%20Savings%20Tracker.xlsx"), null, true),
+				    #"Graph Data_Sheet" = Source{[Item="Graph Data",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Graph Data_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Column1", type text}, {"P1", type any}, {"P2", type any}, {"P3", type any}, {"P4", type any}, {"P5", type any}, {"P6", type any}, {"P7", type any}, {"P8", type any}, {"P9", type any}, {"P10", type any}, {"P11", type any}, {"P12", type any}, {"Column14", type any}, {"P1_1", type number}, {"P2_2", type number}, {"P3_3", type number}, {"P4_4", type number}, {"P5_5", type number}, {"P6_6", type number}, {"P7_7", type number}, {"P8_8", type number}, {"P9_9", type any}, {"P10_10", type any}, {"P11_11", type any}, {"P12_12", type any}, {"Column27", type any}, {"Column28", type any}, {"AllSites", type text}, {"Actual", type text}, {"AllSitesActual", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column14", "P1_1", "P2_2", "P3_3", "P4_4", "P5_5", "P6_6", "P7_7", "P8_8", "P9_9", "P10_10", "P11_11", "P12_12", "Column27", "Column28", "AllSites", "Actual", "AllSitesActual"}),
+				    #"Kept Range of Rows" = Table.Range(#"Removed Columns",0,16),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Kept Range of Rows", {"Column1"}, "Attribute", "Value"),
+				    
+				    // Extract KPI name (removes only "Actual"/"Plan")
+				    #"Added KPI" = Table.AddColumn(#"Unpivoted Other Columns", "KPI", each Text.Replace(Text.Replace([Column1], "Actual", ""), "Plan", "")),
+				    
+				    // Create Actual/Target flag
+				    #"Added Flag" = Table.AddColumn(#"Added KPI", "Type", each if Text.EndsWith([Column1], "Actual") then "Actual" else "Plan"),
+				    
+				    // Remove old Column1
+				    #"Removed Old Column1" = Table.RemoveColumns(#"Added Flag",{"Column1"}),
+				    
+				    // Pivot Actual vs Target into columns
+				    #"Pivoted Column" = Table.Pivot(
+				        #"Removed Old Column1", 
+				        List.Distinct(#"Removed Old Column1"[Type]), 
+				        "Type", "Value"
+				    ),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Pivoted Column",{{"KPI", type text}, {"Actual", Int64.Type}, {"Plan", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type1",{{"Attribute", "Period"}, {"KPI", "Site Name"}}),
+				    #"Inserted Text Range" = Table.AddColumn(#"Renamed Columns", "PeriodNum", each Text.Middle([Period], 1, 2), Int64.Type
+				),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Inserted Text Range",{{"PeriodNum", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each Date.Year(DateTime.LocalNow()) * 100 + [PeriodNum]),
+				    #"Merged Queries" = Table.NestedJoin(#"Added Custom", {"YearPeriod"}, #"Dim_Closing Dates", {"P_YearMonth"}, "Dim_Closing Dates", JoinKind.LeftOuter),
+				    #"Expanded Dim_Closing Dates" = Table.ExpandTableColumn(#"Merged Queries", "Dim_Closing Dates", {"P_Closing Period Date"}, {"P_Closing Period Date"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Expanded Dim_Closing Dates", "Area", each if [Site Name] = "PMI" then "CSCA" else if [Site Name] = "POC" then "CSCA" else if [Site Name] = "NUT" then "CSCA" else if [Site Name] = "PNY" then "CSCA" else "CSCI")
+				in
+				    #"Added Conditional Column"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
