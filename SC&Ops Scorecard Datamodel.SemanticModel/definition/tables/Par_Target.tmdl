@@ -79,7 +79,7 @@ table Par_Target
 				    ("CAPA Plan", NAMEOF('Measure'[CAPA Plan]), 32),
 				    ("RFT Plan", NAMEOF('Measure'[RFT Plan]), 33),
 				    ("CFR Plan", NAMEOF('Measure'[CFR Target]), 34),
-				    ("Customer Fines Plan", NAMEOF('Measure'[Customer Fines Target]), 35)
+				    ("Customer Fines Plan", NAMEOF('Measure'[Customer Fines Target New]), 35)
 				    
 				}
 				```

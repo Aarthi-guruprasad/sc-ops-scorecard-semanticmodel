@@ -1,6 +1,16 @@
 table Fact_Customer_Fines
 	lineageTag: 51a1bd27-2826-45e9-ac65-f852cfd497ce
 
+	measure Map_Customer_Target =
+			
+			Var area = SELECTEDVALUE(Dim_Profit_Center[Area])
+			var site_area = SELECTEDVALUE(Fact_Target[Area])
+			RETURN
+			IF(DISTINCTCOUNT(Dim_Profit_Center[Area]) > 1 , 1,
+			    IF(area = site_area,1,0))
+		formatString: 0
+		lineageTag: de774137-13b1-433a-b471-acb9a919dcd5
+
 	column 'Document Date'
 		dataType: dateTime
 		formatString: Long Date
