@@ -34,14 +34,6 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Site name'
-		dataType: string
-		lineageTag: abe13599-aa70-4a99-871b-c32f0aafa2eb
-		summarizeBy: none
-		sourceColumn: Site name
-
-		annotation SummarizationSetBy = Automatic
-
 	column Cluster
 		dataType: string
 		lineageTag: 3723dcb1-2d79-4983-b081-2675106731b8
@@ -112,6 +104,22 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Customer Name'
+		dataType: string
+		lineageTag: 1734bcc5-6340-496b-9980-3386a8d13ddb
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target_Cust/12 = IF(Fact_Target[KPI_Name] = "Customer Fines ($)",DIVIDE(Fact_Target[Target],12),Fact_Target[Target])
+		lineageTag: eced9b09-04aa-4b0f-b8e0-bcdc5d4ab2ff
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition Fact_Target = m
 		mode: import
 		queryGroup: Fact
@@ -119,7 +127,7 @@ table Fact_Target
 				let
 				    Source = Excel.Workbook(Web.Contents("https://perrigo.sharepoint.com/sites/O365GRP_CentralizedSupplyChainAnalytics/Shared%20Documents/Sigmoid-Business-Documentation/Reports/Supporting%20Documents/Fact_Target.xlsx"), null, true),
 				    Target_Split_Table = Source{[Item="Target_Split",Kind="Table"]}[Data],
-				    #"Changed Type" = Table.TransformColumnTypes(Target_Split_Table,{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Site name", type text}, {"Cluster", type text}, {"Profit Center Dummy Key", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}, {"Unit", type text}})
+				    #"Changed Type" = Table.TransformColumnTypes(Target_Split_Table,{{"KPI_Name", type text}, {"Plan/Flex", type text}, {"Frequency", type text}, {"Period/Year", Int64.Type}, {"Customer Name", type text}, {"Cluster", type text}, {"Profit Center Dummy Key", type text}, {"Area", type text}, {"CompositeKey", type text}, {"Period", type text}, {"Target", Int64.Type}, {"Unit", type text}})
 				in
 				    #"Changed Type"
 
