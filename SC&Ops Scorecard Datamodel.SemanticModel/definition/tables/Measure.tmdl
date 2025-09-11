@@ -12005,6 +12005,215 @@ table Measure
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
+	measure 'PWS Benefits' = SUM(Fact_PWS[Actual])
+		formatString: 0
+		displayFolder: PWS
+		lineageTag: a422add8-f02f-4677-9dfd-97f06c1bff66
+
+	measure 'PWS Benefits Plan' = SUM(Fact_PWS[Plan])
+		formatString: 0
+		displayFolder: PWS
+		lineageTag: a259e30e-fb21-40ce-a9ab-2c7bebafcc77
+
+	measure 'PWS Benefits PP' =
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([PWS Benefits],filter_)
+			RETURN
+			Result
+		formatString: 0
+		displayFolder: PWS
+		lineageTag: 06739195-ab67-492c-b5e9-13eb1be7df98
+
+	measure 'PWS Benefits PY' = ```
+			
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([PWS Benefits],filter_)
+			
+			```
+		formatString: 0
+		displayFolder: PWS
+		lineageTag: de19efb0-1a84-4a45-b5cc-5b5924d7071c
+
+	measure 'PWS Benefits LYTD' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [PWS Benefits PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			DIVIDE([PWS Benefits] - Result,Result)
+			```
+		displayFolder: PWS
+		lineageTag: a2f1d752-7820-4794-93ce-56d15bbb9e55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS Benefits MoM%' =
+			
+			DIVIDE(([PWS Benefits] - [PWS Benefits PP]),[PWS Benefits PP])
+		displayFolder: PWS
+		lineageTag: 7d49cb26-b2d8-4de2-bf41-d62bf422c2fd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS Benefits YoY%' =
+			
+			DIVIDE(([PWS Benefits] - [PWS Benefits PY]),[PWS Benefits PY])
+		displayFolder: PWS
+		lineageTag: e8865023-fdaa-479a-a96b-b3b673442996
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS Benefits YTD' =
+			VAR _LastMonth = MAX(Dim_Date[P_YearMonth Number])
+			VAR _SelectedYear = MAX(Dim_Date[P_Year])
+			RETURN
+			    SUMX(
+			        FILTER(
+			            ALL(Dim_Date),
+			            Dim_Date[P_YearMonth Number] <= _LastMonth && Dim_Date[P_Year] = _SelectedYear
+			        ),
+			        [PWS Benefits]
+			    )
+		formatString: 0
+		displayFolder: PWS
+		lineageTag: fb0774ee-c91e-461c-ae2a-c06056cdf3c3
+
+	measure 'PWS Benefits MoM_Final' = ```
+			
+			VAR kpi_ = [PWS Benefits MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: PWS
+		lineageTag: 05554ce2-a647-4311-93c7-79b1c95eb00f
+
+	measure 'PWS Benefits YoY_Final' = ```
+			
+			VAR kpi_ = [PWS Benefits YoY%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: PWS
+		lineageTag: 3f6f3ab7-3ac6-4e9e-a37f-1aac320cefda
+
+	measure 'PWS Benefits LYTD_Final' = ```
+			
+			VAR kpi_ = [PWS Benefits LYTD]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: PWS
+		lineageTag: fcf48894-5096-4a9e-95da-cd943bea4e66
+
+	measure 'PWS Benefits_APN' =
+			
+			VAR Plan = [PWS Benefits Plan]
+			RETURN
+			DIVIDE([PWS Benefits] - Plan,Plan)
+		displayFolder: PWS
+		lineageTag: a5893e91-0607-4263-8136-f19c940a7d73
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS Benefits_APN_Final' =
+			
+			VAR kpi_ = [PWS Benefits_APN]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: PWS
+		lineageTag: d8a22ccd-14c8-4abb-a60c-fec7a43e43d6
+
+	measure 'PWS Benefits Switch' = ```
+			
+			  VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [PWS Benefits MoM_Final],
+			      "LYTD", [PWS Benefits LYTD_Final],
+			      "vs YoY", [PWS Benefits YoY_Final],
+			      "vs Plan", [PWS Benefits_APN_Final],
+			      BLANK()
+			    )
+			
+			
+			```
+		displayFolder: PWS
+		lineageTag: 5010020d-9e6c-4d3d-8917-ae1df6976e25
+
+	measure 'PWS Benefits_Color' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [PWS Benefits MoM%],
+			        "LYTD", [PWS Benefits LYTD],
+			        "vs YoY", [PWS Benefits YoY%],
+			        "vs Plan",[PWS Benefits_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			        IF(
+			            kpi_value > 0,
+			            "#1A9641",  -- green for ▼ down
+			            "#D7191C"  -- red for ▲ up
+			        )
+		displayFolder: PWS
+		lineageTag: 153fa370-3a56-4c10-b3cb-da2003d85629
+
+	measure 'PWS Benefits_Color_KPI' =
+			
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [PWS Benefits MoM%],
+			        "LYTD", [PWS Benefits LYTD],
+			        "vs YoY", [PWS Benefits YoY%],
+			        "vs Plan", [PWS Benefits_APN],
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        ISBLANK(kpi_value), "#001489",
+			        IF(
+			            kpi_value > 0,
+			            "#001489",  -- blue by default
+			            "#D7191C"  -- red for ▲ up
+			        )
+			)
+		displayFolder: PWS
+		lineageTag: 028fa8d9-0d6c-4195-a13a-0d5773706a44
+
 	column Measures
 		dataType: string
 		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f
