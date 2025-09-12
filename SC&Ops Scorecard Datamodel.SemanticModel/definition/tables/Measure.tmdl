@@ -12050,18 +12050,16 @@ table Measure
 			return
 			DIVIDE([PWS Benefits] - Result,Result)
 			```
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: PWS
 		lineageTag: a2f1d752-7820-4794-93ce-56d15bbb9e55
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'PWS Benefits MoM%' =
 			
 			DIVIDE(([PWS Benefits] - [PWS Benefits PP]),[PWS Benefits PP])
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: PWS
 		lineageTag: 7d49cb26-b2d8-4de2-bf41-d62bf422c2fd
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'PWS Benefits YoY%' =
 			
@@ -12213,6 +12211,76 @@ table Measure
 			)
 		displayFolder: PWS
 		lineageTag: 028fa8d9-0d6c-4195-a13a-0d5773706a44
+
+	measure 'LR Cust Fines Color' = ```
+			
+			VAR LastRefreshed = [LR Cust Fines]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 844b7452-5755-4da8-8ae2-e91558b574ba
+
+	measure 'LR CFR Color' = ```
+			
+			VAR LastRefreshed = [LR CFR]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: f21eb78b-91e0-4831-9ca0-62ce4a1098f2
+
+	measure 'LR OEE Color' = ```
+			
+			VAR LastRefreshed = [LR OEE]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 3203e73b-932b-4d6c-9340-89690ddda779
+
+	measure 'LR GR Color' = ```
+			
+			VAR LastRefreshed = [LR GR]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 788d4c25-21a5-4320-8eed-48236be6dee0
+
+	measure 'LR FA CSCA Color' = ```
+			
+			VAR LastRefreshed = [LR FA CSCA]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 989afaaa-0921-4300-93b3-34df8747d57c
 
 	column Measures
 		dataType: string
