@@ -107,9 +107,10 @@ table Fact_PWS
 				    #"Added Custom" = Table.AddColumn(#"Changed Type2", "YearPeriod", each Date.Year(DateTime.LocalNow()) * 100 + [PeriodNum]),
 				    #"Merged Queries" = Table.NestedJoin(#"Added Custom", {"YearPeriod"}, #"Dim_Closing Dates", {"P_YearMonth"}, "Dim_Closing Dates", JoinKind.LeftOuter),
 				    #"Expanded Dim_Closing Dates" = Table.ExpandTableColumn(#"Merged Queries", "Dim_Closing Dates", {"P_Closing Period Date"}, {"P_Closing Period Date"}),
-				    #"Added Conditional Column" = Table.AddColumn(#"Expanded Dim_Closing Dates", "Area", each if [Site Name] = "PMI" then "CSCA" else if [Site Name] = "POC" then "CSCA" else if [Site Name] = "NUT" then "CSCA" else if [Site Name] = "PNY" then "CSCA" else "CSCI")
+				    #"Added Conditional Column" = Table.AddColumn(#"Expanded Dim_Closing Dates", "Area", each if [Site Name] = "PMI" then "CSCA" else if [Site Name] = "POC" then "CSCA" else if [Site Name] = "NUT" then "CSCA" else if [Site Name] = "PNY" then "CSCA" else "CSCI"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Added Conditional Column","NUT","PWI",Replacer.ReplaceText,{"Site Name"})
 				in
-				    #"Added Conditional Column"
+				    #"Replaced Value"
 				```
 
 	annotation PBI_NavigationStepName = Navigation
