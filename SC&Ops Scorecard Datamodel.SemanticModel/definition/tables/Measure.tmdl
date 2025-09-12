@@ -12282,6 +12282,36 @@ table Measure
 		displayFolder: Refresh Details
 		lineageTag: 989afaaa-0921-4300-93b3-34df8747d57c
 
+	measure 'Last Refresh' = MAX('Last Refresh'[Date Last Refreshed])
+		formatString: dd-mm-yyyy hh:nn AM/PM
+		displayFolder: Misc
+		lineageTag: 9723f24b-a170-4f51-bff8-dd1906d96cd2
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'LR DPO/DSO' = ```
+			
+			MAX ( 'Fact_DSO_DPO_ABP'[Last Refresh])
+			
+			```
+		formatString: General Date
+		displayFolder: Refresh Details
+		lineageTag: 073ffd35-3733-4e71-8aed-0a160db55aee
+
+	measure 'LR DPO/DSO Color' = ```
+			
+			VAR LastRefreshed = [LR DPO/DSO]
+			RETURN
+			IF (
+			    DATEVALUE ( LastRefreshed ) >= TODAY () - 2,
+			    "#001489",   -- Blue (within 2 days)
+			    "#D7191C"    -- Red (older than 2 days)
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 50e4a805-2151-4aa1-b0a8-ce22a282656d
+
 	column Measures
 		dataType: string
 		lineageTag: c1d6289c-8a22-4893-aafb-8e461169c89f
