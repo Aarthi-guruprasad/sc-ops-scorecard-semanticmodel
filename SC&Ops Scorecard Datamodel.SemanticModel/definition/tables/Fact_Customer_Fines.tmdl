@@ -84,6 +84,12 @@ table Fact_Customer_Fines
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Customer Name' = SWITCH(Fact_Customer_Fines[ComplianceName], "AssociatedWholesaleGrocers", "Associated Wholesale Grocers", Fact_Customer_Fines[ComplianceName])
+		lineageTag: 399bd938-f2e9-41a8-8384-3fe17d02e0bf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Customer_Fines = m
 		mode: import
 		queryGroup: Fact
