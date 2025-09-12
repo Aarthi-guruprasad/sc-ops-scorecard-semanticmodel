@@ -1,0 +1,25 @@
+table Dim_Customer
+	lineageTag: 0fe41e0a-4edf-4fa7-b92f-b44098e8d6ed
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: a1cfbe6c-860b-4a6f-b47a-f4ca854e42ca
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Customer = m
+		mode: import
+		queryGroup: Dim
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bZNNk9owDIb/iodTO0Ngtwd6TgKBbfnoEArToXsQiUhcjM34A5b99TWRs2V3esoj6bUkW8p223kcPA7YZDEdPs3HOXuapz32KeNnZAkKdfncee5uO3GcjXKiJKVvrURJJHaorVHyt3t4+PLVsBz2eIHr+6Bh/Q+BkhMc4VXJgKi5UU4XSLYxquBgsWQbXw4NCGRjrQrUphEkWHZZArbusqb4wPd8VZL6SnjFpsoG5Tf6pqTL3/Ldp2uDZChjC0W4JtdQCQF6jBI1iDsPW2mkjjM4cnFl5G48Yw7SshFUghST3qiX/KMeIWh/cbZCtEjHJr+i9WjEMqVKllulkTr8Hq3jaEWoVRXEhF2Waf9SM7zeeAniVBv/VU6W1zCaRj1VOwGXN556ZilIKOE/rn5eq9OpfaAZ8j+h5g+3E/ylwWWS+425dTrlSvYnICXslS5pdZZogYvEGS7RmBz1mRfhNktuMeY0rRyO7f6kwu2C74xRHPkhklnU0hUHNgN9wDDXvAZZ4kvgptU2zVC76qYNh0+eQM7B1GQ7L12DcI21Al0hCVfqFMb+U/r+yjlY58d9ux+V3IA4tlk9R7cSLI3vY/fvuYED7lHLNl75XZEhk//ZFixbLIb3+wXHMIh2p5dsyI3VfOf8IviTz38B", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Customer Name" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Customer Name", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
