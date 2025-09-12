@@ -11999,11 +11999,11 @@ table Measure
 		lineageTag: ec66cb95-e0c1-4f6a-bd0a-70d7b3a8491b
 
 	measure 'Customer Fines Target New' = CALCULATE(SUM(Fact_Target[Target_Cust/12]), KEEPFILTERS(Fact_Target[KPI_Name] = "Customer Fines ($)"))
-		formatString: \$#,0;(\$#,0);\$#,0
+		formatString: #,0
 		displayFolder: Customer Fines
 		lineageTag: 1271ed04-2aba-47a8-b2fb-e05d836713ff
 
-		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'PWS Benefits' = SUM(Fact_PWS[Actual])
 		formatString: 0

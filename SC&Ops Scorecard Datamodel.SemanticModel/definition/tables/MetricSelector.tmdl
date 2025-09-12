@@ -28,7 +28,7 @@ table MetricSelector
 			    "Operating Income", [Operating Income APN_Base],
 			    "Gross PPV", [Gross PPV APN_base],
 			    "Net POV", [Net POV APN_base],
-			    "Customer Fines", BLANK(),
+			    "Customer Fines", [Customer Fines Target New],
 			    "Distribution to COGS", [Total Distribution on COGS_APN_Base],
 			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_APN_Base],
 			    "SSSO: Shrinkage", [SSSO: Shrinkage APN_Base],
