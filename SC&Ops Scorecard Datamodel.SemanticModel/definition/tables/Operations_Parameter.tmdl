@@ -32,6 +32,7 @@ table Operations_Parameter
 				    "ASTM Incidents","#,00",
 				    "Good Catch Closure Rate%","0.0%",
 				    "pSIF SIF Focus Action%","0.0%",
+				    "PWS Benefits", "#,0",
 				    "General"  --fallback
 				)
 
