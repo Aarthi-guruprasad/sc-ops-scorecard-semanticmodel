@@ -1409,6 +1409,7 @@ table Measure
 				    "ASTM Incidents","#,00",
 				    "Good Catch Closure Rate%","0.0%",
 				    "pSIF SIF Focus Action%","0.0%",
+				    "PWS Benefits", "#,0",
 				    "#,0"  --fallback
 				)
 
@@ -4216,9 +4217,25 @@ table Measure
 			)
 			
 			```
-		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Switch Measures
 		lineageTag: 46ad6b7c-6671-4187-b08a-d072791c8fce
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operations_Parameter[Parameter Name]),
+				    "CAPA Completion Rate%", "0.0%",
+				    "On Time Closure of Deviations%", "0.0%",
+				    "RFT%", "0.0%",
+				    "Critical or Major Observations", "#,0",
+				    "OEE%", "0.0%",
+				    "Schedule Attainment", "0.0%",
+				    "ASTM Rate","#,00",
+				    "ASTM Incidents","#,00",
+				    "Good Catch Closure Rate%","0.0%",
+				    "pSIF SIF Focus Action%","0.0%",
+				    "PWS Benefits", "#,0",
+				    "General"  --fallback
+				)
 
 	measure Switch_Plan_OI = ```
 			SWITCH(

@@ -469,6 +469,9 @@ table 'Table Waterfall'
 				    "Critical or Major Observations", "#,0",
 				    "OEE%", "0.0%",
 				    "Schedule Attainment", "0.0%",
+				    "Good Catch Closure Rate%","0.0%",
+				    "pSIF SIF Focus Action%","0.0%",
+				    "PWS Benefits", "#,0",
 				    "General"  --fallback
 				)
 
