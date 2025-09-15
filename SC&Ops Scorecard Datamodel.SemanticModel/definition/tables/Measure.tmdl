@@ -1368,7 +1368,8 @@ table Measure
 			            "ASTM Rate",[ASTM Rate PY],
 			    "ASTM Incidents",[ASTM Incidents PY],
 			    "Good Catch Closure Rate%",[Good Catch Closure Rate PY],
-			    "pSIF SIF Focus Action%",[pSIF SIFs Focus PY]
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus PY],
+			    "PWS Benefits",[PWS Benefits PY]
 			            )
 			
 			```
@@ -1387,7 +1388,8 @@ table Measure
 			            "ASTM Rate",[ASTM Rate YTD],
 			            "ASTM Incidents",[ASTM Incidents YTD],
 			            "Good Catch Closure Rate%",[Good Catch Closure Rate YTD],
-			            "pSIF SIF Focus Action%",[pSIF SIFs Focus YTD]
+			            "pSIF SIF Focus Action%",[pSIF SIFs Focus YTD],
+			            "PWS Benefits",[PWS Benefits YTD]
 			            )
 			
 			```
@@ -4209,7 +4211,8 @@ table Measure
 			    "ASTM Rate",[ASTM Rate Plan],
 			    "ASTM Incidents",[ASTM Incidents Plan],
 			    "Good Catch Closure Rate%",[Good Catch Closure Plan],
-			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan]
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan],
+			    "PWS Benefits",[PWS Benefits Plan]
 			)
 			
 			```
@@ -9728,7 +9731,10 @@ table Measure
 			        "pSIF_Closure_vsYoY",[pSIF SIFs Focus YoY%],
 			        "pSIF_Closure_vsLYTD",BLANK(),
 			
-			
+			        "PWS_Benefits_vsPlan",[PWS Benefits_APN],
+			        "PWS_Benefits_vsPP",[PWS Benefits MoM%],
+			        "PWS_Benefits_vsYoY",[PWS Benefits YoY%],
+			        "PWS_Benefits_vsLYTD",[PWS Benefits LYTD],
 			
 			        BLANK()
 			    )
@@ -10071,6 +10077,11 @@ table Measure
 			        "pSIF_Closure_vsPP",[pSIF SIFs Focus MoM%],
 			        "pSIF_Closure_vsYoY",[pSIF SIFs Focus YoY%],
 			        "pSIF_Closure_vsLYTD",BLANK(),
+			
+			        "PWS_Benefits_vsPlan",[PWS Benefits_APN],
+			        "PWS_Benefits_vsPP",[PWS Benefits MoM%],
+			        "PWS_Benefits_vsYoY",[PWS Benefits YoY%],
+			        "PWS_Benefits_vsLYTD",[PWS Benefits LYTD],
 			
 			        BLANK()
 			    )
@@ -12294,9 +12305,11 @@ table Measure
 			MAX ( 'Fact_DSO_DPO_ABP'[Last Refresh])
 			
 			```
-		formatString: General Date
+		formatString: dd-mm-yyyy hh:nn AM/PM
 		displayFolder: Refresh Details
 		lineageTag: 073ffd35-3733-4e71-8aed-0a160db55aee
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	measure 'LR DPO/DSO Color' = ```
 			

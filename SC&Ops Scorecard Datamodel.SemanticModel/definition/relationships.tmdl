@@ -265,14 +265,6 @@ relationship d03dd813-6c74-3ab6-7ae3-fb45b222e37c
 	fromColumn: Fact_Target.'Closing Date'
 	toColumn: Dim_Date.Date
 
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
-
 relationship a7fa2939-6118-6db1-4e82-a926098b1beb
 	fromColumn: Fact_OEE_Baseline.'Location UUID'
 	toColumn: Dim_Locations.'Location UUID'
@@ -300,4 +292,12 @@ relationship 055b348b-7928-eeef-f666-3715ce0d5030
 relationship c893cb8e-4c46-db6b-f796-26a9621d2ac7
 	fromColumn: Fact_Target.'Customer Name'
 	toColumn: Dim_Customer.'Customer Name'
+
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
 
