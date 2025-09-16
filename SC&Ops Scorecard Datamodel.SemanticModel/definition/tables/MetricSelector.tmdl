@@ -55,6 +55,11 @@ table MetricSelector
 			    "RFT%", [RFT Plan],
 			    "ABP Variance", [ABP Variance_APN_Base],
 			    "Service Top 11",[Service Top 11 Target],
+			    "ASTM Rate",[ASTM Rate Plan],
+			    "ASTM Incidents",[ASTM Incidents Plan],
+			    "Good Catch Closure Rate%",[Good Catch Closure Plan],
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan],
+			    "PWS Benefits",[PWS Benefits Plan],
 			    "Critical or Major Observations", BLANK()
 			    
 			)
@@ -130,6 +135,11 @@ table MetricSelector
 			    "CFR%", [CFR],
 			    "ABP Variance",[ABP Variance],
 			    "Service Top 11",[Service Top 11],
+			    "ASTM Rate",[ASTM -Rate],
+			    "ASTM Incidents",[ASTM Incidents],
+			    "Good Catch Closure Rate%",[GOOD Catch Closure Rate],
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus],
+			    "PWS Benefits",[PWS Benefits],
 			    BLANK()
 			)
 			
@@ -149,7 +159,7 @@ table MetricSelector
 			    _kpi IN {
 			        "OEE%", "Schedule Attainment%", "Service%", "CFR%", 
 			        "FA% Lag 2", "FA% Lag 4", "Bias% Lag 2", "Bias% Lag 4", 
-			        "On Time Closure of Deviations%", "CAPA Completion Rate%", "RFT%", "Distribution to COGS","% Logistics vs Net Sales"
+			        "On Time Closure of Deviations%", "CAPA Completion Rate%", "RFT%", "Distribution to COGS","% Logistics vs Net Sales","Good Catch Closure Rate%","pSIF SIF Focus Action%"
 			    }, FORMAT(_rawValue, "0.0%"),
 			    FORMAT(_rawValue, "#,##0")
 			)
