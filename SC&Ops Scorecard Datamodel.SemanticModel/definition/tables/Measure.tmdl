@@ -2341,7 +2341,7 @@ table Measure
 		lineageTag: 335e9732-9e14-4c58-9e92-ede5ae25f272
 
 	measure 'Total Distribution on COGS LYTD' =
-			VAR LYTD = DIVIDE([Distribution Actual LYTD], [COGS Actual LYTD])
+			VAR LYTD = DIVIDE([Distribution Actual LYTD], [COGS Actual LYTD_base])
 			Return
 			[Total Distribution on COGS Actual] - LYTD
 		formatString: 0.00%;-0.00%;0.00%
@@ -12341,6 +12341,20 @@ table Measure
 			```
 		displayFolder: Refresh Details
 		lineageTag: 50e4a805-2151-4aa1-b0a8-ce22a282656d
+
+	measure 'COGS Actual LYTD_base' = ```
+			
+			VAR Table_ = 
+			ADDCOLUMNS(
+			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [COGS Actual PY])
+			VAR Result = Sumx(Table_,[Measure])
+			return
+			Result
+			```
+		displayFolder: Distribution on COGS
+		lineageTag: d550c92f-1485-4552-b5cb-dbcc7adf91bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Measures
 		dataType: string

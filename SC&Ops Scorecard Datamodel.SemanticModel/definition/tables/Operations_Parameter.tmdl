@@ -49,7 +49,7 @@ table Operations_Parameter
 			    "ASTM Incidents",[ASTM Incidents MoM%],
 			    "Good Catch Closure Rate%",[Good Catch Closure Rate MoM%],
 			    "pSIF SIF Focus Action%",[pSIF SIFs Focus MoM%],
-			    "PWS Benefits",[PWS Benefits MoM%]
+			    "PWS Benefits",[PWS Benefits] - [PWS Benefits PP]
 			)
 		displayFolder: Switch Measures
 		lineageTag: 8263421b-d318-4cc2-a712-92a5629c31e4
