@@ -1476,8 +1476,13 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Salvage & Obs PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([SSSO: Salvage & Obsolescence] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([SSSO: Salvage & Obsolescence] - Result,Result)
+			)
+			
 			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: SSSO Salvage & Obs
@@ -1684,8 +1689,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Obs linked to Conv PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([SSSO: Obsolescenes linked to Conversions] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([SSSO: Obsolescenes linked to Conversions] - Result,Result)
+			)
 			```
 		displayFolder: SSSO Obs linked to Conv
 		lineageTag: 91bbeda9-37ed-48bd-8d67-7d32fd48fd78
@@ -1713,8 +1722,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Scrap-Off PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([SSSO: Scrap-Off] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([SSSO: Scrap-Off] - Result,Result)
+			)
 			```
 		displayFolder: SSSO Scrap-Off
 		lineageTag: e48d7b6f-8e08-452e-bb79-f3074cced861
@@ -1742,8 +1755,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Expired Inventory PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Expired Inventory] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Expired Inventory] - Result,Result)
+			)
 			```
 		displayFolder: Expired Inventory
 		lineageTag: 0a4410a4-7467-48f9-a52b-33b847efd3eb
@@ -1771,8 +1788,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net Inventory PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Net Inventory] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Net Inventory] - Result,Result)
+			)
 			```
 		displayFolder: Net Inventory
 		lineageTag: f14979e2-92d3-44d9-858c-08d95b5170c9
@@ -1800,8 +1821,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Gross Inventory PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Gross Inventory] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Gross Inventory] - Result,Result)
+			)
 			```
 		displayFolder: Gross Inventory
 		lineageTag: ee1252bd-3a1c-49fd-bac9-7efd395e1d68
@@ -1829,8 +1854,13 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Inflated Inventory PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Inflated Inventory] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Inflated Inventory] - Result,Result)
+			)
+			
 			```
 		displayFolder: Inflated Inventory
 		lineageTag: e99eb12f-5ad3-45ed-b43a-8f05fd69e574
@@ -2012,12 +2042,19 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Service Rate LYTD' =
+	measure 'Service Rate LYTD' = ```
 			
 			VAR LYTD = DIVIDE([On Delivery LYTD],[Order EA LYTD])
 			
 			RETURN
-			[Service Rate%] - LYTD
+			
+			IF(
+			    ISBLANK(LYTD) || LYTD = 0,
+			    BLANK(),
+			    [Service Rate%] - LYTD
+			)
+			
+			```
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Service Rate CSCA
 		lineageTag: a261ab25-734f-45b1-9098-844703b727c0
@@ -2090,7 +2127,13 @@ table Measure
 			VAR LYTD = DIVIDE([10% adh LYTD],[SA Orders LYTD],0)
 			
 			RETURN
-			[Schedule Attn] - LYTD
+			
+			
+			IF(
+			    ISBLANK(LYTD) || LYTD = 0,
+			    BLANK(),
+			    [Schedule Attn] - LYTD
+			)
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Schedule Attainment
 		lineageTag: 037e0363-67c1-477c-9988-e49593b0542e
@@ -2367,11 +2410,18 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net Sales Actual PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
 			DIVIDE([Net Sales Actual] - Result,Result)
+			)
+			
 			```
 		displayFolder: Net Sales
 		lineageTag: f5bfd51e-577e-4068-b2e9-744e962a282b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net Sales Actual MoM%' =
 			VAR alldate_ = all(Dim_Date)
@@ -3164,8 +3214,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [COGS Actual PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([COGS Actual] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([COGS Actual] - Result,Result)
+			)
 			```
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: COGS
@@ -3395,8 +3449,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Cust fine PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Customer Fines] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Customer Fines] - Result,Result)
+			)
 			```
 		displayFolder: Customer Fines
 		lineageTag: f082c729-559a-4147-919a-3224a0289d29
@@ -4228,13 +4286,13 @@ table Measure
 				    "RFT%", "0.0%",
 				    "Critical or Major Observations", "#,0",
 				    "OEE%", "0.0%",
-				    "Schedule Attainment", "0.0%",
+				    "Schedule Attainment%", "0.0%",
 				    "ASTM Rate","#,00",
 				    "ASTM Incidents","#,00",
 				    "Good Catch Closure Rate%","0.0%",
 				    "pSIF SIF Focus Action%","0.0%",
 				    "PWS Benefits", "#,0",
-				    "General"  --fallback
+				    "--"  --fallback
 				)
 
 	measure Switch_Plan_OI = ```
@@ -4371,11 +4429,18 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Net POV Actual PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Net POV Actual] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Net POV Actual] - Result, Result)
+			)
+			
 			```
 		displayFolder: Net POV
 		lineageTag: 4ecf8c42-c212-4df6-937d-8497767eadf6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Net POV Actual MoM_Final' = ```
 			VAR kpi_ =  [Net POV Actual MoM%]
@@ -4513,11 +4578,17 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Gross PPV Actual PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Gross PPV Actual] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Gross PPV Actual] - Result,Result)
+			)
 			```
 		displayFolder: Gross PPV
 		lineageTag: 7c15aa88-6832-4b29-a0e9-6a08a46f91f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gross PPV Actual MoM_Final' = ```
 			VAR kpi_ =  [Gross PPV Actual MoM%]
@@ -4655,11 +4726,18 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Operating Income Actual PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Operating Income Actual] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Operating Income Actual] - Result,Result)
+			)
+			
 			```
 		displayFolder: Operating Income
 		lineageTag: 8c10fe0d-cdfb-4e80-a0fb-9ee887b51012
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Operating Income Actual MoM_Final' = ```
 			VAR kpi_ =  [Operating Income Actual MoM%]
@@ -5895,8 +5973,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [Critical or Major Observations PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([Critical or Major Observations] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([Critical or Major Observations] - Result,Result)
+			)
 			```
 		displayFolder: Critical or Major Obs
 		lineageTag: 4c797d01-b750-4ddd-bb89-52e25aefb6a5
@@ -6090,8 +6172,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ABP Variance PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([ABP Variance] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([ABP Variance] - Result,Result)
+			)
 			```
 		formatString: 0.0
 		displayFolder: ABP Variance
@@ -6380,7 +6466,9 @@ table Measure
 		displayFolder: Service Top 11
 		lineageTag: 274be111-f374-4942-8aaf-13bd20897307
 
-	measure 'Service Top 11 LYTD' = DIVIDE([Service Top 11] - [Service Top 11 LYTD Base], [Service Top 11 LYTD Base])
+	measure 'Service Top 11 LYTD' =
+			
+			DIVIDE([Service Top 11] - [Service Top 11 LYTD Base], [Service Top 11 LYTD Base])
 		displayFolder: Service Top 11
 		lineageTag: 1a3d0f8c-77d8-49bb-af7a-36711a136d35
 
@@ -10250,9 +10338,6 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
-	measure TEST = "test"
-		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
-
 	measure Bias_Lower_Limit = ```
 			
 			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
@@ -10418,171 +10503,8 @@ table Measure
 		displayFolder: Net Sales
 		lineageTag: 2a2be204-6ced-4c69-9a9f-2f742ad498dd
 
-	measure 'SSSO: Obso Conv_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Obso Conv_APN_Base],
-			    2, [SSSO: Obso Conv_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Obs linked to Conv
-		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Salvage & Obs_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Salvage & Obs_APN_Base],
-			    2, [SSSO: Salvage & Obs_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Salvage & Obs
-		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Scrap-off_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Scrap-off APN_Base],
-			    2, [SSSO: Scrap-off F66_Base]
-			)
-			```
-		displayFolder: SSSO Scrap-Off
-		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure COGS_switch_target = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [COGS_APN_Base],
-			    2, [COGS_AFX_Base]
-			)
-			```
-		displayFolder: COGS
-		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics on Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics on Net Sales_APN_Base],
-			    2, [Total Logistics on Net Sales_AFX_Base]
-			)
-			```
-		displayFolder: Logistic vs Net Sales
-		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics Plan],
-			    2, [Total Logistics Flex]
-			)
-			```
-		displayFolder: Logistic
-		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Distribution on COGS_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Distribution on COGS_APN_Base],
-			    2, [Total Distribution on COGS_AFX_Base]
-			)
-			```
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: Distribution on COGS
-		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
-
-	measure 'Gross PPV_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Gross PPV APN_base]
-			)
-			
-			```
-		displayFolder: Gross PPV
-		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Net Sales_APN_Base],
-			    2, [Net Sales_AFX_Base]
-			)
-			```
-		formatString: 0.0
-		displayFolder: Net Sales
-		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
-
-	measure 'Operating Income_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Operating Income APN_Base]
-			
-			)
-			```
-		displayFolder: Operating Income
-		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure Switch_Plan_Flex_OI = ```
-			SWITCH(
-			    VALUES( Operating_Parameter[Operating_Parameter] ),
-			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
-			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
-			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
-			    "Net Sales", [Net Sales_switch_target],
-			    "COGS", [COGS_switch_target],
-			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
-			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
-			    "Customer Fines", [Customer Fines Target],
-			    "Operating Income", [Operating Income_switch_target],
-			    "Gross PPV", [Gross PPV APN_base],
-			    "Net POV", [Net POV APN_base],
-			    "ABP Variance", [ABP Variance_APN_Base]
-			)
-			
-			```
-		displayFolder: Switch Measures
-		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
-
-		formatStringDefinition =
-				SWITCH(
-				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
-				    "SSSO: Salvage & Obs", "#,0",
-				    "SSSO: Scrap-Off", "#,0",
-				    "COGS", "#,0",
-				    "Distribution to COGS", "0.0%",
-				    "Operating Income", "#,0",
-				    "Net POV", "#,0",
-				    "SSSO: Obs linked to Conv","#,0",
-				    "Net Sales", "#,0",
-				    "% Logistics vs Net Sales", "0.0%",
-				    "Customer Fines", "#,0",
-				    "Gross PPV","#,0",
-				    "ABP Variance","#,0"
-				)
+	measure TEST = "test"
+		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
 
 	measure 'ASTM -Rate' = ```
 			
@@ -10834,8 +10756,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ASTM Rate PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([ASTM -Rate] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([ASTM -Rate] - Result,Result)
+			)
 			```
 		displayFolder: ASTM Rate
 		lineageTag: 0e1573dc-5d82-457c-9186-13be1f11a51f
@@ -10848,8 +10774,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [ASTM Incidents PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([ASTM Incidents] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([ASTM Incidents] - Result,Result)
+			)
 			```
 		displayFolder: ASTM Incidents
 		lineageTag: 247e980a-76c1-47db-a7d8-a4e1b3e0b8ae
@@ -11498,6 +11428,172 @@ table Measure
 		displayFolder: pSIF SIFs Focus
 		lineageTag: aff6b7fc-7709-4d45-92e8-b16aaa302526
 
+	measure 'SSSO: Obso Conv_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Obso Conv_APN_Base],
+			    2, [SSSO: Obso Conv_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Salvage & Obs_APN_Base],
+			    2, [SSSO: Salvage & Obs_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Scrap-off APN_Base],
+			    2, [SSSO: Scrap-off F66_Base]
+			)
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_switch_target = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [COGS_APN_Base],
+			    2, [COGS_AFX_Base]
+			)
+			```
+		displayFolder: COGS
+		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics on Net Sales_APN_Base],
+			    2, [Total Logistics on Net Sales_AFX_Base]
+			)
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics Plan],
+			    2, [Total Logistics Flex]
+			)
+			```
+		displayFolder: Logistic
+		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Distribution on COGS_APN_Base],
+			    2, [Total Distribution on COGS_AFX_Base]
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
+		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
+
+	measure 'Gross PPV_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Gross PPV APN_base]
+			)
+			
+			```
+		displayFolder: Gross PPV
+		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Net Sales_APN_Base],
+			    2, [Net Sales_AFX_Base]
+			)
+			```
+		formatString: 0.0
+		displayFolder: Net Sales
+		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
+
+	measure 'Operating Income_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Operating Income APN_Base]
+			
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
+			    "Net Sales", [Net Sales_switch_target],
+			    "COGS", [COGS_switch_target],
+			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income_switch_target],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		displayFolder: Switch Measures
+		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
 	measure 'ASTM Incidents Plan' = ```
 			
 			VAR _area = SELECTEDVALUE(Bridge_CSCA_CSCI[Area])   -- Your area field (CSCA / CSCI)
@@ -12075,8 +12171,12 @@ table Measure
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [PWS Benefits PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([PWS Benefits] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([PWS Benefits] - Result,Result)
+			)
 			```
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: PWS
