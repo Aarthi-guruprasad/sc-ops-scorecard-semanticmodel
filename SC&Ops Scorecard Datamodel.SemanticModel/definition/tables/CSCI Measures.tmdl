@@ -736,8 +736,12 @@ table 'CSCI Measures'
 			ADDCOLUMNS(
 			Summarize(Dim_Date,Dim_Date[P_YearPeriod]), "Measure", [SSSO: Shrinkage PY])
 			VAR Result = Sumx(Table_,[Measure])
-			return
-			DIVIDE([SSSO Shrinkage] - Result,Result)
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    DIVIDE([SSSO Shrinkage] - Result,Result)
+			)
 			```
 		displayFolder: SSSO Shrinkage
 		lineageTag: 5343bbcb-c548-49e7-9e04-83b008d51d56
@@ -819,14 +823,15 @@ table 'CSCI Measures'
 		displayFolder: Service Level CSCI
 		lineageTag: 74a86cdb-189a-4ac9-bd83-f61577f121fd
 
-	measure 'Service Level LYTD' = ```
+	measure 'Service Level LYTD' =
 			
 			VAR Result = ( 1 - ([Cut_Qty_Base_LYTD]/[Order_Qty_base_LYTD]) )
-			return
-			[Service Level %] - Result
-			
-			
-			```
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    [Service Level %] - Result
+			)
 		displayFolder: Service Level CSCI
 		lineageTag: d8b02648-df3e-4270-b9f0-0022fff7e3f3
 
