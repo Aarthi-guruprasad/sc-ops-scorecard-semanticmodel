@@ -187,14 +187,6 @@ relationship 0aacb90b-4d5b-099c-0257-1d505aa06c87
 	fromColumn: Fact_SALESORDER_PBI_Full.'Reason for rejection'
 	toColumn: Dim_Rejection_Reason_Code.'SAP Reason Code Number'
 
-relationship 535dcc49-1450-7175-b6af-35344cea456d
-	fromColumn: Fact_BS.Date
-	toColumn: Dim_Date.Date
-
-relationship 21e4b818-8d2a-95a3-42f8-4b2fdfde1c88
-	fromColumn: Fact_BS.'Profit Center'
-	toColumn: Dim_Profit_Center.'Profit Center'
-
 relationship 25413bf7-e6e3-631f-2db8-412a4aa2f9a6
 	fromColumn: Fact_Customer_Fines.'Document Date'
 	toColumn: Dim_Date.Date
@@ -257,6 +249,14 @@ relationship 61b27430-eb57-f4de-a832-efae3ee287a7
 	fromColumn: Fact_Quality.Site
 	toColumn: Bridge_Site_Area.'Site Hierarchy'
 
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
+
 relationship bffd6f11-bef1-72bf-3cea-ddcdd04eb2f5
 	fromColumn: Fact_Safety.'Closing Date'
 	toColumn: Dim_Date.Date
@@ -292,12 +292,4 @@ relationship 055b348b-7928-eeef-f666-3715ce0d5030
 relationship c893cb8e-4c46-db6b-f796-26a9621d2ac7
 	fromColumn: Fact_Target.'Customer Name'
 	toColumn: Dim_Customer.'Customer Name'
-
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
 

@@ -357,13 +357,13 @@
           "z": 3000.00
         },
         {
-          "config": "{\"name\":\"94d122307f7205d42858\",\"layouts\":[{\"id\":0,\"position\":{\"x\":624,\"y\":0,\"width\":560,\"height\":272,\"z\":4001,\"tabOrder\":4001}}],\"singleVisual\":{\"visualType\":\"card\",\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "config": "{\"name\":\"94d122307f7205d42858\",\"layouts\":[{\"id\":0,\"position\":{\"x\":624,\"y\":0,\"width\":560,\"height\":272,\"z\":5000,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"card\",\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[]",
           "height": 272.00,
           "width": 560.00,
           "x": 624.00,
           "y": 0.00,
-          "z": 4001.00
+          "z": 5000.00
         },
         {
           "config": "{\"name\":\"98edda037c845feb897b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":224,\"y\":416,\"z\":4000,\"width\":320,\"height\":304,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Operating_Parameter.Operating_Parameter\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"o\",\"Entity\":\"Operating_Parameter\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"o\"}},\"Property\":\"Operating_Parameter\"},\"Name\":\"Operating_Parameter.Operating_Parameter\",\"NativeReferenceName\":\"Operating_Parameter\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"filter\":{\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"o\",\"Entity\":\"Operating_Parameter\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"o\"}},\"Property\":\"Inventory_Parameter Fields\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'''Measure''[Customer Fines]'\"}}]]}}}]}}}}]},\"cachedFilterDisplayItems\":[{\"id\":{\"scopeId\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"Operating_Parameter\"}},\"Property\":\"Inventory_Parameter Fields\"}},\"Right\":{\"Literal\":{\"Value\":\"'''Measure''[Customer Fines]'\"}}}}},\"displayName\":\"Customer Fines\"}]}}",
@@ -467,13 +467,13 @@
           "z": 19000.00
         },
         {
-          "config": "{\"name\":\"1dd7dc2f6aa510694dd2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1001.2289933797318,\"y\":777.7403787860417,\"z\":34001,\"width\":402.27950626864225,\"height\":300.96466765283606,\"tabOrder\":34001}}],\"singleVisual\":{\"visualType\":\"card\",\"drillFilterOtherVisuals\":true}}",
+          "config": "{\"name\":\"1dd7dc2f6aa510694dd2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1001.2289933797318,\"y\":777.7403787860417,\"z\":35000,\"width\":402.27950626864225,\"height\":300.96466765283606,\"tabOrder\":35000}}],\"singleVisual\":{\"visualType\":\"card\",\"drillFilterOtherVisuals\":true}}",
           "filters": "[]",
           "height": 300.96,
           "width": 402.28,
           "x": 1001.23,
           "y": 777.74,
-          "z": 34001.00
+          "z": 35000.00
         },
         {
           "config": "{\"name\":\"200b276d579181f218cc\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1250,\"y\":573.4046174576712,\"z\":30000,\"height\":90,\"width\":300,\"tabOrder\":27000}}],\"singleVisual\":{\"visualType\":\"shape\",\"drillFilterOtherVisuals\":true,\"objects\":{\"shape\":[{\"properties\":{\"tileShape\":{\"expr\":{\"Literal\":{\"Value\":\"'rectangle'\"}}}}}],\"rotation\":[{\"properties\":{\"shapeAngle\":{\"expr\":{\"Literal\":{\"Value\":\"0L\"}}}}}],\"outline\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}},{\"properties\":{\"lineColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#001489'\"}}}}},\"transparency\":{\"expr\":{\"Literal\":{\"Value\":\"50D\"}}}},\"selector\":{\"id\":\"default\"}}],\"text\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}},{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"18D\"}}},\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#001489'\"}}}}}},\"selector\":{\"id\":\"default\"}}],\"fill\":[{\"properties\":{\"fillColor\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#001489'\"}}}}}},\"selector\":{\"id\":\"default\"}},{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"glow\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}],\"shadow\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}},\"howCreated\":\"InsertVisualButton\"}",
