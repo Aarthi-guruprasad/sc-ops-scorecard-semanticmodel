@@ -2149,6 +2149,9 @@ table 'CSCI Measures'
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 5b47b5a0-54c4-43c5-89f9-4f24ac37e2a1
 
+	measure 'Active Products CSCI' = DISTINCTCOUNTNOBLANK(Fact_ActiveProducts_CSCI[Global Material Number])
+		lineageTag: 31ad91e5-f213-4874-a476-f4f867293c52
+
 	column Measures
 		dataType: string
 		lineageTag: de87435d-c35b-41f4-9f44-035aafb6672f
