@@ -1629,19 +1629,6 @@
             "width": 234
           },
           "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 5914.3287572384415,
-            "y": 271.78954615626878
-          },
-          "nodeIndex": "Fact_BS",
-          "nodeLineageTag": "42a6c082-a7fc-4f31-81b9-81d1f0ebe352",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
         }
       ],
       "name": "Layout 2",
@@ -1701,19 +1688,6 @@
       "nodes": [
         {
           "location": {
-            "x": 588,
-            "y": 232
-          },
-          "nodeIndex": "Fact_BS",
-          "nodeLineageTag": "42a6c082-a7fc-4f31-81b9-81d1f0ebe352",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
             "x": 169,
             "y": 315
           },
@@ -1753,19 +1727,6 @@
         "y": 0
       },
       "nodes": [
-        {
-          "location": {
-            "x": 334.1847511806298,
-            "y": -17.065109177343828
-          },
-          "nodeIndex": "Fact_BS",
-          "nodeLineageTag": "42a6c082-a7fc-4f31-81b9-81d1f0ebe352",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
-        },
         {
           "location": {
             "x": 618.36163941535983,
@@ -1999,8 +1960,88 @@
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
       "tablesLocked": false
+    },
+    {
+      "ordinal": 9,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 469,
+            "y": 367
+          },
+          "nodeIndex": "Fact_ActiveProducts_CSCI",
+          "nodeLineageTag": "ef379ba5-c3a9-4868-8165-721e5219371e",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 136,
+            "y": 222
+          },
+          "nodeIndex": "Dim_Brand",
+          "nodeLineageTag": "938fadbd-9a2b-4aaa-97e3-aadfa8670188",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 743,
+            "y": 135
+          },
+          "nodeIndex": "Dim_Date",
+          "nodeLineageTag": "65a1632f-33aa-4443-9884-310ff6ee41d6",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 940,
+            "y": 603
+          },
+          "nodeIndex": "Dim_Material_Plant",
+          "nodeLineageTag": "8cf0e9a4-939f-400c-b743-7edf3148c9f7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 382,
+            "y": 717
+          },
+          "nodeIndex": "Dim_Profit_Center",
+          "nodeLineageTag": "db8257d0-43ac-4c75-81f3-d64af52ed630",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 9",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
     }
   ],
-  "selectedDiagram": "All tables",
+  "selectedDiagram": "Layout 9",
   "defaultDiagram": "All tables"
 }

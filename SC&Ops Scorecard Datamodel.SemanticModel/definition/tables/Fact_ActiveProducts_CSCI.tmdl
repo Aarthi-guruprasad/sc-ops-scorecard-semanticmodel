@@ -1,0 +1,62 @@
+table Fact_ActiveProducts_CSCI
+	lineageTag: ef379ba5-c3a9-4868-8165-721e5219371e
+
+	column 'P_Closing Period Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8afd7280-81be-4317-a497-869d4c7ab637
+		summarizeBy: none
+		sourceColumn: P_Closing Period Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Global Material Number'
+		dataType: string
+		lineageTag: 14137fca-483a-4219-b36a-ee4431af2f28
+		summarizeBy: none
+		sourceColumn: Global Material Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Profit Center'
+		dataType: string
+		lineageTag: a16b8aff-cf47-4a5c-8a42-ddf9dcfc570b
+		summarizeBy: none
+		sourceColumn: Profit Center
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand ID'
+		dataType: string
+		lineageTag: b6f8634a-50aa-4563-b9d9-f55e29fa2cea
+		summarizeBy: none
+		sourceColumn: Brand ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Distinct Count PlantMaterial'
+		dataType: int64
+		formatString: 0
+		lineageTag: c325f1f7-e5e0-4f0f-a194-9357ecaede35
+		summarizeBy: sum
+		sourceColumn: Distinct Count PlantMaterial
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_ActiveProducts_CSCI = m
+		mode: import
+		queryGroup: Fact
+		source =
+				let
+				    Query1 = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/Global%20Supply%20Chain", "IBP - Active Product Portfolio - Dataset", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)MEASURE Fact_IBP[Distinct Count PlantMaterial] = CALCULATE(DISTINCTCOUNTNOBLANK( Fact_IBP[Global Material Number] ), keepfilters(Dim_ProductStatus[Active - Inactive] = ""Active""))#(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    Dim_Date[P_Closing Period Date],#(lf)    Fact_IBP[Global Material Number],#(lf)    Dim_PC[Profit Center],#(lf)    Dim_Brand[Brand ID],#(lf)    ""Distinct Count PlantMaterial"", [Distinct Count PlantMaterial]#(lf))#(lf)ORDER BY #(lf)    Dim_Date[P_Closing Period Date] ASC,#(lf)    Fact_IBP[Global Material Number] ASC,#(lf)    Dim_PC[Profit Center] ASC,#(lf)    Dim_Brand[Brand ID] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
+				    #"Renamed Columns" = Table.RenameColumns(Query1,{{"Dim_Date[P_Closing Period Date]", "P_Closing Period Date"}, {"Fact_IBP[Global Material Number]", "Global Material Number"}, {"Dim_PC[Profit Center]", "Profit Center"}, {"Dim_Brand[Brand ID]", "Brand ID"}, {"[Distinct Count PlantMaterial]", "Distinct Count PlantMaterial"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"P_Closing Period Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
