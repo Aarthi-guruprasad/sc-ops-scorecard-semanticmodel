@@ -55,8 +55,6 @@ table MetricSelector
 			    "RFT%", [RFT Plan],
 			    "ABP Variance", [ABP Variance_APN_Base],
 			    "Service Top 11",[Service Top 11 Target],
-			    "ASTM Rate",[ASTM Rate Plan],
-			    "ASTM Incidents",[ASTM Incidents Plan],
 			    "Good Catch Closure Rate%",[Good Catch Closure Plan],
 			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan],
 			    "PWS Benefits",[PWS Benefits Plan],
