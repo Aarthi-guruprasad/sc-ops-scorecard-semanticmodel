@@ -71,15 +71,13 @@ table Par_Target
 				    ("Net Sales Plan", NAMEOF('Measure'[Net Sales_APN_Base]), 24),
 				    ("Total Logistics on Net Sales Plan", NAMEOF('Measure'[Total Logistics on Net Sales_APN_Base]), 25),
 				    ("Operating Income Plan", NAMEOF('Measure'[Operating Income APN_Base]), 26),
-				    ("ASTM Incidents Plan", NAMEOF('Measure'[ASTM Incidents Plan_Target]), 27),
-				    ("ASTM Rate Plan", NAMEOF('Measure'[ASTM Rate Plan_Target]), 28),
-				    ("pSIF SIFs Focus Plan", NAMEOF('Measure'[pSIF SIFs Focus Plan_Target]), 29),
-				    ("Good Catch Closure Plan", NAMEOF('Measure'[Good Catch Closure Plan_Target]), 30),
-				    ("Deviations Plan", NAMEOF('Measure'[Deviations Plan]), 31),
-				    ("CAPA Plan", NAMEOF('Measure'[CAPA Plan]), 32),
-				    ("RFT Plan", NAMEOF('Measure'[RFT Plan]), 33),
-				    ("CFR Plan", NAMEOF('Measure'[CFR Target]), 34),
-				    ("Customer Fines Plan", NAMEOF('Measure'[Customer Fines Target New]), 35)
+				    ("pSIF SIFs Focus Plan", NAMEOF('Measure'[pSIF SIFs Focus Plan_Target]), 27),
+				    ("Good Catch Closure Plan", NAMEOF('Measure'[Good Catch Closure Plan_Target]), 28),
+				    ("Deviations Plan", NAMEOF('Measure'[Deviations Plan]), 29),
+				    ("CAPA Plan", NAMEOF('Measure'[CAPA Plan]), 30),
+				    ("RFT Plan", NAMEOF('Measure'[RFT Plan]), 31),
+				    ("CFR Plan", NAMEOF('Measure'[CFR Target]), 32),
+				    ("Customer Fines Plan", NAMEOF('Measure'[Customer Fines Target New]), 33)
 				    
 				}
 				```
