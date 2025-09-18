@@ -2149,8 +2149,182 @@ table 'CSCI Measures'
 		displayFolder: Forecast Accuracy CSCI
 		lineageTag: 5b47b5a0-54c4-43c5-89f9-4f24ac37e2a1
 
-	measure 'Active Products CSCI' = DISTINCTCOUNTNOBLANK(Fact_ActiveProducts_CSCI[Global Material Number])
+	measure 'Active Products' = DISTINCTCOUNTNOBLANK(Fact_ActiveProducts_CSCI[Global Material Number])
+		displayFolder: Active Products CSCI
 		lineageTag: 31ad91e5-f213-4874-a476-f4f867293c52
+
+	measure 'Active Products LYTD' =
+			VAR Result = ( 1 - ([Cut_Qty_Base_LYTD]/[Order_Qty_base_LYTD]) )
+			RETURN
+			IF(
+			    ISBLANK(Result) || Result = 0,
+			    BLANK(),
+			    [Active Products] - Result
+			)
+		displayFolder: Active Products CSCI
+		lineageTag: 907a11be-8327-4f91-859d-89efe9f54021
+
+	measure 'Active Products LYTD_Final' =
+			VAR kpi_ =  [Active Products LYTD]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+		displayFolder: Active Products CSCI
+		lineageTag: b4df95d5-72dd-4844-b94a-05a44d1c0f79
+
+	measure 'Active Products MoM' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Active Products],filter_)
+			VAR Result =[Active Products] - Net_PM
+			RETURN
+			Result
+		displayFolder: Active Products CSCI
+		lineageTag: 80a5c40c-df49-4cb5-8ccf-5ffa317db3f2
+
+	measure 'Active Products MoM%' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Net_PM = Calculate([Active Products],filter_)
+			VAR Result = DIVIDE(([Active Products] - Net_PM),Net_PM)
+			RETURN
+			Result
+		displayFolder: Active Products CSCI
+		lineageTag: 9a019e36-879c-4753-80b5-2282194ddcee
+
+	measure 'Active Products MoM_Final' = ```
+			VAR kpi_ =  [Active Products MoM%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Active Products CSCI
+		lineageTag: 4c73d5d2-3091-4499-bc81-193000c08b44
+
+	measure 'Active Products PP' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -1 )
+			VAR Result = Calculate([Active Products],filter_)
+			RETURN
+			Result
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Active Products CSCI
+		lineageTag: 8a4ebf72-99cb-4e15-ba21-af2dfd358e64
+
+	measure 'Active Products PY' =
+			VAR alldate_ = all(Dim_Date)
+			VAR YearPeriodSeq_ = value( MAX(Dim_Date[YearPeriodSeq]) )
+			VAR Filter_ = Filter(alldate_, Dim_Date[YearPeriodSeq] = YearPeriodSeq_ -12 )
+			
+			RETURN
+			Calculate([Active Products],filter_)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Active Products CSCI
+		lineageTag: 73195abe-c5bf-4bfa-bcda-503d615135a9
+
+	measure 'Active Products Switch' =
+			VAR _sel = SELECTEDVALUE( MetricSelector[Metric], "vs PP" )
+			  RETURN
+			    SWITCH(
+			      _sel,
+			      "vs PP", [Active Products MoM_Final],
+			      "LYTD",               [Active Products LYTD_Final],
+			      "vs YoY",               [Active Products YoY_Final],
+			      "vs Plan", [Service Target_CSCI_Final],
+			      BLANK()
+			    )
+		displayFolder: Active Products CSCI
+		lineageTag: b420d4de-439c-460b-87cc-d1928b90a11f
+
+	measure 'Active Products YoY%' = DIVIDE(([Active Products] - [Active Products PY]),[Active Products PY])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Active Products CSCI
+		lineageTag: ebe44b44-2aa3-46fd-8a73-7a742343ce9a
+
+	measure 'Active Products YoY_Final' =
+			VAR kpi_ = [Active Products YoY%]
+			RETURN
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			)
+		displayFolder: Active Products CSCI
+		lineageTag: 5cd0e078-af7d-4926-b85a-23e156113406
+
+	measure Active_Products_Color = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Active Products MoM%],
+			        "LYTD", [Active Products LYTD],
+			        "vs YoY", [Active Products YoY%], 
+			        "vs Plan", BLANK(),
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#000000",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- Red for ▼ down
+			            "#1A9641"   -- Green for ▲ up
+			        )
+			    )
+			)
+			```
+		displayFolder: Active Products CSCI
+		lineageTag: 46e7fa0b-b1c8-4c14-bff6-eacd5f1e1e26
+
+	measure Active_Products_Color_KPI = ```
+			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
+			
+			VAR kpi_value =
+			    SWITCH(
+			        _sel,
+			        "vs PP", [Active Products MoM%],
+			        "LYTD", [Active Products LYTD],
+			        "vs YoY", [Active Products YoY%], 
+			        "vs Plan", BLANK(),
+			        BLANK()
+			    )
+			
+			RETURN
+			IF(
+			        _sel = "YTD",
+			        "#000000",  -- Always black for YTD
+			    IF(
+			        ISBLANK(kpi_value), "#001489",  -- black for blank
+			        IF(
+			            kpi_value < 0,
+			            "#D7191C",  -- Red for ▼ down
+			            "#001489"   -- Green for ▲ up
+			        )
+			    )
+			)
+			```
+		displayFolder: Active Products CSCI
+		lineageTag: 9fa1f348-4b28-4e77-bfd2-3d2aef669b07
 
 	column Measures
 		dataType: string
