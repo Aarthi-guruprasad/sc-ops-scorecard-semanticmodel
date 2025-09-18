@@ -10,7 +10,8 @@ table Sales_Parameter_CSCI
 			    "FA% Lag 4",[FA% L4],
 			    "Bias% Lag 1",[Bias L1 CSCI],
 			    "Bias% Lag 4", [Bias L4 CSCI],
-			    "Service Level%",[Service Level %]
+			    "Service Level%",[Service Level %],
+			    "Active Products", [Active Products]
 			)
 			```
 		displayFolder: Switch Measures
@@ -25,7 +26,8 @@ table Sales_Parameter_CSCI
 			    "FA% Lag 4",[FA% MoM L4 raw CSCI],
 			    "Bias% Lag 1",[Bias MoM%_raw L1 CSCI],
 			    "Bias% Lag 4", [Bias MoM%_raw L4 CSCI],
-			    "Service Level%",[Service Level MoM]
+			    "Service Level%",[Service Level MoM],
+			    "Active Products", [Active Products MoM%]
 			)
 			```
 		displayFolder: Switch Measures
@@ -81,7 +83,8 @@ table Sales_Parameter_CSCI
 				    ("FA% Lag 4", NAMEOF('CSCI Measures'[FA% L4]), 1, "FA% Lag 4"),
 				    ("Bias% Lag 1", NAMEOF('CSCI Measures'[Bias L1 CSCI]), 2, "Bias% Lag 1"),
 				    ("Bias% Lag 4", NAMEOF('CSCI Measures'[Bias L4 CSCI]), 3, "Bias% Lag 4"),
-				    ("Service Level%", NAMEOF('CSCI Measures'[Service Level %]), 4, "Service Level%")
+				    ("Service Level%", NAMEOF('CSCI Measures'[Service Level %]), 4, "Service Level%"),
+				    ("Active Products", NAMEOF('CSCI Measures'[Active Products]), 4, "Service Level%")
 				}
 
 	annotation PBI_Id = e622275d108444d4ab8eb9f776980ef7
