@@ -1217,6 +1217,7 @@ table 'CSCI Measures'
 			            "Service Level%", [Service level% YTD],
 			            "Bias% Lag 1", CALCULATE([Bias_YTD CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 1)),
 			            "Bias% Lag 4", CALCULATE([Bias_YTD CSCI],KEEPFILTERS(Fact_IBP_Sales_CSCI[Lag] = 4)),
+			            "Active Products", [Active Products LYTD],
 			            BLANK())
 			
 			```
@@ -2161,6 +2162,7 @@ table 'CSCI Measures'
 			    BLANK(),
 			    [Active Products] - Result
 			)
+		formatString: 0
 		displayFolder: Active Products CSCI
 		lineageTag: 907a11be-8327-4f91-859d-89efe9f54021
 
@@ -2218,7 +2220,7 @@ table 'CSCI Measures'
 			VAR Result = Calculate([Active Products],filter_)
 			RETURN
 			Result
-		formatString: 0.0%;-0.0%;0.0%
+		formatString: 0
 		displayFolder: Active Products CSCI
 		lineageTag: 8a4ebf72-99cb-4e15-ba21-af2dfd358e64
 
@@ -2229,7 +2231,7 @@ table 'CSCI Measures'
 			
 			RETURN
 			Calculate([Active Products],filter_)
-		formatString: 0.0%;-0.0%;0.0%
+		formatString: 0
 		displayFolder: Active Products CSCI
 		lineageTag: 73195abe-c5bf-4bfa-bcda-503d615135a9
 
@@ -2241,11 +2243,13 @@ table 'CSCI Measures'
 			      "vs PP", [Active Products MoM_Final],
 			      "LYTD",               [Active Products LYTD_Final],
 			      "vs YoY",               [Active Products YoY_Final],
-			      "vs Plan", [Service Target_CSCI_Final],
+			      "vs Plan", BLANK(),
 			      BLANK()
 			    )
 		displayFolder: Active Products CSCI
 		lineageTag: b420d4de-439c-460b-87cc-d1928b90a11f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Active Products YoY%' = DIVIDE(([Active Products] - [Active Products PY]),[Active Products PY])
 		formatString: 0.0%;-0.0%;0.0%
@@ -2287,8 +2291,9 @@ table 'CSCI Measures'
 			        ISBLANK(kpi_value), "#000000",  -- black for blank
 			        IF(
 			            kpi_value < 0,
-			            "#D7191C",  -- Red for ▼ down
-			            "#1A9641"   -- Green for ▲ up
+			         
+			            "#1A9641" ,  -- Green for ▼ down
+			             "#D7191C"  -- Red for ▲ up
 			        )
 			    )
 			)

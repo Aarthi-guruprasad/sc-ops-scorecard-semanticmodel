@@ -27,11 +27,13 @@ table Sales_Parameter_CSCI
 			    "Bias% Lag 1",[Bias MoM%_raw L1 CSCI],
 			    "Bias% Lag 4", [Bias MoM%_raw L4 CSCI],
 			    "Service Level%",[Service Level MoM],
-			    "Active Products", [Active Products MoM%]
+			    "Active Products", [Active Products MoM]
 			)
 			```
 		displayFolder: Switch Measures
 		lineageTag: e0f9a080-1b91-483f-82f4-ceda13830006
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Sales_Parameter_CSCI
 		lineageTag: c2e00691-b368-4766-bd2f-f394b77e5177
@@ -84,7 +86,7 @@ table Sales_Parameter_CSCI
 				    ("Bias% Lag 1", NAMEOF('CSCI Measures'[Bias L1 CSCI]), 2, "Bias% Lag 1"),
 				    ("Bias% Lag 4", NAMEOF('CSCI Measures'[Bias L4 CSCI]), 3, "Bias% Lag 4"),
 				    ("Service Level%", NAMEOF('CSCI Measures'[Service Level %]), 4, "Service Level%"),
-				    ("Active Products", NAMEOF('CSCI Measures'[Active Products]), 4, "Service Level%")
+				    ("Active Products", NAMEOF('CSCI Measures'[Active Products]), 5, "Active Products")
 				}
 
 	annotation PBI_Id = e622275d108444d4ab8eb9f776980ef7
