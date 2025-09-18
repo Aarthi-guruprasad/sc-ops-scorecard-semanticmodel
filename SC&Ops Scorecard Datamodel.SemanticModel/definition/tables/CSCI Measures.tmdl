@@ -1221,9 +1221,19 @@ table 'CSCI Measures'
 			            BLANK())
 			
 			```
-		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Switch Measures
 		lineageTag: bc081bb5-0f7f-41b3-b911-d0b85925cfa7
+
+		formatStringDefinition = ```
+				SWITCH(selectedvalue(Sales_Parameter_CSCI[Parameter Name]),
+				            "FA% Lag 1", "0.0%",
+				            "FA% Lag 4", "0.0%",
+				            "Service Level%", "0.0%",
+				            "Bias% Lag 1","0.0%",
+				            "Bias% Lag 4", "0.0%",
+				            "Active Products","#,0")
+				   
+				```
 
 	measure 'FA Target L1 Diff%_CSCI' = ```
 			
