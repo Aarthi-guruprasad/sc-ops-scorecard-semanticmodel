@@ -6007,7 +6007,7 @@ table Measure
 		lineageTag: c0182232-6355-4f58-b268-c664a677e288
 
 	measure 'ABP Variance' = SUM(Fact_DSO_DPO_ABP[ABP_Variance])*1000
-		formatString: 0.0
+		formatString: #,0.0
 		displayFolder: ABP Variance
 		lineageTag: f3a47495-0f92-47a2-82e6-13df475dc8bb
 
@@ -10334,9 +10334,6 @@ table Measure
 		displayFolder: Landing Page Measures
 		lineageTag: 2803087f-5d12-4fb2-893c-23287a8143b3
 
-	measure TEST = "test"
-		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
-
 	measure Bias_Lower_Limit = ```
 			
 			VAR _sel = SELECTEDVALUE(Sales_Parameter[Parameter Name])
@@ -10502,171 +10499,8 @@ table Measure
 		displayFolder: Net Sales
 		lineageTag: 2a2be204-6ced-4c69-9a9f-2f742ad498dd
 
-	measure 'SSSO: Obso Conv_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Obso Conv_APN_Base],
-			    2, [SSSO: Obso Conv_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Obs linked to Conv
-		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Salvage & Obs_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Salvage & Obs_APN_Base],
-			    2, [SSSO: Salvage & Obs_AFX_Base]
-			)
-			```
-		displayFolder: SSSO Salvage & Obs
-		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'SSSO: Scrap-off_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [SSSO: Scrap-off APN_Base],
-			    2, [SSSO: Scrap-off F66_Base]
-			)
-			```
-		displayFolder: SSSO Scrap-Off
-		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure COGS_switch_target = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [COGS_APN_Base],
-			    2, [COGS_AFX_Base]
-			)
-			```
-		displayFolder: COGS
-		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics on Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics on Net Sales_APN_Base],
-			    2, [Total Logistics on Net Sales_AFX_Base]
-			)
-			```
-		displayFolder: Logistic vs Net Sales
-		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Logistics_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Logistics Plan],
-			    2, [Total Logistics Flex]
-			)
-			```
-		displayFolder: Logistic
-		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Total Distribution on COGS_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Total Distribution on COGS_APN_Base],
-			    2, [Total Distribution on COGS_AFX_Base]
-			)
-			```
-		formatString: 0.0%;-0.0%;0.0%
-		displayFolder: Distribution on COGS
-		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
-
-	measure 'Gross PPV_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Gross PPV APN_base]
-			)
-			
-			```
-		displayFolder: Gross PPV
-		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Net Sales_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Net Sales_APN_Base],
-			    2, [Net Sales_AFX_Base]
-			)
-			```
-		formatString: 0.0
-		displayFolder: Net Sales
-		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
-
-	measure 'Operating Income_switch_target' = ```
-			SWITCH(
-			    MIN( Par_Targets[Rank] ),
-			    
-			    1, [Operating Income APN_Base]
-			
-			)
-			```
-		displayFolder: Operating Income
-		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure Switch_Plan_Flex_OI = ```
-			SWITCH(
-			    VALUES( Operating_Parameter[Operating_Parameter] ),
-			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
-			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
-			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
-			    "Net Sales", [Net Sales_switch_target],
-			    "COGS", [COGS_switch_target],
-			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
-			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
-			    "Customer Fines", [Customer Fines Target],
-			    "Operating Income", [Operating Income_switch_target],
-			    "Gross PPV", [Gross PPV APN_base],
-			    "Net POV", [Net POV APN_base],
-			    "ABP Variance", [ABP Variance_APN_Base]
-			)
-			
-			```
-		displayFolder: Switch Measures
-		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
-
-		formatStringDefinition =
-				SWITCH(
-				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
-				    "SSSO: Salvage & Obs", "#,0",
-				    "SSSO: Scrap-Off", "#,0",
-				    "COGS", "#,0",
-				    "Distribution to COGS", "0.0%",
-				    "Operating Income", "#,0",
-				    "Net POV", "#,0",
-				    "SSSO: Obs linked to Conv","#,0",
-				    "Net Sales", "#,0",
-				    "% Logistics vs Net Sales", "0.0%",
-				    "Customer Fines", "#,0",
-				    "Gross PPV","#,0",
-				    "ABP Variance","#,0"
-				)
+	measure TEST = "test"
+		lineageTag: dc2c59a9-34ca-459a-9ad1-d9e420cf1726
 
 	measure 'ASTM -Rate' = ```
 			
@@ -11594,6 +11428,172 @@ table Measure
 		displayFolder: pSIF SIFs Focus
 		lineageTag: aff6b7fc-7709-4d45-92e8-b16aaa302526
 
+	measure 'SSSO: Obso Conv_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Obso Conv_APN_Base],
+			    2, [SSSO: Obso Conv_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 228f7bb7-f5e7-4310-b5c2-931e50fc1853
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Salvage & Obs_APN_Base],
+			    2, [SSSO: Salvage & Obs_AFX_Base]
+			)
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 9c6125fc-f7e1-4d86-9dcd-c63967e1922e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-off_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [SSSO: Scrap-off APN_Base],
+			    2, [SSSO: Scrap-off F66_Base]
+			)
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: b9196331-6ada-4670-b13f-552d4102c1a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure COGS_switch_target = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [COGS_APN_Base],
+			    2, [COGS_AFX_Base]
+			)
+			```
+		displayFolder: COGS
+		lineageTag: 1f8ff73e-e844-4252-ade7-b3977c036560
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics on Net Sales_APN_Base],
+			    2, [Total Logistics on Net Sales_AFX_Base]
+			)
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 979c8f28-5b93-4503-bab3-0b3c8d4e9cea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Logistics Plan],
+			    2, [Total Logistics Flex]
+			)
+			```
+		displayFolder: Logistic
+		lineageTag: f850e074-344c-4f36-9d30-3cc520a69f60
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Distribution on COGS_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Total Distribution on COGS_APN_Base],
+			    2, [Total Distribution on COGS_AFX_Base]
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Distribution on COGS
+		lineageTag: b5207a45-0c0c-4f06-95b7-3e14f12f7945
+
+	measure 'Gross PPV_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Gross PPV APN_base]
+			)
+			
+			```
+		displayFolder: Gross PPV
+		lineageTag: 98155d7f-f2de-45f0-bca6-aee03b86fe95
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Net Sales_APN_Base],
+			    2, [Net Sales_AFX_Base]
+			)
+			```
+		formatString: 0.0
+		displayFolder: Net Sales
+		lineageTag: e1e8814e-2cce-4418-a5e1-82a0947a54c6
+
+	measure 'Operating Income_switch_target' = ```
+			SWITCH(
+			    MIN( Par_Targets[Rank] ),
+			    
+			    1, [Operating Income APN_Base]
+			
+			)
+			```
+		displayFolder: Operating Income
+		lineageTag: eebd4e03-12d1-4184-9631-659c968196d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Switch_Plan_Flex_OI = ```
+			SWITCH(
+			    VALUES( Operating_Parameter[Operating_Parameter] ),
+			    "SSSO: Salvage & Obs", [SSSO: Salvage & Obs_switch_target],
+			    "SSSO: Obs linked to Conv", [SSSO: Obso Conv_switch_target],
+			    "SSSO: Scrap-Off", [SSSO: Scrap-off_switch_target],
+			    "Net Sales", [Net Sales_switch_target],
+			    "COGS", [COGS_switch_target],
+			    "Distribution to COGS", [Total Distribution on COGS_switch_target],
+			    "% Logistics vs Net Sales", [Total Logistics on Net Sales_switch_target],
+			    "Customer Fines", [Customer Fines Target],
+			    "Operating Income", [Operating Income_switch_target],
+			    "Gross PPV", [Gross PPV APN_base],
+			    "Net POV", [Net POV APN_base],
+			    "ABP Variance", [ABP Variance_APN_Base]
+			)
+			
+			```
+		displayFolder: Switch Measures
+		lineageTag: 441cc06b-c30b-4e26-9059-e09b9914dbd4
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(Operating_Parameter[Parameter Name]),
+				    "SSSO: Salvage & Obs", "#,0",
+				    "SSSO: Scrap-Off", "#,0",
+				    "COGS", "#,0",
+				    "Distribution to COGS", "0.0%",
+				    "Operating Income", "#,0",
+				    "Net POV", "#,0",
+				    "SSSO: Obs linked to Conv","#,0",
+				    "Net Sales", "#,0",
+				    "% Logistics vs Net Sales", "0.0%",
+				    "Customer Fines", "#,0",
+				    "Gross PPV","#,0",
+				    "ABP Variance","#,0"
+				)
+
 	measure 'Good Catch Closure Rate YTD' = TOTALYTD([GOOD Catch Closure Rate],Dim_Date[Date])
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: GOOD Catch Closure Rate
@@ -12333,6 +12333,897 @@ table Measure
 			```
 		displayFolder: Refresh Details
 		lineageTag: ee1e0cbc-3b08-4b3f-8bb5-c2db2a09852a
+
+	measure 'ABP Variance Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [ABP Variance]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: ABP Variance
+		lineageTag: e373edf5-1297-407c-ad8d-cf57761611f4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [ASTM Incidents]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: ASTM Incidents
+		lineageTag: 34800e2d-ea6c-49c3-97fb-d77716425333
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq] )
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [ASTM -Rate]
+			    )
+			
+			RETURN
+			    Last3Avg
+		displayFolder: ASTM Rate
+		lineageTag: c7a7a7b2-a6e8-400b-abcc-f32bfe46850a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias% Lag 2]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCA
+		lineageTag: fb6bf12d-89f0-401b-a012-4fd270b55362
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag4 Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias% Lag 4]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCA
+		lineageTag: 4b72dd0d-602c-4b83-ad04-7a6927f2963e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion Rate Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [CAPA Completion Rate]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: CAPA Completion Rate
+		lineageTag: bbdaf3c3-1960-4fef-b99f-d9265932a67f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [CFR]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: CFR
+		lineageTag: 964fe436-5042-4ad1-b395-2273983859a8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'COGS Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [COGS Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: COGS
+		lineageTag: 6846964b-4ab2-4254-adbf-98d522e25338
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Critical or Major Obs Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Critical or Major Observations]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Critical or Major Obs
+		lineageTag: b7bea14e-5aa6-4550-8052-43985531eac1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Fines Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Customer Fines]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Customer Fines
+		lineageTag: c11bb064-1847-493b-99eb-714383cb3124
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DIO Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [DIO]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: DIO
+		lineageTag: c55cb907-4db6-4170-b48a-47aad6b71f45
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Distribution on COGS Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Total Distribution on COGS Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Distribution on COGS
+		lineageTag: 62f96b42-416a-414b-b0ad-f3dd28e6a415
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DPO Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [DPO]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: DPO
+		lineageTag: 683647f1-1c2c-47f4-8b33-86038de4f1ad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DSO Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [DSO]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: DSO
+		lineageTag: 6bd09869-5d68-466e-b085-d6367b150779
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Expired Inventory]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Expired Inventory
+		lineageTag: 8b0a2337-d8c5-492d-970f-11353923253a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA Lag2 Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA% Lag2]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: fdf368ac-bfd7-4fb6-b099-c6fc0b065bca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA Lag4 Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA% Lag4]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: 8fc4c877-1278-4033-a134-58034e85042d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [GOOD Catch Closure Rate]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 8968d08b-bc2d-463a-9115-c95284856480
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Gross Inventory]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Gross Inventory
+		lineageTag: 892a446f-4b47-47a8-a9df-fd886a5a4045
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Gross PPV Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Gross PPV
+		lineageTag: 9258e0a1-49f4-49a1-bb64-6a59bde31d52
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Inflated Inventory]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Inflated Inventory
+		lineageTag: 578b7837-1c86-4ca1-b1db-20aed6845856
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Total Logistics Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Logistic
+		lineageTag: 2d38f8b4-e4b1-40c9-b16c-11bb0593e920
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Total Logistics on Net Sales Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 15822e42-e73a-43bc-9431-be5b0f382e46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inventory Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Net Inventory]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Net Inventory
+		lineageTag: 4f91edee-40ee-4a21-81f9-19c2dde9fc5e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Net POV Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Net POV
+		lineageTag: 21ce9601-5527-4ee6-880b-b47172532b51
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Net Sales Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Net Sales
+		lineageTag: 22258b41-ff86-4352-8e9b-66066a3b41fa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [OEE%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: OEE
+		lineageTag: ac4d6cad-09bf-4fbf-99da-7d85ef609e9a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% Focus Lines Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [OEE Focus Lines%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: OEE FOCUS LINES
+		lineageTag: ce44c526-c10f-4ce2-ab0f-8e3acfef4924
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On Time Closure Dev Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [On Time Closure of Deviations%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: On Time Closure of Deviations
+		lineageTag: 9bc9fa23-bc20-4edf-b478-992ea8bf78b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'operating Income Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Operating Income Actual]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Operating Income
+		lineageTag: 45b8975b-75bb-41f8-bbd1-fb8fcb2b4780
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'pSIF SIFs Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [pSIF SIFs Focus]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 41a10f45-95e0-4e05-8754-27c9d5942afb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [PWS Benefits]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: PWS
+		lineageTag: fd993e53-b79b-4382-b78f-c6c5eba5a805
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [RFT%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: RFT
+		lineageTag: 663e1264-6e6a-4ea5-9274-991fd23b1412
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Schedule Attainment Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Schedule Attn]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Schedule Attainment
+		lineageTag: da3fb686-5180-4236-b67e-bee951093f3d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Rate Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Service Rate%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Service Rate CSCA
+		lineageTag: 7bcaf47b-384d-479a-993b-9ecc032f0a8e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Top 11 Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Service Top 11]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Service Top 11
+		lineageTag: fd3b0824-2b1b-488b-ac91-3e485a35d690
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obs linked to Conv Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [SSSO: Obsolescenes linked to Conversions]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 6ab22bdc-88c7-4d9c-8714-cbc6e4a004a4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [SSSO: Salvage & Obsolescence]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 6215b501-09f5-4e5f-98c1-93a600e7db96
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-Off Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [SSSO: Scrap-Off]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: SSSO Scrap-Off
+		lineageTag: 6aabbdab-63ca-44cf-8d36-b329e8202619
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ABP Variance 3M_diff%' =
+			
+			VAR Result = DIVIDE(([ABP Variance] - [ABP Variance Last 3M Avg]), [ABP Variance Last 3M Avg])
+			RETURN
+			Result
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ABP Variance
+		lineageTag: 89aab1e2-32ca-4629-9d7e-f4675105b356
+
+	measure 'ABP Variance 3M_Final' = ```
+			VAR kpi_ =  [ABP Variance 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: ABP Variance
+		lineageTag: 763d5b38-52cc-4a73-b4d9-57e5cf8a36b2
+
+	measure 'ASTM Incidents 3M_diff%' =
+			
+			VAR Result = DIVIDE(([ASTM Incidents] - [ASTM Incidents Last 3M Avg]), [ASTM Incidents Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: ASTM Incidents
+		lineageTag: ad251664-c8cc-4037-9cdb-f07c70e12a40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Rate 3M_diff%' =
+			
+			VAR Result = DIVIDE(([ASTM Rate] - [ASTM Rate Last 3M Avg]), [ASTM Rate Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: ASTM Rate
+		lineageTag: 925cc2c1-1fbf-4f58-9016-934d359f9525
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag2 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Bias% Lag 2] - [Bias Lag2 Last 3M Avg]), [Bias Lag2 Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCA
+		lineageTag: 60471356-25d7-4cc1-ab7f-3f793101fa41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias Lag4 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Bias% Lag 4] - [Bias Lag4 Last 3M Avg]), [Bias Lag4 Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCA
+		lineageTag: 877ec069-1c0c-4b4a-a9d4-9903455063fd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CAPA Completion 3M_diff%' =
+			
+			VAR Result = DIVIDE(([CAPA Completion Rate] - [CAPA Completion Rate Last 3M Avg]), [CAPA Completion Rate Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: CAPA Completion Rate
+		lineageTag: 493f5871-a5ab-4727-9536-4f1c53cb2167
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'CFR 3M_diff%' =
+			
+			VAR Result = DIVIDE(([CFR] - [CFR Last 3M Avg]), [CFR Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: CFR
+		lineageTag: c9c7bd19-451d-4975-89ab-051861837ad2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'COGS 3M_diff%' =
+			
+			VAR Result = DIVIDE(([COGS Actual] - [COGS Last 3M Avg]), [COGS Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: COGS
+		lineageTag: e54314f4-7ad8-4aff-b396-aed203454a3d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Critical Major Obs 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Critical or Major Observations] - [Critical or Major Obs Last 3M Avg]), [Critical or Major Obs Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Critical or Major Obs
+		lineageTag: 98434e75-1417-45cf-a5e9-4428a5a8dfd8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Fines 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Customer Fines] - [Customer Fines Last 3M Avg]), [Customer Fines Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Customer Fines
+		lineageTag: 9716f747-cdf5-4bc7-964e-3c4611ee313d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Measures
 		dataType: string
