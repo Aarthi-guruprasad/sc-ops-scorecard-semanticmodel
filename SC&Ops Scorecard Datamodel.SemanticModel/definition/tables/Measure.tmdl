@@ -4268,7 +4268,7 @@ table Measure
 			    "CAPA Completion Rate%",[CAPA Plan],
 			    "RFT%", [RFT Plan],
 			    "Good Catch Closure Rate%",[Good Catch Closure Plan],
-			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan],
+			    "pSIF SIF Focus Action%",[pSIF SIFs Focus Plan_Target],
 			    "PWS Benefits",[PWS Benefits Plan]
 			)
 			
