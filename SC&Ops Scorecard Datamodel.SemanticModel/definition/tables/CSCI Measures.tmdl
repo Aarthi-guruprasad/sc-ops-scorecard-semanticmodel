@@ -2341,6 +2341,146 @@ table 'CSCI Measures'
 		displayFolder: Active Products CSCI
 		lineageTag: 9fa1f348-4b28-4e77-bfd2-3d2aef669b07
 
+	measure 'Active Products Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Active Products]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Active Products CSCI
+		lineageTag: b897327f-6aed-46e5-b333-23c52beb3177
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias L1 CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias L1 CSCI]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCI
+		lineageTag: 02da160b-81f9-4eb6-a5d4-2d61cea0a213
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias L4 CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias L4 CSCI]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCI
+		lineageTag: 79126bfb-c7c2-4603-888a-9283035d092b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% L1 CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA% L1]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 9eb3a951-9201-4f87-81fc-122c59784be9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% L4 CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA% L4]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: e9af27d3-e3db-426d-bca1-98637e9bd722
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Level Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Service Level %]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Service Level CSCI
+		lineageTag: 612a5997-f3e0-4509-a710-0a66d71eb084
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Shrinkage Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [SSSO Shrinkage]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: SSSO Shrinkage
+		lineageTag: 3f1bf599-8b24-41f0-a493-b48ef6ce995b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Measures
 		dataType: string
 		lineageTag: de87435d-c35b-41f4-9f44-035aafb6672f
