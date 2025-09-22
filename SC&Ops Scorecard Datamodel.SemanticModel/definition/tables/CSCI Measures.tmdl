@@ -2481,6 +2481,76 @@ table 'CSCI Measures'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'FA L1 CSCI 3M_diff%' =
+			
+			VAR Result = ([FA% L1] - [FA% L1 CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 1f2aba7c-6994-42ca-92ac-c5f676d328ab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA L4 CSCI 3M_diff%' =
+			
+			VAR Result = ([FA% L4] - [FA% L4 CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: aafeb88a-561d-4def-a54d-e6fd3513ae22
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias L1 CSCI 3M_diff%' =
+			
+			VAR Result = ([Bias L1 CSCI] - [Bias L1 CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCI
+		lineageTag: 5daffb83-9331-4610-86c2-4a943861601f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias L4 CSCI 3M_diff%' =
+			
+			VAR Result = ([Bias L4 CSCI] - [Bias L4 CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCI
+		lineageTag: 74ff08f2-afdc-4308-93d8-f8226076c959
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service CSCI 3M_diff%' =
+			
+			VAR Result = ([Service Level %] - [Service Level Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Service Level CSCI
+		lineageTag: 47ff3bd8-c40d-4a61-a0eb-09b3f4c3731d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Shrinkage 3M_diff%' =
+			
+			VAR Result = DIVIDE(([SSSO Shrinkage] - [SSSO: Shrinkage Last 3M Avg]),[SSSO: Shrinkage Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: SSSO Shrinkage
+		lineageTag: fd194e34-6e76-493a-b0de-a5d21aa421e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active Products 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Active Products] - [Active Products Last 3M Avg]),[Active Products Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Active Products CSCI
+		lineageTag: 5e6a7755-50a3-411d-bf38-00c8c5c73fe7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Measures
 		dataType: string
 		lineageTag: de87435d-c35b-41f4-9f44-035aafb6672f

@@ -13147,7 +13147,7 @@ table Measure
 
 	measure 'ASTM Rate 3M_diff%' =
 			
-			VAR Result = DIVIDE(([ASTM Rate] - [ASTM Rate Last 3M Avg]), [ASTM Rate Last 3M Avg])
+			VAR Result = ([ASTM Rate] - [ASTM Rate Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: ASTM Rate
@@ -13157,7 +13157,7 @@ table Measure
 
 	measure 'Bias Lag2 3M_diff%' =
 			
-			VAR Result = DIVIDE(([Bias% Lag 2] - [Bias Lag2 Last 3M Avg]), [Bias Lag2 Last 3M Avg])
+			VAR Result = ([Bias% Lag 2] - [Bias Lag2 Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: Bias CSCA
@@ -13167,7 +13167,7 @@ table Measure
 
 	measure 'Bias Lag4 3M_diff%' =
 			
-			VAR Result = DIVIDE(([Bias% Lag 4] - [Bias Lag4 Last 3M Avg]), [Bias Lag4 Last 3M Avg])
+			VAR Result = ([Bias% Lag 4] - [Bias Lag4 Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: Bias CSCA
@@ -13177,7 +13177,7 @@ table Measure
 
 	measure 'CAPA Completion 3M_diff%' =
 			
-			VAR Result = DIVIDE(([CAPA Completion Rate] - [CAPA Completion Rate Last 3M Avg]), [CAPA Completion Rate Last 3M Avg])
+			VAR Result = ([CAPA Completion Rate] - [CAPA Completion Rate Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: CAPA Completion Rate
@@ -13187,7 +13187,7 @@ table Measure
 
 	measure 'CFR 3M_diff%' =
 			
-			VAR Result = DIVIDE(([CFR] - [CFR Last 3M Avg]), [CFR Last 3M Avg])
+			VAR Result = ([CFR] - [CFR Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: CFR
@@ -13222,6 +13222,300 @@ table Measure
 			Result
 		displayFolder: Customer Fines
 		lineageTag: 9716f747-cdf5-4bc7-964e-3c4611ee313d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DIO 3M_diff%' =
+			
+			VAR Result = DIVIDE(([DIO] - [DIO Last 3M Avg]), [DIO Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: DIO
+		lineageTag: 56e1866b-777c-48fb-9cd0-efcfae2b5ebe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Distribution on COGS 3M_diff%' =
+			
+			VAR Result = ([Total Distribution on COGS Actual] - [Distribution on COGS Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Distribution on COGS
+		lineageTag: 4db9b236-f9bc-4274-9d60-e4455c86af3a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DPO 3M_diff%' =
+			
+			VAR Result = DIVIDE(([DPO] - [DPO Last 3M Avg]), [DPO Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: DPO
+		lineageTag: c999df7b-e2f7-4ee9-8b90-064a6b7c5723
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'DSO 3M_diff%' =
+			
+			VAR Result = DIVIDE(([DSO] - [DSO Last 3M Avg]), [DSO Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: DSO
+		lineageTag: 9c9a8218-b6dd-4181-b7d5-9e08ced5afc0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Expired Inventory 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Expired Inventory] - [Expired Inventory Last 3M Avg]), [Expired Inventory Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Expired Inventory
+		lineageTag: 35194e91-b13a-4aaf-92bd-35132c1b66df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA Lag2 3M_diff%' =
+			
+			VAR Result = ([FA% Lag2] - [FA Lag2 Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: c29427b2-af21-4618-9196-8ab20ddbebde
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA Lag4 3M_diff%' =
+			
+			VAR Result = ([FA% Lag4] - [FA Lag4 Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: fecfb6c6-5d1a-4ca9-9cbd-7b15e28233fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good Catch Closure 3M_diff%' =
+			
+			VAR Result = ([GOOD Catch Closure Rate] - [Good Catch Closure Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: 677cf36c-d2b6-4906-9304-e825ec407563
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Inventory 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Gross Inventory] - [Gross Inventory Last 3M Avg]), [Gross Inventory Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Gross Inventory
+		lineageTag: c8b9c5bc-a91a-43ef-b0e8-d02b19c89951
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross PPV 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Gross PPV Actual] - [Gross PPV Last 3M Avg]), [Gross PPV Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Gross PPV
+		lineageTag: 36ef2371-507b-4b3d-8822-427cb3151bf6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Inflated Inventory 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Inflated Inventory] - [Inflated Inventory Last 3M Avg]), [Inflated Inventory Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Inflated Inventory
+		lineageTag: 19585e0a-6b19-4e8e-ab05-770ae26cee59
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Total Logistics Actual] - [Total Logistics Last 3M Avg]), [Total Logistics Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Logistic
+		lineageTag: dc80024e-5e35-4bae-af58-bb8ba295ff40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Logistics on Net Sales 3M_diff%' =
+			
+			VAR Result = ([Total Logistics on Net Sales Actual] - [Total Logistics on Net Sales Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 39fb09be-ec21-42a6-ad05-e876bb071558
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Inventory 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Net Inventory] - [Net Inventory Last 3M Avg]), [Net Inventory Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Net Inventory
+		lineageTag: 75fbdb79-4a76-4575-93b5-1c0f030c434f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net POV 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Net POV Actual] - [Net POV Last 3M Avg]), [Net POV Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Net POV
+		lineageTag: e0deaa94-7e7f-4e23-9856-48f054b615e0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Net Sales 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Net Sales Actual] - [Net Sales Last 3M Avg]), [Net Sales Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Net Sales
+		lineageTag: 35b00555-039f-4a7c-a30b-8ea24483d3c7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% 3M_diff%' =
+			
+			VAR Result = ([OEE%] - [OEE% Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: OEE
+		lineageTag: 3f4560d6-c61a-484f-a695-867a49f0d696
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OEE% Focus Lines 3M_diff%' =
+			
+			VAR Result = ([OEE Focus Lines%] - [OEE% Focus Lines Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: OEE FOCUS LINES
+		lineageTag: 55857ef9-c956-439e-b744-a33e54a29cb1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On Time Closure of Deviations 3M_diff%' =
+			
+			VAR Result = ([On Time Closure of Deviations%] - [On Time Closure Dev Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: On Time Closure of Deviations
+		lineageTag: 1fe0f6aa-cf24-4ebc-bbeb-cf0d45a259f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Operating Income 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Operating Income Actual] - [operating Income Last 3M Avg]), [operating Income Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Operating Income
+		lineageTag: 5a6e6957-01b9-4c6f-bfac-d442c66ed1b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 5496f843-e8c2-4a76-8f48-ebdf83423943
+
+	measure 'pSIF SIFs 3M_diff%' =
+			
+			VAR Result = ([pSIF SIFs Focus] - [pSIF SIFs Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: pSIF SIFs Focus
+		lineageTag: 68cc1639-c79b-4168-b6c1-052f94390600
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'PWS 3M_diff%' =
+			
+			VAR Result = DIVIDE(([PWS Benefits] - [PWS Last 3M Avg]), [PWS Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: PWS
+		lineageTag: 6aaa11b9-0a1d-4fac-864e-d0638b7fdf43
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RFT 3M_diff%' =
+			
+			VAR Result = ([RFT%] - [RFT Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: RFT
+		lineageTag: 2c8e6887-b548-4edf-b955-5d1f773ab457
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Schedule Attainment 3M_diff%' =
+			
+			VAR Result = ([Schedule Attn] - [Schedule Attainment Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Schedule Attainment
+		lineageTag: e4862a3c-0973-46c7-80ae-d92e0e6debd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Rate 3M_diff%' =
+			
+			VAR Result = ([Service Rate%] - [Service Rate Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Service Rate CSCA
+		lineageTag: f23aa261-3aba-4ac8-9cda-bb776a2bd488
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Service Top 11 3M_diff%' =
+			
+			VAR Result = DIVIDE(([Service Top 11] - [Service Top 11 Last 3M Avg]), [Service Top 11 Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Service Top 11
+		lineageTag: 09748591-0874-4aeb-96a7-a5cbf02533cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Obs linked to Conv 3M_diff%' =
+			
+			VAR Result = DIVIDE(([SSSO: Obsolescenes linked to Conversions] - [SSSO: Obs linked to Conv Last 3M Avg]), [SSSO: Obs linked to Conv Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: 36fbc3d4-55d9-4329-80e5-5625ee3774c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Salvage & Obs 3M_diff%' =
+			
+			VAR Result = DIVIDE(([SSSO: Salvage & Obsolescence] - [SSSO: Salvage & Obs Last 3M Avg]), [SSSO: Salvage & Obs Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 25d9ae2b-f4fd-46f9-af9c-9e75b56a2a75
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'SSSO: Scrap-Off 3M_diff%' =
+			
+			VAR Result = DIVIDE(([SSSO: Scrap-Off] - [SSSO: Scrap-Off Last 3M Avg]), [SSSO: Scrap-Off Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: SSSO Scrap-Off
+		lineageTag: ee4f95aa-92df-4994-91ce-9fcae47edff0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
