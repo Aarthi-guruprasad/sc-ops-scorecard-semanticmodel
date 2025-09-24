@@ -2604,7 +2604,7 @@ table 'CSCI Measures'
 			
 			VAR kpi_ = [FA L1 CSCI 3M_diff%]
 			VAR perc_ = ABS(kpi_)
-			VAR Format_ = FORMAT(perc_, "0.0%")
+			VAR Format_ = FORMAT(perc_, "0.0%")& UNICHAR(160) & UNICHAR(160)
 			RETURN
 			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			
@@ -2616,7 +2616,7 @@ table 'CSCI Measures'
 			
 			VAR kpi_ = [FA L4 CSCI 3M_diff%]
 			VAR perc_ = ABS(kpi_)
-			VAR Format_ = FORMAT(perc_, "0.0%")
+			VAR Format_ = FORMAT(perc_, "0.0%")& UNICHAR(160) & UNICHAR(160)
 			RETURN
 			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 		displayFolder: Forecast Accuracy CSCI
@@ -2641,7 +2641,7 @@ table 'CSCI Measures'
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_
+			Result_& UNICHAR(160) & UNICHAR(160)
 			```
 		displayFolder: SSSO Shrinkage
 		lineageTag: e00b79a6-0adb-4479-ad96-5c0f13ccb21b
@@ -2722,7 +2722,7 @@ table 'CSCI Measures'
 			
 			VAR kpi_ = [FA CSCI 3M_diff%]
 			VAR perc_ = ABS(kpi_)
-			VAR Format_ = FORMAT(perc_, "0.0%")
+			VAR Format_ = FORMAT(perc_, "0.0%") &UNICHAR(160) & UNICHAR(160)
 			RETURN
 			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
 			
