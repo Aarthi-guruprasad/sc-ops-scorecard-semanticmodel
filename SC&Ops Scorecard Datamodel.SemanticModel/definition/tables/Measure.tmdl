@@ -13797,7 +13797,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_
+			Result_ & UNICHAR(160) & UNICHAR(160)
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 69b35359-453e-4567-8220-5441cefaf27a
@@ -13809,7 +13809,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_
+			Result_& UNICHAR(160) & UNICHAR(160)
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f23bf00f-ab65-4248-bf3e-d430a5059e96
@@ -14157,7 +14157,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_
+			Result_& UNICHAR(160) & UNICHAR(160)
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 08767dfa-e181-4d29-834d-e3c079fe4958
