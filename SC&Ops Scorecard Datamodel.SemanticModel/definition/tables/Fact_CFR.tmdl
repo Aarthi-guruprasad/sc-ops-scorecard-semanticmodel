@@ -86,7 +86,8 @@ table Fact_CFR
 		annotation SummarizationSetBy = Automatic
 
 	column 'Last Refreshed'
-		dataType: string
+		dataType: dateTime
+		formatString: General Date
 		lineageTag: 91e19cfe-ada8-484b-8c5f-3f2e21505ef8
 		summarizeBy: none
 		sourceColumn: Last Refreshed
@@ -96,7 +97,7 @@ table Fact_CFR
 	partition Fact_CFR = m
 		mode: import
 		queryGroup: Fact
-		source = ```
+		source =
 				let
 				    // --- Step 1: Pull data from Analysis Services ---
 				    Fact_CFR = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Case Fill Rate", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)    MEASURE 'Service Case Fill Rate'[Total Delivery Qty] = #(lf)        SUM('Service Case Fill Rate'[Delivery Qty])#(lf) #(lf)    MEASURE 'Service Case Fill Rate'[Total Order Qty] = #(lf)        SUM('Service Case Fill Rate'[Order Qty])#(lf)    #(lf)    MEASURE'Service Case Fill Rate'[Last Refreshed] = #(lf)    #(tab)MAX ('Last Refresh Date'[Last Refresh] )#(lf)#(lf) #(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Service Case Fill Rate'[Date],#(lf)    'Service Case Fill Rate'[WE Date],#(lf)    'Service Case Fill Rate'[Material Key],#(lf)    'Service Case Fill Rate'[Plant Key],#(lf)    'Service Case Fill Rate'[Customer Hierarchy],#(lf)    ""Total Delivery Qty"", [Total Delivery Qty],#(lf)    ""Total Order Qty"", [Total Order Qty],#(lf)    ""Last Refreshed"", [Last Refreshed]#(lf))#(lf)ORDER BY #(lf)    'Service Case Fill Rate'[Date] ASC,#(lf)    'Service Case Fill Rate'[WE Date] ASC,#(lf)    'Service Case Fill Rate'[Material Key] ASC,#(lf)    'Service Case Fill Rate'[Plant Key] ASC,#(lf)    'Service Case Fill Rate'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
@@ -126,53 +127,9 @@ table Fact_CFR
 				            {"WE Date", type date},
 				            {"Last Refreshed", type datetimezone}
 				        }
-				    ),
-				
-				    // --- Step 4: Convert Last Refreshed to Eastern Time (DST aware) ---
-				    #"Last Refreshed Eastern" = Table.TransformColumns(
-				        #"Changed Type",
-				        {{"Last Refreshed", each 
-				            let
-				                dtUTC = _,
-				                currentYear = Date.Year(DateTimeZone.SwitchZone(dtUTC,0)),
-				                march1 = #date(currentYear,3,1),
-				                firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday),0,0,0),
-				                secondSundayMarch = firstSundayMarch + #duration(7,0,0,0),
-				                nov1 = #date(currentYear,11,1),
-				                firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday),0,0,0),
-				                todayDate = Date.From(dtUTC),
-				                isDST = todayDate >= Date.From(secondSundayMarch) and todayDate < Date.From(firstSundayNov),
-				                offset = if isDST then -4 else -5
-				            in
-				                DateTimeZone.SwitchZone(dtUTC, offset)
-				        , type datetimezone}}
-				    ),
-				
-				    // --- Step 5: Format Last Refreshed as text with EDT/EST ---
-				#"Formatted Last Refreshed" = Table.TransformColumns(
-				    #"Changed Type",
-				    {{"Last Refreshed", each 
-				        let
-				            dtUTC = _,
-				            currentYear = Date.Year(DateTimeZone.SwitchZone(dtUTC,0)),
-				            march1 = #date(currentYear,3,1),
-				            firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday),0,0,0),
-				            secondSundayMarch = firstSundayMarch + #duration(7,0,0,0),
-				            nov1 = #date(currentYear,11,1),
-				            firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday),0,0,0),
-				            todayDate = Date.From(dtUTC),
-				            isDST = todayDate >= Date.From(secondSundayMarch) and todayDate < Date.From(firstSundayNov),
-				            offset = if isDST then -4 else -5,
-				            dtEastern = DateTimeZone.SwitchZone(dtUTC, offset),
-				            tzLabel = if offset = -4 then "EDT" else "EST"
-				        in
-				            DateTime.ToText(DateTimeZone.RemoveZone(dtEastern), "MM/dd/yyyy hh:mm tt") & " " & tzLabel
-				        , type text}}
-				)
-				
+				    )
 				in
-				    #"Formatted Last Refreshed"
-				```
+				    #"Changed Type"
 
 	annotation PBI_NavigationStepName = Navigation
 
