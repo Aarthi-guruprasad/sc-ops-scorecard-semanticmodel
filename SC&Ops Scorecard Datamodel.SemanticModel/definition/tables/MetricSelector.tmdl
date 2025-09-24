@@ -240,7 +240,8 @@ table MetricSelector
 				        {"vs PP", 3},
 				        {"LYTD", 5},
 				        {"vs Plan", 1},
-				        {"vs Flex", 2}
+				        {"vs Flex", 2},
+				        {"vs 3M avg", 6}
 				    }
 				)
 

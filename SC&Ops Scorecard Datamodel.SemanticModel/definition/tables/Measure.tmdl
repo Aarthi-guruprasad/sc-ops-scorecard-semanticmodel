@@ -1496,7 +1496,7 @@ table Measure
 			SWITCH(
 			    TRUE(),
 			    SelectedPeriod = "YTD" && SelectedComp IN { "LYTD", "vs Plan", "vs Flex"}, 1,
-			    SelectedPeriod = "PTD" && SelectedComp IN { "vs PP", "vs YoY", "vs Plan", "vs Flex"}, 1,
+			    SelectedPeriod = "PTD" && SelectedComp IN { "vs PP", "vs YoY", "vs Plan", "vs Flex", "vs 3M avg"}, 1,
 			    0
 			)
 		formatString: 0
