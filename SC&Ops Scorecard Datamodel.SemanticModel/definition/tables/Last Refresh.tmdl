@@ -2,8 +2,7 @@ table 'Last Refresh'
 	lineageTag: 6c7c2582-dfb3-462b-bd2d-3125e753b339
 
 	column 'Date Last Refreshed'
-		dataType: dateTime
-		formatString: General Date
+		dataType: string
 		lineageTag: cbf80b52-a568-44de-b6d0-5375790b87ac
 		summarizeBy: none
 		sourceColumn: Date Last Refreshed
@@ -15,9 +14,22 @@ table 'Last Refresh'
 		queryGroup: Parameters/Misc
 		source =
 				let
-				    Source = #table(type table[Date Last Refreshed=datetime], {{DateTime.LocalNow()}})
+				    // Get current Eastern time (DST-aware)
+				    dt = EasternNow(),
+				
+				    // Determine timezone label
+				    tzLabel = if DateTimeZone.SwitchZone(dt,0) - dt = -4 then "EDT" else "EST",
+				
+				    // Format datetime as text
+				    formatted = DateTime.ToText(DateTimeZone.RemoveZone(dt), "MM/dd/yyyy hh:mm tt") & " " & tzLabel,
+				
+				    // Create single-row table
+				    LastRefreshed = #table(
+				        type table [Date Last Refreshed = text],
+				        { { formatted } }
+				    )
 				in
-				    Source
+				    LastRefreshed
 
 	annotation PBI_NavigationStepName = Navigation
 
