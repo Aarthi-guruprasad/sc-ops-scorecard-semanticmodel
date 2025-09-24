@@ -9012,6 +9012,7 @@ table Measure
 			      "vs YoY", "vs YoY",
 			      "vs Plan", "vs Plan",
 			      "vs Flex", "vs Flex",
+			      "vs 3M avg", "vs 3M avg",
 			      BLANK()
 			    )
 			```
