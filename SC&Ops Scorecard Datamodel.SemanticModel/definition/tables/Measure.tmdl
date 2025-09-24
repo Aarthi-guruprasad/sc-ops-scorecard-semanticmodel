@@ -6706,6 +6706,7 @@ table Measure
 			        "LYTD", [ABP Variance LYTD],
 			        "vs YoY", [ABP Variance YoY%],
 			        "vs Plan", [ABP Variance_APN],
+			        "vs 3M avg", [ABP Variance 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6729,6 +6730,7 @@ table Measure
 			        "LYTD", [ABP Variance LYTD],
 			        "vs YoY", [ABP Variance YoY%],
 			        "vs Plan", [ABP Variance_APN],
+			        "vs 3M avg", [ABP Variance 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6755,6 +6757,7 @@ table Measure
 			      "LYTD", [ABP Variance LYTD_Final],
 			      "vs YoY", [ABP Variance YoY_Final],
 			      "vs Plan", [ABP Variance_APN_Final],
+			      "vs 3M avg", [ABP Variance 3M_Final],
 			      BLANK()
 			    )
 			
@@ -6774,6 +6777,7 @@ table Measure
 			        "LYTD", [FA% CSCA LYTD],
 			        "vs YoY", [FA% YoY%],  
 			        "vs Plan", Switch(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag 2 Target Diff%], "4", [FA% Lag 4 Target Diff%]),
+			        "vs 3M avg", [FA 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6804,6 +6808,7 @@ table Measure
 			      "LYTD",               [FA% CSCA LYTD_Final],
 			      "vs YoY",               [FA% YoY_Final],
 			      "vs Plan", SWITCH(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag2 Target_Final],"4",[FA% Lag4 Target_Final]),
+			      "vs 3M avg", [FA% 3M_Final],
 			      BLANK()
 			    )
 			
@@ -6823,6 +6828,7 @@ table Measure
 			        "vs YoY", [FA% YoY%],  
 			        "vs Plan", Switch(SELECTEDVALUE(Fact_Forecast_Accuracy[LAGs]),"2",[FA% Lag 2 Target Diff%],
 			        "4",[FA% Lag 4 Target Diff%]),
+			        "vs 3M avg", [FA 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6855,6 +6861,7 @@ table Measure
 			        "vs YoY", [Gross Inventory YoY%],
 			        "vs Plan", [Gross Inventory_APN],
 			        "vs Flex", [Gross Inventory_AFX],
+			        "vs 3M avg", [Gross Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6882,6 +6889,7 @@ table Measure
 			      "vs YoY",               [Gross Inventory YoY_Final],
 			      "vs Plan", [Gross Inventory_APN_Final],
 			      "vs Flex", [Gross Inventory_AFX_Final],
+			      "vs 3M avg", [Gross Inventory 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -6900,6 +6908,7 @@ table Measure
 			        "vs YoY", [Gross Inventory YoY%],
 			        "vs Plan", [Gross Inventory_APN],
 			        "vs Flex", [Gross Inventory_AFX],
+			        "vs 3M avg", [Gross Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6921,7 +6930,8 @@ table Measure
 			        _sel,
 			        "vs PP", [Inflated Inventory MoM%],
 			        "LYTD", [Inflated Inv LYTD],
-			        "vs YoY", [Inflated Inventory YoY%], 
+			        "vs YoY", [Inflated Inventory YoY%],
+			        "vs 3M avg", [Inflated Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6947,6 +6957,7 @@ table Measure
 			      "vs PP", [Inflated Inventory MoM_Final],
 			      "LYTD",               [Inflated Inv LYTD_Final],
 			      "vs YoY",               [Inflated Inventory YoY_Final],
+			      "vs 3M avg", [Inflated Inventory 3M_Final],
 			      BLANK()
 			    )
 			
@@ -6954,7 +6965,7 @@ table Measure
 		displayFolder: Inflated Inventory
 		lineageTag: 4142541c-b983-4249-81dc-8c2cd55b1fb4
 
-	measure Inflated_Inventory_Color = ```
+	measure Inflated_Inventory_Color =
 			
 			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
 			
@@ -6963,7 +6974,8 @@ table Measure
 			        _sel,
 			        "vs PP", [Inflated Inventory MoM%],
 			        "LYTD", [Inflated Inv LYTD],
-			        "vs YoY", [Inflated Inventory YoY%], 
+			        "vs YoY", [Inflated Inventory YoY%],
+			        "vs 3M avg", [Inflated Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -6973,7 +6985,6 @@ table Measure
 			            "#1A9641",  -- green for ▼ down
 			            "#D7191C"   -- red for ▲ up
 			        )
-			```
 		displayFolder: Inflated Inventory
 		lineageTag: 856c2e81-9dbc-41c9-bdac-120fa14755e8
 
@@ -6989,6 +7000,7 @@ table Measure
 			        "vs YoY", [Net Inventory YoY%],
 			        "vs Plan", [Net Inventory_APN],
 			        "vs Flex", [Net Inventory_AFX],
+			        "vs 3M avg", [Net Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7016,6 +7028,7 @@ table Measure
 			        "LYTD", [Net POV Actual LYTD],
 			        "vs YoY", [Net POV Actual YoY%], 
 			        "vs Plan", [Net POV_APN],
+			        "vs 3M avg", [Net POV 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7043,6 +7056,7 @@ table Measure
 			        "LYTD", [Net POV Actual LYTD],
 			        "vs YoY", [Net POV Actual YoY%], 
 			        "vs Plan", [Net POV_APN],
+			        "vs 3M avg", [Net POV 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7070,6 +7084,7 @@ table Measure
 			      "vs YoY",               [Net Inventory YoY_Final],
 			      "vs Plan", [Net Inventory_APN_Final],
 			      "vs Flex", [Net Inventory_AFX_Final],
+			      "vs 3M avg", [Net Inventory 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7089,6 +7104,7 @@ table Measure
 			        "vs YoY", [Net Inventory YoY%],
 			        "vs Plan", [Net Inventory_APN],
 			        "vs Flex", [Net Inventory_AFX],
+			        "vs 3M avg", [Net Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7112,6 +7128,7 @@ table Measure
 			        "LYTD", [CAPA Completion Rate LYTD],
 			        "vs YoY", [CAPA Completion Rate YoY%],
 			        "vs Plan", [CAPA Completion Rate Target Diff%],
+			        "vs 3M avg", [CAPA Completion 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7135,6 +7152,7 @@ table Measure
 			        "LYTD", [CAPA Completion Rate LYTD],
 			        "vs YoY", [CAPA Completion Rate YoY%],
 			        "vs Plan", [CAPA Completion Rate Target Diff%],
+			        "vs 3M avg", [CAPA Completion 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7161,6 +7179,7 @@ table Measure
 			      "LYTD", [CAPA Completion Rate LYTD_Final],
 			      "vs YoY", [CAPA Completion Rate YoY_Final],
 			      "vs Plan", [CAPA Completion Rate Target Final],
+			      "vs 3M avg", [CAPA Completion Rate 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7180,6 +7199,7 @@ table Measure
 			        "LYTD", [RFT LYTD],
 			        "vs YoY", [RFT YTD],
 			        "vs Plan", [RFT Target Diff%],
+			        "vs 3M avg", [RFT 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7203,6 +7223,7 @@ table Measure
 			        "LYTD", [RFT LYTD],
 			        "vs YoY", [RFT YoY%],
 			        "vs Plan", [RFT Target Diff%],
+			        "vs 3M avg", [RFT 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7229,6 +7250,7 @@ table Measure
 			      "LYTD", [RFT LYTD_Final],
 			      "vs YoY", [RFT YoY_Final],
 			      "vs Plan", [RFT Target Final],
+			      "vs 3M avg", [RFT 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7248,6 +7270,7 @@ table Measure
 			        "LYTD", [Critical or Major Observations LYTD],
 			        "vs YoY", [Critical or Major Observations YTD],
 			        "vs Plan","--",
+			        "vs 3M avg", [Critical Major Obs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7271,6 +7294,7 @@ table Measure
 			        "LYTD", [Critical or Major Observations LYTD],
 			        "vs YoY", [Critical or Major Observations YoY%],
 			        "vs Plan", "--",
+			        "vs 3M avg", [Critical Major Obs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7296,6 +7320,7 @@ table Measure
 			      "LYTD", [Critical or Major Observations LYTD_Final],
 			      "vs YoY", [Critical or Major Observations YoY_Final],
 			      "vs Plan", "--",
+			      "vs 3M avg", [Critical or Major Observations 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7315,6 +7340,7 @@ table Measure
 			        "LYTD", [On Time Closure of Deviations LYTD],
 			        "vs YoY", [On Time Closure of Deviations YoY%],
 			        "vs Plan", [On Time Closure of Deviations Target Diff%],
+			        "vs 3M avg", [On Time Closure of Deviations 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7338,6 +7364,7 @@ table Measure
 			        "LYTD", [On Time Closure of Deviations LYTD],
 			        "vs YoY", [On Time Closure of Deviations YoY%],
 			        "vs Plan", [On Time Closure of Deviations Target Diff%],
+			        "vs 3M avg", [On Time Closure of Deviations 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7364,6 +7391,7 @@ table Measure
 			      "LYTD", [On Time Closure of Deviations LYTD_Final],
 			      "vs YoY", [On Time Closure of Deviations YoY_Final],
 			      "vs Plan", [On Time Closure of Deviations Target Final],
+			      "vs 3M avg", [On Time Closure of Deviations 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7382,6 +7410,7 @@ table Measure
 			      "LYTD",               [Bias% LYTD_Final],
 			      "vs YoY",               [Bias YoY_Final],
 			      "vs Plan", [Bias Target Final],
+			      "vs 3M avg", [Bias 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7400,6 +7429,7 @@ table Measure
 			        "LYTD", [Bias% LYTD],
 			        "vs YoY", [Bias YoY%],
 			        "vs Plan", [Bias Target Diff%],
+			        "vs 3M avg", [Bias 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7500,6 +7530,7 @@ table Measure
 			        "LYTD", [Bias% LYTD],
 			        "vs YoY", [Bias YoY%],
 			        "vs Plan", [Bias Target Diff%],
+			        "vs 3M avg", [Bias 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7528,6 +7559,7 @@ table Measure
 			        "LYTD", [CFR LYTD],
 			        "vs YoY", [CFR YoY%],
 			        "vs Plan", [CFR Target Diff%],
+			        "vs 3M avg", [CFR 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7551,6 +7583,7 @@ table Measure
 			        "LYTD", [CFR LYTD],
 			        "vs YoY", [CFR YoY%],
 			        "vs Plan", [CFR Target Diff%],
+			        "vs 3M avg", [CFR 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7577,6 +7610,7 @@ table Measure
 			      "LYTD",               [CFR LYTD_Final],
 			      "vs YoY",               [CFR YoY_Final],
 			      "vs Plan", [CFR Target Final],
+			      "vs 3M avg", [CFR 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -7594,6 +7628,7 @@ table Measure
 			      "vs YoY",               [COGS Actual YoY_Final],
 			      "vs Plan", [COGS_APN_Final],
 			      "vs Flex",[COGS_AFX_Final],
+			      "vs 3M avg", [COGS Actual 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7616,6 +7651,7 @@ table Measure
 			        "vs YoY", [COGS Actual YoY%], 
 			        "vs Plan", [COGS_APN],
 			        "vs Flex",[COGS_AFX],
+			        "vs 3M avg", [COGS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7645,6 +7681,7 @@ table Measure
 			        "vs YoY", [COGS Actual YoY%], 
 			        "vs Plan", [COGS_APN],
 			        "vs Flex",[COGS_AFX],
+			        "vs 3M avg", [COGS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7672,6 +7709,7 @@ table Measure
 			        "LYTD", [Cust Fine LYTD],
 			        "vs YoY", [Cust fine YoY%], 
 			        "vs Plan", [Cust Fine Target Diff%],
+			        "vs 3M avg", [Customer Fines 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7696,6 +7734,7 @@ table Measure
 			        "LYTD", [Cust Fine LYTD],
 			        "vs YoY", [Cust fine YoY%], 
 			        "vs Plan", [Cust Fine Target Diff%],
+			        "vs 3M avg", [Customer Fines 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7722,6 +7761,7 @@ table Measure
 			      "LYTD",               [Cust fine LYTD_Final],
 			      "vs YoY",               [Cust fine YoY_Final],
 			      "vs Plan", [Cust fine Target Final],
+			      "vs 3M avg", [Customer Fines 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7741,6 +7781,7 @@ table Measure
 			      "vs YoY",               [DIO YoY_Final],
 			      "vs Plan", [DIO_APN_Final],
 			      "vs Flex", [DIO_AFX_Final],
+			      "vs 3M avg", [DIO 3M_Final],
 			      BLANK()
 			    )
 			
@@ -7761,6 +7802,7 @@ table Measure
 			        "vs YoY", [DIO YoY%],
 			        "vs Plan", [DIO_APN],
 			        "vs Flex", [DIO_AFX],
+			        "vs 3M avg", [DIO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7792,6 +7834,7 @@ table Measure
 			        "vs YoY", [DIO YoY%],
 			        "vs Plan", [DIO_APN],
 			        "vs Flex", [DIO_AFX],
+			        "vs 3M avg", [DIO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7839,6 +7882,7 @@ table Measure
 			      "LYTD",             BLANK(),
 			      "vs YoY",               [DPO YoY_Final],
 			      "vs Plan", [DPO_APN_Final],
+			      "vs 3M avg", [DPO 3M_Final],
 			      BLANK()
 			    )
 		displayFolder: DPO
@@ -7854,6 +7898,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [DPO YoY%], 
 			        "vs Plan", [DPO_APN],
+			        "vs 3M avg", [DPO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7877,6 +7922,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [DPO YoY%], 
 			        "vs Plan",[DPO_APN],
+			        "vs 3M avg", [DPO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7929,6 +7975,7 @@ table Measure
 			      "LYTD",             BLANK(),
 			      "vs YoY",               [DSO YoY_Final],
 			      "vs Plan", [DSO_APN_Final],
+			      "vs 3M avg", [DSO 3M_Final],
 			      BLANK()
 			    )
 		displayFolder: DSO
@@ -7944,6 +7991,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [DSO YoY%], 
 			        "vs Plan",[DSO_APN],
+			        "vs 3M avg", [DSO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -7967,6 +8015,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [DSO YoY%], 
 			        "vs Plan",[DSO_APN],
+			        "vs 3M avg", [DSO 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8002,6 +8051,7 @@ table Measure
 			      "vs PP", [Expired Inventory MoM_Final],
 			      "LYTD",               [Expired Inv LYTD_Final],
 			      "vs YoY",               [Expired Inventory YoY_Final],
+			      "vs 3M avg", [Expired Inventory 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8009,7 +8059,7 @@ table Measure
 		displayFolder: Expired Inventory
 		lineageTag: b78799df-3f7e-4d42-821f-a0626242d7d4
 
-	measure Expired_Inventory_Color = ```
+	measure Expired_Inventory_Color =
 			
 			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
 			
@@ -8018,7 +8068,8 @@ table Measure
 			        _sel,
 			        "vs PP", [Expired Inventory MoM%],
 			        "LYTD", [Expired Inventory LYTD],
-			        "vs YoY", [Expired Inventory YoY%], 
+			        "vs YoY", [Expired Inventory YoY%],
+			        "vs 3M avg", [Expired Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8028,7 +8079,6 @@ table Measure
 			                "#D7191C",  -- Red for ▲ up
 			                "#1A9641"   -- Green for ▼ down
 			            )
-			```
 		displayFolder: Expired Inventory
 		lineageTag: 8fdc36f2-2570-456f-a9ff-1c7abacfa8a9
 
@@ -8041,7 +8091,8 @@ table Measure
 			        _sel,
 			        "vs PP", [Expired Inventory MoM%],
 			        "LYTD", [Expired Inventory LYTD],
-			        "vs YoY", [Expired Inventory YoY%], 
+			        "vs YoY", [Expired Inventory YoY%],
+			        "vs 3M avg", [Expired Inventory 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8069,6 +8120,7 @@ table Measure
 			        "LYTD", [Gross PPV Actual LYTD],
 			        "vs YoY", [Gross PPV Actual YoY%], 
 			        "vs Plan", [Gross PPV_APN],
+			        "vs 3M avg", [Gross PPV 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8096,6 +8148,7 @@ table Measure
 			        "LYTD", [Gross PPV Actual LYTD],
 			        "vs YoY", [Gross PPV Actual YoY%], 
 			        "vs Plan", [Gross PPV_APN],
+			        "vs 3M avg", [Gross PPV 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8122,6 +8175,7 @@ table Measure
 			      "LYTD",               [Gross PPV Actual LYTD_Final],
 			      "vs YoY",               [Gross PPV Actual YoY_Final],
 			      "vs Plan", [Gross PPV_APN_Final],
+			      "vs 3M avg", [Gross PPV 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8141,6 +8195,7 @@ table Measure
 			      "vs YoY",               [Net Sales Actual YoY_Final],
 			      "vs Plan", [Net Sales_APN_Final],
 			      "vs Flex", [Net Sales_AFX_Final],
+			      "vs 3M avg", [Net Sales 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8163,6 +8218,7 @@ table Measure
 			        "vs YoY", [Net Sales Actual YoY%], 
 			        "vs Plan", [Net Sales_APN],
 			        "vs Flex",[Net Sales_AFX],
+			        "vs 3M avg", [Net Sales 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8188,6 +8244,7 @@ table Measure
 			        "vs YoY", [Net Sales Actual YoY%], 
 			        "vs Plan", [Net Sales_APN],
 			        "vs Flex",[Net Sales_AFX],
+			        "vs 3M avg", [Net Sales 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8214,6 +8271,7 @@ table Measure
 			      "LYTD",               [OEE% LYTD_Final],
 			      "vs YOY",               [OEE% YoY_Final],
 			      "vs Plan", [OEE Target_Final],
+			      "vs 3M avg", [OEE% 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8233,6 +8291,7 @@ table Measure
 			        "vs YoY", [OEE% YoY%],
 			        "vs Plan", [OEE Target diff%],
 			        "LYTD", [OEE LYTD],
+			        "vs 3M avg", [OEE% 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8264,6 +8323,7 @@ table Measure
 			        "vs YoY", [OEE% YoY%],
 			        "vs Plan", [OEE Target diff%],
 			        "LYTD", [OEE LYTD],
+			        "vs 3M avg", [OEE% 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8294,6 +8354,7 @@ table Measure
 			      "vs YoY",               [Operating Income Actual YoY_Final],
 			      "vs Plan", [Operating Income_APN_Final],
 			      "vs Flex", BLANK(),
+			      "vs 3M avg", [Operating Income Actual 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8301,8 +8362,6 @@ table Measure
 			```
 		displayFolder: Operating Income
 		lineageTag: 2793fa3d-f884-41c0-9f3c-69edd8de2774
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Operating_Income_Color = ```
 			
@@ -8315,6 +8374,7 @@ table Measure
 			        "LYTD", [Operating Income Actual LYTD],
 			        "vs YoY", [Operating Income Actual YoY%], 
 			        "vs Plan", [Operating Income_APN],
+			        "vs 3M avg", [Operating Income 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8342,6 +8402,7 @@ table Measure
 			        "LYTD", [Operating Income Actual LYTD],
 			        "vs YoY", [Operating Income Actual YoY%], 
 			        "vs Plan", [Operating Income_APN],
+			        "vs 3M avg", [Operating Income 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8368,6 +8429,7 @@ table Measure
 			      "LYTD",               [Schedule Attn LYTD_Final],
 			      "vs YoY",               [SA YoY_Final],
 			      "vs Plan", [Schedule Attn Target Final],
+			      "vs 3M avg", [Schedule Attainment 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -8387,6 +8449,7 @@ table Measure
 			        "LYTD", [Schedule Attn LYTD],
 			        "vs YoY", [SA YoY%],
 			        "vs Plan", [Schedule Attn Target Diff%],
+			        "vs 3M avg", [Schedule Attainment 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8410,6 +8473,7 @@ table Measure
 			        "LYTD", [Schedule Attn LYTD],
 			        "vs YoY", [SA YoY%],
 			        "vs Plan", [Schedule Attn Target Diff%],
+			        "vs 3M avg", [Schedule Attainment 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8426,7 +8490,7 @@ table Measure
 		displayFolder: Schedule Attainment
 		lineageTag: caa01288-2c52-48ff-894e-d1d05f4bb009
 
-	measure 'Service rate_Color' = ```
+	measure 'Service rate_Color' =
 			
 			VAR _sel = SELECTEDVALUE(MetricSelector[Metric], "vs PP")
 			
@@ -8435,7 +8499,8 @@ table Measure
 			        _sel,
 			        "vs PP", [Service Rate% MoM%],
 			        "LYTD", [Service Rate LYTD],
-			        "vs YoY", [Service Rate YoY%],  
+			        "vs YoY", [Service Rate YoY%],
+			        "vs 3M avg", [Service Rate 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8445,7 +8510,6 @@ table Measure
 			            "#D7191C",  -- red for ▼ down
 			            "#1A9641"   -- green for ▲ up
 			        )
-			```
 		displayFolder: Service Rate CSCA
 		lineageTag: a1ef24e0-4d13-4f17-973f-4e210e679beb
 
@@ -8460,6 +8524,7 @@ table Measure
 			        "LYTD", [Service Rate LYTD],
 			        "vs YoY", [Service Rate YoY%],  
 			        "vs Plan", [Service Target Diff%],
+			        "vs 3M avg", [Service Rate 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8487,6 +8552,7 @@ table Measure
 			        "LYTD", [Service Top 11 LYTD],
 			        "vs YoY", [Service Top 11 YoY%],
 			        "vs Plan", [Service Top 11 Target Diff%],
+			        "vs 3M avg", [Service Top 11 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8510,6 +8576,7 @@ table Measure
 			        "LYTD", [Service Top 11 LYTD],
 			        "vs YoY", [Service Top 11 YoY%],  
 			        "vs Plan", [Service Top 11 Target Diff%],
+			        "vs 3M avg", [Service Top 11 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8536,6 +8603,7 @@ table Measure
 			      "LYTD",               [Service Top 11 LYTD_Final],
 			      "vs YoY",               [Service Top 11 YoY_Final],
 			      "vs Plan", [Service Top 11 Target Final],
+			      "vs 3M avg", [Service Top 11 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -8552,6 +8620,7 @@ table Measure
 			      "LYTD",               [Service LYTD_Final],
 			      "vs YoY",               [Service Rate% YoY_Final],
 			      "vs Plan", [Service Target Final],
+			      "vs 3M avg", [Service Rate% 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -8570,6 +8639,7 @@ table Measure
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
 			        "vs Plan", [Total Distribution on COGS_APN],
 			        "vs Flex",[Total Distribution on COGS_AFX],
+			        "vs 3M avg", [Distribution on COGS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8595,6 +8665,7 @@ table Measure
 			        "vs YoY", [Total Distribution on COGS Actual YoY%], 
 			        "vs Plan", [Total Distribution on COGS_APN],
 			        "vs Flex",[Total Distribution on COGS_AFX],
+			        "vs 3M avg", [Distribution on COGS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8623,6 +8694,7 @@ table Measure
 			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
 			        "vs Plan", [Total Logistics on Net Sales_APN],
 			        "vs Flex",[Total Logistics on Net Sales_AFX],
+			        "vs 3M avg", [Total Logistics 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8648,6 +8720,7 @@ table Measure
 			        "vs YoY", [Total Logistics on Net Sales Actual YoY%],
 			        "vs Plan", [Total Logistics on Net Sales_APN],
 			        "vs Flex",[Total Logistics on Net Sales_AFX],
+			        "vs 3M avg", [Total Logistics 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8675,6 +8748,7 @@ table Measure
 			      "vs YoY",               [Total Distribution on COGS Actual YoY_Final],
 			      "vs Plan", [Total Distribution on COGS_APN_Final],
 			      "vs Flex",[Total Distribution on COGS_AFX_Final],
+			      "vs 3M avg", [Distribution on COGS 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8696,6 +8770,7 @@ table Measure
 			      "vs YoY",               [Total Logistics on Net Sales Actual YoY_Final],
 			      "vs Plan", [Total Logistics on Net Sales_APN_Final],
 			      "vs Flex",[Total Logistics on Net Sales_AFX_Final],
+			      "vs 3M avg", [Total Logistics 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8718,6 +8793,7 @@ table Measure
 			        "vs YoY", [SSSO: Obs linked to Conv YoY%],
 			        "vs Plan", [SSSO: Obsolescenes linked to Conversions_APN],
 			        "vs Flex", [SSSO: Obsolescenes linked to Conversions_F66],
+			        "vs 3M avg", [SSSO: Obs linked to Conv 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8742,6 +8818,7 @@ table Measure
 			        "vs YoY", [SSSO: Obs linked to Conv YoY%],
 			        "vs Plan", [SSSO: Obsolescenes linked to Conversions_APN],
 			        "vs Flex", [SSSO: Obsolescenes linked to Conversions_F66],
+			        "vs 3M avg", [SSSO: Obs linked to Conv 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8769,6 +8846,7 @@ table Measure
 			      "vs YoY",               [SSSO: Obs linked to Conv YoY_Final],
 			      "vs Plan",[SSSO: Obs linked to conv APN_Final],
 			      "vs Flex", [SSSO: Obs linked to conv F66_Final],
+			      "vs 3M avg", [SSSO: Obs Linked to Conv 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8788,6 +8866,7 @@ table Measure
 			        "vs YoY", [SSSO: Salvage YoY%], 
 			        "vs Plan", [SSSO: Salvage & Obsolescence_APN],
 			        "vs Flex", [SSSO: Salvage & Obsolescence_F66],
+			        "vs 3M avg", [SSSO: Salvage & Obs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8816,6 +8895,7 @@ table Measure
 			        "vs YoY", [SSSO: Salvage YoY%], 
 			        "vs Plan", [SSSO: Salvage & Obsolescence_APN],
 			        "vs Flex", [SSSO: Salvage & Obsolescence_F66],
+			        "vs 3M avg", [SSSO: Salvage & Obs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8841,6 +8921,7 @@ table Measure
 			        "vs YoY", [SSSO: Scrap-Off YoY%], 
 			        "vs Plan", [SSSO: Scrap-Off_APN],
 			        "vs Flex", [SSSO: Scrap-Off_F66],
+			        "vs 3M avg", [SSSO: Scrap-Off 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8865,6 +8946,7 @@ table Measure
 			      "vs YoY",               [SSSO: Scrap-Off YoY_Final],
 			      "vs Plan", [SSSO: Scrap-Off APN_Final],
 			      "vs Flex", [SSSO: Scrap-Off F66_Final],
+			      "vs 3M avg", [SSSO: Scrap-Off 3M_Final],
 			      BLANK()
 			    )
 			
@@ -8884,6 +8966,7 @@ table Measure
 			        "vs YoY", [SSSO: Scrap-Off YoY%], 
 			        "vs Plan", [SSSO: Scrap-Off_APN],
 			        "vs Flex", [SSSO: Scrap-Off_F66],
+			        "vs 3M avg", [SSSO: Scrap-Off 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -8911,6 +8994,7 @@ table Measure
 			      "vs YoY",[SSSO: Salvage YoY_Final],
 			      "vs Plan",[SSSO: Salvage & Obs APN_Final],
 			      "vs Flex", [SSSO: Salvage & Obs F66_Final],
+			      "vs 3M avg", [SSSO: Salvage & Obs APN_Final],
 			      BLANK()
 			    )
 			```
@@ -8944,6 +9028,7 @@ table Measure
 			      "LYTD",               [Net POV Actual LYTD_Final],
 			      "vs YoY",               [Net POV Actual YoY_Final],
 			      "vs Plan", [Net POV_APN_Final],
+			      "vs 3M avg", [Net POV 3M_Final],
 			      BLANK()
 			    )
 			
@@ -10894,6 +10979,7 @@ table Measure
 			      "LYTD", [ASTM Rate LYTD_Final],
 			      "vs YoY", [ASTM Rate YoY_Final],
 			      "vs Plan", BLANK(),
+			      "vs 3M avg", [ASTM Rate 3M_Final],
 			      BLANK()
 			    )
 			
@@ -10901,8 +10987,6 @@ table Measure
 			```
 		displayFolder: ASTM Rate
 		lineageTag: 79e49ce6-788b-4dcc-99c2-54f7ad6fa671
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ASTM Incidents Switch' = ```
 			
@@ -10914,6 +10998,7 @@ table Measure
 			      "LYTD", [ASTM Incidents LYTD_Final],
 			      "vs YoY", [ASTM Incidents YoY_Final],
 			      "vs Plan", BLANK(),
+			      "vs 3M avg", [ASTM Incidents 3M_Final],
 			      BLANK()
 			    )
 			
@@ -10921,8 +11006,6 @@ table Measure
 			```
 		displayFolder: ASTM Incidents
 		lineageTag: 84b74531-90c5-444c-8322-d302c84c1b5a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'ASTM Rate_Color' =
 			
@@ -10935,6 +11018,7 @@ table Measure
 			        "LYTD", [ASTM Rate LYTD],
 			        "vs YoY", [ASTM Rate YoY%],
 			        "vs Plan",BLANK(),
+			        "vs 3M avg", [ASTM Rate 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -10958,6 +11042,7 @@ table Measure
 			        "LYTD", [ASTM Incidents LYTD],
 			        "vs YoY", [ASTM Incidents YoY%],
 			        "vs Plan",BLANK(),
+			        "vs 3M avg", [ASTM Incidents 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -10981,6 +11066,7 @@ table Measure
 			        "LYTD", [ASTM Rate LYTD],
 			        "vs YoY", [ASTM Rate YoY%],
 			        "vs Plan", BLANK(),
+			        "vs 3M avg", [ASTM Rate 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -11007,6 +11093,7 @@ table Measure
 			        "LYTD", [ASTM Incidents LYTD],
 			        "vs YoY", [ASTM Incidents YoY%],
 			        "vs Plan", BLANK(),
+			        "vs 3M avg", [ASTM Incidents 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -11320,6 +11407,7 @@ table Measure
 			      "LYTD", BLANK(),
 			      "vs YoY", [pSIF SIFs Focus YoY_Final],
 			      "vs Plan", [pSIF SIFs Focus Target Final],
+			      "vs 3M avg", [pSIF SIFs Focus 3M_Final],
 			      BLANK()
 			    )
 			
@@ -11339,6 +11427,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [Good Catch Closure Rate YoY%],
 			        "vs Plan", [Good Catch Closure Rate Target Diff%],
+			        "vs 3M avg", [Good Catch Closure 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -11362,6 +11451,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [Good Catch Closure Rate YoY%],
 			        "vs Plan", [Good Catch Closure Rate Target Diff%],
+			        "vs 3M avg", [Good Catch Closure 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -11389,6 +11479,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [pSIF SIFs Focus YoY%],
 			        "vs Plan", [pSIF SIFs Focus Target Diff%],
+			        "vs 3M avg", [pSIF SIFs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -11412,6 +11503,7 @@ table Measure
 			        "LYTD", BLANK(),
 			        "vs YoY", [pSIF SIFs Focus YoY%],
 			        "vs Plan", [pSIF SIFs Focus Target Diff%],
+			        "vs 3M avg", [pSIF SIFs 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -12136,6 +12228,7 @@ table Measure
 			      "LYTD", [PWS Benefits LYTD_Final],
 			      "vs YoY", [PWS Benefits YoY_Final],
 			      "vs Plan", [PWS Benefits_APN_Final],
+			      "vs 3M avg", [PWS Benefits 3M_Final],
 			      BLANK()
 			    )
 			
@@ -12155,6 +12248,7 @@ table Measure
 			        "LYTD", [PWS Benefits LYTD],
 			        "vs YoY", [PWS Benefits YoY%],
 			        "vs Plan",[PWS Benefits_APN],
+			        "vs 3M avg", [PWS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -12178,6 +12272,7 @@ table Measure
 			        "LYTD", [PWS Benefits LYTD],
 			        "vs YoY", [PWS Benefits YoY%],
 			        "vs Plan", [PWS Benefits_APN],
+			        "vs 3M avg", [PWS 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -12875,7 +12970,7 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'OEE% Focus Lines Last 3M Avg' =
+	measure 'OEE Focus Lines% Last 3M Avg' =
 			
 			VAR CurrentSeq =
 			    MAX ( Dim_Date[YearPeriodSeq])
@@ -13395,9 +13490,9 @@ table Measure
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'OEE% Focus Lines 3M_diff%' =
+	measure 'OEE Focus Lines% 3M_diff%' =
 			
-			VAR Result = ([OEE Focus Lines%] - [OEE% Focus Lines Last 3M Avg])
+			VAR Result = ([OEE Focus Lines%] - [OEE Focus Lines% Last 3M Avg])
 			RETURN
 			Result
 		displayFolder: OEE FOCUS LINES
@@ -13424,10 +13519,6 @@ table Measure
 		lineageTag: 5a6e6957-01b9-4c6f-bfac-d442c66ed1b6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure Measure
-		displayFolder: pSIF SIFs Focus
-		lineageTag: 5496f843-e8c2-4a76-8f48-ebdf83423943
 
 	measure 'pSIF SIFs 3M_diff%' =
 			
@@ -13518,6 +13609,557 @@ table Measure
 		lineageTag: ee4f95aa-92df-4994-91ce-9fcae47edff0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ASTM Incidents 3M_Final' = ```
+			
+			VAR kpi_ = [ASTM Incidents 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Incidents
+		lineageTag: 443ad491-a7c4-4406-82db-4b38842a716d
+
+	measure 'ASTM Rate 3M_Final' = ```
+			
+			VAR kpi_ = [ASTM Rate 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: ASTM Rate
+		lineageTag: 37b793a7-b375-49cb-a4e0-3b407f5ad4e4
+
+	measure 'Bias Lag2 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias Lag2 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCA
+		lineageTag: 8763f34c-9e4f-437d-a2ef-22a1cd10a7ae
+
+	measure 'Bias Lag4 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias Lag4 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCA
+		lineageTag: cb0674be-0bc0-4995-bdde-2190795b616e
+
+	measure 'CAPA Completion Rate 3M_Final' = ```
+			
+			VAR kpi_ = [CAPA Completion 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: CAPA Completion Rate
+		lineageTag: ced1f5d6-3c9b-4adc-8c55-a7866faab923
+
+	measure 'CFR 3M_Final' = ```
+			
+			VAR kpi_ =  [CFR 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: CFR
+		lineageTag: 67dc60fd-02f8-44d7-87cb-7073cc8195fb
+
+	measure 'COGS Actual 3M_Final' = ```
+			VAR kpi_ =  [COGS 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: COGS
+		lineageTag: 8b484f9a-a807-4b4a-9436-139d270a5650
+
+	measure 'Critical or Major Observations 3M_Final' = ```
+			
+			VAR kpi_ = [Critical Major Obs 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: Critical or Major Obs
+		lineageTag: 8d8906ee-be93-4bee-99dd-406802d85acc
+
+	measure 'Customer Fines 3M_Final' = ```
+			
+			VAR kpi_ =  [Customer Fines 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Customer Fines
+		lineageTag: 8555a48e-1433-4b5e-becb-09f1b673f08b
+
+	measure 'DIO 3M_Final' = ```
+			
+			VAR kpi_ =  [DIO 3M_diff%]
+			Return 
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+			```
+		displayFolder: DIO
+		lineageTag: a45a4df3-2988-4760-b700-25f84d1096b6
+
+	measure 'Distribution on COGS 3M_Final' = ```
+			
+			VAR kpi_ =  [Distribution on COGS 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Distribution on COGS
+		lineageTag: f6df1600-5e82-428b-8c58-bb0fe1c29d83
+
+	measure 'DPO 3M_Final' = ```
+			
+			VAR kpi_ =  [DPO 3M_diff%]
+			Return 
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+			```
+		displayFolder: DPO
+		lineageTag: 6e3f7916-3c61-477a-851a-df15bbb189a7
+
+	measure 'DSO 3M_Final' = ```
+			
+			VAR kpi_ =  [DSO 3M_diff%]
+			Return 
+			IF (
+			    ISBLANK(kpi_),
+			    "--",
+			    VAR perc_ = ABS(kpi_)
+			    VAR Format_ = FORMAT(perc_, "0.0%")
+			    VAR Result_ = IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			    RETURN Result_ & UNICHAR(160) & UNICHAR(160)
+			    )
+			```
+		displayFolder: DSO
+		lineageTag: 772a5644-e27d-458d-9f3c-7b8446dae018
+
+	measure 'Expired Inventory 3M_Final' = ```
+			
+			VAR kpi_ =  [Expired Inventory 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Expired Inventory
+		lineageTag: 0dc6e4ae-6fe0-4d1e-947f-487fc2a32ba5
+
+	measure 'FA% Lag2 3M_Final' = ```
+			
+			VAR kpi_ =  [FA Lag2 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: 69b35359-453e-4567-8220-5441cefaf27a
+
+	measure 'FA% Lag4 3M_Final' = ```
+			
+			VAR kpi_ =  [FA Lag4 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: f23bf00f-ab65-4248-bf3e-d430a5059e96
+
+	measure 'Good Catch Closure 3M_Final' = ```
+			
+			VAR kpi_ = [Good Catch Closure 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: GOOD Catch Closure Rate
+		lineageTag: cc8a595f-9b49-4612-ba37-2d5227b446cf
+
+	measure 'Gross Inventory 3M_Final' = ```
+			
+			VAR kpi_ =  [Gross Inventory 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Gross Inventory
+		lineageTag: f1cd9dba-2fcb-4847-a67b-a835244aa2ef
+
+	measure 'Gross PPV 3M_Final' = ```
+			
+			VAR kpi_ =  [Gross PPV 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Gross PPV
+		lineageTag: 3aadad3c-a7b2-464d-ac9e-8d2201483e3f
+
+	measure 'Inflated Inventory 3M_Final' = ```
+			
+			VAR kpi_ =  [Inflated Inventory 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Inflated Inventory
+		lineageTag: 3f079f46-b819-4ada-8d37-ae5b74ecabc3
+
+	measure 'Total Logistics 3M_Final' = ```
+			
+			VAR kpi_ =  [Total Logistics 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Logistic
+		lineageTag: 2c8d7ca8-0408-4a81-aa56-ce1fa948315f
+
+	measure 'Total Logistics on Net Sales 3M_Final' = ```
+			
+			VAR kpi_ =  [Total Logistics on Net Sales 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Logistic vs Net Sales
+		lineageTag: 01e3bc35-f7b0-4ef0-8afe-01021943c0ac
+
+	measure 'Net Inventory 3M_Final' = ```
+			
+			VAR kpi_ =  [Net Inventory 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Net Inventory
+		lineageTag: fd0ac017-2d1a-4fb2-99d9-f8b3d896acbb
+
+	measure 'Net POV 3M_Final' = ```
+			
+			VAR kpi_ =  [Net POV 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Net POV
+		lineageTag: de65be9d-669d-472e-b7c5-128267b27cb0
+
+	measure 'Net Sales 3M_Final' = ```
+			
+			VAR kpi_ =  [Net Sales 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Net Sales
+		lineageTag: d331d3e3-8098-4506-bc8f-da3d7c9ec7b6
+
+	measure 'OEE% 3M_Final' = ```
+			
+			VAR kpi_ =  [OEE% 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: OEE
+		lineageTag: b699b75a-0869-4df8-81a8-4ed776f1d199
+
+	measure 'OEE Focus Lines% 3M_Final' = ```
+			
+			VAR kpi_ =  [OEE Focus Lines% 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: OEE FOCUS LINES
+		lineageTag: adb6efcb-080b-4b0b-9712-63fb459f86e2
+
+	measure 'On Time Closure of Deviations 3M_Final' = ```
+			
+			VAR kpi_ = [On Time Closure of Deviations 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: On Time Closure of Deviations
+		lineageTag: 8ce1f368-b1f1-4041-b880-fdfb37b758a6
+
+	measure 'Operating Income Actual 3M_Final' = ```
+			
+			VAR kpi_ =  [Operating Income 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Operating Income
+		lineageTag: f3861c26-fd39-403a-bad9-d08fa3b6413b
+
+	measure 'pSIF SIFs Focus 3M_Final' = ```
+			
+			VAR kpi_ = [pSIF SIFs 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: pSIF SIFs Focus
+		lineageTag: f9bdd595-c149-49d1-b969-fc56307a9ce5
+
+	measure 'PWS Benefits 3M_Final' = ```
+			
+			VAR kpi_ = [PWS 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: PWS
+		lineageTag: 28ec4249-4086-4529-8ffc-c01f458aecbb
+
+	measure 'RFT 3M_Final' = ```
+			
+			VAR kpi_ = [RFT 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			IF(ISBLANK(kpi_),"--",Result_ & UNICHAR(160) & UNICHAR(160))
+			```
+		displayFolder: RFT
+		lineageTag: 39b56821-6b7a-4d63-86e7-ad36ac66c13a
+
+	measure 'Schedule Attainment 3M_Final' = ```
+			
+			VAR kpi_ =  [Schedule Attainment 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Schedule Attainment
+		lineageTag: 49b6a640-8534-4bad-90fc-4c1ac0887803
+
+	measure 'Service Rate% 3M_Final' = ```
+			
+			VAR kpi_ =  [Service Rate 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Service Rate CSCA
+		lineageTag: a2ad8aa8-7593-4bf8-a643-92cd32708a05
+
+	measure 'Service Top 11 3M_Final' = ```
+			
+			VAR kpi_ =  [Service Top 11 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Service Top 11
+		lineageTag: da367c5d-46e4-47ca-b10b-9b683c93adfa
+
+	measure 'SSSO: Obs Linked to Conv 3M_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Obs linked to Conv 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: SSSO Obs linked to Conv
+		lineageTag: f55bf57b-5aa5-4ab1-9bd3-1a15470de3b0
+
+	measure 'SSSO: Salvage 3M_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Salvage & Obs 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: SSSO Salvage & Obs
+		lineageTag: 88b388e4-80fb-4c07-b5fa-38a7bc52d36c
+
+	measure 'SSSO: Scrap-Off 3M_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Scrap-Off 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: SSSO Scrap-Off
+		lineageTag: 97e4b3a4-4c1d-4a2e-89ae-2ff6ef117bf1
+
+	measure 'Bias Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCA
+		lineageTag: c6188eee-c704-4cee-8b69-351c83b63e31
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias 3M_diff%' =
+			
+			VAR Result = ([Bias%] - [Bias Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCA
+		lineageTag: eaa3e4f8-e2c8-4a8d-a24b-379521c80271
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCA
+		lineageTag: 8b16acf9-6762-4685-acb2-c6c8cd4afc02
+
+	measure 'FA Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA% CSCA]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: 63721c5c-42ea-4db1-8d5d-7149a7d40427
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA 3M_diff%' =
+			
+			VAR Result = ([FA% CSCA] - [FA Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: f95fe7af-24b0-463d-8f1c-4ca84b451445
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% 3M_Final' = ```
+			
+			VAR kpi_ =  [FA 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		displayFolder: Forecast Accuracy CSCA
+		lineageTag: 08767dfa-e181-4d29-834d-e3c079fe4958
 
 	column Measures
 		dataType: string

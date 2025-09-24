@@ -1964,8 +1964,8 @@
     {
       "ordinal": 9,
       "scrollPosition": {
-        "x": 0,
-        "y": 0
+        "x": 81.454947988189048,
+        "y": 341.90964211978394
       },
       "nodes": [
         {
@@ -2035,7 +2035,7 @@
         }
       ],
       "name": "Layout 9",
-      "zoomValue": 100,
+      "zoomValue": 79.553182037699912,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
