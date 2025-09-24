@@ -134,3 +134,80 @@ expression Dim_Profit_Center_Dummy =
 
 	annotation PBI_ResultType = Table
 
+expression EasternNow =
+		let
+		    EasternNow = () as datetimezone =>
+		    let
+		        utcNow = DateTimeZone.UtcNow(),
+		        currentDate = DateTimeZone.RemoveZone(utcNow),
+		
+		        currentYear = Date.Year(currentDate),
+		
+		        // DST Start = 2nd Sunday in March
+		        march1 = #date(currentYear, 3, 1),
+		        firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday), 0, 0, 0),
+		        secondSundayMarch = firstSundayMarch + #duration(7, 0, 0, 0),
+		
+		        // DST End = 1st Sunday in November
+		        nov1 = #date(currentYear, 11, 1),
+		        firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday), 0, 0, 0),
+		
+		        // Convert all to date (so comparison is clean)
+		        today = Date.From(currentDate),
+		        dstStart = Date.From(secondSundayMarch),
+		        dstEnd = Date.From(firstSundayNov),
+		
+		        // DST check
+		        isDST = today >= dstStart and today < dstEnd,
+		
+		        // Adjusted Eastern time
+		        easternNow = DateTimeZone.SwitchZone(utcNow, if isDST then -4 else -5)
+		    in
+		        easternNow
+		in
+		    EasternNow
+	lineageTag: 939970c4-f112-4749-a2f5-85aff20b6d54
+	queryGroup: Parameters/Misc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'Invoked Function' =
+		let
+		    EasternNow = () as datetimezone =>
+		    let
+		        utcNow = DateTimeZone.UtcNow(),
+		        currentDate = DateTimeZone.RemoveZone(utcNow),
+		
+		        currentYear = Date.Year(currentDate),
+		
+		        // DST Start = 2nd Sunday in March
+		        march1 = #date(currentYear, 3, 1),
+		        firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday), 0, 0, 0),
+		        secondSundayMarch = firstSundayMarch + #duration(7, 0, 0, 0),
+		
+		        // DST End = 1st Sunday in November
+		        nov1 = #date(currentYear, 11, 1),
+		        firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday), 0, 0, 0),
+		
+		        // Convert all to date (so comparison is clean)
+		        today = Date.From(currentDate),
+		        dstStart = Date.From(secondSundayMarch),
+		        dstEnd = Date.From(firstSundayNov),
+		
+		        // DST check
+		        isDST = today >= dstStart and today < dstEnd,
+		
+		        // Adjusted Eastern time
+		        easternNow = DateTimeZone.SwitchZone(utcNow, if isDST then -4 else -5)
+		    in
+		        easternNow
+		in
+		    EasternNow
+	lineageTag: 3a08c0c6-82da-493d-98c3-da81620e40d7
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+

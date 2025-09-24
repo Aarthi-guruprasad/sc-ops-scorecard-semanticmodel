@@ -1385,10 +1385,10 @@ table Measure
 			            "CAPA Completion Rate%",[CAPA Completion Rate YTD],
 			            "RFT%", [RFT YTD],
 			            "Critical or Major Observations", [Critical or Major Observations YTD],
-			            "ASTM Rate",[ASTM Rate YTD],
-			            "ASTM Incidents",[ASTM Incidents YTD],
-			            "Good Catch Closure Rate%",[Good Catch Closure Rate YTD],
-			            "pSIF SIF Focus Action%",[pSIF SIFs Focus YTD],
+			            // "ASTM Rate",[ASTM Rate YTD],
+			            // "ASTM Incidents",[ASTM Incidents YTD],
+			            // "Good Catch Closure Rate%",[Good Catch Closure Rate YTD],
+			            // "pSIF SIF Focus Action%",[pSIF SIFs Focus YTD],
 			            "PWS Benefits",[PWS Benefits YTD]
 			            )
 			
@@ -9255,7 +9255,8 @@ table Measure
 
 	measure 'KPI Status Icon' = ```
 			
-			VAR _kpiID = SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
+			VAR _kpiID =
+			    SELECTEDVALUE ( KPI_Metadata[KPI_ID] )
 			
 			VAR _timeMode =
 			    SELECTEDVALUE ( CG_PeriodSelection[Period] )
@@ -9267,156 +9268,254 @@ table Measure
 			        LOOKUPVALUE ( KPI_Metadata[SignRule_PTD], KPI_Metadata[KPI_ID], _kpiID )
 			    )
 			
-			-- Assign value based on KPI_ID
+			-- ✅ Assign value dynamically based on KPI_ID
 			VAR _value =
 			    SWITCH (
 			        _kpiID,
+			
+			        // -------- Sales Growth --------
 			        "FA_Lag1_vsPlan", [FA Target L1 Diff raw],
-			        // "FA_Lag1_vsLYTD", [FA% LYTD CSCI],
-			        // "FA_Lag1_vsYoY", [FA% YoY L1 raw CSCI],
-			        // "FA_Lag1_vsPP", [FA% MoM L1 raw CSCI],
+			        "FA_Lag1_vsLYTD", [FA% L1 LYTD CSCI],
+			        "FA_Lag1_vsYoY", [FA% YoY L1 raw CSCI],
+			        "FA_Lag1_vsPP", [FA% MoM L1 raw CSCI],
 			
-			        // "FA_Lag2_vsPlan", [FA% Lag 2 Target Diff%],
-			        // "FA_Lag2_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
-			        // "FA_Lag2_vsYoY", [FA% Lag2 YoY%],
-			        // "FA_Lag2_vsPP", [FA% Lag2 MoM%],
+			        "FA_Lag2_vsPlan", [FA% Lag 2 Target Diff%],
+			        "FA_Lag2_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "FA_Lag2_vsYoY", [FA% Lag2 YoY%],
+			        "FA_Lag2_vsPP", [FA% Lag2 MoM%],
 			
-			        // "FA_Lag4_CSCA_vsPlan", [FA% Lag 4 Target Diff%],
-			        // "FA_Lag4_CSCA_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
-			        // "FA_Lag4_CSCA_vsYoY", [FA% Lag4 YoY%],
-			        // "FA_Lag4_CSCA_vsPP", [FA% Lag4 MoM%],
-			        // "FA_Lag4_CSCI_vsPlan", [FA Target L4 Diff raw],
-			        // "FA_Lag4_CSCI_vsLYTD", [FA% LYTD CSCI],
-			        // "FA_Lag4_CSCI_vsYoY", [FA% YoY L4 raw CSCI],
-			        // "FA_Lag4_CSCI_vsPP", [FA% MoM CSCI L4],
+			        "FA_Lag4_CSCA_vsPlan", [FA% Lag 4 Target Diff%],
+			        "FA_Lag4_CSCA_vsLYTD", CALCULATE([FA% CSCA LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "FA_Lag4_CSCA_vsYoY", [FA% Lag4 YoY%],
+			        "FA_Lag4_CSCA_vsPP", [FA% Lag4 MoM%],
 			
-			        // "Bias_Lag1_vsPlan", [Bias Target Diff%_CSCI L1],
-			        // "Bias_Lag1_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="1")),
-			        // "Bias_Lag1_vsYoY", [Bias YoY % L1 Raw CSCI],
-			        // "Bias_Lag1_vsPP", [Bias MoM%_raw L1 CSCI],
-			        
-			        // "Bias_Lag2_vsPlan", [Bias Lag2 Target Diff%],
-			        // "Bias_Lag2_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
-			        // "Bias_Lag2_vsYoY", [Bias Lag2 YoY%],
-			        // "Bias_Lag2_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "FA_Lag4_CSCI_vsPlan", [FA Target L4 Diff raw],
+			        "FA_Lag4_CSCI_vsLYTD", [FA% L4 LYTD CSCI],
+			        "FA_Lag4_CSCI_vsYoY", [FA% YoY L4 raw CSCI],
+			        "FA_Lag4_CSCI_vsPP", [FA% MoM L4 raw CSCI],
 			
-			        // "Bias_Lag4_CSCA_vsPlan", [Bias Lag4 Target Diff%],
-			        // "Bias_Lag4_CSCA_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
-			        // "Bias_Lag4_CSCA_vsYoY", [Bias Lag4 YoY%],
-			        // "Bias_Lag4_CSCA_vsPP", CALCULATE([Bias MoM%], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
-			        // "Bias_Lag4_CSCI_vsPlan", [Bias Target Diff%_CSCI L4],
-			        // "Bias_Lag4_CSCI_vsLYTD", CALCULATE([Bias % LYTD CSCI], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
-			        // "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
-			        // "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
+			        "Bias_Lag1_vsPlan", [Bias Target Diff%_CSCI L1],
+			        "Bias_Lag1_vsLYTD", [Bias % L1 LYTD CSCI],
+			        "Bias_Lag1_vsYoY", [Bias YoY % L1 Raw CSCI],
+			        "Bias_Lag1_vsPP", [Bias MoM%_raw L1 CSCI],
 			
-			        // "Net_Inventory_vsPlan", [Net Inventory_APN],
-			        // "Net_Inventory_vsFlex", [Net Inventory_AFX],
-			        // "Net_Inventory_vsLYTD", [Net Inventory LYTD],
-			        // "Net_Inventory_vsPP", [Net Inventory MoM%],
-			        // "Net_Inventory_vsYoY", [Net Inventory YoY%],
+			        "Bias_Lag2_vsPlan", [Bias Lag2 Target Diff%],
+			        "Bias_Lag2_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="2")),
+			        "Bias_Lag2_vsYoY", [Bias Lag2 YoY%],
+			        "Bias_Lag2_vsPP", [Bias Lag2 MoM%],
 			
-			        // "Gross_Inventory_vsPlan", [Gross Inventory_APN],
-			        // "Gross_Inventory_vsFlex", [Gross Inventory_AFX],
-			        // "Gross_Inventory_vsLYTD", [Gross Inv LYTD],
-			        // "Gross_Inventory_vsPP", [Gross Inventory MoM%],
-			        // "Gross_Inventory_vsYoY", [Gross Inventory YoY%],
+			        "Bias_Lag4_CSCA_vsPlan", [Bias Lag4 Target Diff%],
+			        "Bias_Lag4_CSCA_vsLYTD", CALCULATE([Bias% LYTD], KEEPFILTERS(Fact_Forecast_Accuracy[LAGs]="4")),
+			        "Bias_Lag4_CSCA_vsYoY", [Bias Lag4 YoY%],
+			        "Bias_Lag4_CSCA_vsPP", [Bias Lag4 MoM%],
 			
-			        // "Expired_Inventory_vsPP", [Expired Inventory MoM%],
-			        // "Expired_Inventory_vsYoY", [Expired Inventory YoY%],
-			        // "Expired_Inventory_vsLYTD", [Expired Inventory LYTD],
+			        "Bias_Lag4_CSCI_vsPlan", [Bias Target Diff%_CSCI L4],
+			        "Bias_Lag4_CSCI_vsLYTD", [Bias % L4 LYTD CSCI],
+			        "Bias_Lag4_CSCI_vsYoY", [Bias YoY % L4 Raw CSCI],
+			        "Bias_Lag4_CSCI_vsPP", [Bias MoM%_raw L4 CSCI],
 			
-			        // "Inflated_Inventory_vsPP", [Inflated Inventory MoM%],
-			        // "Inflated_Inventory_vsYoY", [Inflated Inventory YoY%],
-			        // "Inflated_Inventory_vsLYTD", [Inflated Inv LYTD],
+			        "Service_Top_11_vsPlan", [Service Top 11 Target Diff%],
+			        "Service_Top_11_vsYoY", [Service Top 11 YoY%],
+			        "Service_Top_11_vsLYTD", [Service Top 11 LYTD],
+			        "Service_Top_11_vsPP", [Service Top 11 MoM%],
 			
-			        // "DIO_vsPlan", [DIO_APN],
-			        // "DIO_vsPP", [DIO MoM%],
-			        // "DIO_vsFlex", [DIO_AFX],
-			        // "DIO_vsYoY", [DIO YoY%],
+			        "Case_fill_rate_vsPlan", [CFR Target Diff%],
+			        "Case_fill_rate_vsPP", [CFR MoM%],
+			        "Case_fill_rate_vsYoY", [CFR YoY%],
+			        "Case_fill_rate_vsLYTD", [CFR LYTD],
 			
-			        // "SSSO_Conversions_vsPlan", [SSSO: Obsolescenes linked to Conversions_APN],
-			        // "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
-			        // "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
-			        // "SSSO_Conversions_vsYoY", [SSSO: Obs linked to Conv YoY%],
-			        // "SSSO_Conversions_vsFlex", [SSSO: Obs linked to conv F66_Final],
+			        "Service_Level_Gap_vsPlan", [Service Target Diff%],
+			        "Service_Level_Gap_vsPP", [Service Rate% MoM%],
+			        "Service_Level_Gap_vsYoY", [Service Rate YoY%],
+			        "Service_Level_Gap_vsLYTD", [Service Rate LYTD],
 			
-			        // "SSSO_Salvage_Obsolescence_vsPlan", [SSSO: Salvage & Obsolescence_APN],
-			        // "SSSO_Salvage_Obsolescence_vsLYTD", [SSSO: Salvage LYTD],
-			        // "SSSO_Salvage_Obsolescence_vsPP", [SSSO: Salvage & obs MoM%],
-			        // "SSSO_Salvage_Obsolescence_vsYoY", [SSSO: Salvage YoY%],
-			        // "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obs F66_Final],
+			        "Service_Level_Total_vsPlan", [Service Target Diff%_CSCI],
+			        "Service_Level_Total_vsPP", [Service Level MoM%],
+			        "Service_Level_Total_vsYoY", [Service Level YoY%],
+			        "Service_Level_Total_vsLYTD", [Service Level LYTD],
 			
-			        // "SSSO_Scrap_vsPlan", [SSSO: Scrap-Off_APN],
-			        // "SSSO_Scrap_vsLYTD", [SSSO: Scrap-off LYTD],
-			        // "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
-			        // "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
-			        // "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			        // -------- Operations & Quality --------
+			        "OEE_vsPlan", [OEE Target diff%],
+			        "OEE_vsPP", [OEE% MoM%],
+			        "OEE_vsYoY", [OEE% YoY%],
+			        "OEE_vsLYTD", [OEE LYTD],
 			
-			        // "DPO_vsPP", [DPO MoM%],
-			        // "DPO_vsYoY", [DPO YoY%],
+			        "Schedule_Attainment_vsPlan", [Schedule Attn Target Diff%],
+			        "Schedule_Attainment_vsPP", [SA MoM%],
+			        "Schedule_Attainment_vsYoY", [SA YoY%],
+			        "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
 			
-			        // "OEE_vsPlan", [OEE Target diff%],
-			        // "OEE_vsPP", [OEE% MoM%],
-			        // "OEE_vsYoY", [OEE% YoY%],
-			        // "OEE_vsLYTD", [OEE LYTD],
+			        "On_Time_Deviation_vsPlan", [On Time Closure of Deviations Target Diff%],
+			        "On_Time_Deviation_vsYoY", [On Time Closure of Deviations YoY%],
+			        "On_Time_Deviation_vsLYTD", [On Time Closure of Deviations LYTD],
+			        "On_Time_Deviation_vsPP", [On Time Closure of Deviations MoM%],
 			
-			        // "COGS_vsPlan", [COGS_APN],
-			        // "COGS_vsPP", [COGS Actual MoM%],
-			        // "COGS_vsYoY", [COGS Actual YoY%],
-			        // "COGS_vsLYTD", [COGS Actual LYTD],
+			        "CAPA_Completion_vsPlan", [CAPA Completion Rate Target Diff%],
+			        "CAPA_Completion_vsPP", [CAPA Completion Rate MoM%],
+			        "CAPA_Completion_vsYoY", [CAPA Completion Rate YoY%],
+			        "CAPA_Completion_vsLYTD", [CAPA Closed LYTD],
 			
-			        // "Dist_to_COGS_vsPlan", [Total Distribution on COGS_APN],
-			        // "Dist_to_COGS_vsPP", [Total Distribution on COGS Actual MoM%],
-			        // "Dist_to_COGS_vsYoY", [Total Distribution on COGS Actual YoY%],
-			        // "Dist_to_COGS_vsLYTD", [Total Distribution on COGS LYTD],
+			        "Right_First_Time_vsPlan", [RFT Target Diff%],
+			        "Right_First_Time_vsPP", [RFT MoM%],
+			        "Right_First_Time_vsYoY", [RFT YoY%],
+			        "Right_First_Time_vsLYTD", [RFT LYTD],
 			
-			        // "Log_to_Sales_vsPlan", [Total Logistics on Net Sales_APN],
-			        // "Log_to_Sales_vsPP", [Total Logistics on Net Sales Actual MoM%],
-			        // "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
-			        // "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
+			        "Critical/Major_vsPP", [Critical or Major Observations MoM%],
+			        "Critical/Major_vsYoY", [Critical or Major Observations YoY%],
+			        "Critical/Major_vsLYTD", [Critical or Major Observations LYTD],
 			
-			        // "Schedule_Attainment_vsPlan", [Schedule Attn Target Diff%],
-			        // "Schedule_Attainment_vsPP", [SA MoM%],
-			        // "Schedule_Attainment_vsYoY", [SA YoY%],
-			        // "Schedule_Attainment_vsLYTD", [Schedule Attn LYTD],
+			        "ASTM_Incidents_vsPP", [ASTM Incidents MoM%],
+			        "ASTM_Incidents_vsYoY", [ASTM Incidents YoY%],
+			        "ASTM_Incidents_vsLYTD", [ASTM Incidents LYTD],
 			
-			        // "Net_Sales_vsPlan", [Net Sales_APN],
-			        // "Net_Sales_vsPP", [Net Sales Actual MoM%],
-			        // "Net_Sales_vsYoY", [Net Sales Actual YoY%],
-			        // "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
+			        "ASTM_Rate_vsPP", [ASTM Rate MoM%],
+			        "ASTM_Rate_vsYoY", [ASTM Rate YoY%],
+			        "ASTM_Rate_vsLYTD", [ASTM Rate LYTD],
 			
-			        // "DSO_vsPP", [DSO MoM%],
-			        // "DSO_vsYoY", [DSO YoY%],
+			        "Good_Catch_Closure_vsPlan", [Good Catch Closure Rate Target Diff%],
+			        "Good_Catch_Closure_vsPP", [Good Catch Closure Rate MoM%],
+			        "Good_Catch_Closure_vsYoY", [Good Catch Closure Rate YoY%],
 			
-			        // "Service_Level_Gap_vsPlan", [Service Target Diff%],
-			        // "Service_Level_Gap_vsPP", [Service Rate% MoM%],
-			        // "Service_Level_Gap_vsYoY", [Service Rate YoY%],
-			        // "Service_Level_Gap_vsLYTD", [Service Rate LYTD],
+			        "pSIF_Closure_vsPlan", [pSIF SIFs Focus Target Diff%],
+			        "pSIF_Closure_vsPP", [pSIF SIFs Focus MoM%],
+			        "pSIF_Closure_vsYoY", [pSIF SIFs Focus YoY%],
 			
-			        // "Service_Level_Total_vsPlan", [Service Target Diff%_CSCI],
-			        // "Service_Level_Total_vsPP", [Service Level MoM%],
-			        // "Service_Level_Total_vsYoY", [Service Level YoY%],
-			        // "Service_Level_Total_vsLYTD", [Service Level LYTD],
+			        "PWS_Benefits_vsPlan", [PWS Benefits_APN],
+			        "PWS_Benefits_vsPP", [PWS Benefits MoM%],
+			        "PWS_Benefits_vsYoY", [PWS Benefits YoY%],
+			        "PWS_Benefits_vsLYTD", [PWS Benefits LYTD],
 			
-			        // "Customer_Fines_vsPlan", [Cust Fine Target Diff%],
-			        // "Customer_Fines_vsPP", [Cust Fine MoM%],
-			        // "Customer_Fines_vsYoY", [Cust fine YoY%],
-			        // "Customer_Fines_vsLYTD", [Cust Fine LYTD],
+			        // -------- Working Capital --------
+			        "Net_Inventory_vsPlan", [Net Inventory_APN],
+			        "Net_Inventory_vsFlex", [Net Inventory_AFX],
+			        "Net_Inventory_vsLYTD", [Net Inventory LYTD],
+			        "Net_Inventory_vsPP", [Net Inventory MoM%],
+			        "Net_Inventory_vsYoY", [Net Inventory YoY%],
 			
-			        // "Case_fill_rate_vsPlan", [CFR Target Diff%],
-			        // "Case_fill_rate_vsPP", [CFR MoM%],
-			        // "Case_fill_rate_vsYoY", [CFR YoY%],
-			        // "Case_fill_rate_vsLYTD", [CFR LYTD],
+			        "Gross_Inventory_vsPlan", [Gross Inventory_APN],
+			        "Gross_Inventory_vsFlex", [Gross Inventory_AFX],
+			        "Gross_Inventory_vsLYTD", [Gross Inv LYTD],
+			        "Gross_Inventory_vsPP", [Gross Inventory MoM%],
+			        "Gross_Inventory_vsYoY", [Gross Inventory YoY%],
+			
+			        "Expired_Inventory_vsPP", [Expired Inventory MoM%],
+			        "Expired_Inventory_vsYoY", [Expired Inventory YoY%],
+			        "Expired_Inventory_vsLYTD", [Expired Inventory LYTD],
+			
+			        "Inflated_Inventory_vsPP", [Inflated Inventory MoM%],
+			        "Inflated_Inventory_vsYoY", [Inflated Inventory YoY%],
+			        "Inflated_Inventory_vsLYTD", [Inflated Inv LYTD],
+			
+			        "DIO_vsPlan", [DIO_APN],
+			        "DIO_vsPP", [DIO MoM%],
+			        "DIO_vsFlex", [DIO_AFX],
+			        "DIO_vsYoY", [DIO YoY%],
+			
+			        "DPO_vsPlan", [DPO_APN],
+			        "DPO_vsPP", [DPO MoM%],
+			        "DPO_vsYoY", [DPO YoY%],
+			
+			        "DSO_vsPlan", [DSO_APN],
+			        "DSO_vsPP", [DSO MoM%],
+			        "DSO_vsYoY", [DSO YoY%],
+			
+			        // -------- Operating Income --------
+			        "SSSO_Conversions_vsPlan", [SSSO: Obsolescenes linked to Conversions_APN],
+			        "SSSO_Conversions_vsLYTD", [SSSO: Obs LYTD],
+			        "SSSO_Conversions_vsPP", [SSSO: Obs linked to Conv MoM%],
+			        "SSSO_Conversions_vsYoY", [SSSO: Obs linked to Conv YoY%],
+			        "SSSO_Conversions_vsFlex", [SSSO: Obsolescenes linked to Conversions_F66],
+			
+			        "SSSO_Salvage_Obsolescence_vsPlan", [SSSO: Salvage & Obsolescence_APN],
+			        "SSSO_Salvage_Obsolescence_vsLYTD", [SSSO: Salvage LYTD],
+			        "SSSO_Salvage_Obsolescence_vsPP", [SSSO: Salvage & obs MoM%],
+			        "SSSO_Salvage_Obsolescence_vsYoY", [SSSO: Salvage YoY%],
+			        "SSSO_Salvage_Obsolescence_vsFlex", [SSSO: Salvage & Obsolescence_F66],
+			
+			        "SSSO_Scrap_vsPlan", [SSSO: Scrap-Off_APN],
+			        "SSSO_Scrap_vsLYTD", [SSSO: Scrap-off LYTD],
+			        "SSSO_Scrap_vsPP", [SSSO: Scrap-Off MoM%],
+			        "SSSO_Scrap_vsYoY", [SSSO: Scrap-Off YoY%],
+			        "SSSO_Scrap_vsFlex", [SSSO: Scrap-Off_F66],
+			
+			        "SSSO_Shrinkage_vsPlan", [SSSO: Shrinkage_APN],
+			        "SSSO_Shrinkage_vsLYTD", [SSSO: Shrinkage LYTD],
+			        "SSSO_Shrinkage_vsPP", [SSSO: Shrinkage MoM%],
+			        "SSSO_Shrinkage_vsYoY", [SSSO: Shrinkage YoY%],
+			        "SSSO_Shrinkage_vsFlex", [SSSO: Shrinkage_F66],
+			
+			        "Net_Sales_vsPlan", [Net Sales_APN],
+			        "Net_Sales_vsPP", [Net Sales Actual MoM%],
+			        "Net_Sales_vsYoY", [Net Sales Actual YoY%],
+			        "Net_Sales_vsLYTD", [Net Sales Actual LYTD],
+			        "Net_Sales_vsFlex", [Net Sales_AFX],
+			
+			        "COGS_vsPlan", [COGS_APN],
+			        "COGS_vsPP", [COGS Actual MoM%],
+			        "COGS_vsYoY", [COGS Actual YoY%],
+			        "COGS_vsLYTD", [COGS Actual LYTD],
+			        "COGS_vsFlex", [COGS_AFX],
+			
+			        "Log_to_Sales_vsPlan", [Total Logistics on Net Sales_APN],
+			        "Log_to_Sales_vsPP", [Total Logistics on Net Sales Actual MoM%],
+			        "Log_to_Sales_vsYoY", [Total Logistics on Net Sales Actual YoY%],
+			        "Log_to_Sales_vsLYTD", [Total Logistics on Net Sales LYTD],
+			        "Log_to_Sales_vsFlex", [Total Logistics on Net Sales_AFX],
+			
+			        "Dist_to_COGS_vsPlan", [Total Distribution on COGS_APN],
+			        "Dist_to_COGS_vsPP", [Total Distribution on COGS Actual MoM%],
+			        "Dist_to_COGS_vsYoY", [Total Distribution on COGS Actual YoY%],
+			        "Dist_to_COGS_vsLYTD", [Total Distribution on COGS LYTD],
+			        "Dist_to_COGS_vsFlex", [Total Distribution on COGS_AFX],
+			
+			        "Net_POV_vsPlan", [Net POV_APN],
+			        "Net_POV_vsPP", [Net POV Actual MoM%],
+			        "Net_POV_vsYoY", [Net POV Actual YoY%],
+			        "Net_POV_vsLYTD", [Net POV Actual LYTD],
+			
+			        "Gross_PPV_vsPlan", [Gross PPV_APN],
+			        "Gross_PPV_vsPP", [Gross PPV Actual MoM%],
+			        "Gross_PPV_vsYoY", [Gross PPV Actual YoY%],
+			        "Gross_PPV_vsLYTD", [Gross PPV Actual LYTD],
+			
+			        "Operating_Income_vsPlan", [Operating Income_APN],
+			        "Operating_Income_vsPP", [Operating Income Actual MoM%],
+			        "Operating_Income_vsYoY", [Operating Income Actual YoY%],
+			        "Operating_Income_vsLYTD", [Operating Income Actual LYTD],
+			
+			        "ABP_Variances_vsPlan", [ABP Variance_APN],
+			        "ABP_Variances_vsPP", [ABP Variance MoM%],
+			        "ABP_Variances_vsYoY", [ABP Variance YoY%],
+			        "ABP_Variances_vsLYTD", [ABP Variance LYTD],
+			
+			        "Customer_Fines_vsPlan", [Cust Fine Target Diff%],
+			        "Customer_Fines_vsPP", [Cust Fine MoM%],
+			        "Customer_Fines_vsYoY", [Cust fine YoY%],
+			        "Customer_Fines_vsLYTD", [Cust Fine LYTD],
+			
 			        BLANK()
 			    )
 			
+			-- ✅ Output with rules
 			RETURN
 			    SWITCH (
 			        TRUE(),
 			        ISBLANK ( _value ), BLANK(),
+			
+			        // Special rules (Bias thresholds)
+			        _kpiID IN { "Bias_Lag2_vsPlan", "Bias_Lag2_vsLYTD", "Bias_Lag2_vsYoY", "Bias_Lag2_vsPP",
+			                    "Bias_Lag4_CSCA_vsPlan", "Bias_Lag4_CSCA_vsLYTD", "Bias_Lag4_CSCA_vsYoY", "Bias_Lag4_CSCA_vsPP" },
+			            IF ( _value >= -0.03 && _value <= 0.03, "🟢", "🔴" ),
+			
+			        _kpiID IN { "Bias_Lag1_vsPlan", "Bias_Lag1_vsLYTD", "Bias_Lag1_vsYoY", "Bias_Lag1_vsPP",
+			                    "Bias_Lag4_CSCI_vsPlan", "Bias_Lag4_CSCI_vsLYTD", "Bias_Lag4_CSCI_vsYoY", "Bias_Lag4_CSCI_vsPP" },
+			            IF ( _value >= -0.10 && _value <= 0.10, "🟢", "🔴" ),
+			
+			        -- Normal rule
 			        _signRule = "GoodIfNeg", IF ( _value < 0, "🟢", "🔴" ),
 			        IF ( _value < 0, "🔴", "🟢" )
 			    )
+			
 			```
 		displayFolder: Landing Page Measures
 		lineageTag: c39a6b2b-98e1-4ba1-94c6-7d110abbb902
@@ -12046,16 +12145,10 @@ table Measure
 
 		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
-	measure 'LR CFR' = ```
-			
-			MAX ( 'Fact_CFR'[Last Refreshed])
-			
-			```
-		formatString: dd-mm-yy hh:nn AM/PM
+	measure 'LR CFR' = MAX('Fact_CFR'[Last Refreshed])
+		formatString: General Date
 		displayFolder: Refresh Details
 		lineageTag: aa9b5a4d-47eb-49fd-a5c0-c7c492c62aba
-
-		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	measure 'Good Catch Closure Plan_Target' = AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %])
 		formatString: 0.0%;-0.0%;0.0%
@@ -14160,6 +14253,34 @@ table Measure
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 08767dfa-e181-4d29-834d-e3c079fe4958
+	measure 'LR CFR ET' = ```
+			
+			VAR UTC = [LR CFR]  // use the measure from your model directly
+			RETURN
+			IF(
+			    ISBLANK(UTC),
+			    BLANK(),
+			    VAR Yr = YEAR(UTC)
+			    VAR Mar1 = DATE(Yr,3,1)
+			    VAR Mar1_Weekday = WEEKDAY(Mar1,1)
+			    VAR SecondSunday_March = Mar1 + MOD(8 - Mar1_Weekday,7) + 7
+			    VAR DST_Start = SecondSunday_March + TIME(2,0,0)
+			
+			    VAR Nov1 = DATE(Yr,11,1)
+			    VAR Nov1_Weekday = WEEKDAY(Nov1,1)
+			    VAR FirstSunday_Nov = Nov1 + MOD(8 - Nov1_Weekday,7)
+			    VAR DST_End = FirstSunday_Nov + TIME(2,0,0)
+			
+			    VAR ET_Offset = IF(UTC >= DST_Start && UTC < DST_End, TIME(4,0,0), TIME(5,0,0))
+			
+			    RETURN
+			        FORMAT(UTC + ET_Offset, "dd-MM-yyyy hh:mm tt") &
+			        " " & IF(UTC >= DST_Start && UTC < DST_End, "EDT", "EST")
+			)
+			
+			```
+		displayFolder: Refresh Details
+		lineageTag: 5ec80487-a03f-4797-8521-697a76660327
 
 	column Measures
 		dataType: string

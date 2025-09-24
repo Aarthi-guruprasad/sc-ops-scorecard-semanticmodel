@@ -3,21 +3,25 @@ table Fact_CFR
 
 	column Date
 		dataType: dateTime
-		formatString: General Date
+		formatString: Long Date
 		lineageTag: 8165cba7-f08b-46a1-9364-cfff2b5b82a5
 		summarizeBy: none
 		sourceColumn: Date
 
 		annotation SummarizationSetBy = Automatic
 
+		annotation UnderlyingDateTimeDataType = Date
+
 	column 'WE Date'
 		dataType: dateTime
-		formatString: General Date
+		formatString: Long Date
 		lineageTag: af09608e-94b1-4690-b9e4-a5fd3a9d0f95
 		summarizeBy: none
 		sourceColumn: WE Date
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column 'Material Key'
 		dataType: string
@@ -36,7 +40,7 @@ table Fact_CFR
 		annotation SummarizationSetBy = Automatic
 
 	column 'Total Delivery Qty'
-		dataType: double
+		dataType: int64
 		lineageTag: b6468f4b-92b7-4c47-8721-9cdcfa6d9cac
 		summarizeBy: sum
 		sourceColumn: Total Delivery Qty
@@ -46,7 +50,7 @@ table Fact_CFR
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column 'Total Order Qty'
-		dataType: double
+		dataType: int64
 		lineageTag: 368c6e98-a438-453e-b7c1-061e6c1a6e9c
 		summarizeBy: sum
 		sourceColumn: Total Order Qty
@@ -82,8 +86,7 @@ table Fact_CFR
 		annotation SummarizationSetBy = Automatic
 
 	column 'Last Refreshed'
-		dataType: dateTime
-		formatString: General Date
+		dataType: string
 		lineageTag: 91e19cfe-ada8-484b-8c5f-3f2e21505ef8
 		summarizeBy: none
 		sourceColumn: Last Refreshed
@@ -93,12 +96,83 @@ table Fact_CFR
 	partition Fact_CFR = m
 		mode: import
 		queryGroup: Fact
-		source =
+		source = ```
 				let
+				    // --- Step 1: Pull data from Analysis Services ---
 				    Fact_CFR = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CSCA%20Supply%20Chain", "Case Fill Rate", [Query="/* START QUERY BUILDER */#(lf)DEFINE#(lf)    MEASURE 'Service Case Fill Rate'[Total Delivery Qty] = #(lf)        SUM('Service Case Fill Rate'[Delivery Qty])#(lf) #(lf)    MEASURE 'Service Case Fill Rate'[Total Order Qty] = #(lf)        SUM('Service Case Fill Rate'[Order Qty])#(lf)    #(lf)    MEASURE'Service Case Fill Rate'[Last Refreshed] = #(lf)    #(tab)MAX ('Last Refresh Date'[Last Refresh] )#(lf)#(lf) #(lf)EVALUATE#(lf)SUMMARIZECOLUMNS(#(lf)    'Service Case Fill Rate'[Date],#(lf)    'Service Case Fill Rate'[WE Date],#(lf)    'Service Case Fill Rate'[Material Key],#(lf)    'Service Case Fill Rate'[Plant Key],#(lf)    'Service Case Fill Rate'[Customer Hierarchy],#(lf)    ""Total Delivery Qty"", [Total Delivery Qty],#(lf)    ""Total Order Qty"", [Total Order Qty],#(lf)    ""Last Refreshed"", [Last Refreshed]#(lf))#(lf)ORDER BY #(lf)    'Service Case Fill Rate'[Date] ASC,#(lf)    'Service Case Fill Rate'[WE Date] ASC,#(lf)    'Service Case Fill Rate'[Material Key] ASC,#(lf)    'Service Case Fill Rate'[Plant Key] ASC,#(lf)    'Service Case Fill Rate'[Customer Hierarchy] ASC#(lf)/* END QUERY BUILDER */", Implementation="2.0"]),
-				    #"Renamed Columns" = Table.RenameColumns(Fact_CFR,{{"Service Case Fill Rate[Date]", "Date"}, {"Service Case Fill Rate[WE Date]", "WE Date"}, {"Service Case Fill Rate[Material Key]", "Material Key"}, {"Service Case Fill Rate[Plant Key]", "Plant Key"}, {"[Total Delivery Qty]", "Total Delivery Qty"}, {"[Total Order Qty]", "Total Order Qty"}, {"Service Case Fill Rate[Customer Hierarchy]", "Customer Hierarchy"}, {"[Last Refreshed]", "Last Refreshed"}})
+				
+				    // --- Step 2: Rename columns ---
+				    #"Renamed Columns" = Table.RenameColumns(
+				        Fact_CFR,
+				        {
+				            {"Service Case Fill Rate[Date]", "Date"},
+				            {"Service Case Fill Rate[WE Date]", "WE Date"},
+				            {"Service Case Fill Rate[Material Key]", "Material Key"},
+				            {"Service Case Fill Rate[Plant Key]", "Plant Key"},
+				            {"[Total Delivery Qty]", "Total Delivery Qty"},
+				            {"[Total Order Qty]", "Total Order Qty"},
+				            {"Service Case Fill Rate[Customer Hierarchy]", "Customer Hierarchy"},
+				            {"[Last Refreshed]", "Last Refreshed"}
+				        }
+				    ),
+				
+				    // --- Step 3: Change data types ---
+				    #"Changed Type" = Table.TransformColumnTypes(
+				        #"Renamed Columns",
+				        {
+				            {"Total Delivery Qty", Int64.Type},
+				            {"Total Order Qty", Int64.Type},
+				            {"Date", type date},
+				            {"WE Date", type date},
+				            {"Last Refreshed", type datetimezone}
+				        }
+				    ),
+				
+				    // --- Step 4: Convert Last Refreshed to Eastern Time (DST aware) ---
+				    #"Last Refreshed Eastern" = Table.TransformColumns(
+				        #"Changed Type",
+				        {{"Last Refreshed", each 
+				            let
+				                dtUTC = _,
+				                currentYear = Date.Year(DateTimeZone.SwitchZone(dtUTC,0)),
+				                march1 = #date(currentYear,3,1),
+				                firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday),0,0,0),
+				                secondSundayMarch = firstSundayMarch + #duration(7,0,0,0),
+				                nov1 = #date(currentYear,11,1),
+				                firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday),0,0,0),
+				                todayDate = Date.From(dtUTC),
+				                isDST = todayDate >= Date.From(secondSundayMarch) and todayDate < Date.From(firstSundayNov),
+				                offset = if isDST then -4 else -5
+				            in
+				                DateTimeZone.SwitchZone(dtUTC, offset)
+				        , type datetimezone}}
+				    ),
+				
+				    // --- Step 5: Format Last Refreshed as text with EDT/EST ---
+				#"Formatted Last Refreshed" = Table.TransformColumns(
+				    #"Changed Type",
+				    {{"Last Refreshed", each 
+				        let
+				            dtUTC = _,
+				            currentYear = Date.Year(DateTimeZone.SwitchZone(dtUTC,0)),
+				            march1 = #date(currentYear,3,1),
+				            firstSundayMarch = march1 + #duration(7 - Date.DayOfWeek(march1, Day.Sunday),0,0,0),
+				            secondSundayMarch = firstSundayMarch + #duration(7,0,0,0),
+				            nov1 = #date(currentYear,11,1),
+				            firstSundayNov = nov1 + #duration(7 - Date.DayOfWeek(nov1, Day.Sunday),0,0,0),
+				            todayDate = Date.From(dtUTC),
+				            isDST = todayDate >= Date.From(secondSundayMarch) and todayDate < Date.From(firstSundayNov),
+				            offset = if isDST then -4 else -5,
+				            dtEastern = DateTimeZone.SwitchZone(dtUTC, offset),
+				            tzLabel = if offset = -4 then "EDT" else "EST"
+				        in
+				            DateTime.ToText(DateTimeZone.RemoveZone(dtEastern), "MM/dd/yyyy hh:mm tt") & " " & tzLabel
+				        , type text}}
+				)
+				
 				in
-				    #"Renamed Columns"
+				    #"Formatted Last Refreshed"
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 
