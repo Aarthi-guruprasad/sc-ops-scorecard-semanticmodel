@@ -275,6 +275,7 @@ table 'CSCI Measures'
 			      "LYTD",               [FA% LYTD_Final CSCI],
 			      "vs YoY",               [FA% YoY CSCI],
 			      "vs Plan", [FA Target_CSCI_Final],
+			      "vs 3M avg", [FA% CSCI 3M_Final],
 			      BLANK()
 			    )
 			
@@ -439,6 +440,7 @@ table 'CSCI Measures'
 			      "LYTD",               [Bias% CSCI LYTD_Final],
 			      "vs YoY",               [Bias% YoY CSCI],
 			      "vs Plan", [Bias Target Final_CSCI],
+			      "vs 3M avg", [Bias CSCI 3M_Final],
 			      BLANK()
 			    )
 			
@@ -457,6 +459,7 @@ table 'CSCI Measures'
 			        "LYTD", [Bias % LYTD CSCI],
 			        "vs YoY", [Bias YoY % Raw CSCI],
 			        "vs Plan",[Bias Target Diff%_CSCI],
+			        "vs 3M avg", [Bias CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -492,6 +495,7 @@ table 'CSCI Measures'
 			        "LYTD", [FA% LYTD CSCI],
 			        "vs YoY", [FA% YoY CSCI_raw],
 			        "vs Plan", [FA Target Diff%_CSCI],
+			        "vs 3M avg", [FA CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -614,6 +618,7 @@ table 'CSCI Measures'
 			      "vs YoY",               [SSSO: Shrinkage YoY_Final],
 			      "vs Plan", [SSSO: Shrinkage APN_Final],
 			      "vs Flex", [SSSO: Shrinkage F66_Final],
+			      "vs 3M avg", [SSSO: Shrinkage 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -632,6 +637,7 @@ table 'CSCI Measures'
 			        "vs YoY", [SSSO: Shrinkage YoY%], 
 			        "vs Plan", [SSSO: Shrinkage_APN],
 			        "vs Flex", [SSSO: Shrinkage_F66],
+			        "vs 3M avg", [SSSO: Shrinkage 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -884,6 +890,7 @@ table 'CSCI Measures'
 			      "LYTD",               [Service Level LYTD_Final],
 			      "vs YoY",               [Service Level YoY_Final],
 			      "vs Plan", [Service Target_CSCI_Final],
+			      "vs 3M avg", [Service Level 3M_Final],
 			      BLANK()
 			    )
 			```
@@ -901,6 +908,7 @@ table 'CSCI Measures'
 			        "LYTD", [Service Level LYTD],
 			        "vs YoY", [Service Level YoY%], 
 			        "vs Plan", [Service Target Diff%_CSCI],
+			        "vs 3M avg", [Service CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -1788,6 +1796,7 @@ table 'CSCI Measures'
 			        "LYTD", [Bias % LYTD CSCI],
 			        "vs YoY", [Bias YoY % Raw CSCI],
 			        "vs Plan", [Bias Target Diff%_CSCI],
+			        "vs 3M avg", [Bias CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -1820,6 +1829,7 @@ table 'CSCI Measures'
 			        "LYTD", [FA% LYTD CSCI],
 			        "vs YoY", [FA% YoY CSCI_raw],
 			        "vs Plan", [FA Target Diff%_CSCI],
+			        "vs 3M avg", [FA CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -1850,6 +1860,7 @@ table 'CSCI Measures'
 			        "LYTD", [Service Level LYTD],
 			        "vs YoY", [Service Level YoY%], 
 			        "vs Plan", [Service Target Diff%_CSCI],
+			        "vs 3M avg", [Service CSCI 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -1882,6 +1893,7 @@ table 'CSCI Measures'
 			        "vs YoY", [SSSO: Shrinkage YoY%], 
 			        "vs Plan", [SSSO: Shrinkage_APN],
 			        "vs Flex", [SSSO: Shrinkage_F66],
+			        "vs 3M avg", [SSSO: Shrinkage 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -2254,12 +2266,11 @@ table 'CSCI Measures'
 			      "LYTD",               [Active Products LYTD_Final],
 			      "vs YoY",               [Active Products YoY_Final],
 			      "vs Plan", BLANK(),
+			      "vs 3M avg", [Active Products 3M_Final],
 			      BLANK()
 			    )
 		displayFolder: Active Products CSCI
 		lineageTag: b420d4de-439c-460b-87cc-d1928b90a11f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Active Products YoY%' = DIVIDE(([Active Products] - [Active Products PY]),[Active Products PY])
 		formatString: 0.0%;-0.0%;0.0%
@@ -2290,6 +2301,7 @@ table 'CSCI Measures'
 			        "LYTD", [Active Products LYTD],
 			        "vs YoY", [Active Products YoY%], 
 			        "vs Plan", BLANK(),
+			        "vs 3M avg", [Active Products 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -2321,6 +2333,7 @@ table 'CSCI Measures'
 			        "LYTD", [Active Products LYTD],
 			        "vs YoY", [Active Products YoY%], 
 			        "vs Plan", BLANK(),
+			        "vs 3M avg", [Active Products 3M_diff%],
 			        BLANK()
 			    )
 			
@@ -2550,6 +2563,172 @@ table 'CSCI Measures'
 		lineageTag: 5e6a7755-50a3-411d-bf38-00c8c5c73fe7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active Products 3M_Final' = ```
+			
+			VAR kpi_ =  [Active Products 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Active Products CSCI
+		lineageTag: 15bbeb64-fcde-4b3a-ad22-177baa3945fd
+
+	measure 'Bias L1 CSCI 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias L1 CSCI 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCI
+		lineageTag: 39320f5e-3df1-438e-92f1-4967d4d40962
+
+	measure 'Bias L4 CSCI 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias L4 CSCI 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCI
+		lineageTag: 6d83222a-aa72-4a32-9285-458ad11e2fe0
+
+	measure 'FA% L1 CSCI 3M_Final' = ```
+			
+			VAR kpi_ = [FA L1 CSCI 3M_diff%]
+			VAR perc_ = ABS(kpi_)
+			VAR Format_ = FORMAT(perc_, "0.0%")
+			RETURN
+			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: f0b04081-aaf1-4070-bec6-f8ea0459fd72
+
+	measure 'FA% L4 CSCI 3M_Final' =
+			
+			VAR kpi_ = [FA L4 CSCI 3M_diff%]
+			VAR perc_ = ABS(kpi_)
+			VAR Format_ = FORMAT(perc_, "0.0%")
+			RETURN
+			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 565bb426-6d42-4a3c-8b42-94f438241645
+
+	measure 'Service Level 3M_Final' = ```
+			
+			VAR kpi_ =  [Service CSCI 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Service Level CSCI
+		lineageTag: d06f698b-bb09-4bba-b8b9-61e710118271
+
+	measure 'SSSO: Shrinkage 3M_Final' = ```
+			
+			VAR kpi_ =  [SSSO: Shrinkage 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_
+			```
+		displayFolder: SSSO Shrinkage
+		lineageTag: e00b79a6-0adb-4479-ad96-5c0f13ccb21b
+
+	measure 'Bias CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [Bias % CSCI]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Bias CSCI
+		lineageTag: d631005a-55be-43b0-9b6c-aba5b42d9036
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias CSCI 3M_diff%' =
+			
+			VAR Result = ([Bias % CSCI] - [Bias CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Bias CSCI
+		lineageTag: b080a7ff-e082-4923-8573-8420cf8e5b54
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Bias CSCI 3M_Final' = ```
+			
+			VAR kpi_ =  [Bias CSCI 3M_diff%]
+			VAR perc_ = abs(kpi_)
+			VAR Format_ = Format( perc_,"0.0%")
+			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
+			Return 
+			Result_ & UNICHAR(160) & UNICHAR(160)
+			```
+		displayFolder: Bias CSCI
+		lineageTag: c42a25b0-7c5d-4a32-8481-cc43188d8332
+
+	measure 'FA% CSCI Last 3M Avg' =
+			
+			VAR CurrentSeq =
+			    MAX ( Dim_Date[YearPeriodSeq])
+			VAR Last3Avg =
+			    AVERAGEX (
+			        FILTER (
+			            ALL ( Dim_Date ),
+			            Dim_Date[YearPeriodSeq] >= CurrentSeq - 3
+			                && Dim_Date[YearPeriodSeq] < CurrentSeq
+			        ),
+			        [FA%]
+			    )
+			RETURN
+			    Last3Avg
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: edbf2ba2-25fc-49b8-b143-67f773a3943b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA CSCI 3M_diff%' =
+			
+			VAR Result = ([FA%] - [FA% CSCI Last 3M Avg])
+			RETURN
+			Result
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 4f7c3476-a14d-4a6c-a6e2-c26b7cc23eb1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'FA% CSCI 3M_Final' = ```
+			
+			VAR kpi_ = [FA CSCI 3M_diff%]
+			VAR perc_ = ABS(kpi_)
+			VAR Format_ = FORMAT(perc_, "0.0%")
+			RETURN
+			    IF(kpi_ < 0, "▼ " & Format_, "▲ " & Format_)
+			
+			```
+		displayFolder: Forecast Accuracy CSCI
+		lineageTag: 29820dd5-3c0f-4484-9c2e-272d976f871c
 
 	column Measures
 		dataType: string
