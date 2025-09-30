@@ -11823,10 +11823,11 @@ table Measure
 		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	measure 'LR CFR' = MAX('Fact_CFR'[Last Refreshed])
+		formatString: d-m-yy hh:nn AM/PM
 		displayFolder: Refresh Details
 		lineageTag: aa9b5a4d-47eb-49fd-a5c0-c7c492c62aba
 
-		annotation PBI_FormatHint = {"isText":true}
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	measure 'Good Catch Closure Plan_Target' = AVERAGE(Fact_Safety[Target - GOOD Catch Closure Rate %])
 		formatString: 0.0%;-0.0%;0.0%
@@ -12129,8 +12130,8 @@ table Measure
 		displayFolder: Refresh Details
 		lineageTag: 989afaaa-0921-4300-93b3-34df8747d57c
 
-	measure 'Last Refresh' = MAX('Last Refresh'[Date Last Refreshed])
-		formatString: dd-mm-yyyy hh:nn AM/PM
+	measure 'Last Refresh' = MAX('Last Refresh'[Last Refresh])
+		formatString: dd-mm-yy hh:nn AM/PM
 		displayFolder: Misc
 		lineageTag: 9723f24b-a170-4f51-bff8-dd1906d96cd2
 
@@ -12141,7 +12142,7 @@ table Measure
 			MAX ( 'Fact_DSO_DPO_ABP'[Last Refresh])
 			
 			```
-		formatString: dd-mm-yyyy hh:nn AM/PM
+		formatString: dd-mm-yy hh:nn AM/PM
 		displayFolder: Refresh Details
 		lineageTag: 073ffd35-3733-4e71-8aed-0a160db55aee
 
@@ -12180,7 +12181,7 @@ table Measure
 			MAX ( 'Fact_Logistics'[Last Refreshed Date])
 			
 			```
-		formatString: dd-mm-yyyy hh:nn AM/PM
+		formatString: d-m-yy hh:nn AM/PM
 		displayFolder: Refresh Details
 		lineageTag: 09924365-1b2b-46ce-913c-0f1592808901
 
@@ -13596,7 +13597,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_ & UNICHAR(160) & UNICHAR(160)
+			Result_
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 69b35359-453e-4567-8220-5441cefaf27a
@@ -13608,7 +13609,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_& UNICHAR(160) & UNICHAR(160)
+			Result_
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: f23bf00f-ab65-4248-bf3e-d430a5059e96
@@ -13956,7 +13957,7 @@ table Measure
 			VAR Format_ = Format( perc_,"0.0%")
 			VAR Result_ = if(kpi_ < 0 , "▼ " &Format_,  "▲ " & Format_)
 			Return 
-			Result_& UNICHAR(160) & UNICHAR(160)
+			Result_
 			```
 		displayFolder: Forecast Accuracy CSCA
 		lineageTag: 08767dfa-e181-4d29-834d-e3c079fe4958
@@ -14036,6 +14037,48 @@ table Measure
 			```
 		displayFolder: Landing Page Measures
 		lineageTag: 609d91bf-2b96-415b-9797-8e81a089f004
+
+	measure 'LR Logistics (EST)' = ```
+			
+			VAR CurrentDateTimeUTC = [LR Logistics]  -- replace with your UTC datetime column/measure
+			VAR IsBlankUTC = ISBLANK(CurrentDateTimeUTC)
+			
+			VAR CurrentDate =
+			    IF( IsBlankUTC, BLANK(),
+			        DATE( YEAR( CurrentDateTimeUTC ), MONTH( CurrentDateTimeUTC ), DAY( CurrentDateTimeUTC ) )
+			    )
+			
+			VAR YearNum = IF( IsBlankUTC, BLANK(), YEAR( CurrentDate ) )
+			
+			-- first Sunday >= March 1
+			VAR FirstSundayMarch =
+			    IF( IsBlankUTC, BLANK(),
+			        DATE( YearNum, 3, 1 ) + MOD( 8 - WEEKDAY( DATE( YearNum, 3, 1 ), 1 ), 7 )
+			    )
+			
+			VAR SecondSundayOfMarch = IF( IsBlankUTC, BLANK(), FirstSundayMarch + 7 )
+			
+			-- first Sunday >= Nov 1
+			VAR FirstSundayNovember =
+			    IF( IsBlankUTC, BLANK(),
+			        DATE( YearNum, 11, 1 ) + MOD( 8 - WEEKDAY( DATE( YearNum, 11, 1 ), 1 ), 7 )
+			    )
+			
+			VAR IsDST = IF( IsBlankUTC, FALSE(), CurrentDate >= SecondSundayOfMarch && CurrentDate < FirstSundayNovember )
+			
+			VAR OffsetHours = IF( IsDST, -4, -5 )
+			
+			VAR ResultDateTime = IF( IsBlankUTC, BLANK(), CurrentDateTimeUTC + OffsetHours / 24 )
+			
+			RETURN
+			    ResultDateTime
+			
+			```
+		formatString: d-m-yy hh:nn AM/PM
+		displayFolder: Refresh Details
+		lineageTag: 799fbe14-6a25-4bf7-aa81-9e37bc0de3be
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	column Measures
 		dataType: string

@@ -285,14 +285,6 @@ relationship c893cb8e-4c46-db6b-f796-26a9621d2ac7
 	fromColumn: Fact_Target.'Customer Name'
 	toColumn: Dim_Customer.'Customer Name'
 
-relationship dc28170a-3708-d48d-e043-79b361c58726
-	fromColumn: KPI_Metadata.Comparison
-	toColumn: MetricSelector.Metric
-
-relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
-	fromColumn: KPI_Metadata.Area
-	toColumn: Bridge_CSCA_CSCI.Area
-
 relationship dac19a11-24b2-6397-4f61-2d76a71f9039
 	fromColumn: Fact_ActiveProducts_CSCI.'Brand ID'
 	toColumn: Dim_Brand.'Brand ID'
@@ -304,4 +296,12 @@ relationship 584544e0-604c-26c2-a732-393f362c007b
 relationship 172e3918-1635-8dff-61c4-54f100c70d14
 	fromColumn: Fact_ActiveProducts_CSCI.'Profit Center'
 	toColumn: Dim_Profit_Center.'Profit Center'
+
+relationship dc28170a-3708-d48d-e043-79b361c58726
+	fromColumn: KPI_Metadata.Comparison
+	toColumn: MetricSelector.Metric
+
+relationship af8abb2a-49f9-d68c-8bfe-9e5bf022aeb7
+	fromColumn: KPI_Metadata.Area
+	toColumn: Bridge_CSCA_CSCI.Area
 
