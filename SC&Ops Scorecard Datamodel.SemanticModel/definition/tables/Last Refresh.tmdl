@@ -1,35 +1,38 @@
 table 'Last Refresh'
 	lineageTag: 6c7c2582-dfb3-462b-bd2d-3125e753b339
 
-	column 'Date Last Refreshed'
-		dataType: string
-		lineageTag: cbf80b52-a568-44de-b6d0-5375790b87ac
+	column 'Last Refresh'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 126b01ca-441c-4236-89fb-f91e381e4e31
 		summarizeBy: none
-		sourceColumn: Date Last Refreshed
+		sourceColumn: Last Refresh
 
 		annotation SummarizationSetBy = Automatic
 
 	partition 'Last Refresh' = m
 		mode: import
 		queryGroup: Parameters/Misc
-		source =
-				let
-				    // Get current Eastern time (DST-aware)
-				    dt = EasternNow(),
+		source = ```
+				let CurrentDate = DateTimeZone.UtcNow(), 
+				CurrentDateAsDate = Date.From(CurrentDate), 
+				Year = Date.Year(CurrentDateAsDate), 
+				SecondSundayOfMarch = Date.StartOfWeek(#date(Year, 3, 8), Day.Sunday), 
+				FirstSundayOfNovember = Date.StartOfWeek(#date(Year, 11, 1), Day.Sunday), 
+				Result = 
+				if 
+				CurrentDateAsDate >= SecondSundayOfMarch and CurrentDateAsDate < FirstSundayOfNovember 
+				then 
+				#table(type table[Last Refresh=datetime], 
+				{{DateTimeZone.UtcNow()+#duration(0, -4, 0, 0)}}) 
+				else 
+				#table(type table[Last Refresh=datetime], 
+				{{DateTimeZone.UtcNow()+#duration(0, -5, 0, 0)}}), 
+				#"Changed Type" = Table.TransformColumnTypes(Result,{{"Last Refresh", type datetimezone}}) 
 				
-				    // Determine timezone label
-				    tzLabel = if DateTimeZone.SwitchZone(dt,0) - dt = -4 then "EDT" else "EST",
-				
-				    // Format datetime as text
-				    formatted = DateTime.ToText(DateTimeZone.RemoveZone(dt), "MM/dd/yyyy hh:mm tt") & " " & tzLabel,
-				
-				    // Create single-row table
-				    LastRefreshed = #table(
-				        type table [Date Last Refreshed = text],
-				        { { formatted } }
-				    )
-				in
-				    LastRefreshed
+				in 
+				#"Changed Type"
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 
